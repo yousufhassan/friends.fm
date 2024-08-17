@@ -20,7 +20,7 @@ struct ProfileDetails: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            ProfileImage(imageName: profile.image, width: 80, height: 80)
+            ProfileImage(imageName: profile.spotifyId, width: 80, height: 80)
                 .environmentObject(friendActivityViewModel)
             
             VStack(alignment: .leading, spacing: 8) {
@@ -55,8 +55,8 @@ struct ProfileDetails: View {
                     fetchedDetails = false
                     Task {
                         // NOTE: Comment out these two lines to fix SwiftUI Previews
-                        followerCount = await profileViewModel.getCurrentUsersFollowerCount()
-                        playlistCount = await profileViewModel.getCurrentUsersPlaylistCount()
+//                        followerCount = await profileViewModel.getCurrentUsersFollowerCount()
+//                        playlistCount = await profileViewModel.getCurrentUsersPlaylistCount()
                         fetchedDetails = true
                     }
                 }

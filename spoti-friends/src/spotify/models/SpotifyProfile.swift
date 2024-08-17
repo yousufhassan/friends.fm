@@ -59,6 +59,29 @@ class SpotifyProfile: Object, Decodable {
         return true
     }
     
+    /// Stores the profile picture on disk using the Spotify ID as the image name.
+    public func storeProfilePictureLocally() async -> Void {
+        do {
+            let imageName = self.spotifyId
+            let link = self.image
+            
+            // Return early if the user does not have a profile picture
+            if link == "" { return }
+            
+            // Fetch the image data
+            guard let imageURL = URL(string: link) else { return }
+            let request = URLRequest(url: imageURL)
+            let (data, _) = try await URLSession.shared.data(for: request)
+            
+            // Store image data on disk
+            let fileURL = URL.documentsDirectory.appending(path: "images/profile_pictures/\(imageName)")
+            try createDirectoryIfNotExists(at: fileURL)
+            try data.write(to: fileURL)
+        } catch {
+            printError("\(error)")
+        }
+    }
+    
     // List of methods
     //    getSpotifyId()
     //    getUsersProfileFromSpotifyId(spotifyId)  // Spotify Web API call

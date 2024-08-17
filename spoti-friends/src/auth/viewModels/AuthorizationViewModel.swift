@@ -13,7 +13,7 @@ class AuthorizationViewModel: ObservableObject {
         
         // If we find a matching user in the database, set that as current user.
         // Otherwise, this is a new user.
-//                storeInUserDefaults(key: "signedInUser", value: "")
+//        storeInUserDefaults(key: "signedInUser", value: "")
         let signedInUser = getStringFromUserDefaultsValueForKey("signedInUser")
         if signedInUser != "" {
             let existingUser: User = realm.objects(User.self).where { $0.spotifyId == signedInUser }.first!

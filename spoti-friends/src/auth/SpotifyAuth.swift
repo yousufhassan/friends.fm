@@ -40,6 +40,7 @@ class SpotifyAuth {
             } else {
                 if (userGrantedAuthorization(queryItems)) {
                     user.setAuthorizationStatusAs(.granted)
+                    await user.spotifyProfile?.storeProfilePictureLocally()
                     storeSignedInUser(user)
                     await RealmDatabase.shared.addToRealm(object: user);
                     authorizationStatus = .granted
