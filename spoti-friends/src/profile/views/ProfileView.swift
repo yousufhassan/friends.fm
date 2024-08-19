@@ -19,8 +19,11 @@ struct ProfileView: View {
                 .environmentObject(profileViewModel)
                 .environmentObject(friendActivityViewModel)
             
+//            TrackOrArtistList()
             Spacer()
             
+            // TODO: This needs to be moved to a view for only the logged in profile
+            // or keep it here but conditionally render it.
             LogoutButton()
                 .padding(.bottom, 10)
         }

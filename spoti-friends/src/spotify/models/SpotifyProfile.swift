@@ -123,12 +123,13 @@ class CurrentOrMostRecentTrack: Object, Decodable {
 }
 
 /// Object representing a Spotify Track.
-class Track: Object, SpotifyResource, Decodable {
+class Track: Object, SpotifyResource, Decodable, Identifiable {
     @Persisted var spotifyUri: String
     @Persisted var name: String
     @Persisted var artist: Artist?
     @Persisted var album: Album?
     @Persisted var context: TrackContext?
+    var id: String { spotifyUri }
 }
 
 /// Object representing a Spotify Artist.
