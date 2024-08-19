@@ -26,6 +26,7 @@ struct RootView: View {
             case .granted:
                 AuthenticatedView()
                     .environmentObject(friendActivityViewModel)
+                    .environmentObject(authorizationViewModel)
             case .denied:
                 AuthorizationDeniedView()
             }

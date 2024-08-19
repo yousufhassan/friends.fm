@@ -34,4 +34,11 @@ internal enum AuthorizationConstants {
         "redirect_uri": redirectUri,
         "code_verifier": getStringFromUserDefaultsValueForKey("code_verifier"),
     ]
+    
+    static var refreshTokenRequestParams = [
+        "grant_type": "refresh_token",
+        "refresh_token": "",  // will be set at runtime
+        "client_id": clientId,
+        
+    ]
 }

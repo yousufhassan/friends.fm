@@ -9,12 +9,42 @@ import RealmSwift
 ///   - scope: A space-separated list of scopes which have been granted for this access token.
 ///   - expires_in: The time period (in seconds) for which the access token is valid.
 ///   - refresh_token: The refresh token to be used to obtain new access tokens.
+///   - accessTokenExpirationTimestampMs: Timestamp for when the access token expires.
 class SpotifyWebAccessToken: Object, Codable {
     @Persisted var access_token: String
     @Persisted var token_type: String
     @Persisted var scope: String
     @Persisted var expires_in: Int
     @Persisted var refresh_token: String
+    @Persisted var accessTokenExpirationTimestampMs: Double
+    
+    enum CodingKeys: String, CodingKey {
+        case access_token
+        case token_type
+        case scope
+        case expires_in
+        case refresh_token
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        access_token = try container.decode(String.self, forKey: .access_token)
+        token_type = try container.decode(String.self, forKey: .token_type)
+        scope = try container.decode(String.self, forKey: .scope)
+        expires_in = try container.decode(Int.self, forKey: .expires_in)
+        refresh_token = try container.decode(String.self, forKey: .refresh_token)
+        super.init()
+    }
+    
+    required override init() {
+        super.init()
+    }
+    
+    public func setExpiryTimestamp() {
+        let currentDate = Date()
+        let oneHourFromNow = currentDate.addingTimeInterval(3600)
+        self.accessTokenExpirationTimestampMs = oneHourFromNow.timeIntervalSince1970 * 1000
+    }
 }
 
 

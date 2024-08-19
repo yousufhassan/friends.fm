@@ -68,9 +68,31 @@ class User: Object {
         self.authorizationCode = code
     }
     
+    /// Gets the user's `spotifyWebAccessToken`.
+    @MainActor public func getSpotifyWebAccessToken() async throws -> SpotifyWebAccessToken {
+        do {
+            // If the token is not expired
+            if !SpotifyAuth.shared.accessTokenIsExpired(self.spotifyWebAccessToken!.accessTokenExpirationTimestampMs) {
+                return self.spotifyWebAccessToken!
+            }
+            
+            // Otherwise, refresh token, save to database, and return
+            let token = try await SpotifyAuth.shared.refreshAccessToken(refreshToken: self.spotifyWebAccessToken!.refresh_token)
+            RealmDatabase.shared.updateObjectInRealm {
+                self.setSpotifyWebAccessToken(token)
+            }
+            
+            return token
+        } catch {
+            printError("\(error)")
+            throw error
+        }
+    }
+    
     /// Sets the user's `spotifyWebAccessToken`.
     public func setSpotifyWebAccessToken(_ spotifyWebAccessToken: SpotifyWebAccessToken) -> Void {
         self.spotifyWebAccessToken = spotifyWebAccessToken
+        self.spotifyWebAccessToken?.setExpiryTimestamp()
     }
     
     /// Sets the user's `internalAPIAccessToken`.

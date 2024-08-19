@@ -10,7 +10,7 @@ struct AuthorizationDeniedView: View {
             
             // Error page title
             Text("Permissions Needed")
-                .foregroundStyle(Color.PresetColour.white)
+                .foregroundStyle(Color.PresetColour.whitePrimary)
                 .font(.title)
                 .fontWeight(.bold)
             
@@ -28,7 +28,7 @@ struct AuthorizationDeniedView: View {
                     .padding(.bottom, 16)
                 Text("To enjoy the full functionality of our app, please grant the required permissions.")
             }
-            .foregroundStyle(Color.PresetColour.white)
+            .foregroundStyle(Color.PresetColour.whitePrimary)
             .multilineTextAlignment(.center)
             
             // Back to sign in button
@@ -56,7 +56,7 @@ struct BackToSignInButton: View {
         .padding()
         .frame(width: 234)
         .background(Color.PresetColour.spotifyGreen)
-        .foregroundColor(Color.PresetColour.white)
+        .foregroundColor(Color.PresetColour.whitePrimary)
         .cornerRadius(30)
     }
 }

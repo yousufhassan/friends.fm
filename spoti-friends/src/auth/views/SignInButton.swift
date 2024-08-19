@@ -15,7 +15,7 @@ struct SignInButton: View {
         .padding()
         .frame(width: 234)
         .background(Color.PresetColour.spotifyGreen)
-        .foregroundColor(Color.PresetColour.white)
+        .foregroundColor(Color.PresetColour.whitePrimary)
         .cornerRadius(30)
         .sheet(isPresented: $showWebView) {
             NavigationStack {

@@ -6,7 +6,8 @@ let backgroundGradient: LinearGradient = LinearGradient(gradient: Color.PresetGr
 extension Color {
     struct PresetColour {
         static var spotifyGreen: Color { return Color(red: 0.11, green: 0.72, blue: 0.33) }
-        static var white: Color { return Color(red: 0.94, green: 0.94, blue: 0.94) }
+        static var whitePrimary: Color { return Color(red: 0.94, green: 0.94, blue: 0.94) }
+        static var whiteSecondary: Color { return Color(red: 0.77, green: 0.77, blue: 0.77) }
         static var black: Color { return Color(red: 0.03, green: 0.03, blue: 0.03) }
         static var darkgrey: Color { return Color(red: 0.11, green: 0.11, blue: 0.11) }
         static var navbar: Color { return Color(red: 0.10, green: 0.10, blue: 0.10) }

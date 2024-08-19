@@ -7,7 +7,7 @@ struct PageTitle: View {
     var body: some View {
         HStack {
             Text(pageTitle)
-                .foregroundStyle(Color.PresetColour.white)
+                .foregroundStyle(Color.PresetColour.whitePrimary)
                 .font(.title)
                 .fontWeight(.medium)
             

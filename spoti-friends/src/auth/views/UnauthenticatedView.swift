@@ -32,9 +32,9 @@ struct SignInTitle: View {
                 Text("Spoti\nfriends")
                     .font(.system(size: 60, weight: .heavy))
                     .padding(.bottom, 4)
-                    .foregroundColor(Color.PresetColour.white)
+                    .foregroundColor(Color.PresetColour.whitePrimary)
                 Group {
-                    Text("Listen ").foregroundColor(Color.PresetColour.white) +
+                    Text("Listen ").foregroundColor(Color.PresetColour.whitePrimary) +
                     Text("together").foregroundColor(Color.PresetColour.spotifyGreen)
                 }
                 .font(.system(size: 22, weight: .regular))

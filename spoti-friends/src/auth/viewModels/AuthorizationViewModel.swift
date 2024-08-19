@@ -29,6 +29,10 @@ class AuthorizationViewModel: ObservableObject {
         }
     }
     
+    deinit {
+        notificationToken?.invalidate()
+    }
+    
     
     /// Signs out the currently signed in user.
     public func signOutUser() -> Void {
