@@ -12,8 +12,8 @@ class ProfileViewModel: ObservableObject {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
             let response = try await SpotifyAPI.shared.fetch(endpoint: .getCurrentUsersProfile,
-                                                              responseType: GetCurrentUserProfileResponse.self,
-                                                              accessToken: accessToken)
+                                                             responseType: GetCurrentUserProfileResponse.self,
+                                                             accessToken: accessToken)
             return response.followers.total
         } catch {
             printError("\(error)")
@@ -28,13 +28,28 @@ class ProfileViewModel: ObservableObject {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
             let response = try await SpotifyAPI.shared.fetch(endpoint: .getCurrentUsersPlaylists,
-                                                              responseType: GetCurrentUserPlayistsResponse.self,
-                                                              accessToken: accessToken)
+                                                             responseType: GetCurrentUserPlayistsResponse.self,
+                                                             accessToken: accessToken)
             return response.total
         } catch {
             printError("\(error)")
         }
         return -1
+    }
+    
+    @MainActor func getCurrentUsersTopTracks() async -> [GetCurrentUserTopTracks.Track2]? {
+        do {
+            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            let response = try await SpotifyAPI.shared.fetch(endpoint: .getCurrentUsersTopTracks,
+                                                             responseType: GetCurrentUserTopTracks.self,
+                                                             accessToken: accessToken)
+            
+            return response.items
+        }
+        catch {
+            printError("\(error)")
+            return nil
+        }
     }
 }
 
@@ -52,5 +67,27 @@ extension ProfileViewModel {
     
     private struct GetCurrentUserPlayistsResponse: Decodable {
         let total: Int
+    }
+    
+    public class GetCurrentUserTopTracks: Decodable {
+        let items: [Track2]
+        
+        class Track2: SpotifyResource, Decodable, Identifiable {
+            var spotifyUri: String
+            var name: String
+            var artists: [Artist?]
+            var album: Album?
+//            var context: TrackContext?
+            var id: String { spotifyUri }
+            
+            // Map the JSON keys to your object properties
+            private enum CodingKeys: String, CodingKey {
+                case spotifyUri = "uri"
+                case name
+                case artists
+                case album
+//                case context
+            }
+        }
     }
 }

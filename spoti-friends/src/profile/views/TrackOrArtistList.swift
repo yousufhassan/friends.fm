@@ -6,7 +6,7 @@ import SwiftUI
 ///
 /// - Returns: A View for the album cover image.
 struct TrackOrArtistList: View {
-    let trackList: [Track]
+    let trackList: [ProfileViewModel.GetCurrentUserTopTracks.Track2]
     var body: some View {
         HStack {
             VStack (alignment: .leading) {
@@ -23,7 +23,8 @@ struct TrackOrArtistList: View {
                             Text(track.name)
                                 .foregroundStyle(Color.PresetColour.whitePrimary)
                                 .lineLimit(1)
-                            Text(track.artist?.name ?? "Error")
+//                            Text(track.artist?.name ?? "Error")
+                            Text("Artist")
                                 .font(.subheadline)
                                 .foregroundStyle(Color.PresetColour.whiteSecondary)
                         }
@@ -41,5 +42,5 @@ struct TrackOrArtistList: View {
 
 #Preview {
     let trackList = [TrackMock.luxury, TrackMock.iRememberEverything, TrackMock.traitor]
-    TrackOrArtistList(trackList: trackList)
+//    TrackOrArtistList(trackList: trackList)
 }

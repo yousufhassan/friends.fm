@@ -32,12 +32,6 @@ class SpotifyProfile: Object, Decodable {
         }
     }
     
-    private struct SpotifyImage: Decodable {
-        let url: String
-        let height: Int
-        let width: Int
-    }
-    
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
     private enum CodingKeys: String, CodingKey {
         case spotifyId = "id"
@@ -130,12 +124,40 @@ class Track: Object, SpotifyResource, Decodable, Identifiable {
     @Persisted var album: Album?
     @Persisted var context: TrackContext?
     var id: String { spotifyUri }
+    
+    // Map the JSON keys to your object properties
+    private enum CodingKeys: String, CodingKey {
+        case spotifyUri = "uri"
+        case name
+        case artist
+        case album
+        case context
+    }
+    
+    convenience required init(from decoder: any Decoder) throws {
+        self.init()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? "woop"
+        self.name = try container.decode(String.self, forKey: .name)
+//        self.artist = try container.decode(Artist.self, forKey: .artist)
+        self.album = try container.decode(Album.self, forKey: .album)
+//        self.context = try container.decode(TrackContext.self, forKey: .context)
+    }
 }
 
 /// Object representing a Spotify Artist.
 class Artist: Object, SpotifyResource, Decodable {
     @Persisted var spotifyUri: String
     @Persisted var name: String
+    
+    // Map the JSON keys to your object properties
+    private enum CodingKeys: String, CodingKey {
+        case spotifyUri = "uri"
+        case name
+    }
+    
+    
 }
 
 /// Object representing a Spotify Album.
@@ -143,6 +165,28 @@ class Album: Object, SpotifyResource, Decodable {
     @Persisted var spotifyUri: String
     @Persisted var name: String
     @Persisted var image: String
+    
+    // Map the JSON keys to your object properties
+    private enum CodingKeys: String, CodingKey {
+        case spotifyUri = "uri"
+        case name
+        case image = "images"
+    }
+    
+    convenience required init(from decoder: any Decoder) throws {
+        self.init()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
+        self.name = try container.decode(String.self, forKey: .name)
+
+        // TODO: Move this logic into a helper as it is reused
+        // Extract the first image URL from the `images` array
+        if let images = try? container.decode([SpotifyImage].self, forKey: .image) {
+            self.image = images.first?.url ?? ""
+        } else {
+            self.image = ""
+        }
+    }
 }
 
 /// Object representing a Spotify Track Content.
@@ -167,4 +211,10 @@ class TrackContext: Object, SpotifyResource, Decodable {
         }
         return ContextType(rawValue: extractedType) ?? .playlist
     }
+}
+
+struct SpotifyImage: Decodable {
+    let url: String
+    let height: Int
+    let width: Int
 }
