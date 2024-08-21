@@ -1,4 +1,5 @@
 import Foundation
+import RealmSwift
 
 /// This extension adds functionality related to the `/buddylist` endpoint.
 extension SpotifyAPI {
@@ -48,9 +49,12 @@ extension SpotifyAPI {
     /// - Returns: The `CurrentOrMostRecentTrack` for this friend.
     private func getCurrentOrMostRecentTrackForFriend(_ friendObject: BuddylistFriendObject) -> CurrentOrMostRecentTrack {
         let track = Track()
+        let artists = List<Artist>()
+        artists.append(friendObject.track.artist.buddylistArtistToSpotifyArist())
+        
         track.spotifyUri = friendObject.track.uri
         track.name = friendObject.track.name
-        track.artist = friendObject.track.artist.buddylistArtistToSpotifyArist()
+        track.artists = artists
         track.album = friendObject.track.album.buddylistArtistToSpotifyAlbum(imageURL: friendObject.track.imageUrl)
         track.context = friendObject.track.context.buddylistArtistToTrackContext()
         

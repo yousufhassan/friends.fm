@@ -1,4 +1,5 @@
 import SwiftUI
+import RealmSwift
 
 /// The View that renders the details for a listening activity item.
 ///
@@ -14,7 +15,7 @@ struct ListeningActivityDetails: View {
     let profile: SpotifyProfile
     let currentTrack: CurrentOrMostRecentTrack
     let trackDetails: Track
-    let artist: Artist
+    let artists: RealmSwift.List<Artist>
     let context: TrackContext
     @State var contextIcon: Image
     
@@ -22,7 +23,7 @@ struct ListeningActivityDetails: View {
         self.profile = profile
         self.currentTrack = currentTrack
         self.trackDetails = currentTrack.track!
-        self.artist = (currentTrack.track?.artist)!
+        self.artists = (currentTrack.track?.artists) ?? List<Artist>()
         self.context = (currentTrack.track?.context)!
         self.contextIcon = getImageForContextType()
         
@@ -56,12 +57,21 @@ struct ListeningActivityDetails: View {
                 Link(destination: URL(string: trackDetails.spotifyUri)!) {
                     Text(trackDetails.name)
                         .lineLimit(1)
+                        .layoutPriority(2)
                 }
+                
                 Text("•")
-                Link(destination: URL(string: artist.spotifyUri)!) {
-                    Text(artist.name)
-                        .lineLimit(1)
+                
+                
+                ForEach(artists.indices, id: \.self) { index in
+                    let artist = artists[index]
+                    Link(destination: URL(string: artist.spotifyUri)!) {
+                        // Add comma except for the last artist
+                        index < artists.count - 1 ? Text("\(artist.name),") : Text(artist.name)
+                    }
                 }
+                .lineLimit(1)
+                
             }
             
             // Context details row
