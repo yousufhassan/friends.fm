@@ -120,7 +120,7 @@ class CurrentOrMostRecentTrack: Object, Decodable {
 class Track: Object, SpotifyResource, Decodable, Identifiable {
     @Persisted var spotifyUri: String
     @Persisted var name: String
-    @Persisted var artist: Artist?
+    @Persisted var artists: List<Artist>
     @Persisted var album: Album?
     @Persisted var context: TrackContext?
     var id: String { spotifyUri }
