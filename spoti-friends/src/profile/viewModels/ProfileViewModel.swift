@@ -11,7 +11,8 @@ class ProfileViewModel: ObservableObject {
     @MainActor func getCurrentUsersFollowerCount() async -> Int {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
-            let response = try await SpotifyAPI.shared.fetch(endpoint: .getCurrentUsersProfile,
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersProfile,
                                                              responseType: GetCurrentUserProfileResponse.self,
                                                              accessToken: accessToken)
             return response.followers.total
@@ -27,7 +28,8 @@ class ProfileViewModel: ObservableObject {
     @MainActor func getCurrentUsersPlaylistCount() async -> Int {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
-            let response = try await SpotifyAPI.shared.fetch(endpoint: .getCurrentUsersPlaylists,
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersPlaylists,
                                                              responseType: GetCurrentUserPlayistsResponse.self,
                                                              accessToken: accessToken)
             return response.total
@@ -37,12 +39,23 @@ class ProfileViewModel: ObservableObject {
         return -1
     }
     
-    @MainActor func getCurrentUsersTopTracks() async -> [GetCurrentUserTopTracks.Track2]? {
+    /// Fetches and returns the current user's top tracks.
+    ///
+    /// - Parameters:
+    ///   - timeRange: Over what time frame the data is calculated.
+    ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    @MainActor func getCurrentUsersTopTracks(timeRange: GetCurrentUserTopTracks.TimeRange, limit: Int) async -> [GetCurrentUserTopTracks.Track2]? {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
-            let response = try await SpotifyAPI.shared.fetch(endpoint: .getCurrentUsersTopTracks,
+            let queryParams = [
+                URLQueryItem(name: "time_range", value: timeRange.rawValue),
+                URLQueryItem(name: "limit", value: String(limit))
+            ]
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersTopTracks,
                                                              responseType: GetCurrentUserTopTracks.self,
-                                                             accessToken: accessToken)
+                                                             accessToken: accessToken,
+                                                             queryParams: queryParams)
             
             return response.items
         }
@@ -70,6 +83,13 @@ extension ProfileViewModel {
     }
     
     public class GetCurrentUserTopTracks: Decodable {
+        /// The valid values for the `time_range` parameter.
+        enum TimeRange: String {
+            case oneMonth = "short_term"
+            case sixMonths = "medium_term"
+            case oneYear = "long_term"
+        }
+        
         let items: [Track2]
         
         class Track2: SpotifyResource, Decodable, Identifiable {
@@ -77,7 +97,7 @@ extension ProfileViewModel {
             var name: String
             var artists: [Artist?]
             var album: Album?
-//            var context: TrackContext?
+            //            var context: TrackContext?
             var id: String { spotifyUri }
             
             // Map the JSON keys to your object properties
@@ -86,7 +106,7 @@ extension ProfileViewModel {
                 case name
                 case artists
                 case album
-//                case context
+                //                case context
             }
         }
     }
