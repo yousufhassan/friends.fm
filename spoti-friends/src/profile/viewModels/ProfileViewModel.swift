@@ -44,7 +44,7 @@ class ProfileViewModel: ObservableObject {
     /// - Parameters:
     ///   - timeRange: Over what time frame the data is calculated.
     ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
-    @MainActor func getCurrentUsersTopTracks(timeRange: GetCurrentUserTopTracks.TimeRange, limit: Int) async -> [GetCurrentUserTopTracks.Track2]? {
+    @MainActor func getCurrentUsersTopTracks(timeRange: GetCurrentUserTopTracks.TimeRange, limit: Int) async -> [Track]? {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
             let queryParams = [
@@ -90,14 +90,14 @@ extension ProfileViewModel {
             case oneYear = "long_term"
         }
         
-        let items: [Track2]
+        let items: [Track]
         
         class Track2: SpotifyResource, Decodable, Identifiable {
             var spotifyUri: String
             var name: String
             var artists: [Artist?]
             var album: Album?
-            //            var context: TrackContext?
+//                        var context: TrackContext?
             var id: String { spotifyUri }
             
             // Map the JSON keys to your object properties
@@ -106,7 +106,7 @@ extension ProfileViewModel {
                 case name
                 case artists
                 case album
-                //                case context
+//                                case context
             }
         }
     }

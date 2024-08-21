@@ -129,9 +129,8 @@ class Track: Object, SpotifyResource, Decodable, Identifiable {
     private enum CodingKeys: String, CodingKey {
         case spotifyUri = "uri"
         case name
-        case artist
+        case artists
         case album
-        case context
     }
     
     convenience required init(from decoder: any Decoder) throws {
@@ -140,9 +139,8 @@ class Track: Object, SpotifyResource, Decodable, Identifiable {
         
         self.spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? "woop"
         self.name = try container.decode(String.self, forKey: .name)
-//        self.artist = try container.decode(Artist.self, forKey: .artist)
+        self.artists = try container.decode(List<Artist>.self, forKey: .artists)
         self.album = try container.decode(Album.self, forKey: .album)
-//        self.context = try container.decode(TrackContext.self, forKey: .context)
     }
 }
 

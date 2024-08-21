@@ -6,8 +6,17 @@ struct AuthenticatedView: View {
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     
     init() {
-        let appearance = UITabBar.appearance()
-        appearance.backgroundColor = UIColor(Color.PresetColour.darkgrey)
+//        let appearance = UITabBar.appearance()
+//        appearance.backgroundColor = UIColor(Color.PresetColour.darkgrey)
+        
+        let standardAppearance = UITabBarAppearance()
+        standardAppearance.backgroundColor = UIColor(Color.PresetColour.darkgrey)
+        UITabBar.appearance().standardAppearance = standardAppearance
+        
+        let scrollEdgeAppearance = UITabBarAppearance()
+        scrollEdgeAppearance.configureWithTransparentBackground()
+        scrollEdgeAppearance.backgroundColor = UIColor(Color.PresetColour.darkgrey)
+        UITabBar.appearance().scrollEdgeAppearance = scrollEdgeAppearance
     }
     
     var body: some View {

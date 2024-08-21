@@ -6,7 +6,7 @@ import SwiftUI
 ///
 /// - Returns: A View for the album cover image.
 struct TrackOrArtistList: View {
-    let trackList: [ProfileViewModel.GetCurrentUserTopTracks.Track2]
+    let trackList: [Track]
     var body: some View {
         HStack {
             VStack (alignment: .leading) {
@@ -28,16 +28,17 @@ struct TrackOrArtistList: View {
                             
                             // Artist names
                             HStack(spacing: 0) {
-                                ForEach(track.artists.indices, id: \.self) { index in
-                                    let artist = track.artists[index]
+                                let artistsArray = Array(track.artists) // Convert List<Artist> to [Artist]
+                                ForEach(artistsArray.indices, id: \.self) { index in
+                                    let artist = artistsArray[index]
                                     
-                                    index < track.artists.count - 1
-                                    ? Text("\(artist?.name ?? ""), ")
-                                    : Text(artist?.name ?? "")
+                                    Text(index < artistsArray.count - 1
+                                         ? "\(artist.name), "
+                                         : artist.name)
+                                    .font(.footnote)
+                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
                                     
                                 }
-                                .font(.footnote)
-                                .foregroundStyle(Color.PresetColour.whiteSecondary)
                             }
                         }
                     }
@@ -54,5 +55,5 @@ struct TrackOrArtistList: View {
 
 #Preview {
     let trackList = [TrackMock.luxury, TrackMock.iRememberEverything, TrackMock.traitor]
-    //    TrackOrArtistList(trackList: trackList)
+    TrackOrArtistList(trackList: trackList)
 }
