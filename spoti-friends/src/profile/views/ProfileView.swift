@@ -40,7 +40,7 @@ struct ProfileView: View {
                 profileViewModel.user = authorizationViewModel.user
                 
                 Task {
-//                    trackList = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? []
+                    recentSongs = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? []
                 }
             }
         }

@@ -3,15 +3,16 @@ import SwiftUI
 /// The View that renders a list of either tracks or artists.
 ///
 /// - Parameters:
+///   - trackList: The list of `Track` objects to render as a list.
 ///
-/// - Returns: A View for the album cover image.
+/// - Returns: A View that renders a list of either tracks or artists.
 struct TrackOrArtistList: View {
     let trackList: [Track]
     var body: some View {
         HStack {
             VStack (alignment: .leading) {
                 Text("Recent Songs")
-                    .font(.title3)
+                    .font(.body)
                     .foregroundStyle(Color.PresetColour.whitePrimary)
                 
                 
@@ -22,7 +23,7 @@ struct TrackOrArtistList: View {
                         VStack (alignment: .leading) {
                             // Track name
                             Text(track.name)
-                                .font(.body)
+                                .font(.callout)
                                 .foregroundStyle(Color.PresetColour.whitePrimary)
                                 .lineLimit(1)
                             
