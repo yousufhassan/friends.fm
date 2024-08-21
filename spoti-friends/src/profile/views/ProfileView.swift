@@ -3,15 +3,15 @@ import SwiftUI
 /// Renders the View for a user's profile.
 struct ProfileView: View {
     let profile: SpotifyProfile
-    @State private var trackList: [Track]
+    @State private var recentSongs: [Track]
     @StateObject private var profileViewModel: ProfileViewModel
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
-    init(profile: SpotifyProfile, recentTracks: [Track] = []) {
+    init(profile: SpotifyProfile, recentSongs: [Track] = []) {
         self.profile = profile
         _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: AuthorizationViewModel().user))
-        self.trackList = recentTracks
+        self.recentSongs = recentSongs
     }
     
     var body: some View {
@@ -21,8 +21,9 @@ struct ProfileView: View {
                     ProfileDetails(profile: profile)
                         .environmentObject(profileViewModel)
                         .environmentObject(friendActivityViewModel)
+                        .padding(.bottom, 40)
                     
-                    TrackOrArtistList(trackList: trackList)
+                    TrackOrArtistList(trackList: recentSongs)
                     Spacer()
                     
                     // TODO: This needs to be moved to a view for only the logged in profile
@@ -31,7 +32,7 @@ struct ProfileView: View {
                         .padding(.bottom, 10)
                 }
                 .frame(minHeight: reader.size.height)
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
             }
             .padding(.top)
             .background(Color.PresetColour.darkgrey)
@@ -39,7 +40,7 @@ struct ProfileView: View {
                 profileViewModel.user = authorizationViewModel.user
                 
                 Task {
-                    trackList = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? []
+//                    trackList = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? []
                 }
             }
         }
@@ -67,8 +68,8 @@ struct ProfileView: View {
 
 #Preview {
     let user = UserMock.userJimHalpert
-    let recentTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
-    ProfileView(profile: user.spotifyProfile!, recentTracks: recentTracks)
+    let recentSongs = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
+    ProfileView(profile: user.spotifyProfile!, recentSongs: recentSongs)
         .environmentObject(AuthorizationViewModel())
         .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
 }

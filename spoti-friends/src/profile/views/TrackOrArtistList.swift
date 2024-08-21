@@ -42,14 +42,12 @@ struct TrackOrArtistList: View {
                             }
                         }
                     }
-                    .padding(.leading, 8)
                     .padding(.vertical, 4)
                 }
             }
             
             Spacer()
         }
-        .padding()
     }
 }
 
