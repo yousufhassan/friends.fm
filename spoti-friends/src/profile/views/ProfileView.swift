@@ -37,8 +37,8 @@ struct ProfileView: View {
             profileViewModel.user = authorizationViewModel.user
             
             Task {
-//                trackList = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? []
-                //                await profileViewModel.getCurrentUsersTopTracks() ?? []
+                trackList = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? []
+//                                await profileViewModel.getCurrentUsersTopTracks() ?? []
             }
         }
     }

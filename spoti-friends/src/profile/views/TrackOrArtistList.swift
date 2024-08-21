@@ -20,13 +20,25 @@ struct TrackOrArtistList: View {
                         AlbumCover(album: track.album, width: 36, height: 36, cornerRadius: 2)
                         
                         VStack (alignment: .leading) {
+                            // Track name
                             Text(track.name)
+                                .font(.body)
                                 .foregroundStyle(Color.PresetColour.whitePrimary)
                                 .lineLimit(1)
-//                            Text(track.artist?.name ?? "Error")
-                            Text("Artist")
-                                .font(.subheadline)
+                            
+                            // Artist names
+                            HStack(spacing: 0) {
+                                ForEach(track.artists.indices, id: \.self) { index in
+                                    let artist = track.artists[index]
+                                    
+                                    index < track.artists.count - 1
+                                    ? Text("\(artist?.name ?? ""), ")
+                                    : Text(artist?.name ?? "")
+                                    
+                                }
+                                .font(.footnote)
                                 .foregroundStyle(Color.PresetColour.whiteSecondary)
+                            }
                         }
                     }
                     .padding(.leading, 8)
@@ -42,5 +54,5 @@ struct TrackOrArtistList: View {
 
 #Preview {
     let trackList = [TrackMock.luxury, TrackMock.iRememberEverything, TrackMock.traitor]
-//    TrackOrArtistList(trackList: trackList)
+    //    TrackOrArtistList(trackList: trackList)
 }
