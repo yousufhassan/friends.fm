@@ -9,7 +9,7 @@ internal enum AuthorizationConstants {
     enum AuthorizationRequest {
         static let authorizePath = "/authorize"
         static let responseType = "code"
-        static let scopes = "user-read-private user-read-email"
+        static let scopes = "user-read-private user-read-email user-top-read user-read-recently-played"
         static let codeChallengeMethod = "S256"
     }
     

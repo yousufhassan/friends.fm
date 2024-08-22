@@ -32,12 +32,6 @@ class SpotifyProfile: Object, Decodable {
         }
     }
     
-    private struct SpotifyImage: Decodable {
-        let url: String
-        let height: Int
-        let width: Int
-    }
-    
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
     private enum CodingKeys: String, CodingKey {
         case spotifyId = "id"
@@ -81,89 +75,10 @@ class SpotifyProfile: Object, Decodable {
             printError("\(error)")
         }
     }
-    
-    // List of methods
-    //    getSpotifyId()
-    //    getUsersProfileFromSpotifyId(spotifyId)  // Spotify Web API call
-    //
-    //    getSpotifyUri()
-    //    getDisplayName()
-    //    getImage()
-    //
-    //    getCurrentOrMostRecentTrack()
-    //    refreshCurrentOrMostRecentTrack() // API call
 }
 
-
-/// The `SpotifyResource` protocol ensures each abiding object has a well-defined spotifyUri attribute.
-protocol SpotifyResource {
-    var spotifyUri: String { get }
-    var name: String { get }
-}
-
-/// This extensions defines the function that returns the `spotifyUri` for all `spotifyResource` objects.
-extension SpotifyResource {
-    /// Returns the `spotifyUri` for this `spotifyResource`.
-    func getSpotifyUri() -> String {
-        return self.spotifyUri  // might need to omit the 'self' if it binds itself to the `SpotifyProfile` object
-    }
-}
-
-/// Object representing a user's current or most recent track that they played.
-class CurrentOrMostRecentTrack: Object, Decodable {
-    @Persisted var timestamp: TimeInterval
-    @Persisted var track: Track?
-    @Persisted var playedWithinLastFifteenMinutes: Bool
-    
-    /// Returns `True` if the track was played within the last 15 minutes, `False` otherwise.
-    /// We deem a track to be "playing now" if it was played within the last 15 minutes. That is how Spotify does it.
-    func isTrackPlayingNow() -> Bool {
-        return !hasFifteenMinutesPassed(since: self.timestamp)
-    }
-}
-
-/// Object representing a Spotify Track.
-class Track: Object, SpotifyResource, Decodable {
-    @Persisted var spotifyUri: String
-    @Persisted var name: String
-    @Persisted var artist: Artist?
-    @Persisted var album: Album?
-    @Persisted var context: TrackContext?
-}
-
-/// Object representing a Spotify Artist.
-class Artist: Object, SpotifyResource, Decodable {
-    @Persisted var spotifyUri: String
-    @Persisted var name: String
-}
-
-/// Object representing a Spotify Album.
-class Album: Object, SpotifyResource, Decodable {
-    @Persisted var spotifyUri: String
-    @Persisted var name: String
-    @Persisted var image: String
-}
-
-/// Object representing a Spotify Track Content.
-class TrackContext: Object, SpotifyResource, Decodable {
-    @Persisted var spotifyUri: String
-    @Persisted var name: String
-    @Persisted var type: ContextType
-    
-    /// The context which this track is being played in
-    enum ContextType: String, PersistableEnum, Decodable {
-        case album
-        case artist
-        case playlist
-        case show
-    }
-    
-    func extractContextTypeFromUri() -> ContextType {
-        let uriComponents = self.spotifyUri.split(separator: ":")
-        var extractedType = ""
-        if uriComponents.count >= 2 {
-            extractedType = String(uriComponents[uriComponents.count - 2])
-        }
-        return ContextType(rawValue: extractedType) ?? .playlist
-    }
+struct SpotifyImage: Decodable {
+    let url: String
+    let height: Int
+    let width: Int
 }

@@ -29,7 +29,7 @@ struct ProfileImage: View {
         .frame(width: width, height: height)
         .clipShape(Circle())
         .onAppear {
-            profileImage = friendActivityViewModel.getProfilePictureFromDisk(imageName: imageName)
+            profileImage = getProfilePictureFromDisk(imageName: imageName)
         }
     }
 }

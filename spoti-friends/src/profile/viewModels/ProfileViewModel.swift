@@ -11,9 +11,10 @@ class ProfileViewModel: ObservableObject {
     @MainActor func getCurrentUsersFollowerCount() async -> Int {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
-            let response = try await SpotifyAPI.shared.fetch(endpoint: .getCurrentUsersProfile,
-                                                              responseType: GetCurrentUserProfileResponse.self,
-                                                              accessToken: accessToken)
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersProfile,
+                                                             responseType: GetCurrentUserProfileResponse.self,
+                                                             accessToken: accessToken)
             return response.followers.total
         } catch {
             printError("\(error)")
@@ -27,14 +28,41 @@ class ProfileViewModel: ObservableObject {
     @MainActor func getCurrentUsersPlaylistCount() async -> Int {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
-            let response = try await SpotifyAPI.shared.fetch(endpoint: .getCurrentUsersPlaylists,
-                                                              responseType: GetCurrentUserPlayistsResponse.self,
-                                                              accessToken: accessToken)
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersPlaylists,
+                                                             responseType: GetCurrentUserPlayistsResponse.self,
+                                                             accessToken: accessToken)
             return response.total
         } catch {
             printError("\(error)")
         }
         return -1
+    }
+    
+    /// Fetches and returns the current user's top tracks.
+    ///
+    /// - Parameters:
+    ///   - timeRange: Over what time frame the data is calculated.
+    ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    @MainActor func getCurrentUsersTopTracks(timeRange: GetCurrentUserTopTracks.TimeRange, limit: Int) async -> [Track]? {
+        do {
+            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            let queryParams = [
+                URLQueryItem(name: "time_range", value: timeRange.rawValue),
+                URLQueryItem(name: "limit", value: String(limit))
+            ]
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersTopTracks,
+                                                             responseType: GetCurrentUserTopTracks.self,
+                                                             accessToken: accessToken,
+                                                             queryParams: queryParams)
+            
+            return response.items
+        }
+        catch {
+            printError("\(error)")
+            return nil
+        }
     }
 }
 
@@ -52,5 +80,34 @@ extension ProfileViewModel {
     
     private struct GetCurrentUserPlayistsResponse: Decodable {
         let total: Int
+    }
+    
+    public class GetCurrentUserTopTracks: Decodable {
+        /// The valid values for the `time_range` parameter.
+        enum TimeRange: String {
+            case oneMonth = "short_term"
+            case sixMonths = "medium_term"
+            case oneYear = "long_term"
+        }
+        
+        let items: [Track]
+        
+        class Track2: SpotifyResource, Decodable, Identifiable {
+            var spotifyUri: String
+            var name: String
+            var artists: [Artist?]
+            var album: Album?
+//                        var context: TrackContext?
+            var id: String { spotifyUri }
+            
+            // Map the JSON keys to your object properties
+            private enum CodingKeys: String, CodingKey {
+                case spotifyUri = "uri"
+                case name
+                case artists
+                case album
+//                                case context
+            }
+        }
     }
 }

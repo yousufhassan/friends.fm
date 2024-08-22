@@ -28,3 +28,11 @@ func createDirectoryIfNotExists(at url: URL) throws {
         try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
     }
 }
+
+/// The different size options for rendering a placeholder.
+enum PlaceholderSize {
+    case small
+    case medium
+    case large
+    case extraLarge
+}
