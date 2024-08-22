@@ -24,6 +24,7 @@
 		CB0B93742C771BDF003A9720 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93732C771BDD003A9720 /* Album.swift */; };
 		CB0B93762C771C04003A9720 /* TrackContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93752C771BF9003A9720 /* TrackContext.swift */; };
 		CB0B93782C771C23003A9720 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93772C771C21003A9720 /* Artist.swift */; };
+		CB0B937F2C771D5D003A9720 /* CurrentOrMostRecentTrackMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B937E2C771D5A003A9720 /* CurrentOrMostRecentTrackMock.swift */; };
 		CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3417FA2C180D3D00BE70A8 /* SpotifyAPIError.swift */; };
 		CB3417FF2C1BDBC800BE70A8 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3417FE2C1BDBC800BE70A8 /* ProfileView.swift */; };
 		CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3724962C3B27CA004883D1 /* ProfileDetails.swift */; };
@@ -99,6 +100,7 @@
 		CB0B93732C771BDD003A9720 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		CB0B93752C771BF9003A9720 /* TrackContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackContext.swift; sourceTree = "<group>"; };
 		CB0B93772C771C21003A9720 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		CB0B937E2C771D5A003A9720 /* CurrentOrMostRecentTrackMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentOrMostRecentTrackMock.swift; sourceTree = "<group>"; };
 		CB3417FA2C180D3D00BE70A8 /* SpotifyAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAPIError.swift; sourceTree = "<group>"; };
 		CB3417FE2C1BDBC800BE70A8 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		CB3724962C3B27CA004883D1 /* ProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetails.swift; sourceTree = "<group>"; };
@@ -165,10 +167,10 @@
 		CB0854C02C14F5250088E87D /* common */ = {
 			isa = PBXGroup;
 			children = (
-				CB0854C12C1558260088E87D /* realm */,
-				CB0854C42C155C510088E87D /* views */,
 				CB7C05A72C0EBB18001A0062 /* models */,
+				CB0854C12C1558260088E87D /* realm */,
 				CB7C05A52C0EB8A2001A0062 /* utils */,
+				CB0854C42C155C510088E87D /* views */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -184,11 +186,11 @@
 		CB0854C42C155C510088E87D /* views */ = {
 			isa = PBXGroup;
 			children = (
-				CB0B93642C770C7A003A9720 /* placeholders */,
-				CB9A9AAC2C0BB13E0073817C /* RootView.swift */,
-				CB3B617E2C1BDFB00088DFA1 /* PageTitle.swift */,
 				CB3B61802C1F83AE0088DFA1 /* AuthenticatedView.swift */,
+				CB3B617E2C1BDFB00088DFA1 /* PageTitle.swift */,
+				CB9A9AAC2C0BB13E0073817C /* RootView.swift */,
 				CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */,
+				CB0B93642C770C7A003A9720 /* placeholders */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -196,9 +198,9 @@
 		CB0854C52C1572270088E87D /* spotifyAPI */ = {
 			isa = PBXGroup;
 			children = (
-				CB20CA0C2C3B40F000A8C14E /* utils */,
-				CB3417F72C17FC1800BE70A8 /* helpers */,
 				CB0854C62C15723C0088E87D /* SpotifyAPI.swift */,
+				CB3417F72C17FC1800BE70A8 /* helpers */,
+				CB20CA0C2C3B40F000A8C14E /* utils */,
 			);
 			path = spotifyAPI;
 			sourceTree = "<group>";
@@ -206,11 +208,74 @@
 		CB0B93642C770C7A003A9720 /* placeholders */ = {
 			isa = PBXGroup;
 			children = (
-				CB0B93652C770C90003A9720 /* TextPlaceholder.swift */,
 				CB0B93672C7711F6003A9720 /* AlbumCoverPlaceholder.swift */,
 				CB0B93692C771285003A9720 /* PlaceholderAnimation.swift */,
+				CB0B93652C770C90003A9720 /* TextPlaceholder.swift */,
 			);
 			path = placeholders;
+			sourceTree = "<group>";
+		};
+		CB0B937A2C771D0C003A9720 /* Album */ = {
+			isa = PBXGroup;
+			children = (
+				CB0B93732C771BDD003A9720 /* Album.swift */,
+				CB875CB62C352208001B364D /* AlbumMock.swift */,
+			);
+			path = Album;
+			sourceTree = "<group>";
+		};
+		CB0B937B2C771D1A003A9720 /* Artist */ = {
+			isa = PBXGroup;
+			children = (
+				CB0B93772C771C21003A9720 /* Artist.swift */,
+				CB875CBA2C3525C0001B364D /* ArtistMock.swift */,
+			);
+			path = Artist;
+			sourceTree = "<group>";
+		};
+		CB0B937C2C771D3C003A9720 /* Track */ = {
+			isa = PBXGroup;
+			children = (
+				CB0B93712C771BB0003A9720 /* Track.swift */,
+				CB875CB82C352499001B364D /* TrackMock.swift */,
+			);
+			path = Track;
+			sourceTree = "<group>";
+		};
+		CB0B937D2C771D48003A9720 /* CurrentOrMostRecentTrack */ = {
+			isa = PBXGroup;
+			children = (
+				CB0B936D2C771B1B003A9720 /* CurrentOrMostRecentTrack.swift */,
+				CB0B937E2C771D5A003A9720 /* CurrentOrMostRecentTrackMock.swift */,
+			);
+			path = CurrentOrMostRecentTrack;
+			sourceTree = "<group>";
+		};
+		CB0B93802C771DA3003A9720 /* SpotifyProfile */ = {
+			isa = PBXGroup;
+			children = (
+				CB0854CA2C1574FE0088E87D /* SpotifyProfile.swift */,
+				CB875CB42C351958001B364D /* SpotifyProfileMock.swift */,
+			);
+			path = SpotifyProfile;
+			sourceTree = "<group>";
+		};
+		CB0B93812C771DB9003A9720 /* TrackContext */ = {
+			isa = PBXGroup;
+			children = (
+				CB0B93752C771BF9003A9720 /* TrackContext.swift */,
+				CB875CBC2C35264F001B364D /* TrackContextMock.swift */,
+			);
+			path = TrackContext;
+			sourceTree = "<group>";
+		};
+		CB0B93822C771E27003A9720 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				CB7C05A82C0EBB25001A0062 /* User.swift */,
+				CB875CB12C33C4D3001B364D /* UserMock.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		CB20CA0C2C3B40F000A8C14E /* utils */ = {
@@ -242,8 +307,8 @@
 		CB3417FD2C1BDBB300BE70A8 /* views */ = {
 			isa = PBXGroup;
 			children = (
-				CB3417FE2C1BDBC800BE70A8 /* ProfileView.swift */,
 				CB3724962C3B27CA004883D1 /* ProfileDetails.swift */,
+				CB3417FE2C1BDBC800BE70A8 /* ProfileView.swift */,
 				CB0B93622C72CD07003A9720 /* TrackOrArtistList.swift */,
 			);
 			path = views;
@@ -278,8 +343,8 @@
 		CB59BCBB2C2FAED50061C99B /* views */ = {
 			isa = PBXGroup;
 			children = (
-				CB59BCB62C2FAB890061C99B /* ProfileImage.swift */,
 				CB59BCBE2C2FAFB30061C99B /* AlbumCover.swift */,
+				CB59BCB62C2FAB890061C99B /* ProfileImage.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -297,14 +362,13 @@
 		CB59BCBD2C2FAF7F0061C99B /* models */ = {
 			isa = PBXGroup;
 			children = (
-				CB0B93772C771C21003A9720 /* Artist.swift */,
-				CB0B93752C771BF9003A9720 /* TrackContext.swift */,
-				CB0B93732C771BDD003A9720 /* Album.swift */,
-				CB0B93712C771BB0003A9720 /* Track.swift */,
-				CB875CB32C35194A001B364D /* mocked */,
-				CB0854CA2C1574FE0088E87D /* SpotifyProfile.swift */,
 				CB0B936F2C771B47003A9720 /* SpotifyResource.swift */,
-				CB0B936D2C771B1B003A9720 /* CurrentOrMostRecentTrack.swift */,
+				CB0B937A2C771D0C003A9720 /* Album */,
+				CB0B937B2C771D1A003A9720 /* Artist */,
+				CB0B937D2C771D48003A9720 /* CurrentOrMostRecentTrack */,
+				CB0B93802C771DA3003A9720 /* SpotifyProfile */,
+				CB0B937C2C771D3C003A9720 /* Track */,
+				CB0B93812C771DB9003A9720 /* TrackContext */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -320,9 +384,9 @@
 		CB7C05A52C0EB8A2001A0062 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				CB9A9AD92C0BE2EE0073817C /* ColourExtension.swift */,
 				CB59BCCD2C30BA420061C99B /* ImageUtils.swift */,
 				CBC75F512C3673DB00442795 /* TimeUtils.swift */,
-				CB9A9AD92C0BE2EE0073817C /* ColourExtension.swift */,
 				CB7C05A32C0EB4DB001A0062 /* Utils.swift */,
 			);
 			path = utils;
@@ -341,9 +405,8 @@
 		CB7C05A72C0EBB18001A0062 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				CB875CB02C33C4C7001B364D /* mocked */,
-				CB7C05A82C0EBB25001A0062 /* User.swift */,
 				CB7C05AF2C0EEF7E001A0062 /* Types.swift */,
+				CB0B93822C771E27003A9720 /* User */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -366,26 +429,6 @@
 				CB0854BD2C14F0580088E87D /* SignInButton.swift */,
 			);
 			path = views;
-			sourceTree = "<group>";
-		};
-		CB875CB02C33C4C7001B364D /* mocked */ = {
-			isa = PBXGroup;
-			children = (
-				CB875CB12C33C4D3001B364D /* UserMock.swift */,
-			);
-			path = mocked;
-			sourceTree = "<group>";
-		};
-		CB875CB32C35194A001B364D /* mocked */ = {
-			isa = PBXGroup;
-			children = (
-				CB875CBC2C35264F001B364D /* TrackContextMock.swift */,
-				CB875CBA2C3525C0001B364D /* ArtistMock.swift */,
-				CB875CB82C352499001B364D /* TrackMock.swift */,
-				CB875CB62C352208001B364D /* AlbumMock.swift */,
-				CB875CB42C351958001B364D /* SpotifyProfileMock.swift */,
-			);
-			path = mocked;
 			sourceTree = "<group>";
 		};
 		CB875CBE2C352A3E001B364D /* mocked */ = {
@@ -435,11 +478,11 @@
 		CB9A9ADD2C0BEC170073817C /* src */ = {
 			isa = PBXGroup;
 			children = (
+				CB9A9AAA2C0BB13E0073817C /* spotifriendsApp.swift */,
 				CB9A9ADE2C0C22620073817C /* auth */,
 				CB0854C02C14F5250088E87D /* common */,
 				CB7C05A62C0EB8F0001A0062 /* friendActivity */,
 				CB3417FC2C1BDB9A00BE70A8 /* profile */,
-				CB9A9AAA2C0BB13E0073817C /* spotifriendsApp.swift */,
 				CB59BCBC2C2FAED50061C99B /* spotify */,
 			);
 			path = src;
@@ -448,11 +491,11 @@
 		CB9A9ADE2C0C22620073817C /* auth */ = {
 			isa = PBXGroup;
 			children = (
+				CB8D3C2D2C0D28C000C493E8 /* CodeChallenge.swift */,
+				CB9A9ADF2C0C22D70073817C /* SpotifyAuth.swift */,
+				CB7C05AE2C0EEF2D001A0062 /* utils */,
 				CB0854BF2C14F5030088E87D /* viewModels */,
 				CB7C05B12C1191A7001A0062 /* views */,
-				CB7C05AE2C0EEF2D001A0062 /* utils */,
-				CB9A9ADF2C0C22D70073817C /* SpotifyAuth.swift */,
-				CB8D3C2D2C0D28C000C493E8 /* CodeChallenge.swift */,
 			);
 			path = auth;
 			sourceTree = "<group>";
@@ -540,6 +583,7 @@
 				CB0B93722C771BBB003A9720 /* Track.swift in Sources */,
 				CB0B93682C7711F6003A9720 /* AlbumCoverPlaceholder.swift in Sources */,
 				CB3B61812C1F83AE0088DFA1 /* AuthenticatedView.swift in Sources */,
+				CB0B937F2C771D5D003A9720 /* CurrentOrMostRecentTrackMock.swift in Sources */,
 				CB9A9ADC2C0BEC080073817C /* FriendActivityView.swift in Sources */,
 				CB59BCB52C2FA08D0061C99B /* ListeningActivityCard.swift in Sources */,
 				CB3B617F2C1BDFB00088DFA1 /* PageTitle.swift in Sources */,
