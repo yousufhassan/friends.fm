@@ -1,5 +1,9 @@
 import SwiftUI
 
+/// Renders the placeholder view for some text.
+///
+/// - Parameters:
+///   - size: The size of the text placeholder to create.
 struct TextPlaceholder: View {
     let size: PlaceholderSize
     let text: String

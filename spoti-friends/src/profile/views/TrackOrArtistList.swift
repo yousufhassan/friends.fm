@@ -9,6 +9,7 @@ import SwiftUI
 struct TrackOrArtistList: View {
     let trackList: [Track]
     var body: some View {
+        // Render loading placeholders while waiting for data
         if (trackList.isEmpty) {
             VStack (alignment: .leading) {
                 ForEach(0..<3) {index in
@@ -24,6 +25,7 @@ struct TrackOrArtistList: View {
             }
         }
         
+        // Actual list once data is available
         else {
             VStack (alignment: .leading) {
                 ForEach(trackList) { track in

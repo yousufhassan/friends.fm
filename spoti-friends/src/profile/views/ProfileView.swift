@@ -1,6 +1,12 @@
 import SwiftUI
 
-/// Renders the View for a user's profile.
+/// Renders the View for a user's profile, such as their details and top songs.
+///
+/// - Parameters:
+///   - profile: The Spotify profile to display.
+///   - topTracks: A list of the profile's top tracks over the last month.
+///
+/// - Returns: A view for the user's Spotify Profile.
 struct ProfileView: View {
     let profile: SpotifyProfile
     @State private var topTracks: [Track]

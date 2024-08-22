@@ -16,7 +16,7 @@ class SpotifyAPI {
     /// - Returns: The response data from the `endpoint` in the form of `responseType`.
     public func fetch<T: Decodable>(method: RequestMethod, endpoint: APIEndpoint, responseType: T.Type,
                                     accessToken: String, queryParams: [URLQueryItem] = []) async throws -> T {
-        let request = try createRequestTo(endpoint: endpoint.rawValue, accessToken: accessToken,
+        let request = try createRequestTo(endpoint: endpoint, accessToken: accessToken,
                                           method: method, queryParams: queryParams)
         let (data, response) = try await URLSession.shared.data(for: request)
         if (requestFailed(response as! HTTPURLResponse)) { try throwSpotifyAPIError(response as! HTTPURLResponse) }
@@ -55,8 +55,8 @@ extension SpotifyAPI {
     /// Creates and returns the URLRequest object to corresponding Spotify API `endpoint`
     ///
     /// `endpoint` should be prepended with a "/".
-    private func createRequestTo(endpoint: String, accessToken: String, method: RequestMethod, queryParams: [URLQueryItem]) throws -> URLRequest {
-        guard var urlComponents = URLComponents(string: APIConstants.host + endpoint) else { throw URLError(.badURL) }
+    private func createRequestTo(endpoint: APIEndpoint, accessToken: String, method: RequestMethod, queryParams: [URLQueryItem]) throws -> URLRequest {
+        guard var urlComponents = URLComponents(string: APIConstants.host + endpoint.rawValue) else { throw URLError(.badURL) }
 
         // Add query parameters to the URL, if any
         if (!queryParams.isEmpty) {

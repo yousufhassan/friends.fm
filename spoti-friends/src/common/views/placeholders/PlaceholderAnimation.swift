@@ -1,14 +1,15 @@
 import SwiftUI
 
+/// Defines the animation style for loading placeholders.
+/// This is used mainly to create a SwiftUI View modifier to simplify the animation of different placeholders.
 struct PlaceholderAnimation: ViewModifier {
     @State private var isAnimating = false
     
     let duration: Double
-    let minOpacity: Double
     
     func body(content: Content) -> some View {
         content
-            .opacity(isAnimating ? minOpacity : 1.0)
+            .opacity(isAnimating ? 0.4 : 1.0)
             .onAppear {
                 withAnimation(
                     Animation.easeInOut(duration: duration)
@@ -21,8 +22,12 @@ struct PlaceholderAnimation: ViewModifier {
 }
 
 extension View {
-    func animatePlaceholder(duration: Double = 1, minOpacity: Double = 0.4) -> some View {
-        self.modifier(PlaceholderAnimation(duration: duration, minOpacity: minOpacity))
+    /// The SwiftUI View modifier to animate a loading placeholder.
+    ///
+    /// - Parameters:
+    ///   - duration: The animation duration in seconds (optional). Default: 1.
+    func animatePlaceholder(duration: Double = 1) -> some View {
+        self.modifier(PlaceholderAnimation(duration: duration))
     }
 }
 
