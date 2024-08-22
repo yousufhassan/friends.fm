@@ -17,7 +17,7 @@ struct ProfileView: View {
     var body: some View {
         GeometryReader { reader in
             ScrollView {
-                VStack {
+                VStack (alignment: .leading) {
                     // Profile Details
                     ProfileDetails(profile: profile)
                         .environmentObject(profileViewModel)
@@ -26,31 +26,31 @@ struct ProfileView: View {
                     
                     // Top Tracks
                     VStack (alignment: .leading) {
-                            Text("Top Songs")
-                                .font(.body)
-                                .foregroundStyle(Color.PresetColour.whitePrimary)
-                            Text("From this month")
-                                .font(.footnote)
-                                .foregroundStyle(Color.PresetColour.whiteSecondary)
+                        Text("Top Songs")
+                            .font(.body)
+                            .foregroundStyle(Color.PresetColour.whitePrimary)
+                        Text("From this month")
+                            .font(.footnote)
+                            .foregroundStyle(Color.PresetColour.whiteSecondary)
                         TrackOrArtistList(trackList: topTracks)
                     }
                     Spacer()
-                    
-                    // TODO: This needs to be moved to a view for only the logged in profile
-                    // or keep it here but conditionally render it.
-                    LogoutButton()
-                        .padding(.bottom, 10)
                 }
                 .frame(minHeight: reader.size.height)
                 .padding(.horizontal, 20)
+                
+                // TODO: This needs to be moved to a view for only the logged in profile
+                // or keep it here but conditionally render it.
+                LogoutButton()
+                    .padding(.bottom, 10)
             }
             .padding(.top)
-            .background(Color.PresetColour.darkgrey)
+            .background(Color.PresetGradient.profileViewGradient(profile: profile))
             .onAppear {
                 profileViewModel.user = authorizationViewModel.user
                 
                 Task {
-                    //                    topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? []
+                    topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? []
                 }
             }
         }

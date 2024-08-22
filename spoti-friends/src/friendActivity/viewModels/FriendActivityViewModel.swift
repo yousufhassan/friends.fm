@@ -50,17 +50,4 @@ class FriendActivityViewModel: ObservableObject {
             try? await setFriendActivity()
         }
     }
-    
-    /// Gets the profile picture named `imageName` from disk and returns as a `UIImage`.
-    ///
-    /// - Parameters:
-    ///   - imageName: The name which the image is stored as (will be the user's Spotify ID).
-    public func getProfilePictureFromDisk(imageName: String) -> UIImage? {
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let fileURL = documentsDirectory.appendingPathComponent("images/profile_pictures/\(imageName)")
-        if let data = try? Data(contentsOf: fileURL) {
-            return UIImage(data: data)
-        }
-        return nil
-    }
 }
