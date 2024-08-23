@@ -56,6 +56,7 @@
 		CB875CBD2C352652001B364D /* TrackContextMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CBC2C35264F001B364D /* TrackContextMock.swift */; };
 		CB875CC02C352A4E001B364D /* ListeningActivityCardMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CBF2C352A48001B364D /* ListeningActivityCardMock.swift */; };
 		CB8D3C2E2C0D28C000C493E8 /* CodeChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8D3C2D2C0D28C000C493E8 /* CodeChallenge.swift */; };
+		CB94BCCE2C78385D00A7542B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB94BCCD2C78385D00A7542B /* LaunchScreen.storyboard */; };
 		CB9A9AAB2C0BB13E0073817C /* spotifriendsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9A9AAA2C0BB13E0073817C /* spotifriendsApp.swift */; };
 		CB9A9AAD2C0BB13E0073817C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9A9AAC2C0BB13E0073817C /* RootView.swift */; };
 		CB9A9AAF2C0BB13F0073817C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB9A9AAE2C0BB13F0073817C /* Assets.xcassets */; };
@@ -130,6 +131,7 @@
 		CB875CBF2C352A48001B364D /* ListeningActivityCardMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityCardMock.swift; sourceTree = "<group>"; };
 		CB8D3C2C2C0D1E5000C493E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CB8D3C2D2C0D28C000C493E8 /* CodeChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeChallenge.swift; sourceTree = "<group>"; };
+		CB94BCCD2C78385D00A7542B /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CB9A9AA72C0BB13E0073817C /* spoti-friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "spoti-friends.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9A9AAA2C0BB13E0073817C /* spotifriendsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = spotifriendsApp.swift; sourceTree = "<group>"; };
 		CB9A9AAC2C0BB13E0073817C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -460,9 +462,10 @@
 			isa = PBXGroup;
 			children = (
 				CB8D3C2C2C0D1E5000C493E8 /* Info.plist */,
-				CB9A9ADD2C0BEC170073817C /* src */,
 				CB9A9AAE2C0BB13F0073817C /* Assets.xcassets */,
 				CB9A9AB02C0BB13F0073817C /* Preview Content */,
+				CB9A9ADD2C0BEC170073817C /* src */,
+				CB94BCCD2C78385D00A7542B /* LaunchScreen.storyboard */,
 			);
 			path = "spoti-friends";
 			sourceTree = "<group>";
@@ -567,6 +570,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB94BCCE2C78385D00A7542B /* LaunchScreen.storyboard in Resources */,
 				CB9A9AB22C0BB13F0073817C /* Preview Assets.xcassets in Resources */,
 				CB9A9AAF2C0BB13F0073817C /* Assets.xcassets in Resources */,
 			);
@@ -762,6 +766,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"spoti-friends/Preview Content\"";
@@ -769,11 +774,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "spoti-friends/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -793,6 +800,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"spoti-friends/Preview Content\"";
@@ -800,11 +808,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "spoti-friends/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
