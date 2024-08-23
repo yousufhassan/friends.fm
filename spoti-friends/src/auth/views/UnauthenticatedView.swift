@@ -29,8 +29,9 @@ struct SignInTitle: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Spoti\nfriends")
+                Text("friends.fm")
                     .font(.system(size: 60, weight: .heavy))
+                    .padding(.top, 40)
                     .padding(.bottom, 4)
                     .foregroundColor(Color.PresetColour.whitePrimary)
                 Group {

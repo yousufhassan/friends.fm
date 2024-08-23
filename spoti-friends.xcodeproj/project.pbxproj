@@ -132,7 +132,7 @@
 		CB8D3C2C2C0D1E5000C493E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CB8D3C2D2C0D28C000C493E8 /* CodeChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeChallenge.swift; sourceTree = "<group>"; };
 		CB94BCCD2C78385D00A7542B /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		CB9A9AA72C0BB13E0073817C /* spoti-friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "spoti-friends.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB9A9AA72C0BB13E0073817C /* friends.fm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = friends.fm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9A9AAA2C0BB13E0073817C /* spotifriendsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = spotifriendsApp.swift; sourceTree = "<group>"; };
 		CB9A9AAC2C0BB13E0073817C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		CB9A9AAE2C0BB13F0073817C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -453,7 +453,7 @@
 		CB9A9AA82C0BB13E0073817C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CB9A9AA72C0BB13E0073817C /* spoti-friends.app */,
+				CB9A9AA72C0BB13E0073817C /* friends.fm.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -525,7 +525,7 @@
 				CB59BCC82C30A5370061C99B /* UIImageColors */,
 			);
 			productName = "spoti-friends";
-			productReference = CB9A9AA72C0BB13E0073817C /* spoti-friends.app */;
+			productReference = CB9A9AA72C0BB13E0073817C /* friends.fm.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -788,7 +788,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yousufhassan.spoti-friends";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = friends.fm;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -822,7 +822,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yousufhassan.spoti-friends";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = friends.fm;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
