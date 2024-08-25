@@ -67,8 +67,10 @@ struct ProfileDetails: View {
 }
 
 #Preview {
-    let user = UserMock.userJimHalpert
-    ProfileDetails(profile: user.spotifyProfile!)
-        .environmentObject(ProfileViewModel(user: user))
-        .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
+    ZStack {
+        let user = UserMock.userJimHalpert
+        ProfileDetails(profile: user.spotifyProfile!)
+            .environmentObject(ProfileViewModel(user: user))
+            .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
+    }
 }

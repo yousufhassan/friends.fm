@@ -83,9 +83,11 @@ struct ProfileView: View {
 }
 
 #Preview {
-    let user = UserMock.userJimHalpert
-    let topTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
-    ProfileView(profile: user.spotifyProfile!, topTracks: topTracks)
-        .environmentObject(AuthorizationViewModel())
-        .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
+    ZStack {   
+        let user = UserMock.userJimHalpert
+        let topTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
+        ProfileView(profile: user.spotifyProfile!, topTracks: topTracks)
+            .environmentObject(AuthorizationViewModel())
+            .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
+    }
 }

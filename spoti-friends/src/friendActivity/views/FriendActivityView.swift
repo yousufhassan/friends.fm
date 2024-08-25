@@ -51,9 +51,11 @@ struct FriendActivityView: View {
 }
 
 #Preview {
-    let user = UserMock.userJimHalpert
-    let activities = ListeningActivityCardMock.allCards
-    
-    FriendActivityView()
-        .environmentObject(FriendActivityViewModel(user: user, friendActivites: activities))
+    ZStack {
+        let user = UserMock.userJimHalpert
+        let activities = ListeningActivityCardMock.allCards
+        
+        FriendActivityView()
+            .environmentObject(FriendActivityViewModel(user: user, friendActivites: activities))
+    }
 }

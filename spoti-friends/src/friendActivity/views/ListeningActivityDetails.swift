@@ -90,6 +90,8 @@ struct ListeningActivityDetails: View {
 }
 
 #Preview {
-    let activity = ListeningActivityCardMock.michaelScottActivity
-    ListeningActivityDetails(profile: activity.profile, currentTrack: activity.track)
+    ZStack {   
+        let activity = ListeningActivityCardMock.michaelScottActivity
+        ListeningActivityDetails(profile: activity.profile, currentTrack: activity.track)
+    }
 }

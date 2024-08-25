@@ -62,6 +62,8 @@ struct TrackOrArtistList: View {
 }
 
 #Preview {
-    let trackList = [TrackMock.luxury, TrackMock.iRememberEverything, TrackMock.traitor]
-    TrackOrArtistList(trackList: trackList)
+    ZStack {
+        let trackList = [TrackMock.luxury, TrackMock.iRememberEverything, TrackMock.traitor]
+        TrackOrArtistList(trackList: trackList)
+    }
 }
