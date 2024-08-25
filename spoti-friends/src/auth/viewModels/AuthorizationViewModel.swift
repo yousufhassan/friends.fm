@@ -15,14 +15,14 @@ class AuthorizationViewModel: ObservableObject {
         // Otherwise, this is a new user.
 //        storeInUserDefaults(key: "signedInUser", value: "")
         let signedInUser = getStringFromUserDefaultsValueForKey("signedInUser")
-        if signedInUser != "" {
-            let existingUser: User = realm.objects(User.self).where { $0.spotifyId == signedInUser }.first!
-            self.user = existingUser
-            self.authorizationStatus = existingUser.authorizationStatus
-        } else {
-            self.user = User()
-            self.authorizationStatus = .unauthenticated
-        }
+//        if signedInUser != "" {
+            let existingUser: User? = realm.objects(User.self).where { $0.spotifyId == signedInUser }.first
+            self.user = existingUser ?? User()
+        self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
+//        } else {
+//            self.user = User()
+//            self.authorizationStatus = .unauthenticated
+//        }
         
         self.notificationToken = realm.observe { [weak self] _, _ in
             self?.objectWillChange.send()
@@ -36,9 +36,10 @@ class AuthorizationViewModel: ObservableObject {
     
     /// Signs out the currently signed in user.
     public func signOutUser() -> Void {
+        storeInUserDefaults(key: "signedInUser", value: "")
+        storeInUserDefaults(key: "code_verifier", value: "")
         self.user = User()
         self.authorizationStatus = .unauthenticated
-        storeInUserDefaults(key: "signedInUser", value: "")
     }
     
     /// Returns the Spotify user authorization URL.
