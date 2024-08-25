@@ -44,7 +44,8 @@ class ProfileViewModel: ObservableObject {
     /// - Parameters:
     ///   - timeRange: Over what time frame the data is calculated.
     ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
-    @MainActor func getCurrentUsersTopTracks(timeRange: GetCurrentUserTopTracks.TimeRange, limit: Int) async -> [Track]? {
+    @MainActor func getCurrentUsersTopTracks(timeRange: GetCurrentUserTopTracksResponse.TimeRange, limit: Int)
+    async -> TracksWithResponseMetadata? {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
             let queryParams = [
@@ -53,11 +54,11 @@ class ProfileViewModel: ObservableObject {
             ]
             let response = try await SpotifyAPI.shared.fetch(method: .GET,
                                                              endpoint: .getCurrentUsersTopTracks,
-                                                             responseType: GetCurrentUserTopTracks.self,
+                                                             responseType: GetCurrentUserTopTracksResponse.self,
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
             
-            return response.items
+            return TracksWithResponseMetadata(tracks: response.items, isEmpty: response.items.isEmpty)
         }
         catch {
             printError("\(error)")
@@ -82,7 +83,7 @@ extension ProfileViewModel {
         let total: Int
     }
     
-    public class GetCurrentUserTopTracks: Decodable {
+    public class GetCurrentUserTopTracksResponse: Decodable {
         /// The valid values for the `time_range` parameter.
         enum TimeRange: String {
             case oneMonth = "short_term"
@@ -91,23 +92,27 @@ extension ProfileViewModel {
         }
         
         let items: [Track]
+    }
+    
+    /// A struct containing a list of `Track`s and some metadata about the response.
+    ///
+    /// The reason that there is an `isEmpty` attribute is for the purposes of differentiating between a request that
+    /// is still fetching data versus a request that has completed and returned no data (i.e. `tracks = []`). In the
+    /// `ProfileView`, we cannot simply call `tracks.isEmpty` (referring to the `tracks` array itself) because
+    /// it will return `true` even if the request has not completed. Therefore, by using this struct, we check for the
+    /// `TracksWithResponseMetadata.isEmpty` value, which will default to `false`, unless we specify
+    /// otherwise (which we do once the request has actually completed).
+    ///
+    /// - Parameters:
+    ///   - tracks: An array of `Track` objects, potentially empty.
+    ///   - isEmpty: Boolean denoting whether or not the `tracks` array is empty or not.
+    struct TracksWithResponseMetadata {
+        let tracks: [Track]
+        let isEmpty: Bool
         
-        class Track2: SpotifyResource, Decodable, Identifiable {
-            var spotifyUri: String
-            var name: String
-            var artists: [Artist?]
-            var album: Album?
-//                        var context: TrackContext?
-            var id: String { spotifyUri }
-            
-            // Map the JSON keys to your object properties
-            private enum CodingKeys: String, CodingKey {
-                case spotifyUri = "uri"
-                case name
-                case artists
-                case album
-//                                case context
-            }
+        init (tracks: [Track], isEmpty: Bool = false) {
+            self.tracks = tracks
+            self.isEmpty = isEmpty
         }
     }
 }

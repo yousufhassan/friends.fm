@@ -9,7 +9,7 @@ import SwiftUI
 /// - Returns: A view for the user's Spotify Profile.
 struct ProfileView: View {
     let profile: SpotifyProfile
-    @State private var topTracks: [Track]
+    @State private var topTracks: ProfileViewModel.TracksWithResponseMetadata
     @StateObject private var profileViewModel: ProfileViewModel
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
@@ -17,7 +17,7 @@ struct ProfileView: View {
     init(profile: SpotifyProfile, topTracks: [Track] = []) {
         self.profile = profile
         _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: AuthorizationViewModel().user))
-        self.topTracks = topTracks
+        self.topTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: topTracks)
     }
     
     var body: some View {
@@ -38,7 +38,16 @@ struct ProfileView: View {
                         Text("From this month")
                             .font(.footnote)
                             .foregroundStyle(Color.PresetColour.whiteSecondary)
-                        TrackOrArtistList(trackList: topTracks)
+                        
+                        if (topTracks.isEmpty) {
+                            Text("Not enough listening data this month.")
+                                .font(.callout)
+                                .foregroundStyle(Color.PresetColour.whitePrimary)
+                                .padding(.vertical, 4)
+                        }
+                        else {
+                            TrackOrArtistList(trackList: topTracks.tracks)
+                        }
                     }
                     Spacer()
                 }
@@ -56,7 +65,8 @@ struct ProfileView: View {
                 profileViewModel.user = authorizationViewModel.user
                 
                 Task {
-                    topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? []
+                    topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5)
+                    ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
                 }
             }
         }
@@ -72,7 +82,7 @@ struct ProfileView: View {
                 authorizationViewModel.signOutUser()
             }) {
                 Text(buttonLabel)
-                    .frame(width: 320, height: 50) // Adjust the height as needed
+                    .frame(width: 320, height: 50)
                     .background(Color.PresetColour.transparentMaroon)
                     .foregroundColor(Color.PresetColour.red)
                     .fontWeight(.semibold)
@@ -83,7 +93,7 @@ struct ProfileView: View {
 }
 
 #Preview {
-    ZStack {   
+    ZStack {
         let user = UserMock.userJimHalpert
         let topTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
         ProfileView(profile: user.spotifyProfile!, topTracks: topTracks)
