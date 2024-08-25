@@ -35,7 +35,9 @@ struct ProfileImage: View {
 }
 
 #Preview {
-    let user = UserMock.userJimHalpert
-    ProfileImage(imageName: "", width: 80, height: 80)
-        .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
+    ZStack {
+        let user = UserMock.userJimHalpert
+        ProfileImage(imageName: "", width: 80, height: 80)
+            .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
+    }
 }

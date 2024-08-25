@@ -38,6 +38,8 @@ struct AlbumCover: View {
 }
 
 #Preview {
-    let album = AlbumMock.theDefinition
-    AlbumCover(album: album, width: 300, height: 300)
+    ZStack {
+        let album = AlbumMock.theDefinition
+        AlbumCover(album: album, width: 300, height: 300)
+    }
 }
