@@ -15,20 +15,9 @@ class AuthorizationViewModel: ObservableObject {
         // If we find a matching user in the database, set that as current user.
         // Otherwise, this is a new user.
         let signedInUser = getStringFromUserDefaultsValueForKey("signedInUser")
-<<<<<<< HEAD
-//        if signedInUser != "" {
-            let existingUser: User? = realm.objects(User.self).where { $0.spotifyId == signedInUser }.first
-            self.user = existingUser ?? User()
-        self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
-//        } else {
-//            self.user = User()
-//            self.authorizationStatus = .unauthenticated
-//        }
-=======
         let existingUser: User? = realm.objects(User.self).where { $0.spotifyId == signedInUser }.first
         self.user = existingUser ?? User()
         self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
->>>>>>> origin
         
         self.notificationToken = realm.observe { [weak self] _, _ in
             self?.objectWillChange.send()
