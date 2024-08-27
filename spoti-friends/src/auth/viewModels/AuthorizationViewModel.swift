@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import RealmSwift
+import WebKit
 
 /// The viewmodel used for the views involving the authorization code flow.
 class AuthorizationViewModel: ObservableObject {
@@ -13,16 +14,10 @@ class AuthorizationViewModel: ObservableObject {
         
         // If we find a matching user in the database, set that as current user.
         // Otherwise, this is a new user.
-//        storeInUserDefaults(key: "signedInUser", value: "")
         let signedInUser = getStringFromUserDefaultsValueForKey("signedInUser")
-        if signedInUser != "" {
-            let existingUser: User = realm.objects(User.self).where { $0.spotifyId == signedInUser }.first!
-            self.user = existingUser
-            self.authorizationStatus = existingUser.authorizationStatus
-        } else {
-            self.user = User()
-            self.authorizationStatus = .unauthenticated
-        }
+        let existingUser: User? = realm.objects(User.self).where { $0.spotifyId == signedInUser }.first
+        self.user = existingUser ?? User()
+        self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
         
         self.notificationToken = realm.observe { [weak self] _, _ in
             self?.objectWillChange.send()
@@ -36,9 +31,18 @@ class AuthorizationViewModel: ObservableObject {
     
     /// Signs out the currently signed in user.
     public func signOutUser() -> Void {
+        // Clear cookies of Spotify sign in WebKit View (so it forgets previous user's)
+        let dataStore = WKWebsiteDataStore.default()
+        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                dataStore.removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+        
+        storeInUserDefaults(key: "signedInUser", value: "")
+        storeInUserDefaults(key: "code_verifier", value: "")
         self.user = User()
         self.authorizationStatus = .unauthenticated
-        storeInUserDefaults(key: "signedInUser", value: "")
     }
     
     /// Returns the Spotify user authorization URL.
