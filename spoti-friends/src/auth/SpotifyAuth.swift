@@ -117,6 +117,7 @@ class SpotifyAuth {
         urlComponents.path = AuthorizationConstants.AccessToken.apiTokenPath
         
         var params = AuthorizationConstants.accessTokenRequestParams
+        params["code_verifier"] = getStringFromUserDefaultsValueForKey("code_verifier")
         params["code"] = authorizationCode
         urlComponents.queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }
         
