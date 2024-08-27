@@ -32,7 +32,7 @@ internal enum AuthorizationConstants {
         "grant_type": AccessToken.grantType,
         "code": "",  // will set at runtime
         "redirect_uri": redirectUri,
-        "code_verifier": getStringFromUserDefaultsValueForKey("code_verifier"),
+        "code_verifier": ""  // will set at runtime,
     ]
     
     static var refreshTokenRequestParams = [
