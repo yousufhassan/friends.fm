@@ -56,16 +56,13 @@ class SpotifyAuth {
     }
     
     /// Populates the `user` fields with their data.
-    private func populateUserWithData(_ user: User, queryItems: [URLQueryItem]) async -> Void {
+    @MainActor private func populateUserWithData(_ user: User, queryItems: [URLQueryItem]) async -> Void {
         do {
             let authorizationCode = try getAuthorizationCodeFromQueryItems(queryItems)
             user.setAuthorizationCode(authorizationCode)
             
             let spotifyWebAccessToken = try await requestAccessTokenObject(authorizationCode: authorizationCode)
             user.setSpotifyWebAccessToken(spotifyWebAccessToken!)
-            
-            let internalAPIAccessToken = try await fetchInternalAPIAccessToken(spDcCookieValue: user.spDcCookie!.value, existingToken: user.internalAPIAccessToken)
-            user.setInternalAPIAccessToken(internalAPIAccessToken)
             
             let spotifyProfile: SpotifyProfile = try await SpotifyAPI.shared.fetch(method: .GET,
                                                                                    endpoint: .getCurrentUsersProfile,
@@ -74,8 +71,25 @@ class SpotifyAuth {
             user.setSpotifyProfile(spotifyProfile)
             user.setSpotifyId(spotifyProfile.spotifyId)
             
+            let internalAPIAccessToken = try await fetchInternalAPIAccessToken(spDcCookieValue: user.spDcCookie!.value, existingToken: user.internalAPIAccessToken)
+            user.setInternalAPIAccessToken(internalAPIAccessToken)
+            
             let friends = try await SpotifyAPI.shared.getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.accessToken)
-            user.setFriends(friends)
+            
+            let realm = try! await Realm()
+            
+            for friend in friends {
+                // Check if the friend's SpotifyProfile already exists in Realm
+                if let existingProfile = realm.object(ofType: SpotifyProfile.self, forPrimaryKey: friend.spotifyId) {
+                    // Associate the existing profile with the user
+                    user.friends.append(existingProfile)
+                } else {
+                    // If not, add the new profile to the user's friends list
+                    user.friends.append(friend)
+                }
+            }
+            
+            //            user.setFriends(friends)
         } catch {
             printError("\(error)")
         }
