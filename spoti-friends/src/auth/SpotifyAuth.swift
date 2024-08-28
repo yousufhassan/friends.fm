@@ -24,7 +24,7 @@ class SpotifyAuth {
     }
     
     /// Handles the response from the Spotify authorization flow depending on whether the user granted authorization or denied authorization.
-    func handleResponseUrl(user: User, url: URL, authorizationStatus: inout AuthorizationStatus) async -> Void {
+    @MainActor func handleResponseUrl(user: User, url: URL, authorizationStatus: inout AuthorizationStatus) async -> AuthorizationStatus {
         do {
             guard let responseUrlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
                   let queryItems = responseUrlComponents.queryItems
@@ -36,22 +36,26 @@ class SpotifyAuth {
             
             if (await userExistsInDatabase(user)) {
                 storeSignedInUser(user)
-                authorizationStatus = .granted
+//                authorizationStatus = .granted
+                return .granted
             } else {
                 if (userGrantedAuthorization(queryItems)) {
                     user.setAuthorizationStatusAs(.granted)
                     await user.spotifyProfile?.storeProfilePictureLocally()
                     storeSignedInUser(user)
                     await RealmDatabase.shared.addToRealm(object: user);
-                    authorizationStatus = .granted
+//                    authorizationStatus = .granted
+                    return .granted
                 }
                 else {
                     // Handle authorization denied flow
-                    authorizationStatus = .denied
+//                    authorizationStatus = .denied
+                    return .denied
                 }
             }
         } catch {
             printError("\(error)")
+            return .unauthenticated
         }
     }
     
@@ -68,7 +72,11 @@ class SpotifyAuth {
                                                                                    endpoint: .getCurrentUsersProfile,
                                                                                    responseType: SpotifyProfile.self,
                                                                                    accessToken: spotifyWebAccessToken?.access_token ?? "")
-            user.setSpotifyProfile(spotifyProfile)
+        
+            let realm = try! await Realm()
+            // Check if the user's SpotifyProfile already exists in Realm
+            let existingProfile = realm.object(ofType: SpotifyProfile.self, forPrimaryKey: spotifyProfile.spotifyId)
+            user.setSpotifyProfile(existingProfile ?? spotifyProfile)
             user.setSpotifyId(spotifyProfile.spotifyId)
             
             let internalAPIAccessToken = try await fetchInternalAPIAccessToken(spDcCookieValue: user.spDcCookie!.value, existingToken: user.internalAPIAccessToken)
@@ -76,20 +84,18 @@ class SpotifyAuth {
             
             let friends = try await SpotifyAPI.shared.getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.accessToken)
             
-            let realm = try! await Realm()
-            
             for friend in friends {
-                // Check if the friend's SpotifyProfile already exists in Realm
-                if let existingProfile = realm.object(ofType: SpotifyProfile.self, forPrimaryKey: friend.spotifyId) {
-                    // Associate the existing profile with the user
-                    user.friends.append(existingProfile)
-                } else {
-                    // If not, add the new profile to the user's friends list
-                    user.friends.append(friend)
-                }
-            }
-            
-            //            user.setFriends(friends)
+                        if let existingProfile = realm.object(ofType: SpotifyProfile.self, forPrimaryKey: friend.spotifyId) {
+                            // Associate the existing profile with the user
+                            user.friends.append(existingProfile)
+                        } else {
+                            // Add the new profile to both the user's friends list and the Realm
+                            user.friends.append(friend)
+                            try realm.write {
+                                realm.add(friend)
+                            }
+                        }
+                    }
         } catch {
             printError("\(error)")
         }

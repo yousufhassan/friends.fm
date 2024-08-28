@@ -53,7 +53,7 @@ class AuthorizationViewModel: ObservableObject {
     /// Handler for when the user has completed the Spotify authorization process and is redirected back to the app.
     public func handleRedirectBackToApp(_ responseUrl: URL) -> Void {
         Task {
-            await SpotifyAuth.shared.handleResponseUrl(user: self.user, url: responseUrl, authorizationStatus: &self.authorizationStatus)
+            self.authorizationStatus = await SpotifyAuth.shared.handleResponseUrl(user: self.user, url: responseUrl, authorizationStatus: &self.authorizationStatus)
         }
     }
     
