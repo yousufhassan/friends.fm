@@ -40,6 +40,14 @@ class SpotifyProfile: Object, Decodable {
         case image = "images"
     }
     
+    @MainActor public func getSpotifyId() -> String {
+        return self.spotifyId
+    }
+    
+    @MainActor public func getImage() -> String {
+        return self.image
+    }
+    
     public func getSpotifyIdFromUri(spotifyUri: String) -> String {
         return spotifyUri.components(separatedBy: ":").last ?? ""
     }
@@ -56,8 +64,8 @@ class SpotifyProfile: Object, Decodable {
     /// Stores the profile picture on disk using the Spotify ID as the image name.
     public func storeProfilePictureLocally() async -> Void {
         do {
-            let imageName = self.spotifyId
-            let link = self.image
+            let imageName = await self.getSpotifyId()
+            let link = await self.getImage()
             
             // Return early if the user does not have a profile picture
             if link == "" { return }

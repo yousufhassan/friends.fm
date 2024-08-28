@@ -10,12 +10,7 @@ import RealmSwift
 /// If the user has not completed authorization, render the `SignInView`.
 struct RootView: View {
     @EnvironmentObject private var authorizationViewModel: AuthorizationViewModel
-    @StateObject private var friendActivityViewModel: FriendActivityViewModel
     @State private var authorizationStatus: AuthorizationStatus = .unauthenticated
-    
-    init() {
-        _friendActivityViewModel = StateObject(wrappedValue: FriendActivityViewModel(user: AuthorizationViewModel().user, friendActivites: []))
-    }
     
     var body: some View {
         // Navigate to the appropriate view depending on the user's authorization status
@@ -25,7 +20,6 @@ struct RootView: View {
                 UnauthenticatedView()
             case .granted:
                 AuthenticatedView()
-                    .environmentObject(friendActivityViewModel)
                     .environmentObject(authorizationViewModel)
             case .denied:
                 AuthorizationDeniedView()
@@ -36,9 +30,6 @@ struct RootView: View {
         .onReceive(authorizationViewModel.$authorizationStatus, perform: { _ in
             self.authorizationStatus = self.authorizationViewModel.authorizationStatus
         })
-        .onAppear {
-            friendActivityViewModel.user = authorizationViewModel.user
-        }
     }
 }
 

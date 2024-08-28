@@ -2,10 +2,12 @@ import SwiftUI
 
 /// The view for when a user is signed into the app.
 struct AuthenticatedView: View {
-    @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
+    @StateObject var friendActivityViewModel: FriendActivityViewModel
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     
     init() {
+        _friendActivityViewModel = StateObject(wrappedValue: FriendActivityViewModel(user: AuthorizationViewModel().user, friendActivites: []))
+        
         let standardAppearance = UITabBarAppearance()
         standardAppearance.backgroundColor = UIColor(Color.PresetColour.darkgrey)
         UITabBar.appearance().standardAppearance = standardAppearance
@@ -25,8 +27,12 @@ struct AuthenticatedView: View {
                 Label("My Profile", systemImage: "person")
             }
             .environmentObject(authorizationViewModel)
+            .environmentObject(friendActivityViewModel)
         }
         .tint(Color.PresetColour.spotifyGreen)
+        .onAppear {
+            friendActivityViewModel.user = authorizationViewModel.user
+        }
     }
 }
 
