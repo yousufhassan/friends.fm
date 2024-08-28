@@ -10,7 +10,6 @@ import RealmSwift
 /// If the user has not completed authorization, render the `SignInView`.
 struct RootView: View {
     @EnvironmentObject private var authorizationViewModel: AuthorizationViewModel
-//    @StateObject private var friendActivityViewModel: FriendActivityViewModel
     @State private var authorizationStatus: AuthorizationStatus = .unauthenticated
     
     var body: some View {
