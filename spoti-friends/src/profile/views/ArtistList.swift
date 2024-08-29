@@ -20,7 +20,7 @@ struct ArtistList: View {
             VStack (alignment: .leading) {
                 ForEach(artists) { artist in
                     HStack {
-                        ImageWithSpecs(imageUrl: AlbumMock.sour.image, width: 36, height: 36, cornerRadius: 2)
+                        ImageWithSpecs(imageUrl: artist.image, width: 36, height: 36, cornerRadius: 2)
                         
                         VStack (alignment: .leading) {
                             // Artist name
@@ -30,18 +30,18 @@ struct ArtistList: View {
                                 .lineLimit(1)
                             
                             // Artist genres
-//                            HStack(spacing: 0) {
-//                                let artistsArray = Array(artist.artists) // Convert List<Artist> to [Artist]
-//                                ForEach(artistsArray.indices, id: \.self) { index in
-//                                    let artist = artistsArray[index]
-//                                    
-//                                    Text(index < artistsArray.count - 1
-//                                         ? "\(artist.name), "
-//                                         : artist.name)
-//                                    .font(.footnote)
-//                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
-//                                }
-//                            }
+                            HStack(spacing: 0) {
+                                let genres = Array(artist.genres) // Convert List<String> to [String]
+                                ForEach(genres.indices, id: \.self) { index in
+                                    let genre = genres[index]
+                                    
+                                    Text(index < genres.count - 1
+                                         ? "\(genre), "
+                                         : genre)
+                                    .font(.footnote)
+                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
+                                }
+                            }
                         }
                     }
                     .padding(.vertical, 4)
@@ -53,7 +53,7 @@ struct ArtistList: View {
 
 #Preview {
     ZStack {
-        let artists = [ArtistMock.zachBryan]
+        let artists = [ArtistMock.zachBryan, ArtistMock.jonBellion, ArtistMock.oliviaRodrigo, ArtistMock.kaceyMusgraves]
         ArtistList(artists: artists)
     }
 }

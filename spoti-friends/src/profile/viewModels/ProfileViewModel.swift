@@ -64,6 +64,33 @@ class ProfileViewModel: ObservableObject {
             printError("\(error)")
             return nil
         }
+    }    
+    
+    /// Fetches and returns the current user's top artists.
+    ///
+    /// - Parameters:
+    ///   - timeRange: Over what time frame the data is calculated.
+    ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    @MainActor func getCurrentUsersTopArtists(timeRange: GetCurrentUserTopTracksResponse.TimeRange, limit: Int)
+    async -> ArtistsWithResponseMetadata? {
+        do {
+            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            let queryParams = [
+                URLQueryItem(name: "time_range", value: timeRange.rawValue),
+                URLQueryItem(name: "limit", value: String(limit))
+            ]
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersTopArtists,
+                                                             responseType: GetCurrentUserTopArtistsResponse.self,
+                                                             accessToken: accessToken,
+                                                             queryParams: queryParams)
+            
+            return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
+        }
+        catch {
+            printError("\(error)")
+            return nil
+        }
     }
 }
 
@@ -114,6 +141,17 @@ extension ProfileViewModel {
             self.tracks = tracks
             self.isEmpty = isEmpty
         }
+    }
+    
+    public class GetCurrentUserTopArtistsResponse: Decodable {
+        /// The valid values for the `time_range` parameter.
+        enum TimeRange: String {
+            case oneMonth = "short_term"
+            case sixMonths = "medium_term"
+            case oneYear = "long_term"
+        }
+        
+        let items: [Artist]
     }
     
     /// A struct containing a list of `Artist`s and some metadata about the response.

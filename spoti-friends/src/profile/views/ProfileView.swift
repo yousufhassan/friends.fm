@@ -69,7 +69,7 @@ struct ProfileView: View {
                                 .padding(.vertical, 4)
                         }
                         else {
-//                            ArtistList(trackList: topArtists.artists)
+                            ArtistList(artists: topArtists.artists)
                         }
                     }
                     Spacer()
@@ -88,8 +88,12 @@ struct ProfileView: View {
                 profileViewModel.user = authorizationViewModel.user
                 
                 Task {
-//                    topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5)
-//                    ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                    // NOTE: Comment out these lines to fix SwiftUI Previews
+                    topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5)
+                    ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                    
+                    topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 5)
+                    ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
                 }
             }
         }
@@ -119,7 +123,7 @@ struct ProfileView: View {
     ZStack {
         let user = UserMock.userJimHalpert
         let topTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
-        let topArtists = [ArtistMock.zachBryan]
+        let topArtists = [ArtistMock.zachBryan, ArtistMock.jonBellion, ArtistMock.oliviaRodrigo, ArtistMock.kaceyMusgraves]
         
         ProfileView(profile: user.spotifyProfile!, topTracks: topTracks, topArtists: topArtists)
             .environmentObject(AuthorizationViewModel())
