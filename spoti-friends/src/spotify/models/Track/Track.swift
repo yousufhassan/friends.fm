@@ -22,7 +22,7 @@ class Track: Object, SpotifyResource, Decodable, Identifiable {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? "woop"
+        self.spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? ""
         self.name = try container.decode(String.self, forKey: .name)
         self.artists = try container.decode(List<Artist>.self, forKey: .artists)
         self.album = try container.decode(Album.self, forKey: .album)

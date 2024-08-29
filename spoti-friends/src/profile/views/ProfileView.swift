@@ -10,25 +10,28 @@ import SwiftUI
 struct ProfileView: View {
     let profile: SpotifyProfile
     @State private var topTracks: ProfileViewModel.TracksWithResponseMetadata
+    @State private var topArtists: ProfileViewModel.ArtistsWithResponseMetadata
     @StateObject private var profileViewModel: ProfileViewModel
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
-    init(profile: SpotifyProfile, topTracks: [Track] = []) {
+    /// NOTE: `topTracks` and `topArtists` default to `[]` so that we don't need to pass them in from `AuthenticatedView`.
+    /// However, we do want to pass in mock data for previews, so that's why we want them as optional parameters.
+    init(profile: SpotifyProfile, topTracks: [Track] = [], topArtists: [Artist] = []) {
         self.profile = profile
         _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: AuthorizationViewModel().user))
         self.topTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: topTracks)
+        self.topArtists = ProfileViewModel.ArtistsWithResponseMetadata(artists: topArtists)
     }
     
     var body: some View {
         GeometryReader { reader in
             ScrollView {
-                VStack (alignment: .leading) {
+                VStack (alignment: .leading, spacing: 34) {
                     // Profile Details
                     ProfileDetails(profile: profile)
                         .environmentObject(profileViewModel)
                         .environmentObject(friendActivityViewModel)
-                        .padding(.bottom, 40)
                     
                     // Top Tracks
                     VStack (alignment: .leading) {
@@ -46,7 +49,27 @@ struct ProfileView: View {
                                 .padding(.vertical, 4)
                         }
                         else {
-                            TrackOrArtistList(trackList: topTracks.tracks)
+                            TrackList(tracks: topTracks.tracks)
+                        }
+                    }
+                    
+                    // Top Artists
+                    VStack (alignment: .leading) {
+                        Text("Top Artists")
+                            .font(.body)
+                            .foregroundStyle(Color.PresetColour.whitePrimary)
+                        Text("From this month")
+                            .font(.footnote)
+                            .foregroundStyle(Color.PresetColour.whiteSecondary)
+                        
+                        if (topArtists.isEmpty) {
+                            Text("Not enough listening data this month.")
+                                .font(.callout)
+                                .foregroundStyle(Color.PresetColour.whitePrimary)
+                                .padding(.vertical, 4)
+                        }
+                        else {
+                            ArtistList(artists: topArtists.artists)
                         }
                     }
                     Spacer()
@@ -65,8 +88,12 @@ struct ProfileView: View {
                 profileViewModel.user = authorizationViewModel.user
                 
                 Task {
+                    // NOTE: Comment out these lines to fix SwiftUI Previews
                     topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5)
                     ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                    
+                    topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 5)
+                    ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
                 }
             }
         }
@@ -96,7 +123,9 @@ struct ProfileView: View {
     ZStack {
         let user = UserMock.userJimHalpert
         let topTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
-        ProfileView(profile: user.spotifyProfile!, topTracks: topTracks)
+        let topArtists = [ArtistMock.zachBryan, ArtistMock.jonBellion, ArtistMock.oliviaRodrigo, ArtistMock.kaceyMusgraves]
+        
+        ProfileView(profile: user.spotifyProfile!, topTracks: topTracks, topArtists: topArtists)
             .environmentObject(AuthorizationViewModel())
             .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
     }
