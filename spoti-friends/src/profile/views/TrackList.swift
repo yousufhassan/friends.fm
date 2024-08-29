@@ -18,32 +18,34 @@ struct TrackList: View {
         else {
             VStack (alignment: .leading) {
                 ForEach(tracks) { track in
-                    HStack {
-                        ImageWithSpecs(imageUrl: track.album?.image ?? "", width: 36, height: 36, cornerRadius: 2)
-                        
-                        VStack (alignment: .leading) {
-                            // Track name
-                            Text(track.name)
-                                .font(.callout)
-                                .foregroundStyle(Color.PresetColour.whitePrimary)
-                                .lineLimit(1)
+                    Link(destination: URL(string: track.spotifyUri)!) {
+                        HStack {
+                            ImageWithSpecs(imageUrl: track.album?.image ?? "", width: 36, height: 36, cornerRadius: 2)
                             
-                            // Artist names
-                            HStack(spacing: 0) {
-                                let artistsArray = Array(track.artists) // Convert List<Artist> to [Artist]
-                                ForEach(artistsArray.indices, id: \.self) { index in
-                                    let artist = artistsArray[index]
-                                    
-                                    Text(index < artistsArray.count - 1
-                                         ? "\(artist.name), "
-                                         : artist.name)
-                                    .font(.footnote)
-                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
+                            VStack (alignment: .leading) {
+                                // Track name
+                                Text(track.name)
+                                    .font(.callout)
+                                    .foregroundStyle(Color.PresetColour.whitePrimary)
+                                    .lineLimit(1)
+                                
+                                // Artist names
+                                HStack(spacing: 0) {
+                                    let artistsArray = Array(track.artists) // Convert List<Artist> to [Artist]
+                                    ForEach(artistsArray.indices, id: \.self) { index in
+                                        let artist = artistsArray[index]
+                                        
+                                        Text(index < artistsArray.count - 1
+                                             ? "\(artist.name), "
+                                             : artist.name)
+                                        .font(.footnote)
+                                        .foregroundStyle(Color.PresetColour.whiteSecondary)
+                                    }
                                 }
                             }
                         }
+                        .padding(.vertical, 4)
                     }
-                    .padding(.vertical, 4)
                 }
             }
         }

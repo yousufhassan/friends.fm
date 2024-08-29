@@ -19,32 +19,33 @@ struct ArtistList: View {
         else {
             VStack (alignment: .leading) {
                 ForEach(artists) { artist in
-                    HStack {
-                        ImageWithSpecs(imageUrl: artist.image, width: 36, height: 36, cornerRadius: 2)
-                        
-                        VStack (alignment: .leading) {
-                            // Artist name
-                            Text(artist.name)
-                                .font(.callout)
-                                .foregroundStyle(Color.PresetColour.whitePrimary)
-                                .lineLimit(1)
-                            
-                            // Artist genres
-                            HStack(spacing: 0) {
-                                let genres = Array(artist.genres.prefix(3)) // Convert List<String> to [String]
-                                ForEach(genres.indices, id: \.self) { index in
-                                    let genre = genres[index]
-                                    
-                                    Text(index < genres.count - 1
-                                         ? "\(genre), "
-                                         : genre)
-                                    .font(.footnote)
-                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
+                    Link(destination: URL(string: artist.spotifyUri)!) {
+                        HStack {
+                            ImageWithSpecs(imageUrl: artist.image, width: 36, height: 36, cornerRadius: 2)
+                            VStack (alignment: .leading) {
+                                // Artist name
+                                Text(artist.name)
+                                    .font(.callout)
+                                    .foregroundStyle(Color.PresetColour.whitePrimary)
+                                    .lineLimit(1)
+                                
+                                // Artist genres
+                                HStack(spacing: 0) {
+                                    let genres = Array(artist.genres.prefix(3)) // Convert List<String> to [String]
+                                    ForEach(genres.indices, id: \.self) { index in
+                                        let genre = genres[index]
+                                        
+                                        Text(index < genres.count - 1
+                                             ? "\(genre), "
+                                             : genre)
+                                        .font(.footnote)
+                                        .foregroundStyle(Color.PresetColour.whiteSecondary)
+                                    }
                                 }
                             }
                         }
+                        .padding(.vertical, 4)
                     }
-                    .padding(.vertical, 4)
                 }
             }
         }
