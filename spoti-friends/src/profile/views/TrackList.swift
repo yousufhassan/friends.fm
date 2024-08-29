@@ -43,7 +43,10 @@ struct TrackList: View {
                                     }
                                 }
                             }
+                            
+                            Spacer() // To left align the content
                         }
+                        .frame(maxWidth: .infinity)
                         .padding(.vertical, 4)
                     }
                 }
