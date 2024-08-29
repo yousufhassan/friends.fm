@@ -115,4 +115,26 @@ extension ProfileViewModel {
             self.isEmpty = isEmpty
         }
     }
+    
+    /// A struct containing a list of `Artist`s and some metadata about the response.
+    ///
+    /// The reason that there is an `isEmpty` attribute is for the purposes of differentiating between a request that
+    /// is still fetching data versus a request that has completed and returned no data (i.e. `artists = []`). In the
+    /// `ProfileView`, we cannot simply call `artists.isEmpty` (referring to the `artists` array itself) because
+    /// it will return `true` even if the request has not completed. Therefore, by using this struct, we check for the
+    /// `ArtistsWithResponseMetadata.isEmpty` value, which will default to `false`, unless we specify
+    /// otherwise (which we do once the request has actually completed).
+    ///
+    /// - Parameters:
+    ///   - artists: An array of `Artist` objects, potentially empty.
+    ///   - isEmpty: Boolean denoting whether or not the `artists` array is empty or not.
+    struct ArtistsWithResponseMetadata {
+        let artists: [Artist]
+        let isEmpty: Bool
+        
+        init (artists: [Artist], isEmpty: Bool = false) {
+            self.artists = artists
+            self.isEmpty = isEmpty
+        }
+    }
 }
