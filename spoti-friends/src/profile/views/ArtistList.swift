@@ -31,7 +31,7 @@ struct ArtistList: View {
                             
                             // Artist genres
                             HStack(spacing: 0) {
-                                let genres = Array(artist.genres) // Convert List<String> to [String]
+                                let genres = Array(artist.genres.prefix(3)) // Convert List<String> to [String]
                                 ForEach(genres.indices, id: \.self) { index in
                                     let genre = genres[index]
                                     
