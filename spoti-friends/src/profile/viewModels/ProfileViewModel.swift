@@ -64,6 +64,33 @@ class ProfileViewModel: ObservableObject {
             printError("\(error)")
             return nil
         }
+    }    
+    
+    /// Fetches and returns the current user's top artists.
+    ///
+    /// - Parameters:
+    ///   - timeRange: Over what time frame the data is calculated.
+    ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    @MainActor func getCurrentUsersTopArtists(timeRange: GetCurrentUserTopArtistsResponse.TimeRange, limit: Int)
+    async -> ArtistsWithResponseMetadata? {
+        do {
+            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            let queryParams = [
+                URLQueryItem(name: "time_range", value: timeRange.rawValue),
+                URLQueryItem(name: "limit", value: String(limit))
+            ]
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersTopArtists,
+                                                             responseType: GetCurrentUserTopArtistsResponse.self,
+                                                             accessToken: accessToken,
+                                                             queryParams: queryParams)
+            
+            return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
+        }
+        catch {
+            printError("\(error)")
+            return nil
+        }
     }
 }
 
@@ -112,6 +139,39 @@ extension ProfileViewModel {
         
         init (tracks: [Track], isEmpty: Bool = false) {
             self.tracks = tracks
+            self.isEmpty = isEmpty
+        }
+    }
+    
+    public class GetCurrentUserTopArtistsResponse: Decodable {
+        /// The valid values for the `time_range` parameter.
+        enum TimeRange: String {
+            case oneMonth = "short_term"
+            case sixMonths = "medium_term"
+            case oneYear = "long_term"
+        }
+        
+        let items: [Artist]
+    }
+    
+    /// A struct containing a list of `Artist`s and some metadata about the response.
+    ///
+    /// The reason that there is an `isEmpty` attribute is for the purposes of differentiating between a request that
+    /// is still fetching data versus a request that has completed and returned no data (i.e. `artists = []`). In the
+    /// `ProfileView`, we cannot simply call `artists.isEmpty` (referring to the `artists` array itself) because
+    /// it will return `true` even if the request has not completed. Therefore, by using this struct, we check for the
+    /// `ArtistsWithResponseMetadata.isEmpty` value, which will default to `false`, unless we specify
+    /// otherwise (which we do once the request has actually completed).
+    ///
+    /// - Parameters:
+    ///   - artists: An array of `Artist` objects, potentially empty.
+    ///   - isEmpty: Boolean denoting whether or not the `artists` array is empty or not.
+    struct ArtistsWithResponseMetadata {
+        let artists: [Artist]
+        let isEmpty: Bool
+        
+        init (artists: [Artist], isEmpty: Bool = false) {
+            self.artists = artists
             self.isEmpty = isEmpty
         }
     }

@@ -51,7 +51,7 @@ struct ListeningActivityCard: View, Identifiable {
                 
                 // Album Cover
                 Link(destination: URL(string: album.spotifyUri)!) {
-                    AlbumCover(album: album, width: 80, height: 80)
+                    ImageWithSpecs(imageUrl: album.image, width: 80, height: 80)
                         .padding(.leading, 4)
                 }
             }

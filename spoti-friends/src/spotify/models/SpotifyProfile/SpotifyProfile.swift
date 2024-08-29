@@ -23,13 +23,7 @@ class SpotifyProfile: Object, Decodable {
         self.spotifyId = try container.decode(String.self, forKey: .spotifyId)
         self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
         self.displayName = try container.decode(String.self, forKey: .displayName)
-        
-        // Extract the first image URL from the `images` array
-        if let images = try? container.decode([SpotifyImage].self, forKey: .image) {
-            self.image = images.first?.url ?? ""
-        } else {
-            self.image = ""
-        }
+        self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
     }
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
@@ -38,6 +32,14 @@ class SpotifyProfile: Object, Decodable {
         case spotifyUri = "uri"
         case displayName = "display_name"
         case image = "images"
+    }
+    
+    @MainActor public func getSpotifyId() -> String {
+        return self.spotifyId
+    }
+    
+    @MainActor public func getImage() -> String {
+        return self.image
     }
     
     public func getSpotifyIdFromUri(spotifyUri: String) -> String {
@@ -56,8 +58,8 @@ class SpotifyProfile: Object, Decodable {
     /// Stores the profile picture on disk using the Spotify ID as the image name.
     public func storeProfilePictureLocally() async -> Void {
         do {
-            let imageName = self.spotifyId
-            let link = self.image
+            let imageName = await self.getSpotifyId()
+            let link = await self.getImage()
             
             // Return early if the user does not have a profile picture
             if link == "" { return }
@@ -75,10 +77,4 @@ class SpotifyProfile: Object, Decodable {
             printError("\(error)")
         }
     }
-}
-
-struct SpotifyImage: Decodable {
-    let url: String
-    let height: Int
-    let width: Int
 }

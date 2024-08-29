@@ -24,7 +24,7 @@ class SpotifyAuth {
     }
     
     /// Handles the response from the Spotify authorization flow depending on whether the user granted authorization or denied authorization.
-    func handleResponseUrl(user: User, url: URL, authorizationStatus: inout AuthorizationStatus) async -> Void {
+    @MainActor func handleResponseUrl(user: User, url: URL) async -> AuthorizationStatus {
         do {
             guard let responseUrlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
                   let queryItems = responseUrlComponents.queryItems
@@ -36,27 +36,25 @@ class SpotifyAuth {
             
             if (await userExistsInDatabase(user)) {
                 storeSignedInUser(user)
-                authorizationStatus = .granted
+                return .granted
             } else {
                 if (userGrantedAuthorization(queryItems)) {
                     user.setAuthorizationStatusAs(.granted)
                     await user.spotifyProfile?.storeProfilePictureLocally()
                     storeSignedInUser(user)
                     await RealmDatabase.shared.addToRealm(object: user);
-                    authorizationStatus = .granted
+                    return .granted
                 }
-                else {
-                    // Handle authorization denied flow
-                    authorizationStatus = .denied
-                }
+                return .denied
             }
         } catch {
             printError("\(error)")
+            return .unauthenticated
         }
     }
     
     /// Populates the `user` fields with their data.
-    private func populateUserWithData(_ user: User, queryItems: [URLQueryItem]) async -> Void {
+    @MainActor private func populateUserWithData(_ user: User, queryItems: [URLQueryItem]) async -> Void {
         do {
             let authorizationCode = try getAuthorizationCodeFromQueryItems(queryItems)
             user.setAuthorizationCode(authorizationCode)
@@ -71,11 +69,24 @@ class SpotifyAuth {
                                                                                    endpoint: .getCurrentUsersProfile,
                                                                                    responseType: SpotifyProfile.self,
                                                                                    accessToken: spotifyWebAccessToken?.access_token ?? "")
-            user.setSpotifyProfile(spotifyProfile)
+            
+            let realm = try! await Realm()
+            
+            // A new user may already have a SpotifyProfile in the database, if an existing user has them as a friend.
+            // If so, use the existing profile to avoid creating another SpotifyProfile with a duplicate primary key.
+            let existingProfile = realm.object(ofType: SpotifyProfile.self, forPrimaryKey: spotifyProfile.spotifyId)
+            user.setSpotifyProfile(existingProfile ?? spotifyProfile)
             user.setSpotifyId(spotifyProfile.spotifyId)
             
+            // Same as above.
+            // The friend of a new user may already have a SpotifyProfile in the database, if an existing user is also friends with them.
+            // If so, use the existing profile to avoid creating another SpotifyProfile with a duplicate primary key.
             let friends = try await SpotifyAPI.shared.getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.accessToken)
-            user.setFriends(friends)
+            for friend in friends {
+                let existingProfile = realm.object(ofType: SpotifyProfile.self, forPrimaryKey: friend.spotifyId)
+                user.friends.append(existingProfile ?? friend)
+                if existingProfile == nil { await RealmDatabase.shared.addToRealm(object: friend); }
+            }
         } catch {
             printError("\(error)")
         }
