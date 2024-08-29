@@ -13,9 +13,9 @@
 			<array>
 				<string>spoti-friends</string>
 			</array>
-            <key>ITSAppUsesNonExemptEncryption</key>
-            <false/>
 		</dict>
 	</array>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
 </dict>
 </plist>
