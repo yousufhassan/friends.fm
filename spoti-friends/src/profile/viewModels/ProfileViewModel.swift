@@ -71,7 +71,7 @@ class ProfileViewModel: ObservableObject {
     /// - Parameters:
     ///   - timeRange: Over what time frame the data is calculated.
     ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
-    @MainActor func getCurrentUsersTopArtists(timeRange: GetCurrentUserTopTracksResponse.TimeRange, limit: Int)
+    @MainActor func getCurrentUsersTopArtists(timeRange: GetCurrentUserTopArtistsResponse.TimeRange, limit: Int)
     async -> ArtistsWithResponseMetadata? {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
