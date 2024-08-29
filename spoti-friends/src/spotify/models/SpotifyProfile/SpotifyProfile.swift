@@ -23,13 +23,7 @@ class SpotifyProfile: Object, Decodable {
         self.spotifyId = try container.decode(String.self, forKey: .spotifyId)
         self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
         self.displayName = try container.decode(String.self, forKey: .displayName)
-        
-        // Extract the first image URL from the `images` array
-        if let images = try? container.decode([SpotifyImage].self, forKey: .image) {
-            self.image = images.first?.url ?? ""
-        } else {
-            self.image = ""
-        }
+        self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
     }
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
@@ -83,10 +77,4 @@ class SpotifyProfile: Object, Decodable {
             printError("\(error)")
         }
     }
-}
-
-struct SpotifyImage: Decodable {
-    let url: String
-    let height: Int
-    let width: Int
 }

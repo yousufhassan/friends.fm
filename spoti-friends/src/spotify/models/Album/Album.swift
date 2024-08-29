@@ -19,13 +19,6 @@ class Album: Object, SpotifyResource, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
         self.name = try container.decode(String.self, forKey: .name)
-
-        // TODO: Move this logic into a helper as it is reused
-        // Extract the first image URL from the `images` array
-        if let images = try? container.decode([SpotifyImage].self, forKey: .image) {
-            self.image = images.first?.url ?? ""
-        } else {
-            self.image = ""
-        }
+        self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
     }
 }
