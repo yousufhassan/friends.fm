@@ -20,7 +20,7 @@ struct ArtistList: View {
             VStack (alignment: .leading) {
                 ForEach(artists) { artist in
                     HStack {
-                        AlbumCover(album: AlbumMock.sour, width: 36, height: 36, cornerRadius: 2)
+                        ImageWithSpecs(imageUrl: AlbumMock.sour.image, width: 36, height: 36, cornerRadius: 2)
                         
                         VStack (alignment: .leading) {
                             // Artist name

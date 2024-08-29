@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The View that renders an album cover image.
+/// The View that renders an image with the given specifications.
 ///
 /// - Parameters:
 ///   - album: The album whose cover to display.
@@ -9,15 +9,20 @@ import SwiftUI
 ///   - cornerRadius: The corner radius for the image (optional).
 ///
 /// - Returns: A View for the album cover image.
-struct AlbumCover: View {
-    let album: Album?
+struct ImageWithSpecs: View {
+    let imageUrl: URL?
     let width, height: CGFloat
-    var cornerRadius: CGFloat?
+    var cornerRadius: CGFloat
+    
+    init(imageUrl: String, width: CGFloat, height: CGFloat, cornerRadius: CGFloat = 12) {
+        self.imageUrl = URL(string: imageUrl)
+        self.width = width
+        self.height = height
+        self.cornerRadius = cornerRadius
+    }
     
     var body: some View {
-        let imageURL = URL(string: album?.image ?? "")
-        
-        AsyncImage(url: imageURL) { phase in
+        AsyncImage(url: imageUrl) { phase in
             switch phase {
             case .empty:
                 ProgressView() // Shows a progress indicator while loading
@@ -33,13 +38,13 @@ struct AlbumCover: View {
         }
         .aspectRatio(contentMode: .fill)
         .frame(width: width, height: height)
-        .clipShape(RoundedRectangle(cornerRadius: cornerRadius ?? 12))
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
 }
 
 #Preview {
     ZStack {
-        let album = AlbumMock.theDefinition
-        AlbumCover(album: album, width: 300, height: 300)
+        let url = AlbumMock.theDefinition.image
+        ImageWithSpecs(imageUrl: url, width: 300, height: 300)
     }
 }

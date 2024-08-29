@@ -19,7 +19,7 @@ struct TrackList: View {
             VStack (alignment: .leading) {
                 ForEach(tracks) { track in
                     HStack {
-                        AlbumCover(album: track.album, width: 36, height: 36, cornerRadius: 2)
+                        ImageWithSpecs(imageUrl: track.album?.image ?? "", width: 36, height: 36, cornerRadius: 2)
                         
                         VStack (alignment: .leading) {
                             // Track name
