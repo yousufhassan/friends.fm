@@ -1,12 +1,11 @@
-//
-//  ArtistList.swift
-//  spoti-friends
-//
-//  Created by Yousuf Hassan on 2024-08-28.
-//
-
 import SwiftUI
 
+/// The View that renders a list of artists.
+///
+/// - Parameters:
+///   - artists: The list of `Artist` objects to render as a list.
+///
+/// - Returns: A View that renders a list of artists.
 struct ArtistList: View {
     let artists: [Artist]
     var body: some View {
@@ -31,7 +30,7 @@ struct ArtistList: View {
                                 
                                 // Artist genres
                                 HStack(spacing: 0) {
-                                    let genres = Array(artist.genres.prefix(3)) // Convert List<String> to [String]
+                                    let genres = Array(artist.genres.prefix(2)) // Convert List<String> to [String]
                                     ForEach(genres.indices, id: \.self) { index in
                                         let genre = genres[index]
                                         
@@ -42,6 +41,7 @@ struct ArtistList: View {
                                         .foregroundStyle(Color.PresetColour.whiteSecondary)
                                     }
                                 }
+                                .lineLimit(1)
                             }
                             
                             Spacer() // To left align the content

@@ -4,11 +4,14 @@ import SwiftUI
 ///
 /// - Parameters:
 ///   - profile: The Spotify profile to display.
+///   - recentTracks: A list of the profile's recently played tracks.
 ///   - topTracks: A list of the profile's top tracks over the last month.
+///   - topArtists: A list of the profile's top artists over the last month.
 ///
 /// - Returns: A view for the user's Spotify Profile.
 struct ProfileView: View {
     let profile: SpotifyProfile
+    @State private var recentTracks: ProfileViewModel.TracksWithResponseMetadata
     @State private var topTracks: ProfileViewModel.TracksWithResponseMetadata
     @State private var topArtists: ProfileViewModel.ArtistsWithResponseMetadata
     @StateObject private var profileViewModel: ProfileViewModel
@@ -17,9 +20,10 @@ struct ProfileView: View {
     
     /// NOTE: `topTracks` and `topArtists` default to `[]` so that we don't need to pass them in from `AuthenticatedView`.
     /// However, we do want to pass in mock data for previews, so that's why we want them as optional parameters.
-    init(profile: SpotifyProfile, topTracks: [Track] = [], topArtists: [Artist] = []) {
+    init(profile: SpotifyProfile, recentTracks: [Track] = [], topTracks: [Track] = [], topArtists: [Artist] = []) {
         self.profile = profile
         _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: AuthorizationViewModel().user))
+        self.recentTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: recentTracks)
         self.topTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: topTracks)
         self.topArtists = ProfileViewModel.ArtistsWithResponseMetadata(artists: topArtists)
     }
@@ -33,6 +37,23 @@ struct ProfileView: View {
                         .environmentObject(profileViewModel)
                         .environmentObject(friendActivityViewModel)
                     
+                    // Recent Tracks
+                    VStack (alignment: .leading) {
+                        Text("Recent Songs")
+                            .font(.body)
+                            .foregroundStyle(Color.PresetColour.whitePrimary)
+                        
+                        if (recentTracks.isEmpty) {
+                            Text("It's oddly quiet here...")
+                                .font(.callout)
+                                .foregroundStyle(Color.PresetColour.whiteSecondary)
+                                .padding(.vertical, 4)
+                        }
+                        else {
+                            TrackList(tracks: recentTracks.tracks)
+                        }
+                    }
+                    
                     // Top Tracks
                     VStack (alignment: .leading) {
                         Text("Top Songs")
@@ -45,7 +66,7 @@ struct ProfileView: View {
                         if (topTracks.isEmpty) {
                             Text("Not enough listening data this month.")
                                 .font(.callout)
-                                .foregroundStyle(Color.PresetColour.whitePrimary)
+                                .foregroundStyle(Color.PresetColour.whiteSecondary)
                                 .padding(.vertical, 4)
                         }
                         else {
@@ -65,7 +86,7 @@ struct ProfileView: View {
                         if (topArtists.isEmpty) {
                             Text("Not enough listening data this month.")
                                 .font(.callout)
-                                .foregroundStyle(Color.PresetColour.whitePrimary)
+                                .foregroundStyle(Color.PresetColour.whiteSecondary)
                                 .padding(.vertical, 4)
                         }
                         else {
@@ -89,6 +110,9 @@ struct ProfileView: View {
                 
                 Task {
                     // NOTE: Comment out these lines to fix SwiftUI Previews
+                    recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5)
+                    ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                    
                     topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5)
                     ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
                     
@@ -122,10 +146,11 @@ struct ProfileView: View {
 #Preview {
     ZStack {
         let user = UserMock.userJimHalpert
+        let recentTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
         let topTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
         let topArtists = [ArtistMock.zachBryan, ArtistMock.jonBellion, ArtistMock.oliviaRodrigo, ArtistMock.kaceyMusgraves]
         
-        ProfileView(profile: user.spotifyProfile!, topTracks: topTracks, topArtists: topArtists)
+        ProfileView(profile: user.spotifyProfile!, recentTracks: recentTracks, topTracks: topTracks, topArtists: topArtists)
             .environmentObject(AuthorizationViewModel())
             .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
     }
