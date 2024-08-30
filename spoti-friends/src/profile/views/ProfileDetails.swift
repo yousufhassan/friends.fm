@@ -23,10 +23,14 @@ struct ProfileDetails: View {
             ProfileImage(imageName: profile.spotifyId, width: 80, height: 80)
                 .environmentObject(friendActivityViewModel)
             
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading) {
+                // Display name
                 Text(profile.displayName)
                     .foregroundStyle(Color.PresetColour.whitePrimary)
                 
+                Spacer().frame(height: 4)
+                
+                // Follower and playlist counts
                 HStack {
                     if (followerCount == nil || playlistCount == nil) {
                         // Show placeholder while fetching data
@@ -60,6 +64,11 @@ struct ProfileDetails: View {
                         fetchedDetails = true
                     }
                 }
+                
+                Spacer().frame(height: 8)
+                
+                // Open in Spotify button
+                OpenInSpotifyButton(redirectLink: profile.spotifyUri)
             }
             Spacer()
         }
