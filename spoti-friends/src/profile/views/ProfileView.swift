@@ -4,7 +4,9 @@ import SwiftUI
 ///
 /// - Parameters:
 ///   - profile: The Spotify profile to display.
+///   - recentTracks: A list of the profile's recently played tracks.
 ///   - topTracks: A list of the profile's top tracks over the last month.
+///   - topArtists: A list of the profile's top artists over the last month.
 ///
 /// - Returns: A view for the user's Spotify Profile.
 struct ProfileView: View {
