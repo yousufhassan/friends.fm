@@ -1,11 +1,11 @@
 import SwiftUI
 
-/// The View that renders a list of either tracks or artists.
+/// The View that renders a list of tracks.
 ///
 /// - Parameters:
-///   - trackList: The list of `Track` objects to render as a list.
+///   - tracks: The list of `Track` objects to render as a list.
 ///
-/// - Returns: A View that renders a list of either tracks or artists.
+/// - Returns: A View that renders a list of tracks.
 struct TrackList: View {
     let tracks: [Track]
     var body: some View {

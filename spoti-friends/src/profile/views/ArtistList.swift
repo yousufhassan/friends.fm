@@ -1,12 +1,11 @@
-//
-//  ArtistList.swift
-//  spoti-friends
-//
-//  Created by Yousuf Hassan on 2024-08-28.
-//
-
 import SwiftUI
 
+/// The View that renders a list of artists.
+///
+/// - Parameters:
+///   - artists: The list of `Artist` objects to render as a list.
+///
+/// - Returns: A View that renders a list of artists.
 struct ArtistList: View {
     let artists: [Artist]
     var body: some View {
