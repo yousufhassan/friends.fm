@@ -31,7 +31,7 @@ struct ArtistList: View {
                                 
                                 // Artist genres
                                 HStack(spacing: 0) {
-                                    let genres = Array(artist.genres.prefix(3)) // Convert List<String> to [String]
+                                    let genres = Array(artist.genres.prefix(2)) // Convert List<String> to [String]
                                     ForEach(genres.indices, id: \.self) { index in
                                         let genre = genres[index]
                                         
@@ -42,6 +42,7 @@ struct ArtistList: View {
                                         .foregroundStyle(Color.PresetColour.whiteSecondary)
                                     }
                                 }
+                                .lineLimit(1)
                             }
                             
                             Spacer() // To left align the content
