@@ -59,8 +59,8 @@ struct ProfileDetails: View {
                     fetchedDetails = false
                     Task {
                         // NOTE: Comment out these two lines to fix SwiftUI Previews
-                        followerCount = await profileViewModel.getCurrentUsersFollowerCount()
-                        playlistCount = await profileViewModel.getCurrentUsersPlaylistCount()
+//                        followerCount = await profileViewModel.getCurrentUsersFollowerCount()
+//                        playlistCount = await profileViewModel.getCurrentUsersPlaylistCount()
                         fetchedDetails = true
                     }
                 }

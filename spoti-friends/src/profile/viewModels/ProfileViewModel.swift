@@ -39,6 +39,31 @@ class ProfileViewModel: ObservableObject {
         return -1
     }
     
+    /// Fetches and returns the current user's recent tracks.
+    ///
+    /// - Parameters:
+    ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    @MainActor func getCurrentUsersRecentTracks(limit: Int)
+    async -> TracksWithResponseMetadata? {
+        do {
+            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            let queryParams = [
+                URLQueryItem(name: "limit", value: String(limit))
+            ]
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersRecentTracks,
+                                                             responseType: GetCurrentUserRecentTracksResponse.self,
+                                                             accessToken: accessToken,
+                                                             queryParams: queryParams)
+            
+            return TracksWithResponseMetadata(tracks: response.extractTracksFromItems(), isEmpty: response.items.isEmpty)
+        }
+        catch {
+            printError("\(error)")
+            return nil
+        }
+    }
+    
     /// Fetches and returns the current user's top tracks.
     ///
     /// - Parameters:
@@ -108,6 +133,23 @@ extension ProfileViewModel {
     
     private struct GetCurrentUserPlayistsResponse: Decodable {
         let total: Int
+    }
+    
+    private struct GetCurrentUserRecentTracksResponse: Decodable {
+        let items: [Items]
+        
+        struct Items: Decodable {
+            let track: Track
+        }
+        
+        /// Combines all nested `track` objects within `items` and returns it as an array.
+        func extractTracksFromItems() -> [Track] {
+            var tracks: [Track] = []
+            items.forEach { item in
+                tracks.append(item.track)
+            }
+            return tracks
+        }
     }
     
     public class GetCurrentUserTopTracksResponse: Decodable {

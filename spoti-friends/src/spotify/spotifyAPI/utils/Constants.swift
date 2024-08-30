@@ -11,6 +11,7 @@ internal enum APIConstants {
 internal enum APIEndpoint: String {
     case getCurrentUsersProfile = "/me"
     case getCurrentUsersPlaylists = "/me/playlists"
+    case getCurrentUsersRecentTracks = "/me/player/recently-played"
     case getCurrentUsersTopTracks = "/me/top/tracks"
     case getCurrentUsersTopArtists = "/me/top/artists"
 }
