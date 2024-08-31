@@ -19,7 +19,7 @@ class SpotifyAPI {
         let request = try createRequestTo(endpoint: endpoint, accessToken: accessToken,
                                           method: method, queryParams: queryParams)
         let (data, response) = try await URLSession.shared.data(for: request)
-        if (requestFailed(response as! HTTPURLResponse)) { try throwSpotifyAPIError(response as! HTTPURLResponse) }
+        if (requestFailed(response as! HTTPURLResponse)) { throw try throwSpotifyAPIError(response as! HTTPURLResponse) }
         let decodedResponse = try JSONDecoder().decode(T.self, from: data)
         return decodedResponse
     }
@@ -45,7 +45,7 @@ class SpotifyAPI {
         var request = URLRequest(url: endpointURL)
         request.setValue("Bearer \(internalAPIAccessToken)", forHTTPHeaderField: "Authorization")
         let (data, response) = try await URLSession.shared.data(for: request)
-        if (requestFailed(response as! HTTPURLResponse)) { throw SpotifyAPIError.unsuccessfulRequest }
+        if (requestFailed(response as! HTTPURLResponse)) { throw try throwSpotifyAPIError(response as! HTTPURLResponse) }
         return data
     }
 }

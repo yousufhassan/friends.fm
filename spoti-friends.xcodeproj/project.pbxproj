@@ -40,6 +40,7 @@
 		CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */; };
 		CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89F2C8017CD00F9A197 /* ArtistList.swift */; };
 		CB70E8A22C816AAA00F9A197 /* OpenInSpotifyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */; };
+		CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */; };
 		CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */; };
 		CB7C05A42C0EB4DB001A0062 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A32C0EB4DB001A0062 /* Utils.swift */; };
 		CB7C05A92C0EBB25001A0062 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A82C0EBB25001A0062 /* User.swift */; };
@@ -119,6 +120,7 @@
 		CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackOrArtistListPlaceholder.swift; sourceTree = "<group>"; };
 		CB70E89F2C8017CD00F9A197 /* ArtistList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistList.swift; sourceTree = "<group>"; };
 		CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInSpotifyButton.swift; sourceTree = "<group>"; };
+		CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomethingWentWrongView.swift; sourceTree = "<group>"; };
 		CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrors.swift; sourceTree = "<group>"; };
 		CB7C05A32C0EB4DB001A0062 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		CB7C05A82C0EBB25001A0062 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 		CB0854C42C155C510088E87D /* views */ = {
 			isa = PBXGroup;
 			children = (
+				CB70E8A32C838F9E00F9A197 /* errors */,
 				CB3B61802C1F83AE0088DFA1 /* AuthenticatedView.swift */,
 				CB3B617E2C1BDFB00088DFA1 /* PageTitle.swift */,
 				CB9A9AAC2C0BB13E0073817C /* RootView.swift */,
@@ -390,6 +393,14 @@
 				CB875CAD2C315073001B364D /* FriendActivityViewModel.swift */,
 			);
 			path = viewModels;
+			sourceTree = "<group>";
+		};
+		CB70E8A32C838F9E00F9A197 /* errors */ = {
+			isa = PBXGroup;
+			children = (
+				CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */,
+			);
+			path = errors;
 			sourceTree = "<group>";
 		};
 		CB7C05A52C0EB8A2001A0062 /* utils */ = {
@@ -647,6 +658,7 @@
 				CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */,
 				CB0854CB2C1574FE0088E87D /* SpotifyProfile.swift in Sources */,
 				CB0854BC2C14D58E0088E87D /* AuthorizationWebView.swift in Sources */,
+				CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */,
 				CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */,
 				CB0B93762C771C04003A9720 /* TrackContext.swift in Sources */,
 			);
