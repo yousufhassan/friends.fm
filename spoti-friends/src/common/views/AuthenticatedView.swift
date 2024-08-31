@@ -23,7 +23,7 @@ struct AuthenticatedView: View {
                 Label("Friend Activity", systemImage: "figure.socialdance")
             }
             .environmentObject(friendActivityViewModel)
-            ProfileView(profile: friendActivityViewModel.user.spotifyProfile!).tabItem {
+            ProfileView(profile: friendActivityViewModel.user.spotifyProfile ?? SpotifyProfile()).tabItem {
                 Label("My Profile", systemImage: "person")
             }
             .environmentObject(authorizationViewModel)
