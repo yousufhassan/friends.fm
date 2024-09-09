@@ -40,12 +40,8 @@ struct ProfileView: View {
                                     .padding(.vertical, 4)
                             } else {
                                 TrackList(tracks: recentTracks.tracks)
-                                NavigationLink("View more \u{2192}") {
-                                    ViewMoreRecentSongs(profile: profile)
-                                        .environmentObject(profileViewModel)
-                                }
-                                .foregroundStyle(Color.PresetColour.whitePrimary)
-                                .font(.callout)
+                                ViewMoreButton(destination: ViewMoreRecentSongs(profile: profile)
+                                    .environmentObject(profileViewModel))
                             }
                         }
                         
@@ -103,9 +99,9 @@ struct ProfileView: View {
                     Task {
                         // Load tracks and artists data on appearance
                         // Comment out these lines for SwiftUI Previews
-                         recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-                         topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-                         topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+//                         recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+//                         topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+//                         topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
                     }
                 }
             }

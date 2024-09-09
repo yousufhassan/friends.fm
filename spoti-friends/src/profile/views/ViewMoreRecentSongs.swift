@@ -1,5 +1,10 @@
 import SwiftUI
 
+/// A SwiftUI view that displays a user's recent songs.
+/// This view is part of a navigation stack and shows a scrollable list of tracks.
+///
+/// - Parameters:
+///   - profile: The Spotify Profile to show the data for
 struct ViewMoreRecentSongs: View {
     let profile: SpotifyProfile
     @State private var recentTracks: ProfileViewModel.TracksWithResponseMetadata
@@ -25,7 +30,7 @@ struct ViewMoreRecentSongs: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-                recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+//                recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
             }
         }
     }
