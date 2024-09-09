@@ -68,6 +68,8 @@
 		CB9A9ADA2C0BE2EE0073817C /* ColourExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9A9AD92C0BE2EE0073817C /* ColourExtension.swift */; };
 		CB9A9ADC2C0BEC080073817C /* FriendActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9A9ADB2C0BEC080073817C /* FriendActivityView.swift */; };
 		CB9A9AE02C0C22D70073817C /* SpotifyAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9A9ADF2C0C22D70073817C /* SpotifyAuth.swift */; };
+		CBB1A3C82C8E59BE00D3D658 /* ViewMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */; };
+		CBB1A3CA2C8E5A8200D3D658 /* ViewMoreRecentSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3C92C8E5A8200D3D658 /* ViewMoreRecentSongs.swift */; };
 		CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F512C3673DB00442795 /* TimeUtils.swift */; };
 		CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F552C36770500442795 /* ListeningActivityDetails.swift */; };
 		CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F572C37A6B200442795 /* TrackTimestampView.swift */; };
@@ -148,6 +150,8 @@
 		CB9A9AD92C0BE2EE0073817C /* ColourExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColourExtension.swift; sourceTree = "<group>"; };
 		CB9A9ADB2C0BEC080073817C /* FriendActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendActivityView.swift; sourceTree = "<group>"; };
 		CB9A9ADF2C0C22D70073817C /* SpotifyAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAuth.swift; sourceTree = "<group>"; };
+		CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreButton.swift; sourceTree = "<group>"; };
+		CBB1A3C92C8E5A8200D3D658 /* ViewMoreRecentSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRecentSongs.swift; sourceTree = "<group>"; };
 		CBC75F512C3673DB00442795 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		CBC75F552C36770500442795 /* ListeningActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityDetails.swift; sourceTree = "<group>"; };
 		CBC75F572C37A6B200442795 /* TrackTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTimestampView.swift; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 				CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */,
 				CB0B93642C770C7A003A9720 /* placeholders */,
 				CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */,
+				CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -324,6 +329,7 @@
 				CB0B93622C72CD07003A9720 /* TrackList.swift */,
 				CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */,
 				CB70E89F2C8017CD00F9A197 /* ArtistList.swift */,
+				CBB1A3C92C8E5A8200D3D658 /* ViewMoreRecentSongs.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -604,6 +610,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB875CB72C35220C001B364D /* AlbumMock.swift in Sources */,
+				CBB1A3CA2C8E5A8200D3D658 /* ViewMoreRecentSongs.swift in Sources */,
 				CB0B93722C771BBB003A9720 /* Track.swift in Sources */,
 				CB0B93682C7711F6003A9720 /* AlbumCoverPlaceholder.swift in Sources */,
 				CB3B61812C1F83AE0088DFA1 /* AuthenticatedView.swift in Sources */,
@@ -632,6 +639,7 @@
 				CB875CB92C3524B4001B364D /* TrackMock.swift in Sources */,
 				CB7C05B32C1191BA001A0062 /* AuthorizationDeniedView.swift in Sources */,
 				CB59BCB72C2FAB890061C99B /* ProfileImage.swift in Sources */,
+				CBB1A3C82C8E59BE00D3D658 /* ViewMoreButton.swift in Sources */,
 				CB0B93702C771B47003A9720 /* SpotifyResource.swift in Sources */,
 				CB0854B82C1404710088E87D /* AuthorizationViewModel.swift in Sources */,
 				CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */,

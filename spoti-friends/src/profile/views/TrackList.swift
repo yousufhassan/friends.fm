@@ -17,7 +17,9 @@ struct TrackList: View {
         // Actual list once data is available
         else {
             VStack (alignment: .leading) {
-                ForEach(tracks) { track in
+                ForEach(tracks.indices, id: \.self) { index in
+                    let track = tracks[index]
+                    
                     Link(destination: URL(string: track.spotifyUri)!) {
                         HStack {
                             ImageWithSpecs(imageUrl: track.album?.image ?? "", width: 36, height: 36, cornerRadius: 2)
@@ -42,6 +44,7 @@ struct TrackList: View {
                                         .foregroundStyle(Color.PresetColour.whiteSecondary)
                                     }
                                 }
+                                .lineLimit(1)
                             }
                             
                             Spacer() // To left align the content

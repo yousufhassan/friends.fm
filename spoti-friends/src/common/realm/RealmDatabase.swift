@@ -5,7 +5,7 @@ import RealmSwift
 class RealmDatabase {
     static let shared: RealmDatabase = RealmDatabase()
     private let realm: Realm
-    private let schemaVersion: UInt64 = 21  // Increment this when making schema changes
+    private let schemaVersion: UInt64 = 31  // Increment this when making schema changes
     
     init() {
         // Use this configuration when opening realms

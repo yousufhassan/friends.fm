@@ -17,7 +17,9 @@ struct ArtistList: View {
         // Actual list once data is available
         else {
             VStack (alignment: .leading) {
-                ForEach(artists) { artist in
+                ForEach(artists.indices, id: \.self) { index in
+                    let artist = artists[index]
+                    
                     Link(destination: URL(string: artist.spotifyUri)!) {
                         HStack {
                             ImageWithSpecs(imageUrl: artist.image, width: 36, height: 36, cornerRadius: 2)
