@@ -64,7 +64,6 @@ class ProfileViewModel: ObservableObject {
         return -1
     }
     
-    /// 
     enum ProfileItems {
         case recentTracks
         case topTracks
