@@ -31,7 +31,14 @@ struct ViewMoreTopSongs: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-//                topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                let response = await profileViewModel.viewMoreForCurrentUser(forItem: .topTracks)
+                switch response {
+                case .tracks(let tracksWithMetadata):
+                    topTracks = tracksWithMetadata ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                default:
+                    // It should not end up in this case.
+                    topTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                }
             }
         }
     }

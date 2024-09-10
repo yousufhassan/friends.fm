@@ -5,7 +5,7 @@ import SwiftUI
 /// - Parameters:
 ///   - destination: The view that the user will navigate to when tapping the "View more" link.
 ///
-/// The button will render with the "View more →" label and will push the `ViewMoreRecentSongs` view when clicked.
+/// The button will render with the "View more →" label and will push the passed in view..
 struct ViewMoreButton<Destination: View>: View {
     let destination: Destination
     var body: some View {

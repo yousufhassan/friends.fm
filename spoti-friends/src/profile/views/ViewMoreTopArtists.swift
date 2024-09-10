@@ -31,7 +31,14 @@ struct ViewMoreTopArtists: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-                topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 20) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+                let response = await profileViewModel.viewMoreForCurrentUser(forItem: .topArtists)
+                switch response {
+                case .artists(let artistsWithMetadata):
+                    topArtists = artistsWithMetadata ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+                default:
+                    // It should not end up in this case.
+                    topArtists = ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+                }
             }
         }
     }

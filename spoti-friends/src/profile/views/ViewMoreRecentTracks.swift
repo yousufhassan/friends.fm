@@ -5,8 +5,8 @@ import SwiftUI
 ///
 /// - Parameters:
 ///   - profile: The Spotify Profile to show the data for.
-///   
-struct ViewMoreRecentSongs: View {
+///
+struct ViewMoreRecentTracks: View {
     let profile: SpotifyProfile
     @State private var recentTracks: ProfileViewModel.TracksWithResponseMetadata
     @EnvironmentObject private var profileViewModel: ProfileViewModel
@@ -31,7 +31,14 @@ struct ViewMoreRecentSongs: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-//                recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                let response = await profileViewModel.viewMoreForCurrentUser(forItem: .recentTracks)
+                switch response {
+                case .tracks(let tracksWithMetadata):
+                    recentTracks = tracksWithMetadata ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                default:
+                    // It should not end up in this case.
+                    recentTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                }
             }
         }
     }
@@ -50,7 +57,7 @@ struct ViewMoreRecentSongs: View {
             TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
             TrackMock.iRememberEverything, TrackMock.luxury
         ]
-        ViewMoreRecentSongs(profile: profile, recentTracks: recentTracks)
+        ViewMoreRecentTracks(profile: profile, recentTracks: recentTracks)
             .environmentObject(ProfileViewModel(user: user))
     }
 }
