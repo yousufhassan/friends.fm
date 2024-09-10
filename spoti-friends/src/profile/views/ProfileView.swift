@@ -84,6 +84,9 @@ struct ProfileView: View {
                                     .padding(.vertical, 4)
                             } else {
                                 ArtistList(artists: topArtists.artists)
+                                ViewMoreButton(destination: ViewMoreTopArtists(profile: profile)
+                                    .environmentObject(profileViewModel))
+                                .padding(.top, 4)
                             }
                         }
                         Spacer()
@@ -103,9 +106,9 @@ struct ProfileView: View {
                     Task {
                         // Load tracks and artists data on appearance
                         // Comment out these lines for SwiftUI Previews
-                        recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-                        topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-                        topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+//                        recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+//                        topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+//                        topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
                     }
                 }
             }

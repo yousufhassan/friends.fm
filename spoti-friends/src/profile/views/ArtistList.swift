@@ -8,6 +8,13 @@ import SwiftUI
 /// - Returns: A View that renders a list of artists.
 struct ArtistList: View {
     let artists: [Artist]
+    let showItemNumbers: Bool
+    
+    init(artists: [Artist], showItemNumbers: Bool = false) {
+        self.artists = artists
+        self.showItemNumbers = showItemNumbers
+    }
+    
     var body: some View {
         // Render loading placeholders while waiting for data
         if (artists.isEmpty) {
@@ -22,6 +29,13 @@ struct ArtistList: View {
                     
                     Link(destination: URL(string: artist.spotifyUri)!) {
                         HStack {
+                            if (showItemNumbers) {
+                                Text(String(index + 1))
+                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
+                                    .font(.footnote)
+                                    .frame(width: 20)
+                                    .padding(.trailing, 2)
+                            }
                             ImageWithSpecs(imageUrl: artist.image, width: 36, height: 36, cornerRadius: 2)
                             VStack (alignment: .leading) {
                                 // Artist name

@@ -31,7 +31,7 @@ struct ViewMoreRecentSongs: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-                recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+//                recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
             }
         }
     }

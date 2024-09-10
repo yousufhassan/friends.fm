@@ -31,7 +31,7 @@ struct ViewMoreTopSongs: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-                topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+//                topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
             }
         }
     }
