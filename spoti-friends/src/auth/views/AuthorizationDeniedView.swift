@@ -2,7 +2,7 @@ import SwiftUI
 
 /// The view that is rendered when the Spotify authorization for the user failed or they denied.
 struct AuthorizationDeniedView: View {
-    @EnvironmentObject var userViewModel: AuthorizationViewModel
+    @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     
     var body: some View {
         VStack {
@@ -34,6 +34,7 @@ struct AuthorizationDeniedView: View {
             // Back to sign in button
             Spacer()
             BackToSignInButton()
+                .environmentObject(authorizationViewModel)
             Spacer()
             
         }
@@ -63,4 +64,5 @@ struct BackToSignInButton: View {
 
 #Preview {
     AuthorizationDeniedView()
+        .environmentObject(AuthorizationViewModel())
 }

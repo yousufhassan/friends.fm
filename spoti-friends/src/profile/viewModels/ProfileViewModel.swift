@@ -3,8 +3,33 @@ import Foundation
 class ProfileViewModel: ObservableObject {
     @Published var user: User
     
+    // Cached values are for the logged in user only
+    private var cacheClearTimer: Timer?
+    @Published var cachedTopArtists: [Artist] = []
+    @Published var cachedTopTracks: [Track] = []
+    
     init(user: User){
         self.user = user
+        startCacheTimer()
+    }
+    
+    // Start the timer to clear cache every 10 minutes
+    private func startCacheTimer() {
+        cacheClearTimer = Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { [weak self] _ in
+            self?.clearCache()
+        }
+    }
+    
+    // Clear cached top artists
+    private func clearCache() {
+        cachedTopArtists.removeAll()
+        cachedTopTracks.removeAll()
+        print("Cache cleared")
+    }
+    
+    // Function to invalidate the timer when no longer needed
+    deinit {
+        cacheClearTimer?.invalidate()
     }
     
     /// Fetches and returns the follower count for the logged in user.
@@ -39,6 +64,28 @@ class ProfileViewModel: ObservableObject {
         return -1
     }
     
+    enum ProfileItems {
+        case recentTracks
+        case topTracks
+        case topArtists
+    }
+    
+    @MainActor func viewMoreForCurrentUser(forItem: ProfileItems, timeRange: TimeRange = .oneMonth) async -> ProfileItemsResponse? {
+        let limit = 20
+        
+        switch forItem {
+        case .recentTracks:
+            let tracks = await getCurrentUsersRecentTracks(limit: limit)
+            return .tracks(tracks)
+        case .topTracks:
+            let tracks = await getCurrentUsersTopTracks(timeRange: timeRange, limit: limit)
+            return .tracks(tracks)
+        case .topArtists:
+            let artists = await getCurrentUsersTopArtists(timeRange: timeRange, limit: limit)
+            return .artists(artists)
+        }
+    }
+    
     /// Fetches and returns the current user's recent tracks.
     ///
     /// - Parameters:
@@ -69,8 +116,13 @@ class ProfileViewModel: ObservableObject {
     /// - Parameters:
     ///   - timeRange: Over what time frame the data is calculated.
     ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
-    @MainActor func getCurrentUsersTopTracks(timeRange: GetCurrentUserTopTracksResponse.TimeRange, limit: Int)
+    @MainActor func getCurrentUsersTopTracks(timeRange: TimeRange, limit: Int)
     async -> TracksWithResponseMetadata? {
+        // The cache should only be used for the "View more" screen – hence the check for limit == 20.
+        if (!self.cachedTopTracks.isEmpty && limit == 20) {
+            return TracksWithResponseMetadata(tracks: self.cachedTopTracks, isEmpty: self.cachedTopTracks.isEmpty)
+        }
+        
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
             let queryParams = [
@@ -83,21 +135,30 @@ class ProfileViewModel: ObservableObject {
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
             
+            // Only cache data when opening in "View more"
+            if (limit == 20) {
+                self.cachedTopTracks = response.items
+            }
             return TracksWithResponseMetadata(tracks: response.items, isEmpty: response.items.isEmpty)
         }
         catch {
             printError("\(error)")
             return nil
         }
-    }    
+    }
     
     /// Fetches and returns the current user's top artists.
     ///
     /// - Parameters:
     ///   - timeRange: Over what time frame the data is calculated.
     ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
-    @MainActor func getCurrentUsersTopArtists(timeRange: GetCurrentUserTopArtistsResponse.TimeRange, limit: Int)
+    @MainActor func getCurrentUsersTopArtists(timeRange: TimeRange, limit: Int)
     async -> ArtistsWithResponseMetadata? {
+        // The cache should only be used for the "View more" screen – hence the check for limit == 20.
+        if (!self.cachedTopArtists.isEmpty && limit == 20) {
+            return ArtistsWithResponseMetadata(artists: self.cachedTopArtists, isEmpty: self.cachedTopArtists.isEmpty)
+        }
+        
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
             let queryParams = [
@@ -110,6 +171,10 @@ class ProfileViewModel: ObservableObject {
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
             
+            // Only cache data when opening in "View more"
+            if (limit == 20) {
+                self.cachedTopArtists = response.items
+            }
             return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
         }
         catch {
@@ -152,14 +217,19 @@ extension ProfileViewModel {
         }
     }
     
+    enum ProfileItemsResponse {
+        case tracks(TracksWithResponseMetadata?)
+        case artists(ArtistsWithResponseMetadata?)
+    }
+    
+    /// The valid values for the `time_range` parameter for the `topTracks` and `topArtists` API endpoints.
+    enum TimeRange: String {
+        case oneMonth = "short_term"
+        case sixMonths = "medium_term"
+        case oneYear = "long_term"
+    }
+    
     public class GetCurrentUserTopTracksResponse: Decodable {
-        /// The valid values for the `time_range` parameter.
-        enum TimeRange: String {
-            case oneMonth = "short_term"
-            case sixMonths = "medium_term"
-            case oneYear = "long_term"
-        }
-        
         let items: [Track]
     }
     
@@ -186,13 +256,6 @@ extension ProfileViewModel {
     }
     
     public class GetCurrentUserTopArtistsResponse: Decodable {
-        /// The valid values for the `time_range` parameter.
-        enum TimeRange: String {
-            case oneMonth = "short_term"
-            case sixMonths = "medium_term"
-            case oneYear = "long_term"
-        }
-        
         let items: [Artist]
     }
     

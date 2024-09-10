@@ -157,12 +157,12 @@ class User: Object {
 /// `granted` when the user has granted authorization and can use the application normally.
 ///
 /// `denied` when the user has denied authorization and will not be able to use the application.
+///
+/// `error` when something went wrong in authorizing the user and the user will not be able to use the application.
 enum AuthorizationStatus: String, PersistableEnum {
-    /// The user has not granted nor denied authorization and will need to make a choice.
     case unauthenticated
-    /// The user has granted authorization and can use the application normally.
     case granted
-    /// The user has denied authorization and will not be able to use the application.
     case denied
+    case error
 }
 
