@@ -1,5 +1,14 @@
 import SwiftUI
 
+/// Renders the View for a user's profile, such as their details and top songs.
+///
+/// - Parameters:
+///   - profile: The Spotify profile to display.
+///   - recentTracks: A list of the profile's recently played tracks.
+///   - topTracks: A list of the profile's top tracks over the last month.
+///   - topArtists: A list of the profile's top artists over the last month.
+///
+/// - Returns: A view for the user's Spotify Profile.
 struct ProfileView: View {
     let profile: SpotifyProfile
     @State private var recentTracks: ProfileViewModel.TracksWithResponseMetadata
@@ -9,6 +18,8 @@ struct ProfileView: View {
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
+    /// NOTE: `topTracks` and `topArtists` default to `[]` so that we don't need to pass them in from `AuthenticatedView`.
+    /// /// However, we do want to pass in mock data for previews, so that's why we want them as optional parameters.
     init(profile: SpotifyProfile, recentTracks: [Track] = [], topTracks: [Track] = [], topArtists: [Artist] = []) {
         self.profile = profile
         _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: AuthorizationViewModel().user))
@@ -104,7 +115,6 @@ struct ProfileView: View {
                     profileViewModel.user = authorizationViewModel.user
                     
                     Task {
-                        // Load tracks and artists data on appearance
                         // Comment out these lines for SwiftUI Previews
                         recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
                         topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
