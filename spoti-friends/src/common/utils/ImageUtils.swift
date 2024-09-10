@@ -24,9 +24,9 @@ public func getAccentColorForImage(_ imageURLAsString: String) async throws -> U
 ///   - image: The image as a `UIImage`.
 ///
 /// - Returns: The the background color of the image as a `UIColor` or white as a default.
-public func getBackgroundColorForImage(_ image: UIImage?) -> UIColor {
+public func getBackgroundColorForImage(_ image: UIImage?, defaultColor: Color = Color(.white)) -> UIColor {
     let accentColor = image?.getColors()?.background
-    return accentColor ?? UIColor(.white)
+    return accentColor ?? UIColor(defaultColor)
 }
 
 /// Gets the profile picture named `imageName` from disk and returns as a `UIImage`.
