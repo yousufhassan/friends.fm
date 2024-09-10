@@ -8,6 +8,13 @@ import SwiftUI
 /// - Returns: A View that renders a list of tracks.
 struct TrackList: View {
     let tracks: [Track]
+    let showItemNumbers: Bool
+    
+    init(tracks: [Track], showItemNumbers: Bool = false) {
+        self.tracks = tracks
+        self.showItemNumbers = showItemNumbers
+    }
+    
     var body: some View {
         // Render loading placeholders while waiting for data
         if (tracks.isEmpty) {
@@ -17,9 +24,18 @@ struct TrackList: View {
         // Actual list once data is available
         else {
             VStack (alignment: .leading) {
-                ForEach(tracks) { track in
+                ForEach(tracks.indices, id: \.self) { index in
+                    let track = tracks[index]
+                    
                     Link(destination: URL(string: track.spotifyUri)!) {
                         HStack {
+                            if (showItemNumbers) {
+                                Text(String(index + 1))
+                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
+                                    .font(.footnote)
+                                    .frame(width: 20)
+                                    .padding(.trailing, 2)
+                            }
                             ImageWithSpecs(imageUrl: track.album?.image ?? "", width: 36, height: 36, cornerRadius: 2)
                             
                             VStack (alignment: .leading) {
@@ -42,6 +58,7 @@ struct TrackList: View {
                                         .foregroundStyle(Color.PresetColour.whiteSecondary)
                                     }
                                 }
+                                .lineLimit(1)
                             }
                             
                             Spacer() // To left align the content
