@@ -28,7 +28,7 @@ struct ProfileView: View {
                             .environmentObject(friendActivityViewModel)
                         
                         // Recent Tracks
-                        VStack (alignment: .leading, spacing: 16) {
+                        VStack (alignment: .leading) {
                             Text("Recent Songs")
                                 .font(.body)
                                 .foregroundStyle(Color.PresetColour.whitePrimary)
@@ -42,6 +42,7 @@ struct ProfileView: View {
                                 TrackList(tracks: recentTracks.tracks)
                                 ViewMoreButton(destination: ViewMoreRecentSongs(profile: profile)
                                     .environmentObject(profileViewModel))
+                                .padding(.top, 4)
                             }
                         }
                         
@@ -61,6 +62,9 @@ struct ProfileView: View {
                                     .padding(.vertical, 4)
                             } else {
                                 TrackList(tracks: topTracks.tracks)
+                                ViewMoreButton(destination: ViewMoreTopSongs(profile: profile)
+                                    .environmentObject(profileViewModel))
+                                .padding(.top, 4)
                             }
                         }
                         
@@ -99,9 +103,9 @@ struct ProfileView: View {
                     Task {
                         // Load tracks and artists data on appearance
                         // Comment out these lines for SwiftUI Previews
-//                         recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-//                         topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-//                         topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+                        recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                        topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                        topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
                     }
                 }
             }

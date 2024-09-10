@@ -1,28 +1,28 @@
 import SwiftUI
 
-/// A SwiftUI view that displays a user's recent songs.
+/// A SwiftUI view that displays a user's top songs.
 /// This view is part of a navigation stack and shows a scrollable list of tracks.
 ///
 /// - Parameters:
 ///   - profile: The Spotify Profile to show the data for.
-///   
-struct ViewMoreRecentSongs: View {
+///
+struct ViewMoreTopSongs: View {
     let profile: SpotifyProfile
-    @State private var recentTracks: ProfileViewModel.TracksWithResponseMetadata
+    @State private var topTracks: ProfileViewModel.TracksWithResponseMetadata
     @EnvironmentObject private var profileViewModel: ProfileViewModel
     
-    init(profile: SpotifyProfile, recentTracks: [Track] = []) {
+    init(profile: SpotifyProfile, topTracks: [Track] = []) {
         self.profile = profile
-        self.recentTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: recentTracks)
+        self.topTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: topTracks)
     }
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-                Text("Recent Songs")
+                Text("Top Songs")
                     .foregroundStyle(Color.PresetColour.whitePrimary)
                     .font(.title2)
-                TrackList(tracks: recentTracks.tracks)
+                TrackList(tracks: topTracks.tracks, showItemNumbers: true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20)
@@ -31,7 +31,7 @@ struct ViewMoreRecentSongs: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-                recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 20) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
             }
         }
     }
@@ -41,7 +41,7 @@ struct ViewMoreRecentSongs: View {
     ZStack {
         let user = UserMock.userJimHalpert
         let profile = SpotifyProfileMock.jimHalpert
-        let recentTracks = [
+        let topTracks = [
             TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
             TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
             TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
@@ -50,7 +50,7 @@ struct ViewMoreRecentSongs: View {
             TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
             TrackMock.iRememberEverything, TrackMock.luxury
         ]
-        ViewMoreRecentSongs(profile: profile, recentTracks: recentTracks)
+        ViewMoreTopSongs(profile: profile, topTracks: topTracks)
             .environmentObject(ProfileViewModel(user: user))
     }
 }
