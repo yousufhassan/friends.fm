@@ -9,6 +9,7 @@ import SwiftUI
 struct ViewMoreTopSongs: View {
     let profile: SpotifyProfile
     @State private var topTracks: ProfileViewModel.TracksWithResponseMetadata
+    @State private var selectedTimeRange: ProfileViewModel.TimeRange = .oneMonth
     @EnvironmentObject private var profileViewModel: ProfileViewModel
     
     init(profile: SpotifyProfile, topTracks: [Track] = []) {
@@ -22,6 +23,14 @@ struct ViewMoreTopSongs: View {
                 Text("Top Songs")
                     .foregroundStyle(Color.PresetColour.whitePrimary)
                     .font(.title2)
+                
+                HStack {
+                    Spacer()
+                    TimeRangeSelector(selectedTimeRange: $selectedTimeRange)
+                    Spacer()
+                }
+                .padding(.vertical, 8)
+                
                 TrackList(tracks: topTracks.tracks, showItemNumbers: true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -32,6 +41,18 @@ struct ViewMoreTopSongs: View {
         .onAppear {
             Task {
                 let response = await profileViewModel.viewMoreForCurrentUser(forItem: .topTracks)
+                switch response {
+                case .tracks(let tracksWithMetadata):
+                    topTracks = tracksWithMetadata ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                default:
+                    // It should not end up in this case.
+                    topTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                }
+            }
+        }
+        .onChange(of: selectedTimeRange) {
+            Task {
+                let response = await profileViewModel.viewMoreForCurrentUser(forItem: .topTracks, timeRange: selectedTimeRange)
                 switch response {
                 case .tracks(let tracksWithMetadata):
                     topTracks = tracksWithMetadata ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])

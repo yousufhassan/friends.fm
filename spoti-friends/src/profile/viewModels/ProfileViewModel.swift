@@ -5,26 +5,27 @@ class ProfileViewModel: ObservableObject {
     
     // Cached values are for the logged in user only
     private var cacheClearTimer: Timer?
-    @Published var cachedTopArtists: [Artist] = []
-    @Published var cachedTopTracks: [Track] = []
+    
+    @Published private var topTracksCache: [TimeRange: [Track]] = [:]
+    @Published private var topArtistsCache: [TimeRange: [Artist]] = [:]
     
     init(user: User){
         self.user = user
         startCacheTimer()
     }
     
-    // Start the timer to clear cache every 10 minutes
     private func startCacheTimer() {
-        cacheClearTimer = Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { [weak self] _ in
+        let twelveHoursinSeconds: TimeInterval = 43200
+        cacheClearTimer = Timer.scheduledTimer(withTimeInterval: twelveHoursinSeconds, repeats: true) { [weak self] _ in
             self?.clearCache()
         }
     }
     
-    // Clear cached top artists
+    // Clear cached top tracks and top artusts
     private func clearCache() {
-        cachedTopArtists.removeAll()
-        cachedTopTracks.removeAll()
-        print("Cache cleared")
+        topTracksCache.removeAll()
+        topArtistsCache.removeAll()
+        printInfo("Cleared Top Tracks and Artists cache.")
     }
     
     // Function to invalidate the timer when no longer needed
@@ -119,8 +120,11 @@ class ProfileViewModel: ObservableObject {
     @MainActor func getCurrentUsersTopTracks(timeRange: TimeRange, limit: Int)
     async -> TracksWithResponseMetadata? {
         // The cache should only be used for the "View more" screen – hence the check for limit == 20.
-        if (!self.cachedTopTracks.isEmpty && limit == 20) {
-            return TracksWithResponseMetadata(tracks: self.cachedTopTracks, isEmpty: self.cachedTopTracks.isEmpty)
+        if (limit == 20) {
+            if let tracks = getTopTracksFromCacheIfExists(timeRange: timeRange) {
+                printInfo("Found top tracks in cache for time range: \(timeRange)")
+                return TracksWithResponseMetadata(tracks: tracks, isEmpty: tracks.isEmpty)
+            }
         }
         
         do {
@@ -137,7 +141,8 @@ class ProfileViewModel: ObservableObject {
             
             // Only cache data when opening in "View more"
             if (limit == 20) {
-                self.cachedTopTracks = response.items
+                printInfo("Fetched top tracks from Spotify for time range: \(timeRange). Saved to cache.")
+                cacheThese(topTracks: response.items, forTimeRange: timeRange)
             }
             return TracksWithResponseMetadata(tracks: response.items, isEmpty: response.items.isEmpty)
         }
@@ -145,6 +150,14 @@ class ProfileViewModel: ObservableObject {
             printError("\(error)")
             return nil
         }
+    }
+    
+    private func getTopTracksFromCacheIfExists(timeRange: TimeRange) -> [Track]? {
+        return topTracksCache[timeRange]
+    }
+    
+    private func cacheThese(topTracks: [Track], forTimeRange timeRange: TimeRange) -> Void {
+        self.topTracksCache[timeRange] = topTracks
     }
     
     /// Fetches and returns the current user's top artists.
@@ -155,8 +168,11 @@ class ProfileViewModel: ObservableObject {
     @MainActor func getCurrentUsersTopArtists(timeRange: TimeRange, limit: Int)
     async -> ArtistsWithResponseMetadata? {
         // The cache should only be used for the "View more" screen – hence the check for limit == 20.
-        if (!self.cachedTopArtists.isEmpty && limit == 20) {
-            return ArtistsWithResponseMetadata(artists: self.cachedTopArtists, isEmpty: self.cachedTopArtists.isEmpty)
+        if (limit == 20) {
+            if let artists = getTopArtistsFromCacheIfExists(timeRange: timeRange) {
+                printInfo("Found top artists in cache for time range: \(timeRange)")
+                return ArtistsWithResponseMetadata(artists: artists, isEmpty: artists.isEmpty)
+            }
         }
         
         do {
@@ -173,7 +189,7 @@ class ProfileViewModel: ObservableObject {
             
             // Only cache data when opening in "View more"
             if (limit == 20) {
-                self.cachedTopArtists = response.items
+                cacheThese(topArtists: response.items, forTimeRange: timeRange)
             }
             return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
         }
@@ -182,6 +198,15 @@ class ProfileViewModel: ObservableObject {
             return nil
         }
     }
+    
+    private func getTopArtistsFromCacheIfExists(timeRange: TimeRange) -> [Artist]? {
+        return topArtistsCache[timeRange]
+    }
+    
+    private func cacheThese(topArtists: [Artist], forTimeRange timeRange: TimeRange) -> Void {
+        self.topArtistsCache[timeRange] = topArtists
+    }
+    
 }
 
 /// Contains the structs relevant to the ProfileViewModel.
@@ -223,10 +248,23 @@ extension ProfileViewModel {
     }
     
     /// The valid values for the `time_range` parameter for the `topTracks` and `topArtists` API endpoints.
-    enum TimeRange: String {
+    enum TimeRange: String, CaseIterable {
+        // These are values that are passed to the API call
         case oneMonth = "short_term"
         case sixMonths = "medium_term"
         case oneYear = "long_term"
+        
+        // These are values that are displayed on screen
+        var displayLabel: String {
+                switch self {
+                case .oneMonth:
+                    return "4 weeks"
+                case .sixMonths:
+                    return "6 months"
+                case .oneYear:
+                    return "1 year"
+                }
+            }
     }
     
     public class GetCurrentUserTopTracksResponse: Decodable {
