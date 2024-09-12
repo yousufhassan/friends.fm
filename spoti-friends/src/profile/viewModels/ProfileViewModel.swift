@@ -189,6 +189,7 @@ class ProfileViewModel: ObservableObject {
             
             // Only cache data when opening in "View more"
             if (limit == 20) {
+                printInfo("Fetched top artists from Spotify for time range: \(timeRange). Saved to cache.")
                 cacheThese(topArtists: response.items, forTimeRange: timeRange)
             }
             return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
