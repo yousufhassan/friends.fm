@@ -73,6 +73,7 @@
 		CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */; };
 		CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3CD2C8FCAA300D3D658 /* ViewMoreTopArtists.swift */; };
 		CBB1A3D02C933EBA00D3D658 /* TimeRangeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3CF2C933EBA00D3D658 /* TimeRangeSelector.swift */; };
+		CBB1A3D22C93942B00D3D658 /* ApiResponseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3D12C93942B00D3D658 /* ApiResponseObjects.swift */; };
 		CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F512C3673DB00442795 /* TimeUtils.swift */; };
 		CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F552C36770500442795 /* ListeningActivityDetails.swift */; };
 		CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F572C37A6B200442795 /* TrackTimestampView.swift */; };
@@ -158,6 +159,7 @@
 		CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTopSongs.swift; sourceTree = "<group>"; };
 		CBB1A3CD2C8FCAA300D3D658 /* ViewMoreTopArtists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTopArtists.swift; sourceTree = "<group>"; };
 		CBB1A3CF2C933EBA00D3D658 /* TimeRangeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangeSelector.swift; sourceTree = "<group>"; };
+		CBB1A3D12C93942B00D3D658 /* ApiResponseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResponseObjects.swift; sourceTree = "<group>"; };
 		CBC75F512C3673DB00442795 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		CBC75F552C36770500442795 /* ListeningActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityDetails.swift; sourceTree = "<group>"; };
 		CBC75F572C37A6B200442795 /* TrackTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTimestampView.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 			isa = PBXGroup;
 			children = (
 				CB3724992C3B2AA8004883D1 /* ProfileViewModel.swift */,
+				CBB1A3D12C93942B00D3D658 /* ApiResponseObjects.swift */,
 			);
 			path = viewModels;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				CB875CB72C35220C001B364D /* AlbumMock.swift in Sources */,
 				CBB1A3CA2C8E5A8200D3D658 /* ViewMoreRecentTracks.swift in Sources */,
 				CB0B93722C771BBB003A9720 /* Track.swift in Sources */,
+				CBB1A3D22C93942B00D3D658 /* ApiResponseObjects.swift in Sources */,
 				CB0B93682C7711F6003A9720 /* AlbumCoverPlaceholder.swift in Sources */,
 				CB3B61812C1F83AE0088DFA1 /* AuthenticatedView.swift in Sources */,
 				CB0B937F2C771D5D003A9720 /* CurrentOrMostRecentTrackMock.swift in Sources */,
