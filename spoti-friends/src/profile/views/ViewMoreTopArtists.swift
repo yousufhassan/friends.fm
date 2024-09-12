@@ -5,6 +5,8 @@ import SwiftUI
 ///
 /// - Parameters:
 ///   - profile: The Spotify Profile to show the data for.
+///   - topArtists: The top artists for this profile fro the `selectedTimeRange`.
+///   - selectedTimeRange: The time range to fetch the top artists data for (one month, six months, one year)
 ///
 struct ViewMoreTopArtists: View {
     let profile: SpotifyProfile
