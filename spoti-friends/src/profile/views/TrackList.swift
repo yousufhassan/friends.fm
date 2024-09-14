@@ -65,6 +65,7 @@ struct TrackList: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 4)
+                        .animation(.easeInOut(duration: 0.6), value: tracks)
                     }
                 }
             }

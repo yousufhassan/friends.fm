@@ -1,38 +1,56 @@
 import Foundation
 
+/// The `ProfileViewModel` class is responsible for managing and providing data related to the `ProfileView`
+/// and subviews. It handles fetching the user's top tracks, top artists, and recent tracks, and
+/// caches this data for quicker access.
+///
+/// The class includes a cache for the top tracks and top artists, which is periodically cleared
+/// to avoid stale data. Additionally, it manages asynchronous API calls to fetch the user's
+/// follower count, public playlist count, and profile items.
+///
+/// - Parameters:
+///   - user: The `User` object representing the currently logged-in user.
+///   - topTracksCache: A dictionary that caches the user's top tracks based on the time range.
+///   - topArtistsCache: A dictionary that caches the user's top artists based on the time range.
+///   - cacheClearTimer: A timer used to automatically clear the cache every 12 hours.
+///
 class ProfileViewModel: ObservableObject {
     @Published var user: User
-    
-    // Cached values are for the logged in user only
+    @Published private var topTracksCache: [TimeRange: [Track]] = [:]
+    @Published private var topArtistsCache: [TimeRange: [Artist]] = [:]
     private var cacheClearTimer: Timer?
-    @Published var cachedTopArtists: [Artist] = []
-    @Published var cachedTopTracks: [Track] = []
     
+    /// Initializes the `ProfileViewModel` with the specified `User` and starts the cache timer.
+    ///
+    /// - Parameter user: The currently logged-in `User` object.
     init(user: User){
         self.user = user
         startCacheTimer()
     }
     
-    // Start the timer to clear cache every 10 minutes
+    /// Starts a timer that clears the cache every 12 hours.
     private func startCacheTimer() {
-        cacheClearTimer = Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { [weak self] _ in
+        let twelveHoursinSeconds: TimeInterval = 43200
+        cacheClearTimer = Timer.scheduledTimer(withTimeInterval: twelveHoursinSeconds, repeats: true) { [weak self] _ in
             self?.clearCache()
         }
     }
     
-    // Clear cached top artists
+    /// Clears both the top tracks and top artists caches.
     private func clearCache() {
-        cachedTopArtists.removeAll()
-        cachedTopTracks.removeAll()
-        print("Cache cleared")
+        topTracksCache.removeAll()
+        topArtistsCache.removeAll()
+        printInfo("Cleared Top Tracks and Artists cache.")
     }
     
-    // Function to invalidate the timer when no longer needed
+    /// Invalidates the cache timer when the `ProfileViewModel` is deallocated.
     deinit {
         cacheClearTimer?.invalidate()
     }
     
-    /// Fetches and returns the follower count for the logged in user.
+    /// Fetches the current user's follower count from Spotify.
+    ///
+    /// - Returns: The number of followers the current user has, or `-1` if the fetch fails.
     @MainActor func getCurrentUsersFollowerCount() async -> Int {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
@@ -47,9 +65,11 @@ class ProfileViewModel: ObservableObject {
         return -1
     }
     
-    /// Fetches and returns the number of public playlists for the logged in user.
+    /// Fetches the current user's public playlist count from Spotify.
     ///
-    /// The endpoint only includes the user's public playlists, not their private playlists.
+    /// This count only includes public playlists.
+    ///
+    /// - Returns: The number of public playlists, or `-1` if the fetch fails.
     @MainActor func getCurrentUsersPlaylistCount() async -> Int {
         do {
             let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
@@ -70,6 +90,12 @@ class ProfileViewModel: ObservableObject {
         case topArtists
     }
     
+    /// Fetches the specified profile item (recent tracks, top tracks, or top artists) based on the time range.
+    ///
+    /// - Parameters:
+    ///   - forItem: The profile item to fetch (recent tracks, top tracks, or top artists).
+    ///   - timeRange: The time range over which to calculate the data. Default is `.oneMonth`.
+    /// - Returns: A `ProfileItemsResponse?` that contains either tracks or artists.
     @MainActor func viewMoreForCurrentUser(forItem: ProfileItems, timeRange: TimeRange = .oneMonth) async -> ProfileItemsResponse? {
         let limit = 20
         
@@ -86,10 +112,10 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
-    /// Fetches and returns the current user's recent tracks.
+    /// Fetches the current user's recent tracks.
     ///
-    /// - Parameters:
-    ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    /// - Parameter limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    /// - Returns: A `TracksWithResponseMetadata?` containing the user's recent tracks.
     @MainActor func getCurrentUsersRecentTracks(limit: Int)
     async -> TracksWithResponseMetadata? {
         do {
@@ -111,16 +137,20 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
-    /// Fetches and returns the current user's top tracks.
+    /// Fetches the current user's top tracks over the specified time range.
     ///
     /// - Parameters:
-    ///   - timeRange: Over what time frame the data is calculated.
+    ///   - timeRange: The time range over which to calculate the data.
     ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    /// - Returns: A `TracksWithResponseMetadata?` containing the user's top tracks.
     @MainActor func getCurrentUsersTopTracks(timeRange: TimeRange, limit: Int)
     async -> TracksWithResponseMetadata? {
         // The cache should only be used for the "View more" screen – hence the check for limit == 20.
-        if (!self.cachedTopTracks.isEmpty && limit == 20) {
-            return TracksWithResponseMetadata(tracks: self.cachedTopTracks, isEmpty: self.cachedTopTracks.isEmpty)
+        if (limit == 20) {
+            if let tracks = getTopTracksFromCacheIfExists(timeRange: timeRange) {
+                printInfo("Found top tracks in cache for time range: \(timeRange)")
+                return TracksWithResponseMetadata(tracks: tracks, isEmpty: tracks.isEmpty)
+            }
         }
         
         do {
@@ -137,7 +167,8 @@ class ProfileViewModel: ObservableObject {
             
             // Only cache data when opening in "View more"
             if (limit == 20) {
-                self.cachedTopTracks = response.items
+                printInfo("Fetched top tracks from Spotify for time range: \(timeRange). Saved to cache.")
+                cacheThese(topTracks: response.items, forTimeRange: timeRange)
             }
             return TracksWithResponseMetadata(tracks: response.items, isEmpty: response.items.isEmpty)
         }
@@ -147,16 +178,37 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
-    /// Fetches and returns the current user's top artists.
+    /// Retrieves the cached top tracks for the specified time range if they exist.
+    ///
+    /// - Parameter timeRange: The time range for the cached data.
+    /// - Returns: An optional array of `Track` objects if cached data is available.
+    private func getTopTracksFromCacheIfExists(timeRange: TimeRange) -> [Track]? {
+        return topTracksCache[timeRange]
+    }
+    
+    /// Caches the specified top tracks for the given time range.
     ///
     /// - Parameters:
-    ///   - timeRange: Over what time frame the data is calculated.
+    ///   - topTracks: An array of `Track` objects to cache.
+    ///   - timeRange: The time range for the cached data.
+    private func cacheThese(topTracks: [Track], forTimeRange timeRange: TimeRange) -> Void {
+        self.topTracksCache[timeRange] = topTracks
+    }
+    
+    /// Fetches the current user's top artists over the specified time range.
+    ///
+    /// - Parameters:
+    ///   - timeRange: The time range over which to calculate the data.
     ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    /// - Returns: An `ArtistsWithResponseMetadata?` containing the user's top artists.
     @MainActor func getCurrentUsersTopArtists(timeRange: TimeRange, limit: Int)
     async -> ArtistsWithResponseMetadata? {
         // The cache should only be used for the "View more" screen – hence the check for limit == 20.
-        if (!self.cachedTopArtists.isEmpty && limit == 20) {
-            return ArtistsWithResponseMetadata(artists: self.cachedTopArtists, isEmpty: self.cachedTopArtists.isEmpty)
+        if (limit == 20) {
+            if let artists = getTopArtistsFromCacheIfExists(timeRange: timeRange) {
+                printInfo("Found top artists in cache for time range: \(timeRange)")
+                return ArtistsWithResponseMetadata(artists: artists, isEmpty: artists.isEmpty)
+            }
         }
         
         do {
@@ -173,7 +225,8 @@ class ProfileViewModel: ObservableObject {
             
             // Only cache data when opening in "View more"
             if (limit == 20) {
-                self.cachedTopArtists = response.items
+                printInfo("Fetched top artists from Spotify for time range: \(timeRange). Saved to cache.")
+                cacheThese(topArtists: response.items, forTimeRange: timeRange)
             }
             return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
         }
@@ -182,102 +235,22 @@ class ProfileViewModel: ObservableObject {
             return nil
         }
     }
-}
-
-/// Contains the structs relevant to the ProfileViewModel.
-///
-/// Add the response objects for the relevant API endpoints. Only add fields we are interested in.
-extension ProfileViewModel {
-    private struct GetCurrentUserProfileResponse: Decodable {
-        let followers: Followers
-        
-        struct Followers: Decodable {
-            let total: Int
-        }
-    }
     
-    private struct GetCurrentUserPlayistsResponse: Decodable {
-        let total: Int
-    }
-    
-    private struct GetCurrentUserRecentTracksResponse: Decodable {
-        let items: [Items]
-        
-        struct Items: Decodable {
-            let track: Track
-        }
-        
-        /// Combines all nested `track` objects within `items` and returns it as an array.
-        func extractTracksFromItems() -> [Track] {
-            var tracks: [Track] = []
-            items.forEach { item in
-                tracks.append(item.track)
-            }
-            return tracks
-        }
-    }
-    
-    enum ProfileItemsResponse {
-        case tracks(TracksWithResponseMetadata?)
-        case artists(ArtistsWithResponseMetadata?)
-    }
-    
-    /// The valid values for the `time_range` parameter for the `topTracks` and `topArtists` API endpoints.
-    enum TimeRange: String {
-        case oneMonth = "short_term"
-        case sixMonths = "medium_term"
-        case oneYear = "long_term"
-    }
-    
-    public class GetCurrentUserTopTracksResponse: Decodable {
-        let items: [Track]
-    }
-    
-    /// A struct containing a list of `Track`s and some metadata about the response.
+    /// Retrieves the cached top artists for the specified time range if they exist.
     ///
-    /// The reason that there is an `isEmpty` attribute is for the purposes of differentiating between a request that
-    /// is still fetching data versus a request that has completed and returned no data (i.e. `tracks = []`). In the
-    /// `ProfileView`, we cannot simply call `tracks.isEmpty` (referring to the `tracks` array itself) because
-    /// it will return `true` even if the request has not completed. Therefore, by using this struct, we check for the
-    /// `TracksWithResponseMetadata.isEmpty` value, which will default to `false`, unless we specify
-    /// otherwise (which we do once the request has actually completed).
+    /// - Parameter timeRange: The time range for the cached data.
+    /// - Returns: An optional array of `Artist` objects if cached data is available.
+    private func getTopArtistsFromCacheIfExists(timeRange: TimeRange) -> [Artist]? {
+        return topArtistsCache[timeRange]
+    }
+    
+    /// Caches the specified top artists for the given time range.
     ///
     /// - Parameters:
-    ///   - tracks: An array of `Track` objects, potentially empty.
-    ///   - isEmpty: Boolean denoting whether or not the `tracks` array is empty or not.
-    struct TracksWithResponseMetadata {
-        let tracks: [Track]
-        let isEmpty: Bool
-        
-        init (tracks: [Track], isEmpty: Bool = false) {
-            self.tracks = tracks
-            self.isEmpty = isEmpty
-        }
+    ///   - topArtists: An array of `Artist` objects to cache.
+    ///   - timeRange: The time range for the cached data.
+    private func cacheThese(topArtists: [Artist], forTimeRange timeRange: TimeRange) -> Void {
+        self.topArtistsCache[timeRange] = topArtists
     }
     
-    public class GetCurrentUserTopArtistsResponse: Decodable {
-        let items: [Artist]
-    }
-    
-    /// A struct containing a list of `Artist`s and some metadata about the response.
-    ///
-    /// The reason that there is an `isEmpty` attribute is for the purposes of differentiating between a request that
-    /// is still fetching data versus a request that has completed and returned no data (i.e. `artists = []`). In the
-    /// `ProfileView`, we cannot simply call `artists.isEmpty` (referring to the `artists` array itself) because
-    /// it will return `true` even if the request has not completed. Therefore, by using this struct, we check for the
-    /// `ArtistsWithResponseMetadata.isEmpty` value, which will default to `false`, unless we specify
-    /// otherwise (which we do once the request has actually completed).
-    ///
-    /// - Parameters:
-    ///   - artists: An array of `Artist` objects, potentially empty.
-    ///   - isEmpty: Boolean denoting whether or not the `artists` array is empty or not.
-    struct ArtistsWithResponseMetadata {
-        let artists: [Artist]
-        let isEmpty: Bool
-        
-        init (artists: [Artist], isEmpty: Bool = false) {
-            self.artists = artists
-            self.isEmpty = isEmpty
-        }
-    }
 }
