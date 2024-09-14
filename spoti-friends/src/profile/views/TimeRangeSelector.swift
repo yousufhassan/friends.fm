@@ -18,11 +18,11 @@ struct TimeRangeSelector: View {
                     selectedTimeRange = timeRange
                 }) {
                     Text(timeRange.displayLabel)
-                        .padding(.horizontal)
-                        .padding(.vertical, 4)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 6)
                         .foregroundColor(Color.PresetColour.whitePrimary)
                         .background(selectedTimeRange == timeRange ? Color.PresetColour.spotifyGreen : Color.PresetColour.blackSecondary)
-                        .font(.subheadline)
+                        .font(.callout)
                 }
             }
         }
