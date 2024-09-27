@@ -8,6 +8,20 @@ struct FriendActivityView: View {
     
     var body: some View {
         VStack {
+            Button("button") {
+                let profile = AppwriteSpotifyProfile(spotifyId: "yousuf9", spotifyUri: "someUri",
+                                                     displayName: "yousuf", image: "someImage")
+                
+                let user = AppwriteUser(spotifyId: "yousuf9", spotifyProfile: profile,
+                                        authorizationCode: "someAuthCode")
+                Task {
+                    let encoder = JSONEncoder()
+                    let data = try? encoder.encode(user)
+                    
+                    await Appwrite.shared.createDocument(collectionId: "users", documentId: user._documentId, data: data!)
+                }
+            }
+            
             // Friend Activity Header
             PageTitle(pageTitle: "Friend Activity")
             
