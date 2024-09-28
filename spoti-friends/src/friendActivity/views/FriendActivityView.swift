@@ -12,8 +12,18 @@ struct FriendActivityView: View {
                 let profile = AppwriteSpotifyProfile(spotifyId: "yousuf9", spotifyUri: "someUri",
                                                      displayName: "yousuf", image: "someImage")
                 
+                let spDcCookie = AppwriteSpDcCookie(value: "cookieValue", expiresDate: Date())
+                
+                let friend1 = AppwriteSpotifyProfile(spotifyId: "friend1", spotifyUri: "someUri",
+                                                     displayName: "friend1", image: "someImage")
+                
+                let friend2 = AppwriteSpotifyProfile(spotifyId: "friend2", spotifyUri: "someUri",
+                                                     displayName: "friend2", image: "someImage")
+                
                 let user = AppwriteUser(spotifyId: "yousuf9", spotifyProfile: profile,
-                                        authorizationCode: "someAuthCode")
+                                        friends: [friend1, friend2],
+                                        authorizationCode: "someAuthCode",
+                                        spDcCookie: spDcCookie)
                 Task {
                     let encoder = JSONEncoder()
                     let data = try? encoder.encode(user)

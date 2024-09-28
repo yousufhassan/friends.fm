@@ -1,5 +1,6 @@
 import Foundation
 import RealmSwift
+import AppwriteModels
 
 /// Spotify Access Token Response Object
 ///
@@ -56,6 +57,16 @@ class SpotifyWebAccessToken: Object, Codable {
 class SpDcCookie: Object, Codable {
     @Persisted var value: String
     @Persisted var expiresDate: Date?
+}
+
+class AppwriteSpDcCookie: Codable {
+    var value: String
+    var expiresDate: String // Appwrite expects it as a ISO8601-string (stores it in UTC)
+    
+    init(value: String, expiresDate: Date) {
+        self.value = value
+        self.expiresDate = expiresDate.ISO8601Format()
+    }
 }
 
 
