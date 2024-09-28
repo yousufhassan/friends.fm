@@ -45,7 +45,9 @@ struct FriendActivityView: View {
             
             Button("get document") {
                 Task {
-                    await Appwrite.shared.getDocument(collectionId: "users", documentId: "yousuf9")
+//                    await Appwrite.shared.getDocument(collectionId: "users", documentId: "yousuf9")
+                    let userServiceManager = UserServiceManager()
+                    await userServiceManager.getUserFromDB(withSpotifyId: "yousuf9")
                 }
             }
             

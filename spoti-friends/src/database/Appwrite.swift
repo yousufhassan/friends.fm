@@ -52,7 +52,7 @@ class Appwrite {
             
             // TODO: Verify a successful response
             // verifyResponse(response)
-            printInfo("Document (id=\(response.id)) created in '\(response.collectionId)' collection")
+            printInfo("Created document (id=\(documentId)) in '\(collectionId)' collection.")
         } catch {
             printError("Error when trying to create Appwrite document.")
             printError("\(error)")
@@ -66,10 +66,27 @@ class Appwrite {
             
             let document = try await self.database.getDocument(databaseId: databaseId, collectionId: collectionId, documentId: documentId, queries: queries)
             
-            printInfo("Fetched document (id=\(document.id)) from '\(document.collectionId)' collection.")
+            printInfo("Retrieved document (id=\(documentId)) from '\(collectionId)' collection.")
             return document
         } catch {
             printError("Error when trying to get Appwrite document.")
+            printError("\(error)")
+            return nil
+        }
+    }
+    
+    public func listDocuments(databaseId: String? = nil, collectionId: String, queries: [String] = [])
+    async -> DocumentList<[String:AnyCodable]>? {
+        do {
+            let databaseId = databaseId ?? self.getDatabaseId()
+
+            let documentList = try await self.database.listDocuments(
+                databaseId: databaseId, collectionId: collectionId, queries: queries)
+            
+            printInfo("Retrieved \(documentList.total) document(s) from '\(collectionId)' collection.")
+            return documentList
+        } catch {
+            printError("Error when trying to list Appwrite documents.")
             printError("\(error)")
             return nil
         }

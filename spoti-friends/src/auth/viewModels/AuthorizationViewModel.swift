@@ -7,6 +7,7 @@ import WebKit
 class AuthorizationViewModel: ObservableObject {
     @Published var user: User
     @Published var authorizationStatus: AuthorizationStatus
+    let userServiceManager = UserServiceManager()
     private var notificationToken: NotificationToken?
     
     init() {
@@ -14,7 +15,9 @@ class AuthorizationViewModel: ObservableObject {
         
         // If we find a matching user in the database, set that as current user.
         // Otherwise, this is a new user.
+        
         let signedInUser = getStringFromUserDefaultsValueForKey("signedInUser")
+//        let existingUser: AppwriteUser?
         let existingUser: User? = realm.objects(User.self).where { $0.spotifyId == signedInUser }.first
         self.user = existingUser ?? User()
         self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
