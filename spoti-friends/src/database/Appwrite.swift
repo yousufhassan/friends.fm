@@ -34,11 +34,11 @@ class Appwrite {
     }
     
     
+    // TODO: Add docs
     public func createDocument(databaseId: String? = nil, collectionId: String, documentId: String,
                                data: Data, permissions: [String] = []) async {
         do {
-            // Use "friends-fm" as the databaseId unless otherwise passed in
-            let databaseId = databaseId ?? self.databaseId
+            let databaseId = databaseId ?? self.getDatabaseId()
             guard let data = remove$IdFieldFromData(data) else {
                 throw AppwriteDocumentError.dataTransformationFailed
             }
@@ -58,6 +58,24 @@ class Appwrite {
         }
     }
     
+    public func getDocument(databaseId: String? = nil, collectionId: String, documentId: String,
+                            queries: [String] = []) async -> Any? {
+        do {
+            let databaseId = databaseId ?? self.getDatabaseId()
+            
+            let document = try await self.database.getDocument(databaseId: databaseId, collectionId: collectionId, documentId: documentId, queries: queries)
+            
+            printInfo("Fetched document with ID: \(documentId) from \(collectionId) collection.")
+            return document
+        } catch {
+            printError("Error when trying to get Appwrite document.")
+            printError("\(error)")
+            return nil
+        }
+    }
+    
+    
+    // TODO: Add docs
     private func remove$IdFieldFromData(_ data: Data) -> Data? {
         if var jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             jsonObject.removeValue(forKey: "$id")

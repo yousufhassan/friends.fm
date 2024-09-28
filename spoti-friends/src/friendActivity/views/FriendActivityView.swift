@@ -8,7 +8,7 @@ struct FriendActivityView: View {
     
     var body: some View {
         VStack {
-            Button("button") {
+            Button("create document") {
                 let profile = AppwriteSpotifyProfile(spotifyId: "yousuf9", spotifyUri: "someUri",
                                                      displayName: "yousuf", image: "someImage")
                 
@@ -19,6 +19,12 @@ struct FriendActivityView: View {
                     let data = try? encoder.encode(user)
                     
                     await Appwrite.shared.createDocument(collectionId: "users", documentId: user._documentId, data: data!)
+                }
+            }
+            
+            Button("get document") {
+                Task {
+                    await Appwrite.shared.getDocument(collectionId: "users", documentId: "yousuf9")
                 }
             }
             
