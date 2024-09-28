@@ -28,7 +28,7 @@ struct FriendActivityView: View {
                     let encoder = JSONEncoder()
                     let data = try? encoder.encode(user)
                     
-                    await Appwrite.shared.createDocument(collectionId: "users", documentId: user._documentId, data: data!)
+                    await Appwrite.shared.createDocument(collectionId: "users", documentId: user.spotifyId, data: data!)
                 }
             }
             

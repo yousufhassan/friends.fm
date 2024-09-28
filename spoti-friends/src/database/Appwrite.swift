@@ -52,7 +52,7 @@ class Appwrite {
             
             // TODO: Verify a successful response
             // verifyResponse(response)
-            printInfo("Document created.")
+            printInfo("Document (id=\(response.id) created in '\(response.collectionId)' collection")
         } catch {
             printError("Error when trying to create Appwrite document.")
             printError("\(error)")
@@ -66,7 +66,7 @@ class Appwrite {
             
             let document = try await self.database.getDocument(databaseId: databaseId, collectionId: collectionId, documentId: documentId, queries: queries)
             
-            printInfo("Fetched document with ID: \(documentId) from \(collectionId) collection.")
+            printInfo("Fetched document (id=\(document.id)) from '\(document.collectionId)' collection.")
             return document
         } catch {
             printError("Error when trying to get Appwrite document.")
