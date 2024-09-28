@@ -48,6 +48,31 @@ class SpotifyWebAccessToken: Object, Codable {
     }
 }
 
+class AppwriteSpotifyWebAccessToken: Codable {
+    var access_token: String
+    var token_type: String
+    var scope: String
+    var expires_in: Int
+    var refresh_token: String
+    var accessTokenExpirationTimestampMs: Double
+    
+    init(access_token: String, token_type: String, scope: String, expires_in: Int,
+         refresh_token: String, accessTokenExpirationTimestampMs: Double) {
+        self.access_token = access_token
+        self.token_type = token_type
+        self.scope = scope
+        self.expires_in = expires_in
+        self.refresh_token = refresh_token
+        self.accessTokenExpirationTimestampMs = accessTokenExpirationTimestampMs
+    }
+    
+    public func setExpiryTimestamp() {
+        let currentDate = Date()
+        let oneHourFromNow = currentDate.addingTimeInterval(3600)
+        self.accessTokenExpirationTimestampMs = oneHourFromNow.timeIntervalSince1970 * 1000
+    }
+}
+
 
 /// Representation of the relevant fields for the `sp_dc` cookie.
 ///
@@ -82,4 +107,18 @@ class InternalAPIAccessToken: Object, Codable {
     @Persisted var accessToken: String
     @Persisted var accessTokenExpirationTimestampMs: Double
     @Persisted var isAnonymous: Bool
+}
+
+class AppwriteInternalAPIAccessToken: Codable {
+    var clientId: String
+    var accessToken: String
+    var accessTokenExpirationTimestampMs: Double
+    var isAnonymous: Bool
+    
+    init(clientId: String, accessToken: String, accessTokenExpirationTimestampMs: Double, isAnonymous: Bool) {
+        self.clientId = clientId
+        self.accessToken = accessToken
+        self.accessTokenExpirationTimestampMs = accessTokenExpirationTimestampMs
+        self.isAnonymous = isAnonymous
+    }
 }

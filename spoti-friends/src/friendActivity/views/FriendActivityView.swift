@@ -20,9 +20,20 @@ struct FriendActivityView: View {
                 let friend2 = AppwriteSpotifyProfile(spotifyId: "friend2", spotifyUri: "someUri",
                                                      displayName: "friend2", image: "someImage")
                 
+                let accessToken = AppwriteSpotifyWebAccessToken(
+                    access_token: "tokenValue", token_type: "someType", scope: "scopesHere",
+                    expires_in: 3600, refresh_token: "refreshToken",
+                    accessTokenExpirationTimestampMs: 932847239879)
+                
+                let internalToken = AppwriteInternalAPIAccessToken(
+                clientId: "clientId", accessToken: "accessToken",
+                accessTokenExpirationTimestampMs: 23832849387, isAnonymous: false)
+                
                 let user = AppwriteUser(spotifyId: "yousuf9", spotifyProfile: profile,
                                         friends: [friend1, friend2],
                                         authorizationCode: "someAuthCode",
+                                        spotifyWebAcessToken: accessToken,
+                                        internalAPIAccessToken: internalToken,
                                         spDcCookie: spDcCookie)
                 Task {
                     let encoder = JSONEncoder()

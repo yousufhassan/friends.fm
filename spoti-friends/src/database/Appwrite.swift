@@ -52,7 +52,7 @@ class Appwrite {
             
             // TODO: Verify a successful response
             // verifyResponse(response)
-            printInfo("Document (id=\(response.id) created in '\(response.collectionId)' collection")
+            printInfo("Document (id=\(response.id)) created in '\(response.collectionId)' collection")
         } catch {
             printError("Error when trying to create Appwrite document.")
             printError("\(error)")
