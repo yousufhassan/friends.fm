@@ -1,5 +1,6 @@
 import Foundation
 import Appwrite
+import JSONCodable
 
 class Appwrite {
     static let shared = Appwrite()
@@ -59,7 +60,7 @@ class Appwrite {
     }
     
     public func getDocument(databaseId: String? = nil, collectionId: String, documentId: String,
-                            queries: [String] = []) async -> Any? {
+                            queries: [String] = []) async -> Document<[String:AnyCodable]>? {
         do {
             let databaseId = databaseId ?? self.getDatabaseId()
             
