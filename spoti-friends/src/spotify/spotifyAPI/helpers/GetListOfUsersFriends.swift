@@ -10,10 +10,10 @@ extension SpotifyAPI {
     ///   - data: Data object returned from `buddylist` endpoint.
     ///
     /// - Returns: A list of the user's friends as `SpotifyProfile` objects.
-    internal func convertDataToFriendList(_ data: Data) throws -> [SpotifyProfile] {
+    internal func convertDataToFriendList(_ data: Data) throws -> [AppwriteSpotifyProfile] {
         do {
             let buddylistResponseObject = try JSONDecoder().decode(BuddylistResponseObject.self, from: data)
-            var friendList: [SpotifyProfile] = []
+            var friendList: [AppwriteSpotifyProfile] = []
             for friendObject in buddylistResponseObject.friends {
                 friendList.append(friendObjectToSpotifyProfile(friendObject))
             }
@@ -30,15 +30,14 @@ extension SpotifyAPI {
     ///   - friendObject: The friend object to convert.
     ///
     /// - Returns: The friend as a `SpotifyProfile` object.
-    private func friendObjectToSpotifyProfile(_ friendObject: BuddylistFriendObject) -> SpotifyProfile {
-        let spotifyProfile = SpotifyProfile()
-        spotifyProfile.spotifyId = spotifyProfile.getSpotifyIdFromUri(spotifyUri: friendObject.user.uri)
-        spotifyProfile.spotifyUri = friendObject.user.uri
-        spotifyProfile.displayName = friendObject.user.name
-        spotifyProfile.image = friendObject.user.imageUrl ?? ""
-        spotifyProfile.currentOrMostRecentTrack = getCurrentOrMostRecentTrackForFriend(friendObject)
+    private func friendObjectToSpotifyProfile(_ friendObject: BuddylistFriendObject) -> AppwriteSpotifyProfile {
+        let spotifyId = AppwriteSpotifyProfile.getSpotifyIdFromUri(spotifyUri: friendObject.user.uri)
+        let spotifyUri = friendObject.user.uri
+        let displayName = friendObject.user.name
+        let image = friendObject.user.imageUrl ?? ""
+//        spotifyProfile.currentOrMostRecentTrack = getCurrentOrMostRecentTrackForFriend(friendObject)
         
-        return spotifyProfile
+        return AppwriteSpotifyProfile(spotifyId: spotifyId, spotifyUri: spotifyUri, displayName: displayName, image: image)
     }
     
     /// Creates and returns the `CurrentOrMostRecentTrack` for the friend from the `/buddylist` endpoint response object.

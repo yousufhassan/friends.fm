@@ -1,34 +1,47 @@
 import Foundation
 import SwiftUI
-import RealmSwift
+//import RealmSwift
 import WebKit
 
 /// The viewmodel used for the views involving the authorization code flow.
 class AuthorizationViewModel: ObservableObject {
-    @Published var user: User
-    @Published var authorizationStatus: AuthorizationStatus
-    let userServiceManager = UserServiceManager()
-    private var notificationToken: NotificationToken?
+    //    @Published var user: User
+    @Published var user: AppwriteUser?
+    @Published var spDcCookie: AppwriteSpDcCookie?
+    @Published var authorizationStatus: AppwriteAuthorizationStatus = .unauthenticated
+    //    private var notificationToken: NotificationToken?
     
     init() {
-        let realm = RealmDatabase.shared.getRealmInstance()
+        //        let realm = RealmDatabase.shared.getRealmInstance()
         
         // If we find a matching user in the database, set that as current user.
         // Otherwise, this is a new user.
+        //        let signedInUser = getStringFromUserDefaultsValueForKey("signedInUser")
+        //        let existingUser = await userServiceManager.getUserFromDB(withSpotifyId: user.spotifyId)
+        //        self.user = existingUser
+        //        self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
         
-        let signedInUser = getStringFromUserDefaultsValueForKey("signedInUser")
-//        let existingUser: AppwriteUser?
-        let existingUser: User? = realm.objects(User.self).where { $0.spotifyId == signedInUser }.first
-        self.user = existingUser ?? User()
-        self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
-        
-        self.notificationToken = realm.observe { [weak self] _, _ in
-            self?.objectWillChange.send()
-        }
+        //        self.notificationToken = realm.observe { [weak self] _, _ in
+        //            self?.objectWillChange.send()
+        //        }
     }
     
-    deinit {
-        notificationToken?.invalidate()
+    /// Asynchronously fetches the signed-in user from the database and updates the state.
+    ///
+    /// This method retrieves the signed-in user's Spotify ID from UserDefaults and
+    /// attempts to fetch the corresponding user from the database. If a user is found,
+    /// it updates the `user` and `authorizationStatus` properties accordingly.
+    ///
+    /// - Note: The method updates the properties on the main thread to ensure UI consistency.
+    func fetchAndUpdateUser() async {
+        let signedInUserId = getStringFromUserDefaultsValueForKey("signedInUserId")
+        let existingUser = await UserServiceManager.shared.getUserFromDB(withSpotifyId: signedInUserId)
+        
+        // TODO: Test what happens when I remove the `main.async` code. Can I remove it?
+        DispatchQueue.main.async {
+            self.user = existingUser
+            self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
+        }
     }
     
     
@@ -42,9 +55,9 @@ class AuthorizationViewModel: ObservableObject {
             }
         }
         
-        storeInUserDefaults(key: "signedInUser", value: "")
+        storeInUserDefaults(key: "signedInUserId", value: "")
         storeInUserDefaults(key: "code_verifier", value: "")
-        self.user = User()
+        self.user = nil
         self.authorizationStatus = .unauthenticated
     }
     
@@ -54,23 +67,42 @@ class AuthorizationViewModel: ObservableObject {
     }
     
     /// Handler for when the user has completed the Spotify authorization process and is redirected back to the app.
-    public func handleRedirectBackToApp(_ responseUrl: URL) -> Void {
+    public func handleRedirectBackToApp(_ responseUrl: URL) async -> Void {
         Task {
-            self.authorizationStatus = await SpotifyAuth.shared.handleResponseUrl(user: self.user, url: responseUrl)
+            self.authorizationStatus = await SpotifyAuth.shared
+                .handleResponseUrl(url: responseUrl, user: &self.user, spDcCookie: self.spDcCookie)
         }
     }
     
-    /// Handler for when the `sp_dc` cookie is fetched. It stores the cookie value in the user object, but does not save to database yet.
+    /// Handles the fetched `sp_dc` cookie.
+    ///
+    /// This method converts the provided `HTTPCookie` into an `AppwriteSpDcCookie` and stores it in the ViewModel.
+    ///
+    /// - Parameter cookie: An optional `HTTPCookie` that contains the `sp_dc` value.
+    /// - Throws: `AuthorizationError.cannotConvertSpDcCookie` if the conversion fails.
     public func handleFetchedSpDcCookie(_ cookie: HTTPCookie?) -> Void {
-        let spDcCookie = convertToSpDcCookie(cookie)
-        self.user.spDcCookie = spDcCookie
+        do {
+            let spDcCookie = try convertToSpDcCookie(cookie)
+            self.spDcCookie = spDcCookie
+        } catch {
+            printError("Error when trying to handle fetching of the sp_dc cookie.")
+        }
     }
     
-    /// Converts the cookie from Spotify from type `HTTPCookie` to `SpDcCookie`.'
-    private func convertToSpDcCookie(_ cookie: HTTPCookie?) -> SpDcCookie {
-        let spDcCookie = SpDcCookie()
-        spDcCookie.value = cookie?.value ?? ""
-        spDcCookie.expiresDate = cookie?.expiresDate
-        return spDcCookie
+    /// Converts an optional `HTTPCookie` to an `AppwriteSpDcCookie`.
+    ///
+    /// This function extracts the value and expiration date from the provided cookie,
+    /// throwing an error if the cookie is nil or if either the value or expiration date
+    /// cannot be obtained.
+    ///
+    /// - Parameter cookie: An optional `HTTPCookie` to convert.
+    /// - Throws: `AuthorizationError.cannotGetSpdcCookie` if the cookie is nil,
+    ///           or if the value or expiration date cannot be retrieved.
+    /// - Returns: An `AppwriteSpDcCookie` object containing the extracted value and expiration date.
+    private func convertToSpDcCookie(_ cookie: HTTPCookie?) throws -> AppwriteSpDcCookie {
+        guard let value = cookie?.value, let expiresDate = cookie?.expiresDate else {
+            throw AuthorizationError.cannotConvertSpDcCookie
+        }
+        return AppwriteSpDcCookie(value: value, expiresDate: expiresDate)
     }
 }

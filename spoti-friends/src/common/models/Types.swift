@@ -54,7 +54,7 @@ class AppwriteSpotifyWebAccessToken: Codable {
     var scope: String
     var expires_in: Int
     var refresh_token: String
-    var accessTokenExpirationTimestampMs: Double
+    var accessTokenExpirationTimestampMs: Int
     
     init(access_token: String, token_type: String, scope: String, expires_in: Int,
          refresh_token: String, accessTokenExpirationTimestampMs: Double) {
@@ -63,13 +63,23 @@ class AppwriteSpotifyWebAccessToken: Codable {
         self.scope = scope
         self.expires_in = expires_in
         self.refresh_token = refresh_token
-        self.accessTokenExpirationTimestampMs = accessTokenExpirationTimestampMs
+        self.accessTokenExpirationTimestampMs = Int(accessTokenExpirationTimestampMs)
     }
     
-    public func setExpiryTimestamp() {
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.access_token = try container.decode(String.self, forKey: .access_token)
+        self.token_type = try container.decode(String.self, forKey: .token_type)
+        self.scope = try container.decode(String.self, forKey: .scope)
+        self.expires_in = try container.decode(Int.self, forKey: .expires_in)
+        self.refresh_token = try container.decode(String.self, forKey: .refresh_token)
+        self.accessTokenExpirationTimestampMs = Int(AppwriteSpotifyWebAccessToken.getExpiryTimestamp())
+    }
+    
+    static public func getExpiryTimestamp() -> TimeInterval {
         let currentDate = Date()
         let oneHourFromNow = currentDate.addingTimeInterval(3600)
-        self.accessTokenExpirationTimestampMs = oneHourFromNow.timeIntervalSince1970 * 1000
+        return oneHourFromNow.timeIntervalSince1970 * 1000
     }
 }
 
@@ -112,13 +122,13 @@ class InternalAPIAccessToken: Object, Codable {
 class AppwriteInternalAPIAccessToken: Codable {
     var clientId: String
     var accessToken: String
-    var accessTokenExpirationTimestampMs: Double
+    var accessTokenExpirationTimestampMs: Int
     var isAnonymous: Bool
     
     init(clientId: String, accessToken: String, accessTokenExpirationTimestampMs: Double, isAnonymous: Bool) {
         self.clientId = clientId
         self.accessToken = accessToken
-        self.accessTokenExpirationTimestampMs = accessTokenExpirationTimestampMs
+        self.accessTokenExpirationTimestampMs = Int(accessTokenExpirationTimestampMs)
         self.isAnonymous = isAnonymous
     }
 }

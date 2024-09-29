@@ -81,11 +81,11 @@ struct FriendActivityView: View {
             }
         }
         .refreshable {
-            try? await friendActivityViewModel.setFriendActivity()
+//            try? await friendActivityViewModel.setFriendActivity()
         }
         .onAppear {
             Task {
-                try? await friendActivityViewModel.setFriendActivity()
+//                try? await friendActivityViewModel.setFriendActivity()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

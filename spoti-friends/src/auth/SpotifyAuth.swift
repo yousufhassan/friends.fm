@@ -24,29 +24,32 @@ class SpotifyAuth {
     }
     
     /// Handles the response from the Spotify authorization flow depending on whether the user granted authorization or denied authorization.
-    @MainActor func handleResponseUrl(user: User, url: URL) async -> AuthorizationStatus {
+    @MainActor func handleResponseUrl(url: URL, user: inout AppwriteUser?, spDcCookie: AppwriteSpDcCookie?)
+    async -> AppwriteAuthorizationStatus {
         do {
+            if (spDcCookie == nil) {
+                throw AuthorizationError.missingSpDcCookie
+            }
+            
             guard let responseUrlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
                   let queryItems = responseUrlComponents.queryItems
             else { throw URLError(.badURL) }
             
-            if (!userGrantedAuthorization(queryItems)) {
-                return .denied
+            if (!userGrantedAuthorization(queryItems)) { return .denied }
+            
+            if (user == nil) {
+                user = try await createUser(queryItems: queryItems, spDcCookie: spDcCookie!);
             }
             
-            if (user.isEmpty()) {
-                try await populateUserWithData(user, queryItems: queryItems);
-            }
-            
-            if (await userExistsInDatabase(user)) {
-                storeSignedInUser(user)
+            guard let currentUser = user else { throw AuthorizationError.missingUser }
+            storeSignedInUser(currentUser)
+            if (await UserServiceManager.shared.userExists(withSpotifyId: currentUser.spotifyId)) {
                 return .granted
             }
             
-            storeSignedInUser(user)
-            user.setAuthorizationStatusAs(.granted)
-            await user.spotifyProfile?.storeProfilePictureLocally()
-            await RealmDatabase.shared.addToRealm(object: user);
+            await currentUser.spotifyProfile.storeProfilePictureLocally()
+//            await RealmDatabase.shared.addToRealm(object: user);
+            await UserServiceManager.shared.saveUserToDB(currentUser)
             return .granted
         } catch {
             printError("\(error)")
@@ -55,38 +58,29 @@ class SpotifyAuth {
     }
     
     /// Populates the `user` fields with their data.
-    @MainActor private func populateUserWithData(_ user: User, queryItems: [URLQueryItem]) async throws -> Void {
+    @MainActor private func createUser(queryItems: [URLQueryItem], spDcCookie: AppwriteSpDcCookie)
+    async throws -> AppwriteUser {
         let authorizationCode = try getAuthorizationCodeFromQueryItems(queryItems)
-        user.setAuthorizationCode(authorizationCode)
-        
         let spotifyWebAccessToken = try await requestAccessTokenObject(authorizationCode: authorizationCode)
-        user.setSpotifyWebAccessToken(spotifyWebAccessToken!)
-        
-        let internalAPIAccessToken = try await fetchInternalAPIAccessToken(spDcCookieValue: user.spDcCookie!.value, existingToken: user.internalAPIAccessToken)
-        user.setInternalAPIAccessToken(internalAPIAccessToken)
-        
-        let spotifyProfile: SpotifyProfile = try await SpotifyAPI.shared.fetch(method: .GET,
-                                                                               endpoint: .getCurrentUsersProfile,
-                                                                               responseType: SpotifyProfile.self,
-                                                                               accessToken: spotifyWebAccessToken?.access_token ?? "")
-        
-        let realm = try! await Realm()
-        
-        // A new user may already have a SpotifyProfile in the database, if an existing user has them as a friend.
-        // If so, use the existing profile to avoid creating another SpotifyProfile with a duplicate primary key.
-        let existingProfile = realm.object(ofType: SpotifyProfile.self, forPrimaryKey: spotifyProfile.spotifyId)
-        user.setSpotifyProfile(existingProfile ?? spotifyProfile)
-        user.setSpotifyId(spotifyProfile.spotifyId)
-        
-        // Same as above.
-        // The friend of a new user may already have a SpotifyProfile in the database, if an existing user is also friends with them.
-        // If so, use the existing profile to avoid creating another SpotifyProfile with a duplicate primary key.
-        let friends = try await SpotifyAPI.shared.getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.accessToken)
-        for friend in friends {
-            let existingProfile = realm.object(ofType: SpotifyProfile.self, forPrimaryKey: friend.spotifyId)
-            user.friends.append(existingProfile ?? friend)
-            if existingProfile == nil { await RealmDatabase.shared.addToRealm(object: friend); }
-        }
+        let internalAPIAccessToken = try await fetchInternalAPIAccessToken(spDcCookie: spDcCookie)
+
+        let spotifyProfile = try await SpotifyAPI.shared
+            .fetch(method: .GET,
+                   endpoint: .getCurrentUsersProfile,
+                   responseType: AppwriteSpotifyProfile.self,
+                   accessToken: spotifyWebAccessToken.access_token)
+
+        let friends = try await SpotifyAPI.shared
+            .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.accessToken)
+
+        return AppwriteUser(spotifyId: spotifyProfile.spotifyId,
+                            spotifyProfile: spotifyProfile,
+                            friends: friends,
+                            authorizationCode: authorizationCode,
+                            spotifyWebAcessToken: spotifyWebAccessToken,
+                            internalAPIAccessToken: internalAPIAccessToken,
+                            authorizationStatus: .granted,
+                            spDcCookie: spDcCookie)
     }
     
     /// Returns `true` if the `user` already exists in the database and `false` otherwise.
@@ -101,8 +95,8 @@ class SpotifyAuth {
     }
     
     /// Stores the user as the signed in user in `UserDefaults`.
-    private func storeSignedInUser(_ user: User) -> Void {
-        storeInUserDefaults(key: "signedInUser", value: user.spotifyId)
+    private func storeSignedInUser(_ user: AppwriteUser) -> Void {
+        storeInUserDefaults(key: "signedInUserId", value: user.spotifyId)
     }
     
     /// Returns `true` if user granted authorization to the application and response included the "code" value; `false`, otherwise.
@@ -112,7 +106,9 @@ class SpotifyAuth {
     
     /// Parses the `queryItems` and returns the authorization code.
     private func getAuthorizationCodeFromQueryItems(_ queryItems: [URLQueryItem]) throws -> String {
-        guard let code = queryItems.first(where: { $0.name == "code" })?.value else { throw AuthorizationError.cannotExtractCode }
+        guard let code = queryItems.first(where: { $0.name == "code" })?.value else {
+            throw AuthorizationError.cannotExtractCode
+        }
         return code
     }
     
@@ -141,11 +137,11 @@ class SpotifyAuth {
     }
     
     /// Requests and returns a Spotify Web Access Ttoken object.
-    private func requestAccessTokenObject(authorizationCode: String) async throws -> SpotifyWebAccessToken? {
+    private func requestAccessTokenObject(authorizationCode: String) async throws -> AppwriteSpotifyWebAccessToken {
         do {
             let request = try constructAccessTokenUrlRequest(authorizationCode: authorizationCode)
             let (data, _) = try await URLSession.shared.data(for: request)
-            let accessToken = try JSONDecoder().decode(SpotifyWebAccessToken.self, from: data)
+            let accessToken = try JSONDecoder().decode(AppwriteSpotifyWebAccessToken.self, from: data)
             return accessToken
         } catch {
             printError("\(error)")
@@ -201,9 +197,12 @@ class SpotifyAuth {
     ///   - existingToken: An optional token if it already exists.
     ///
     /// - Returns: The **internal** Spotify Web Player Access Token .
-    @MainActor public func fetchInternalAPIAccessToken(spDcCookieValue: String, existingToken: InternalAPIAccessToken?) async throws -> InternalAPIAccessToken {
+    @MainActor public func fetchInternalAPIAccessToken
+    (spDcCookie: AppwriteSpDcCookie, existingToken: AppwriteInternalAPIAccessToken? = nil)
+    async throws -> AppwriteInternalAPIAccessToken {
         // If there as an existing token that is still valid, return that. Otherwise return a new token.
-        if existingToken != nil && !accessTokenIsExpired(existingToken!.accessTokenExpirationTimestampMs) {
+        if (existingToken != nil && !accessTokenIsExpired(Double(existingToken!.accessTokenExpirationTimestampMs)))
+        {
             return existingToken!
         }
         
@@ -211,9 +210,9 @@ class SpotifyAuth {
             throw URLError(.badURL)
         }
         var request = URLRequest(url: endpointURL)
-        request.setValue("sp_dc=\(spDcCookieValue)", forHTTPHeaderField: "Cookie")
+        request.setValue("sp_dc=\(spDcCookie.value)", forHTTPHeaderField: "Cookie")
         let (data, _) = try await URLSession.shared.data(for: request)
-        let internalAPIAccessToken = try JSONDecoder().decode(InternalAPIAccessToken.self, from: data)
+        let internalAPIAccessToken = try JSONDecoder().decode(AppwriteInternalAPIAccessToken.self, from: data)
         return internalAPIAccessToken
     }
     

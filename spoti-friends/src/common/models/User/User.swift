@@ -101,24 +101,24 @@ class User: Object {
     }
     
     /// Gets the user's `internalAPIAccessToken`.
-    @MainActor public func getInternalAPIAccessToken() async throws -> InternalAPIAccessToken {
-        do {
-            guard let cookie: String = self.spDcCookie?.value else { throw AppError(.valueNotFound) }
-            let token = try await SpotifyAuth.shared.fetchInternalAPIAccessToken(spDcCookieValue: cookie, existingToken: self.internalAPIAccessToken)
-            
-            // Store the new token since the existing one expired
-            if token != self.internalAPIAccessToken {
-                RealmDatabase.shared.updateObjectInRealm {
-                    self.setInternalAPIAccessToken(token)
-                }
-            }
-            
-            return token
-        } catch {
-            printError("\(error)")
-            throw error
-        }
-    }
+//    @MainActor public func getInternalAPIAccessToken() async throws -> InternalAPIAccessToken {
+//        do {
+//            guard let cookie: String = self.spDcCookie?.value else { throw AppError(.valueNotFound) }
+//            let token = try await SpotifyAuth.shared.fetchInternalAPIAccessToken(spDcCookieValue: cookie, existingToken: self.internalAPIAccessToken)
+//            
+//            // Store the new token since the existing one expired
+//            if token != self.internalAPIAccessToken {
+//                RealmDatabase.shared.updateObjectInRealm {
+//                    self.setInternalAPIAccessToken(token)
+//                }
+//            }
+//            
+//            return token
+//        } catch {
+//            printError("\(error)")
+//            throw error
+//        }
+//    }
     
     /// Sets the user's `authorizationStatus` as `status`.
     public func setAuthorizationStatusAs(_ status: AuthorizationStatus) -> Void {

@@ -2,6 +2,7 @@ import Foundation
 import Appwrite
 import JSONCodable
 
+/// A singleton service class for interacting with Appwrite's Client and Database.
 class Appwrite {
     static let shared = Appwrite()
     private var client: Client
@@ -35,14 +36,27 @@ class Appwrite {
     }
     
     
-    // TODO: Add docs
-    public func createDocument(databaseId: String? = nil, collectionId: String, documentId: String,
+    /// Creates a new document in the specified Appwrite collection.
+    ///
+    /// - Parameters:
+    ///   - databaseId: Optional. The database ID. If nil, the default database ID is used.
+    ///   - collectionId: The ID of the collection where the document will be created.
+    ///   - documentId: Optional. The ID of the document to create. If not passed in, a random ID will be assigned.
+    ///   - data: The `Data` object representing the document content.
+    ///   - permissions: Optional. A list of permissions to assign to the document.
+    ///
+    /// - Throws: Throws an error if the document creation fails.
+    ///
+    /// This method creates a document in the specified collection, ensuring that the `$id` field is removed from the data object
+    /// before sending the request to the server because that needs to be passed in as the `documentId` and not part of `data`.
+    public func createDocument(databaseId: String? = nil, collectionId: String, documentId: String = ID.unique(),
                                data: Data, permissions: [String] = []) async {
         do {
             let databaseId = databaseId ?? self.getDatabaseId()
             guard let data = remove$IdFieldFromData(data) else {
                 throw AppwriteDocumentError.dataTransformationFailed
             }
+            
             let dataJSONString = String(data: data, encoding: .utf8) as Any
             
             let response = try await self.database.createDocument(databaseId: databaseId,
@@ -54,27 +68,42 @@ class Appwrite {
             // verifyResponse(response)
             printInfo("Created document (id=\(documentId)) in '\(collectionId)' collection.")
         } catch {
-            printError("Error when trying to create Appwrite document.")
-            printError("\(error)")
+            printError("Error when trying to create Appwrite document: \(error)")
         }
     }
-    
+
+    /// Fetches a single document from the specified Appwrite collection using the specified document ID and query filters.
+    ///
+    /// - Parameters:
+    ///   - databaseId: Optional. The database ID. If nil, the default database ID is used.
+    ///   - collectionId: The ID of the collection to fetch the document from.
+    ///   - documentId: The ID of the document to fetch.
+    ///   - queries: Optional. A list of queries to filter the document request.
+    ///
+    /// - Returns: A `Document` object containing the document data, or `nil` if the request fails.
     public func getDocument(databaseId: String? = nil, collectionId: String, documentId: String,
                             queries: [String] = []) async -> Document<[String:AnyCodable]>? {
         do {
-            let databaseId = databaseId ?? self.getDatabaseId()
+            let databaseId = databaseId ?? self.databaseId
             
             let document = try await self.database.getDocument(databaseId: databaseId, collectionId: collectionId, documentId: documentId, queries: queries)
             
             printInfo("Retrieved document (id=\(documentId)) from '\(collectionId)' collection.")
             return document
         } catch {
-            printError("Error when trying to get Appwrite document.")
-            printError("\(error)")
+            printError("Error when trying to get Appwrite document: \(error)")
             return nil
         }
     }
     
+    /// Fetches a list of documents from the specified Appwrite collection based on the provided query filters.
+    ///
+    /// - Parameters:
+    ///   - databaseId: Optional. The database ID. If nil, the default database ID is used.
+    ///   - collectionId: The ID of the collection to list documents from.
+    ///   - queries: Optional. A list of queries to filter the document results.
+    ///
+    /// - Returns: A `DocumentList` containing the documents matching the query, or `nil` if the request fails.
     public func listDocuments(databaseId: String? = nil, collectionId: String, queries: [String] = [])
     async -> DocumentList<[String:AnyCodable]>? {
         do {
@@ -86,14 +115,19 @@ class Appwrite {
             printInfo("Retrieved \(documentList.total) document(s) from '\(collectionId)' collection.")
             return documentList
         } catch {
-            printError("Error when trying to list Appwrite documents.")
-            printError("\(error)")
+            printError("Error when trying to list Appwrite documents: \(error)")
             return nil
         }
     }
     
     
-    // TODO: Add docs
+    /// Removes the `$id` field from the provided document data.
+    ///
+    /// - Parameter data: The `Data` object representing the document.
+    /// - Returns: The modified `Data` object without the `$id` field, or `nil` if an error occurs.
+    ///
+    /// This private method removes the `$id` field from the given JSON-encoded `Data` object.
+    /// It is useful for ensuring that the ID field doesn't conflict during document creation.
     private func remove$IdFieldFromData(_ data: Data) -> Data? {
         if var jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             jsonObject.removeValue(forKey: "$id")
@@ -106,7 +140,6 @@ class Appwrite {
         // TODO: Throw some error instead
         return nil
     }
-    
 }
 
 enum AppwriteDocumentError: Error {
