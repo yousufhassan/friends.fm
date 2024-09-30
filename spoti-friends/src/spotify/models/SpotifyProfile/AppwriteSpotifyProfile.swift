@@ -31,7 +31,7 @@ class AppwriteSpotifyProfile: Codable {
         self.image = image
     }
     
-    // Custom initializer for decoding from Spotify API
+    /// Custom initializer for decoding from Spotify API
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: SpotifyAPICodingKeys.self)
         self.spotifyId = try container.decode(String.self, forKey: .spotifyId)
@@ -40,7 +40,7 @@ class AppwriteSpotifyProfile: Codable {
         self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
     }
     
-    // Custom initializer for decoding from Appwrite
+    /// Custom initializer for decoding from Appwrite
     convenience init(fromAppwrite decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: AppwriteCodingKeys.self)
         let spotifyId = try container.decode(String.self, forKey: .spotifyId)
@@ -50,7 +50,7 @@ class AppwriteSpotifyProfile: Codable {
         self.init(spotifyId: spotifyId, spotifyUri: spotifyUri, displayName: displayName, image: image)
     }
     
-    // Custom encode method for Appwrite
+    /// Custom encode method for Appwrite
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: AppwriteCodingKeys.self)
         try container.encode(spotifyId, forKey: .spotifyId)

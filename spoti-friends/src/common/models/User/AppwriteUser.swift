@@ -21,6 +21,7 @@ class AppwriteUser: Codable {
         case spDcCookie
     }
     
+    /// Regular initializer for creating the object directly
     init(spotifyId: String, spotifyProfile: AppwriteSpotifyProfile, friends: [AppwriteSpotifyProfile],
          authorizationCode: String, spotifyWebAcessToken: AppwriteSpotifyWebAccessToken,
          internalAPIAccessToken: AppwriteInternalAPIAccessToken,
@@ -34,6 +35,37 @@ class AppwriteUser: Codable {
         self.internalAPIAccessToken = internalAPIAccessToken
         self.authorizationStatus = authorizationStatus
         self.spDcCookie = spDcCookie
+    }
+    
+    /// Custom initializer for decoding from Appwrite
+    /// This makes sure to decode the `SpotifyProfile` using the Appwrite CodingKeys.
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // Decode normally for other properties
+        self.spotifyId = try container.decode(String.self, forKey: .spotifyId)
+        self.authorizationCode = try container.decode(String.self, forKey: .authorizationCode)
+        self.spotifyWebAccessToken = try container
+            .decode(AppwriteSpotifyWebAccessToken.self, forKey: .spotifyWebAccessToken)
+        self.internalAPIAccessToken = try container
+            .decode(AppwriteInternalAPIAccessToken.self, forKey: .internalAPIAccessToken)
+        self.authorizationStatus = try container
+            .decode(AppwriteAuthorizationStatus.self, forKey: .authorizationStatus)
+        self.spDcCookie = try container.decode(AppwriteSpDcCookie.self, forKey: .spDcCookie)
+        
+        // Decode spotifyProfile using the Appwrite keys
+        let spotifyProfileDecoder = try container.superDecoder(forKey: .spotifyProfile)
+        self.spotifyProfile = try AppwriteSpotifyProfile(fromAppwrite: spotifyProfileDecoder)
+        
+        // Decoding friends using the Appwrite keys
+        var friendsContainer = try container.nestedUnkeyedContainer(forKey: .friends)
+        var friends: [AppwriteSpotifyProfile] = []
+        while !friendsContainer.isAtEnd {
+            let friendDecoder = try friendsContainer.superDecoder()
+            let friendProfile = try AppwriteSpotifyProfile(fromAppwrite: friendDecoder)
+            friends.append(friendProfile)
+        }
+        self.friends = friends
     }
 }
 
