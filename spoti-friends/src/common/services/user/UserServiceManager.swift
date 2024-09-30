@@ -28,14 +28,14 @@ class UserServiceManager {
     /// - Returns: The `AppwriteUser` object representing the user.
     ///
     /// This method asynchronously fetches a user from the database by their Spotify ID.
-    func getUserFromDB(withSpotifyId spotifyId: String) async -> AppwriteUser? {
+    func getUserFromDB(withSpotifyId spotifyId: String) async throws -> AppwriteUser? {
         do {
             let user = try await userService.getUserFromDB(withSpotifyId: spotifyId)
             return user
         } catch {
             printError("Error when trying to get user (id=\(spotifyId)) from database.")
             printError("\(error)")
-            return nil
+            throw error // Bubble up the error to be handled specifically depending on the context
         }
     }
     

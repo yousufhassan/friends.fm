@@ -5,26 +5,12 @@ import WebKit
 
 /// The viewmodel used for the views involving the authorization code flow.
 class AuthorizationViewModel: ObservableObject {
-    //    @Published var user: User
     @Published var user: AppwriteUser?
     @Published var spDcCookie: AppwriteSpDcCookie?
     @Published var authorizationStatus: AppwriteAuthorizationStatus = .unauthenticated
-    //    private var notificationToken: NotificationToken?
+    @Published var isFetchingUser = true
     
-    init() {
-        //        let realm = RealmDatabase.shared.getRealmInstance()
-        
-        // If we find a matching user in the database, set that as current user.
-        // Otherwise, this is a new user.
-        //        let signedInUser = getStringFromUserDefaultsValueForKey("signedInUser")
-        //        let existingUser = await userServiceManager.getUserFromDB(withSpotifyId: user.spotifyId)
-        //        self.user = existingUser
-        //        self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
-        
-        //        self.notificationToken = realm.observe { [weak self] _, _ in
-        //            self?.objectWillChange.send()
-        //        }
-    }
+    init() {}
     
     /// Asynchronously fetches the signed-in user from the database and updates the state.
     ///
@@ -34,13 +20,20 @@ class AuthorizationViewModel: ObservableObject {
     ///
     /// - Note: The method updates the properties on the main thread to ensure UI consistency.
     func fetchAndUpdateUser() async {
-        let signedInUserId = getStringFromUserDefaultsValueForKey("signedInUserId")
-        let existingUser = await UserServiceManager.shared.getUserFromDB(withSpotifyId: signedInUserId)
-        
-        // TODO: Test what happens when I remove the `main.async` code. Can I remove it?
-        DispatchQueue.main.async {
-            self.user = existingUser
-            self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
+        do {
+            let signedInUserId = getStringFromUserDefaultsValueForKey("signedInUserId")
+            let existingUser =  try await UserServiceManager.shared.getUserFromDB(withSpotifyId: signedInUserId)
+            
+            // TODO: Test what happens when I remove the `main.async` code. Can I remove it?
+            DispatchQueue.main.async {
+                self.user = existingUser
+                self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
+                self.isFetchingUser = false
+            }
+        } catch {
+            self.user = nil
+            self.authorizationStatus = .error
+            self.isFetchingUser = false
         }
     }
     
