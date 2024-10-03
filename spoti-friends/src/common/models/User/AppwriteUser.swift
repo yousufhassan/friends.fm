@@ -1,5 +1,16 @@
 import Foundation
 
+/// Class representing a User of the application.
+///
+/// - Parameters:
+///   - spotifyId: The Spotify ID of the user.
+///   - spotifyProfile: The user's associated Spotify Profile.
+///   - friends: A list of `SpotifyProfile`s for the user's friends.
+///   - authorizationCode: The OAuth authorization code for Spotify.
+///   - spotifyWebAcessToken: The Spotify web access token used to interact with the Web API.
+///   - internalAPIAccessToken: The Spotify Internal API access token used to interact with the internal `/buddylist` endpoint.
+///   - authorizationStatus: The status of if the user authorized the app to have access to the Spotify scopes.
+///   - spDcCookie: The `sp_dc` cookie used for getting the internal API token.
 class AppwriteUser: Codable {
     let spotifyId: String
     var spotifyProfile: AppwriteSpotifyProfile
@@ -21,7 +32,7 @@ class AppwriteUser: Codable {
         case spDcCookie
     }
     
-    /// Regular initializer for creating the object directly
+    /// Regular initializer for creating the object directly.
     init(spotifyId: String, spotifyProfile: AppwriteSpotifyProfile, friends: [AppwriteSpotifyProfile],
          authorizationCode: String, spotifyWebAcessToken: AppwriteSpotifyWebAccessToken,
          internalAPIAccessToken: AppwriteInternalAPIAccessToken,
@@ -37,7 +48,7 @@ class AppwriteUser: Codable {
         self.spDcCookie = spDcCookie
     }
     
-    /// Custom initializer for decoding from Appwrite
+    /// Custom initializer for decoding from Appwrite.
     /// This makes sure to decode the `SpotifyProfile` using the Appwrite CodingKeys.
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -69,9 +80,14 @@ class AppwriteUser: Codable {
     }
 }
 
+/// The status of if the user authorized the app to have access to the Spotify scopes.
 enum AppwriteAuthorizationStatus: String, Codable {
+    /// The user has not yet been authenticated.
     case unauthenticated
+    /// The user accepted the app scopes.
     case granted
+    /// The user denied the app scopes.
     case denied
+    /// There was an error during the authentication process.
     case error
 }
