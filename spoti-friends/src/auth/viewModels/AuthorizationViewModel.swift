@@ -6,7 +6,7 @@ import WebKit
 class AuthorizationViewModel: ObservableObject {
     @Published var user: User?
     @Published var spDcCookie: AppwriteSpDcCookie?
-    @Published var authorizationStatus: AppwriteAuthorizationStatus = .unauthenticated
+    @Published var authorizationStatus: AuthorizationStatus = .unauthenticated
     @Published var isFetchingUser = true
     
     init() {}

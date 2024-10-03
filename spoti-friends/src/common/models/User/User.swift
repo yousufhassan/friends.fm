@@ -18,7 +18,7 @@ class User: Codable {
     var authorizationCode: String
     var spotifyWebAccessToken: AppwriteSpotifyWebAccessToken
     var internalAPIAccessToken: AppwriteInternalAPIAccessToken
-    var authorizationStatus: AppwriteAuthorizationStatus
+    var authorizationStatus: AuthorizationStatus
     var spDcCookie: AppwriteSpDcCookie
     
     enum CodingKeys: String, CodingKey {
@@ -36,7 +36,7 @@ class User: Codable {
     init(spotifyId: String, spotifyProfile: AppwriteSpotifyProfile, friends: [AppwriteSpotifyProfile],
          authorizationCode: String, spotifyWebAcessToken: AppwriteSpotifyWebAccessToken,
          internalAPIAccessToken: AppwriteInternalAPIAccessToken,
-         authorizationStatus: AppwriteAuthorizationStatus = .unauthenticated,
+         authorizationStatus: AuthorizationStatus = .unauthenticated,
          spDcCookie: AppwriteSpDcCookie) {
         self.spotifyId = spotifyId
         self.spotifyProfile = spotifyProfile
@@ -61,7 +61,7 @@ class User: Codable {
         self.internalAPIAccessToken = try container
             .decode(AppwriteInternalAPIAccessToken.self, forKey: .internalAPIAccessToken)
         self.authorizationStatus = try container
-            .decode(AppwriteAuthorizationStatus.self, forKey: .authorizationStatus)
+            .decode(AuthorizationStatus.self, forKey: .authorizationStatus)
         self.spDcCookie = try container.decode(AppwriteSpDcCookie.self, forKey: .spDcCookie)
         
         // Decode spotifyProfile using the Appwrite keys
@@ -81,7 +81,7 @@ class User: Codable {
 }
 
 /// The status of if the user authorized the app to have access to the Spotify scopes.
-enum AppwriteAuthorizationStatus: String, Codable {
+enum AuthorizationStatus: String, Codable {
     /// The user has not yet been authenticated.
     case unauthenticated
     /// The user accepted the app scopes.

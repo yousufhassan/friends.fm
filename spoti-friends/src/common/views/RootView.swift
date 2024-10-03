@@ -10,7 +10,7 @@ import RealmSwift
 /// If the user denied authorization, render the `AuthorizationDeniedView`.
 struct RootView: View {
     @EnvironmentObject private var authorizationViewModel: AuthorizationViewModel
-    @State private var authorizationStatus: AppwriteAuthorizationStatus = .unauthenticated
+    @State private var authorizationStatus: AuthorizationStatus = .unauthenticated
     @State private var showErrorView: Bool = false
     
     var body: some View {

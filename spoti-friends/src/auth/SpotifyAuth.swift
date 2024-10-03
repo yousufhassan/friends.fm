@@ -25,7 +25,7 @@ class SpotifyAuth {
     
     /// Handles the response from the Spotify authorization flow depending on whether the user granted authorization or denied authorization.
     @MainActor func handleResponseUrl(url: URL, user: inout User?, spDcCookie: AppwriteSpDcCookie?)
-    async -> AppwriteAuthorizationStatus {
+    async -> AuthorizationStatus {
         do {
             guard let validatedSpDcCookie = spDcCookie else { throw AuthorizationError.missingSpDcCookie }
 
