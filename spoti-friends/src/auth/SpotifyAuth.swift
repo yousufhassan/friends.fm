@@ -36,7 +36,7 @@ class SpotifyAuth {
             if (!userGrantedAuthorization(queryItems)) { return .denied }
             
             if (user == nil) {
-                user = try await createUser(queryItems: queryItems, spDcCookie: spDcCookie!);
+                user = try await createUser(queryItems: queryItems, spDcCookie: validatedSpDcCookie);
             }
             
             guard let currentUser = user else { throw AuthorizationError.missingUser }
