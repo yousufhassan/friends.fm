@@ -11,25 +11,31 @@ class AuthorizationViewModel: ObservableObject {
     
     init() {}
     
-    /// Asynchronously fetches the signed-in user from the database and updates the state.
-    ///
-    /// This method retrieves the signed-in user's Spotify ID from UserDefaults and
-    /// attempts to fetch the corresponding user from the database. If a user is found,
-    /// it updates the `user` and `authorizationStatus` properties accordingly.
-    ///
-    /// - Note: The method updates the properties on the main thread to ensure UI consistency.
+    /// Checks whether or not there is a signed in user stored in the UserDefaults cache.
+    /// - Returns: True if there is a user signed in, false otherwise.
+    func isThereASignedInUserInCache() -> Bool {
+        return getStringFromUserDefaultsValueForKey("signedInUserId") != ""
+    }
+    
+    /// Returns the signed in user stored in the UserDefaults cache, or `nil` if none were found.
+    func getSignedInUserIdFromCache() -> String? {
+        if (!isThereASignedInUserInCache()) {
+            return nil
+        }
+        
+        return getStringFromUserDefaultsValueForKey("signedInUserId")
+    }
+    
+    /// Asynchronously fetches the signed-in user from the database and updates the state. If none were found, sets the user as `nil`
+    /// and the authorization status as `unauthenticated`.
     @MainActor func fetchAndUpdateUser() async {
         do {
-            let signedInUserId = getStringFromUserDefaultsValueForKey("signedInUserId")
-            
-            // If there is no user already signed in, return early.
-            if (signedInUserId == "") {
+            guard let signedInUserId = getSignedInUserIdFromCache() else {
                 self.isFetchingUser = false
                 return
             }
             
-            // Otherwise, there is a signed in user, so get them from the database.
-            let existingUser =  try await UserServiceManager.shared.getUserFromDB(withSpotifyId: signedInUserId)
+            let existingUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: signedInUserId)
             self.user = existingUser
             self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
             self.isFetchingUser = false
@@ -97,7 +103,7 @@ class AuthorizationViewModel: ObservableObject {
     /// - Returns: An `AppwriteSpDcCookie` object containing the extracted value and expiration date.
     private func convertToSpDcCookie(_ cookie: HTTPCookie?) throws -> AppwriteSpDcCookie {
         guard let value = cookie?.value, let expiresDate = cookie?.expiresDate else {
-            throw AuthorizationError.cannotConvertSpDcCookie
+            throw AuthorizationError.cannotConvertToSpDcCookie
         }
         return AppwriteSpDcCookie(value: value, expiresDate: expiresDate)
     }
