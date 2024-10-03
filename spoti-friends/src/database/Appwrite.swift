@@ -53,9 +53,7 @@ class Appwrite {
                                documentId: String = ID.unique(), data: Data, permissions: [String]? = nil) async throws {
         do {
             let databaseId = databaseId ?? self.getDatabaseId()
-            guard let data = remove$IdFieldFromData(data) else {
-                throw AppwriteDocumentError.dataTransformationFailed
-            }
+            let data = try remove$IdFieldFromData(data)
             
             let dataJSONString = String(data: data, encoding: .utf8) as Any
             let response = try await self.database.createDocument(databaseId: databaseId,
@@ -63,8 +61,6 @@ class Appwrite {
                                                                   documentId: documentId,
                                                                   data: dataJSONString)
             
-            // TODO: Verify a successful response
-            // verifyResponse(response)
             printInfo("Created document (id=\(documentId)) in '\(collectionId)' collection.")
         } catch {
             printError("Error when trying to create Appwrite document: \(error)")
@@ -128,7 +124,7 @@ class Appwrite {
     ///
     /// This private method removes the `$id` field from the given JSON-encoded `Data` object.
     /// It is useful for ensuring that the ID field doesn't conflict during document creation.
-    private func remove$IdFieldFromData(_ data: Data) -> Data? {
+    private func remove$IdFieldFromData(_ data: Data) throws -> Data {
         if var jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             jsonObject.removeValue(forKey: "$id")
             
@@ -137,11 +133,10 @@ class Appwrite {
             }
         }
         
-        // TODO: Throw some error instead
-        return nil
+        throw AppwriteDatabaseError.dataTransformationFailed
     }
 }
 
-enum AppwriteDocumentError: Error {
+enum AppwriteDatabaseError: Error {
     case dataTransformationFailed
 }
