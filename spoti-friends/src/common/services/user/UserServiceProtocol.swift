@@ -1,6 +1,8 @@
 import Foundation
 
 /// A protocol that defines the methods for interacting with the user service.
+///
+/// This protocol should encapsulate the required business logic related to users.
 protocol UserServiceProtocol {
     
     /// Checks if a user exists in the database using their Spotify ID.

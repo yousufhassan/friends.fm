@@ -1,6 +1,10 @@
 import Foundation
 import Appwrite
 
+/// The `AppwriteUserService` class provides functionality to interact with user data stored in the Appwrite database.
+///
+/// It allows checking if a user exists, retrieving user details from the database, and saving user information.
+/// The class conforms to the `UserServiceProtocol`, which ensures it provides the necessary user-related operations.
 class AppwriteUserService: UserServiceProtocol {
     let usersCollectionId = "users"
     

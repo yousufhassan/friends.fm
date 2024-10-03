@@ -4,6 +4,9 @@ import Foundation
 ///
 /// This class acts as a facade for interacting with the underlying user service implementation,
 /// such as `AppwriteUserService`, which is responsible for accessing and manipulating user data.
+///
+/// This adds a layer of abstraction between the app business logic and the underlying implementation. It ensures that the
+/// business logic is not coupled with the implementation, making it easier to modify and swap out in the future.
 class UserServiceManager {
     static let shared = UserServiceManager()
     private let userService: UserServiceProtocol
