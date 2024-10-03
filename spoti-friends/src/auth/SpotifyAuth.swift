@@ -27,10 +27,8 @@ class SpotifyAuth {
     @MainActor func handleResponseUrl(url: URL, user: inout AppwriteUser?, spDcCookie: AppwriteSpDcCookie?)
     async -> AppwriteAuthorizationStatus {
         do {
-            if (spDcCookie == nil) {
-                throw AuthorizationError.missingSpDcCookie
-            }
-            
+            guard let validatedSpDcCookie = spDcCookie else { throw AuthorizationError.missingSpDcCookie }
+
             guard let responseUrlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
                   let queryItems = responseUrlComponents.queryItems
             else { throw URLError(.badURL) }
