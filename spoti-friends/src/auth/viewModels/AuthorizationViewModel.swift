@@ -1,6 +1,5 @@
 import Foundation
 import SwiftUI
-//import RealmSwift
 import WebKit
 
 /// The viewmodel used for the views involving the authorization code flow.
@@ -19,24 +18,21 @@ class AuthorizationViewModel: ObservableObject {
     /// it updates the `user` and `authorizationStatus` properties accordingly.
     ///
     /// - Note: The method updates the properties on the main thread to ensure UI consistency.
-    func fetchAndUpdateUser() async {
+    @MainActor func fetchAndUpdateUser() async {
         do {
-            storeInUserDefaults(key: "signedInUserId", value: "")  // TODO: For testing; remove before committing
             let signedInUserId = getStringFromUserDefaultsValueForKey("signedInUserId")
             
+            // If there is no user already signed in, return early.
             if (signedInUserId == "") {
                 self.isFetchingUser = false
                 return
             }
             
+            // Otherwise, there is a signed in user, so get them from the database.
             let existingUser =  try await UserServiceManager.shared.getUserFromDB(withSpotifyId: signedInUserId)
-            
-            // TODO: Test what happens when I remove the `main.async` code. Can I remove it?
-            DispatchQueue.main.async {
-                self.user = existingUser
-                self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
-                self.isFetchingUser = false
-            }
+            self.user = existingUser
+            self.authorizationStatus = existingUser?.authorizationStatus ?? .unauthenticated
+            self.isFetchingUser = false
         } catch {
             self.user = nil
             self.authorizationStatus = .error

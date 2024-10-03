@@ -1,5 +1,9 @@
 import SwiftUI
 
+/// A loading animation view that displays three bouncing dots.
+///
+/// This view creates an animated loading indicator using three circles that bounce
+/// vertically in a staggered sequence.
 struct AppLoadingView: View {
     @State private var dotOffset: [CGFloat] = [0, 0, 0]
     
