@@ -1,5 +1,5 @@
 import SwiftUI
-import WebKit
+@preconcurrency import WebKit
 
 /// A SwiftUI view that wraps a WKWebView to handle Spotify authorization.
 struct AuthorizationWebView: UIViewRepresentable {

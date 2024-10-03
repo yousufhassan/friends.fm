@@ -13,12 +13,12 @@ class AuthorizationViewModel: ObservableObject {
     
     /// Checks whether or not there is a signed in user stored in the UserDefaults cache.
     /// - Returns: True if there is a user signed in, false otherwise.
-    func isThereASignedInUserInCache() -> Bool {
+    public func isThereASignedInUserInCache() -> Bool {
         return getStringFromUserDefaultsValueForKey("signedInUserId") != ""
     }
     
     /// Returns the signed in user stored in the UserDefaults cache, or `nil` if none were found.
-    func getSignedInUserIdFromCache() -> String? {
+    public func getSignedInUserIdFromCache() -> String? {
         if (!isThereASignedInUserInCache()) {
             return nil
         }
@@ -28,7 +28,7 @@ class AuthorizationViewModel: ObservableObject {
     
     /// Asynchronously fetches the signed-in user from the database and updates the state. If none were found, sets the user as `nil`
     /// and the authorization status as `unauthenticated`.
-    @MainActor func fetchAndUpdateUser() async {
+    @MainActor public func fetchAndUpdateUser() async {
         do {
             guard let signedInUserId = getSignedInUserIdFromCache() else {
                 self.isFetchingUser = false
