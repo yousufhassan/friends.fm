@@ -20,12 +20,12 @@ struct UserMock {
 //        return user
 //    }
     
-    static func createMockUser(spotifyId: String) -> AppwriteUser {
+    static func createMockUser(spotifyId: String) -> User {
         let friends = [SpotifyProfileMock.dwightSchrute,
                        SpotifyProfileMock.michaelScott,
                        SpotifyProfileMock.stanleyHudson]
         
-        return AppwriteUser(spotifyId: spotifyId,
+        return User(spotifyId: spotifyId,
                                 spotifyProfile: SpotifyProfileMock.jimHalpert,
                                 friends: friends,
                                 authorizationCode: "",

@@ -25,10 +25,10 @@ class UserServiceManager {
     /// Retrieves a user from the database using their Spotify ID.
     ///
     /// - Parameter spotifyId: The Spotify ID of the user to retrieve.
-    /// - Returns: The `AppwriteUser` object representing the user.
+    /// - Returns: The `User` object representing the user.
     ///
     /// This method asynchronously fetches a user from the database by their Spotify ID.
-    func getUserFromDB(withSpotifyId spotifyId: String) async throws -> AppwriteUser? {
+    func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User? {
         do {
             let user = try await userService.getUserFromDB(withSpotifyId: spotifyId)
             return user
@@ -41,13 +41,13 @@ class UserServiceManager {
     
     /// Saves a user to the database.
     ///
-    /// - Parameter user: The `AppwriteUser` object to save.
+    /// - Parameter user: The `User` object to save.
     /// - Returns: This method does not return a value.
     /// - Note: If an error occurs during the save operation, it will be caught and logged, but not thrown.
     ///
     /// This method attempts to save the given user to the database asynchronously.
     /// If the operation fails, an error is logged without interrupting the flow.
-    func saveUserToDB(_ user: AppwriteUser) async throws -> Void {
+    func saveUserToDB(_ user: User) async throws -> Void {
         do {
             return try await userService.saveUserToDB(user)
         } catch {

@@ -14,21 +14,21 @@ protocol UserServiceProtocol {
     /// Retrieves a user from the database using their Spotify ID.
     ///
     /// - Parameter spotifyId: The Spotify ID of the user to retrieve.
-    /// - Returns: An optional `AppwriteUser` object representing the user, or `nil` if the user could not be found.
+    /// - Returns: An optional `User` object representing the user, or `nil` if the user could not be found.
     /// - Throws: An error if the retrieval process fails.
     ///
     /// This method asynchronously fetches a user from the database by their Spotify ID.
     /// If no user with the given Spotify ID is found, it returns `nil`.
-    func getUserFromDB(withSpotifyId spotifyId: String) async throws -> AppwriteUser?
+    func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User?
     
     /// Saves a user to the database.
     ///
-    /// - Parameter user: The `AppwriteUser` object to save.
+    /// - Parameter user: The `User` object to save.
     /// - Returns: This method does not return a value.
     /// - Note: If an error occurs during the save operation, it will be caught and logged, but not thrown.
     ///
     /// This method attempts to save the given user to the database asynchronously.
     /// If the operation fails, an error is logged without interrupting the flow.
-    func saveUserToDB(_ user: AppwriteUser) async throws -> Void
+    func saveUserToDB(_ user: User) async throws -> Void
 }
 

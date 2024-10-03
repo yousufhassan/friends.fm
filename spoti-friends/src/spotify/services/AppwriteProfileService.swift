@@ -25,7 +25,7 @@ class AppwriteProfileService: ProfileServiceProtocol {
         return try AppwriteSpotifyProfile(fromAppwrite: document.data)
     }
     
-//    public func saveUserToDB(_ user: AppwriteUser) async throws -> Void {
+//    public func saveUserToDB(_ user: User) async throws -> Void {
 //        // If the friend already exists in the database, use that reference instead of creating
 //        // a new one. Do the same for user.SpotifyProfile.
 //        

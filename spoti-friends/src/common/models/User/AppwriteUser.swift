@@ -11,7 +11,7 @@ import Foundation
 ///   - internalAPIAccessToken: The Spotify Internal API access token used to interact with the internal `/buddylist` endpoint.
 ///   - authorizationStatus: The status of if the user authorized the app to have access to the Spotify scopes.
 ///   - spDcCookie: The `sp_dc` cookie used for getting the internal API token.
-class AppwriteUser: Codable {
+class User: Codable {
     let spotifyId: String
     var spotifyProfile: AppwriteSpotifyProfile
     var friends: [AppwriteSpotifyProfile]

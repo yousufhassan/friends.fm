@@ -40,13 +40,13 @@ class ProfileServiceManager {
     
 //    /// Saves a user to the database.
 //    ///
-//    /// - Parameter user: The `AppwriteUser` object to save.
+//    /// - Parameter user: The `User` object to save.
 //    /// - Returns: This method does not return a value.
 //    /// - Note: If an error occurs during the save operation, it will be caught and logged, but not thrown.
 //    ///
 //    /// This method attempts to save the given user to the database asynchronously.
 //    /// If the operation fails, an error is logged without interrupting the flow.
-//    func saveUserToDB(_ user: AppwriteUser) async throws -> Void {
+//    func saveUserToDB(_ user: User) async throws -> Void {
 //        do {
 //            return try await profileService.saveUserToDB(user)
 //        } catch {

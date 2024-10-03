@@ -30,7 +30,7 @@
 		CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3724962C3B27CA004883D1 /* ProfileDetails.swift */; };
 		CB37249A2C3B2AAF004883D1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3724992C3B2AA8004883D1 /* ProfileViewModel.swift */; };
 		CB3797EE2CA6860A009F5D56 /* Appwrite in Frameworks */ = {isa = PBXBuildFile; productRef = CB3797ED2CA6860A009F5D56 /* Appwrite */; };
-		CB3797F02CA68846009F5D56 /* AppwriteUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797EF2CA68843009F5D56 /* AppwriteUser.swift */; };
+		CB3797F02CA68846009F5D56 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797EF2CA68843009F5D56 /* User.swift */; };
 		CB3797F22CA68A04009F5D56 /* AppwriteSpotifyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F12CA689FF009F5D56 /* AppwriteSpotifyProfile.swift */; };
 		CB3797F72CA7EB82009F5D56 /* AppwriteUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */; };
 		CB3797FA2CA7F665009F5D56 /* UserServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F92CA7F655009F5D56 /* UserServiceProtocol.swift */; };
@@ -54,7 +54,6 @@
 		CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */; };
 		CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */; };
 		CB7C05A42C0EB4DB001A0062 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A32C0EB4DB001A0062 /* Utils.swift */; };
-		CB7C05A92C0EBB25001A0062 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A82C0EBB25001A0062 /* User.swift */; };
 		CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05AC2C0EEEA2001A0062 /* AuthorizationConstants.swift */; };
 		CB7C05B02C0EEF7F001A0062 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05AF2C0EEF7E001A0062 /* Types.swift */; };
 		CB7C05B32C1191BA001A0062 /* AuthorizationDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05B22C1191BA001A0062 /* AuthorizationDeniedView.swift */; };
@@ -127,7 +126,7 @@
 		CB3417FE2C1BDBC800BE70A8 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		CB3724962C3B27CA004883D1 /* ProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetails.swift; sourceTree = "<group>"; };
 		CB3724992C3B2AA8004883D1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
-		CB3797EF2CA68843009F5D56 /* AppwriteUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteUser.swift; sourceTree = "<group>"; };
+		CB3797EF2CA68843009F5D56 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CB3797F12CA689FF009F5D56 /* AppwriteSpotifyProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteSpotifyProfile.swift; sourceTree = "<group>"; };
 		CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteUserService.swift; sourceTree = "<group>"; };
 		CB3797F92CA7F655009F5D56 /* UserServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceProtocol.swift; sourceTree = "<group>"; };
@@ -150,7 +149,6 @@
 		CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomethingWentWrongView.swift; sourceTree = "<group>"; };
 		CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrors.swift; sourceTree = "<group>"; };
 		CB7C05A32C0EB4DB001A0062 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		CB7C05A82C0EBB25001A0062 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CB7C05AC2C0EEEA2001A0062 /* AuthorizationConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationConstants.swift; sourceTree = "<group>"; };
 		CB7C05AF2C0EEF7E001A0062 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		CB7C05B22C1191BA001A0062 /* AuthorizationDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationDeniedView.swift; sourceTree = "<group>"; };
@@ -321,8 +319,7 @@
 		CB0B93822C771E27003A9720 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				CB3797EF2CA68843009F5D56 /* AppwriteUser.swift */,
-				CB7C05A82C0EBB25001A0062 /* User.swift */,
+				CB3797EF2CA68843009F5D56 /* User.swift */,
 				CB875CB12C33C4D3001B364D /* UserMock.swift */,
 			);
 			path = User;
@@ -742,13 +739,12 @@
 				CB875CB22C33C4D6001B364D /* UserMock.swift in Sources */,
 				CB0B936A2C771285003A9720 /* PlaceholderAnimation.swift in Sources */,
 				CB7087542CAB685100FE97C7 /* AppwriteProfileService.swift in Sources */,
-				CB7C05A92C0EBB25001A0062 /* User.swift in Sources */,
 				CB59BCCE2C30BA470061C99B /* ImageUtils.swift in Sources */,
 				CB3797FA2CA7F665009F5D56 /* UserServiceProtocol.swift in Sources */,
 				CB0B93662C770C90003A9720 /* TextPlaceholder.swift in Sources */,
 				CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */,
 				CB70E8A22C816AAA00F9A197 /* OpenInSpotifyButton.swift in Sources */,
-				CB3797F02CA68846009F5D56 /* AppwriteUser.swift in Sources */,
+				CB3797F02CA68846009F5D56 /* User.swift in Sources */,
 				CB9A9ADA2C0BE2EE0073817C /* ColourExtension.swift in Sources */,
 				CB875CBB2C3525C3001B364D /* ArtistMock.swift in Sources */,
 				CB7C05B02C0EEF7F001A0062 /* Types.swift in Sources */,

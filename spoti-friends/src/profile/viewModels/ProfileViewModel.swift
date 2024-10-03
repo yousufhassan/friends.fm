@@ -15,7 +15,7 @@ import Foundation
 ///   - cacheClearTimer: A timer used to automatically clear the cache every 12 hours.
 ///
 class ProfileViewModel: ObservableObject {
-    @Published var user: AppwriteUser
+    @Published var user: User
     @Published private var topTracksCache: [TimeRange: [Track]] = [:]
     @Published private var topArtistsCache: [TimeRange: [Artist]] = [:]
     private var cacheClearTimer: Timer?
@@ -23,7 +23,7 @@ class ProfileViewModel: ObservableObject {
     /// Initializes the `ProfileViewModel` with the specified `User` and starts the cache timer.
     ///
     /// - Parameter user: The currently logged-in `User` object.
-    init(user: AppwriteUser){
+    init(user: User){
         self.user = user
         startCacheTimer()
     }

@@ -29,7 +29,7 @@ struct FriendActivityView: View {
 //                clientId: "clientId", accessToken: "accessToken",
 //                accessTokenExpirationTimestampMs: 23832849387, isAnonymous: false)
 //                
-//                let user = AppwriteUser(spotifyId: "yousuf9", spotifyProfile: profile,
+//                let user = User(spotifyId: "yousuf9", spotifyProfile: profile,
 //                                        friends: [friend1, friend2],
 //                                        authorizationCode: "someAuthCode",
 //                                        spotifyWebAcessToken: accessToken,

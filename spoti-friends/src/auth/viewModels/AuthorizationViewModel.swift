@@ -4,7 +4,7 @@ import WebKit
 
 /// The viewmodel used for the views involving the authorization code flow.
 class AuthorizationViewModel: ObservableObject {
-    @Published var user: AppwriteUser?
+    @Published var user: User?
     @Published var spDcCookie: AppwriteSpDcCookie?
     @Published var authorizationStatus: AppwriteAuthorizationStatus = .unauthenticated
     @Published var isFetchingUser = true

@@ -29,5 +29,5 @@ protocol ProfileServiceProtocol {
     ///
     /// This method attempts to save the given Spotify Profile to the database asynchronously.
     /// If the operation fails, an error is logged without interrupting the flow.
-//    func saveProfileToDB(_ profile: AppwriteUser) async throws -> Void
+//    func saveProfileToDB(_ profile: User) async throws -> Void
 }

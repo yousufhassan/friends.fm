@@ -24,7 +24,7 @@ class SpotifyAuth {
     }
     
     /// Handles the response from the Spotify authorization flow depending on whether the user granted authorization or denied authorization.
-    @MainActor func handleResponseUrl(url: URL, user: inout AppwriteUser?, spDcCookie: AppwriteSpDcCookie?)
+    @MainActor func handleResponseUrl(url: URL, user: inout User?, spDcCookie: AppwriteSpDcCookie?)
     async -> AppwriteAuthorizationStatus {
         do {
             guard let validatedSpDcCookie = spDcCookie else { throw AuthorizationError.missingSpDcCookie }
@@ -56,7 +56,7 @@ class SpotifyAuth {
     
     // TODO: Add docs
     @MainActor private func createUser(queryItems: [URLQueryItem], spDcCookie: AppwriteSpDcCookie)
-    async throws -> AppwriteUser {
+    async throws -> User {
         let authorizationCode = try getAuthorizationCodeFromQueryItems(queryItems)
         let spotifyWebAccessToken = try await requestAccessTokenObject(authorizationCode: authorizationCode)
         let internalAPIAccessToken = try await fetchInternalAPIAccessToken(spDcCookie: spDcCookie)
@@ -70,7 +70,7 @@ class SpotifyAuth {
         let friends = try await SpotifyAPI.shared
             .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.accessToken)
 
-        return AppwriteUser(spotifyId: spotifyProfile.spotifyId,
+        return User(spotifyId: spotifyProfile.spotifyId,
                             spotifyProfile: spotifyProfile,
                             friends: friends,
                             authorizationCode: authorizationCode,
@@ -92,7 +92,7 @@ class SpotifyAuth {
     }
     
     /// Stores the user as the signed in user in `UserDefaults`.
-    private func storeSignedInUser(_ user: AppwriteUser) -> Void {
+    private func storeSignedInUser(_ user: User) -> Void {
         storeInUserDefaults(key: "signedInUserId", value: user.spotifyId)
     }
     
