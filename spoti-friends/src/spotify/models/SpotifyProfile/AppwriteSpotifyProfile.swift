@@ -1,4 +1,5 @@
 import Foundation
+import JSONCodable
 
 class AppwriteSpotifyProfile: Codable {
     let spotifyId: String
@@ -8,7 +9,7 @@ class AppwriteSpotifyProfile: Codable {
     //    var currentOrMostRecentTrack: CurrentOrMostRecentTrack?
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
-    private enum SpotifyAPICodingKeys: String, CodingKey {
+    enum SpotifyAPICodingKeys: String, CodingKey {
         case spotifyId = "id"
         case spotifyUri = "uri"
         case displayName = "display_name"
@@ -16,7 +17,7 @@ class AppwriteSpotifyProfile: Codable {
     }
     
     /// Mapping of the Swift object properties to the Appwrite Collection model.
-    private enum AppwriteCodingKeys: String, CodingKey {
+    enum AppwriteCodingKeys: String, CodingKey {
         case spotifyId = "$id"
         case spotifyUri
         case displayName
@@ -47,6 +48,20 @@ class AppwriteSpotifyProfile: Codable {
         let spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
         let displayName = try container.decode(String.self, forKey: .displayName)
         let image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
+        self.init(spotifyId: spotifyId, spotifyUri: spotifyUri, displayName: displayName, image: image)
+    }
+    
+    /// Custom initializer for decoding from Appwrite
+    convenience init(fromAppwrite data: [String:AnyCodable]) throws {
+        guard let spotifyId = data[AppwriteCodingKeys.spotifyId.rawValue]?.value as? String,
+              let spotifyUri = data[AppwriteCodingKeys.spotifyUri.rawValue]?.value as? String,
+              let displayName = data[AppwriteCodingKeys.displayName.rawValue]?.value as? String,
+              let image = data[AppwriteCodingKeys.image.rawValue]?.value as? String
+        else {
+            printError("When trying to decode Appwrite data to SpotifyProfile object.")
+            throw SpotifyProfileError.failedAppwriteDecode
+        }
+        
         self.init(spotifyId: spotifyId, spotifyUri: spotifyUri, displayName: displayName, image: image)
     }
     
@@ -89,4 +104,8 @@ class AppwriteSpotifyProfile: Codable {
             printError("\(error)")
         }
     }
+}
+
+enum SpotifyProfileError: Error {
+    case failedAppwriteDecode
 }

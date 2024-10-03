@@ -45,6 +45,9 @@
 		CB59BCD02C30FA360061C99B /* RotatingSyncIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */; };
 		CB6A5D8C2CA684F10063A757 /* Appwrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6A5D8B2CA684EC0063A757 /* Appwrite.swift */; };
 		CB70874F2CAB493400FE97C7 /* AppLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70874E2CAB493400FE97C7 /* AppLoadingView.swift */; };
+		CB7087522CAB675800FE97C7 /* ProfileServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7087512CAB674100FE97C7 /* ProfileServiceProtocol.swift */; };
+		CB7087542CAB685100FE97C7 /* AppwriteProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7087532CAB684200FE97C7 /* AppwriteProfileService.swift */; };
+		CB7087562CAB68F700FE97C7 /* ProfileServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */; };
 		CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */; };
 		CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89F2C8017CD00F9A197 /* ArtistList.swift */; };
 		CB70E8A22C816AAA00F9A197 /* OpenInSpotifyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */; };
@@ -138,6 +141,9 @@
 		CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingSyncIcon.swift; sourceTree = "<group>"; };
 		CB6A5D8B2CA684EC0063A757 /* Appwrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appwrite.swift; sourceTree = "<group>"; };
 		CB70874E2CAB493400FE97C7 /* AppLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLoadingView.swift; sourceTree = "<group>"; };
+		CB7087512CAB674100FE97C7 /* ProfileServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileServiceProtocol.swift; sourceTree = "<group>"; };
+		CB7087532CAB684200FE97C7 /* AppwriteProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteProfileService.swift; sourceTree = "<group>"; };
+		CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileServiceManager.swift; sourceTree = "<group>"; };
 		CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackOrArtistListPlaceholder.swift; sourceTree = "<group>"; };
 		CB70E89F2C8017CD00F9A197 /* ArtistList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistList.swift; sourceTree = "<group>"; };
 		CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInSpotifyButton.swift; sourceTree = "<group>"; };
@@ -421,6 +427,7 @@
 		CB59BCBC2C2FAED50061C99B /* spotify */ = {
 			isa = PBXGroup;
 			children = (
+				CB7087502CAB673A00FE97C7 /* services */,
 				CB0854C52C1572270088E87D /* spotifyAPI */,
 				CB59BCBD2C2FAF7F0061C99B /* models */,
 				CB59BCBB2C2FAED50061C99B /* views */,
@@ -456,6 +463,16 @@
 				CB6A5D8B2CA684EC0063A757 /* Appwrite.swift */,
 			);
 			path = database;
+			sourceTree = "<group>";
+		};
+		CB7087502CAB673A00FE97C7 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */,
+				CB7087532CAB684200FE97C7 /* AppwriteProfileService.swift */,
+				CB7087512CAB674100FE97C7 /* ProfileServiceProtocol.swift */,
+			);
+			path = services;
 			sourceTree = "<group>";
 		};
 		CB70E8A32C838F9E00F9A197 /* errors */ = {
@@ -693,6 +710,7 @@
 				CB875CAE2C31507E001B364D /* FriendActivityViewModel.swift in Sources */,
 				CB9A9AE02C0C22D70073817C /* SpotifyAuth.swift in Sources */,
 				CB59BCD02C30FA360061C99B /* RotatingSyncIcon.swift in Sources */,
+				CB7087562CAB68F700FE97C7 /* ProfileServiceManager.swift in Sources */,
 				CBB1A3D02C933EBA00D3D658 /* TimeRangeSelector.swift in Sources */,
 				CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */,
 				CB0B93742C771BDF003A9720 /* Album.swift in Sources */,
@@ -713,6 +731,7 @@
 				CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */,
 				CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */,
 				CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */,
+				CB7087522CAB675800FE97C7 /* ProfileServiceProtocol.swift in Sources */,
 				CB0854C72C15723C0088E87D /* SpotifyAPI.swift in Sources */,
 				CB3797FE2CA7F96B009F5D56 /* UserServiceManager.swift in Sources */,
 				CB0B93782C771C23003A9720 /* Artist.swift in Sources */,
@@ -722,6 +741,7 @@
 				CB9A9AAB2C0BB13E0073817C /* spotifriendsApp.swift in Sources */,
 				CB875CB22C33C4D6001B364D /* UserMock.swift in Sources */,
 				CB0B936A2C771285003A9720 /* PlaceholderAnimation.swift in Sources */,
+				CB7087542CAB685100FE97C7 /* AppwriteProfileService.swift in Sources */,
 				CB7C05A92C0EBB25001A0062 /* User.swift in Sources */,
 				CB59BCCE2C30BA470061C99B /* ImageUtils.swift in Sources */,
 				CB3797FA2CA7F665009F5D56 /* UserServiceProtocol.swift in Sources */,

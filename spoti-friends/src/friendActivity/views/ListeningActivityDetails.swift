@@ -12,14 +12,14 @@ import RealmSwift
 ///
 /// - Returns: A View for the Listening Activity Details.
 struct ListeningActivityDetails: View {
-    let profile: SpotifyProfile
+    let profile: AppwriteSpotifyProfile
     let currentTrack: CurrentOrMostRecentTrack
     let trackDetails: Track
     let artists: RealmSwift.List<Artist>
     let context: TrackContext
     @State var contextIcon: Image
     
-    init(profile: SpotifyProfile, currentTrack: CurrentOrMostRecentTrack) {
+    init(profile: AppwriteSpotifyProfile, currentTrack: CurrentOrMostRecentTrack) {
         self.profile = profile
         self.currentTrack = currentTrack
         self.trackDetails = currentTrack.track!

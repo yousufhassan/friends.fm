@@ -3,11 +3,11 @@ import Combine
 import SwiftUI
 
 class FriendActivityViewModel: ObservableObject {
-    @Published var user: User
+    @Published var user: AppwriteUser?
     @Published var friendActivites: [ListeningActivityCard]
     private var cancellables = Set<AnyCancellable>()
     
-    init(user: User, friendActivites: [ListeningActivityCard]) {
+    init(user: AppwriteUser?, friendActivites: [ListeningActivityCard]) {
         self.user = user
         self.friendActivites = friendActivites
         

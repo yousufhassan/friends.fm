@@ -21,7 +21,14 @@ class AuthorizationViewModel: ObservableObject {
     /// - Note: The method updates the properties on the main thread to ensure UI consistency.
     func fetchAndUpdateUser() async {
         do {
+            storeInUserDefaults(key: "signedInUserId", value: "")  // TODO: For testing; remove before committing
             let signedInUserId = getStringFromUserDefaultsValueForKey("signedInUserId")
+            
+            if (signedInUserId == "") {
+                self.isFetchingUser = false
+                return
+            }
+            
             let existingUser =  try await UserServiceManager.shared.getUserFromDB(withSpotifyId: signedInUserId)
             
             // TODO: Test what happens when I remove the `main.async` code. Can I remove it?

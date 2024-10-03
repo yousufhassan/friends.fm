@@ -49,8 +49,8 @@ class Appwrite {
     ///
     /// This method creates a document in the specified collection, ensuring that the `$id` field is removed from the data object
     /// before sending the request to the server because that needs to be passed in as the `documentId` and not part of `data`.
-    public func createDocument(databaseId: String? = nil, collectionId: String, documentId: String = ID.unique(),
-                               data: Data, permissions: [String] = []) async {
+    public func createDocument(databaseId: String? = nil, collectionId: String,
+                               documentId: String = ID.unique(), data: Data, permissions: [String]? = nil) async throws {
         do {
             let databaseId = databaseId ?? self.getDatabaseId()
             guard let data = remove$IdFieldFromData(data) else {
@@ -58,7 +58,6 @@ class Appwrite {
             }
             
             let dataJSONString = String(data: data, encoding: .utf8) as Any
-            
             let response = try await self.database.createDocument(databaseId: databaseId,
                                                                   collectionId: collectionId,
                                                                   documentId: documentId,
@@ -69,6 +68,7 @@ class Appwrite {
             printInfo("Created document (id=\(documentId)) in '\(collectionId)' collection.")
         } catch {
             printError("Error when trying to create Appwrite document: \(error)")
+            throw error
         }
     }
 

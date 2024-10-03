@@ -27,7 +27,7 @@ class AppwriteUserService: UserServiceProtocol {
     
     public func saveUserToDB(_ user: AppwriteUser) async throws -> Void {
         let data = try JSONEncoder().encode(user)
-        await Appwrite.shared.createDocument(collectionId: usersCollectionId,
-                                             documentId: user.spotifyId, data: data)
+        try await Appwrite.shared.createDocument(collectionId: usersCollectionId,
+                                                 documentId: user.spotifyId, data: data)
     }
 }

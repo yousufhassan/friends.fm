@@ -8,48 +8,48 @@ struct FriendActivityView: View {
     
     var body: some View {
         VStack {
-            Button("create document") {
-                let profile = AppwriteSpotifyProfile(spotifyId: "yousuf9", spotifyUri: "someUri",
-                                                     displayName: "yousuf", image: "someImage")
-                
-                let spDcCookie = AppwriteSpDcCookie(value: "cookieValue", expiresDate: Date())
-                
-                let friend1 = AppwriteSpotifyProfile(spotifyId: "friend1", spotifyUri: "someUri",
-                                                     displayName: "friend1", image: "someImage")
-                
-                let friend2 = AppwriteSpotifyProfile(spotifyId: "friend2", spotifyUri: "someUri",
-                                                     displayName: "friend2", image: "someImage")
-                
-                let accessToken = AppwriteSpotifyWebAccessToken(
-                    access_token: "tokenValue", token_type: "someType", scope: "scopesHere",
-                    expires_in: 3600, refresh_token: "refreshToken",
-                    accessTokenExpirationTimestampMs: 932847239879)
-                
-                let internalToken = AppwriteInternalAPIAccessToken(
-                clientId: "clientId", accessToken: "accessToken",
-                accessTokenExpirationTimestampMs: 23832849387, isAnonymous: false)
-                
-                let user = AppwriteUser(spotifyId: "yousuf9", spotifyProfile: profile,
-                                        friends: [friend1, friend2],
-                                        authorizationCode: "someAuthCode",
-                                        spotifyWebAcessToken: accessToken,
-                                        internalAPIAccessToken: internalToken,
-                                        spDcCookie: spDcCookie)
-                Task {
-                    let encoder = JSONEncoder()
-                    let data = try? encoder.encode(user)
-                    
-                    await Appwrite.shared.createDocument(collectionId: "users", documentId: user.spotifyId, data: data!)
-                }
-            }
-            
-            Button("get document") {
-                Task {
-//                    await Appwrite.shared.getDocument(collectionId: "users", documentId: "yousuf9")
-                    let userServiceManager = UserServiceManager()
-                    try await userServiceManager.getUserFromDB(withSpotifyId: "yousuf9")
-                }
-            }
+//            Button("create document") {
+//                let profile = AppwriteSpotifyProfile(spotifyId: "yousuf9", spotifyUri: "someUri",
+//                                                     displayName: "yousuf", image: "someImage")
+//                
+//                let spDcCookie = AppwriteSpDcCookie(value: "cookieValue", expiresDate: Date())
+//                
+//                let friend1 = AppwriteSpotifyProfile(spotifyId: "friend1", spotifyUri: "someUri",
+//                                                     displayName: "friend1", image: "someImage")
+//                
+//                let friend2 = AppwriteSpotifyProfile(spotifyId: "friend2", spotifyUri: "someUri",
+//                                                     displayName: "friend2", image: "someImage")
+//                
+//                let accessToken = AppwriteSpotifyWebAccessToken(
+//                    access_token: "tokenValue", token_type: "someType", scope: "scopesHere",
+//                    expires_in: 3600, refresh_token: "refreshToken",
+//                    accessTokenExpirationTimestampMs: 932847239879)
+//                
+//                let internalToken = AppwriteInternalAPIAccessToken(
+//                clientId: "clientId", accessToken: "accessToken",
+//                accessTokenExpirationTimestampMs: 23832849387, isAnonymous: false)
+//                
+//                let user = AppwriteUser(spotifyId: "yousuf9", spotifyProfile: profile,
+//                                        friends: [friend1, friend2],
+//                                        authorizationCode: "someAuthCode",
+//                                        spotifyWebAcessToken: accessToken,
+//                                        internalAPIAccessToken: internalToken,
+//                                        spDcCookie: spDcCookie)
+//                Task {
+//                    let encoder = JSONEncoder()
+//                    let data = try? encoder.encode(user)
+//                    
+//                    await Appwrite.shared.createDocument(collectionId: "users", documentId: user.spotifyId, data: data!)
+//                }
+//            }
+//            
+//            Button("get document") {
+//                Task {
+////                    await Appwrite.shared.getDocument(collectionId: "users", documentId: "yousuf9")
+//                    let userServiceManager = UserServiceManager()
+//                    try await userServiceManager.getUserFromDB(withSpotifyId: "yousuf9")
+//                }
+//            }
             
             // Friend Activity Header
             PageTitle(pageTitle: "Friend Activity")

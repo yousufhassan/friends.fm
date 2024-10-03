@@ -14,7 +14,7 @@ struct ListeningActivityCardMock {
     static let stanleyHudsonActivity = createMockListeningActivityCard(profile: SpotifyProfileMock.stanleyHudson,
                                                                        backgroundColor: Color.yellow)
     
-    static func createMockListeningActivityCard(profile: SpotifyProfile, backgroundColor: Color) -> ListeningActivityCard {
+    static func createMockListeningActivityCard(profile: AppwriteSpotifyProfile, backgroundColor: Color) -> ListeningActivityCard {
         return ListeningActivityCard(profile: profile, backgroundColor: backgroundColor)
     }
 }

@@ -47,12 +47,13 @@ class UserServiceManager {
     ///
     /// This method attempts to save the given user to the database asynchronously.
     /// If the operation fails, an error is logged without interrupting the flow.
-    func saveUserToDB(_ user: AppwriteUser) async -> Void {
+    func saveUserToDB(_ user: AppwriteUser) async throws -> Void {
         do {
             return try await userService.saveUserToDB(user)
         } catch {
-            printError("Error when trying to save user (id=\(user.spotifyId) to database.")
+            printError("Error when trying to save user (id=\(user.spotifyId)) to database.")
             printError("\(error)")
+            throw error
         }
     }
 }

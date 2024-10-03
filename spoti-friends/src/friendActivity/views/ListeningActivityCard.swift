@@ -11,18 +11,20 @@ import SwiftUI
 /// - Returns: A View for the Listening Activity Card.
 struct ListeningActivityCard: View, Identifiable {
     let id: String
-    var profile: SpotifyProfile
+    var profile: AppwriteSpotifyProfile
     let track: CurrentOrMostRecentTrack
     let album: Album
     let backgroundColor: Color;
     @State var fontColor: Color
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
-    init(profile: SpotifyProfile, backgroundColor: Color) {
+    init(profile: AppwriteSpotifyProfile, backgroundColor: Color) {
         self.id = profile.spotifyId
         self.profile = profile
-        self.track = profile.currentOrMostRecentTrack!
-        self.album = (profile.currentOrMostRecentTrack?.track?.album)!
+//        self.track = profile.currentOrMostRecentTrack!
+//        self.album = (profile.currentOrMostRecentTrack?.track?.album)!
+        self.track = CurrentOrMostRecentTrackMock.iRememberEverything
+        self.album = AlbumMock.zachBryan
         self.backgroundColor = backgroundColor
         self.fontColor = Color(backgroundColor).isDarkBackground() ? Color.white : Color.black
     }

@@ -48,8 +48,7 @@ class SpotifyAuth {
             }
             
             await currentUser.spotifyProfile.storeProfilePictureLocally()
-//            await RealmDatabase.shared.addToRealm(object: user);
-            await UserServiceManager.shared.saveUserToDB(currentUser)
+            try await UserServiceManager.shared.saveUserToDB(currentUser)
             return .granted
         } catch {
             printError("\(error)")
@@ -57,7 +56,7 @@ class SpotifyAuth {
         }
     }
     
-    /// Populates the `user` fields with their data.
+    // TODO: Add docs
     @MainActor private func createUser(queryItems: [URLQueryItem], spDcCookie: AppwriteSpDcCookie)
     async throws -> AppwriteUser {
         let authorizationCode = try getAuthorizationCodeFromQueryItems(queryItems)
