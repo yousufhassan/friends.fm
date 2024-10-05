@@ -28,7 +28,7 @@ class SpotifyAPI {
     ///
     /// - Parameters:
     ///   - internalAPIAccessToken: Access token for the internal Spotify API.
-    public func getListOfUsersFriends(internalAPIAccessToken: String) async throws -> [AppwriteSpotifyProfile] {
+    public func getListOfUsersFriends(internalAPIAccessToken: String) async throws -> [SpotifyProfile] {
         let data = try await fetchBuddylistEndpoint(internalAPIAccessToken: internalAPIAccessToken)
         let friends = try convertDataToFriendList(data)
         return friends

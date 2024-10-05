@@ -14,16 +14,16 @@ protocol ProfileServiceProtocol {
     /// Retrieves a Spotify Profile from the database using their Spotify ID.
     ///
     /// - Parameter spotifyId: The Spotify ID of the Spotify Profile to retrieve.
-    /// - Returns: An optional `AppwriteSpotifyProfile` object representing the Spotify Profile, or `nil` if the user could not be found.
+    /// - Returns: An optional `SpotifyProfile` object representing the Spotify Profile, or `nil` if the user could not be found.
     /// - Throws: An error if the retrieval process fails.
     ///
     /// This method asynchronously fetches a Spotify Profile from the database by their Spotify ID.
     /// If no Spotify Profile with the given Spotify ID is found, it returns `nil`.
-    func getProfileFromDB(withSpotifyId spotifyId: String) async throws -> AppwriteSpotifyProfile?
+    func getProfileFromDB(withSpotifyId spotifyId: String) async throws -> SpotifyProfile?
     
     /// Saves a Spotify Profile to the database.
     ///
-    /// - Parameter profile: The `AppwriteSpotifyProfile` object to save.
+    /// - Parameter profile: The `SpotifyProfile` object to save.
     /// - Returns: This method does not return a value.
     /// - Note: If an error occurs during the save operation, it will be caught and logged, but not thrown.
     ///

@@ -7,14 +7,14 @@
 ///// - Parameters:
 /////   - profile: The `SpotifyProfile` to display the details for.
 //struct ProfileDetails: View {
-//    let profile: AppwriteSpotifyProfile
+//    let profile: SpotifyProfile
 //    @State private var followerCount: Int?
 //    @State private var playlistCount: Int?
 //    @State private var fetchedDetails: Bool = true
 //    @EnvironmentObject var profileViewModel: ProfileViewModel
 //    @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
 //    
-//    init(profile: AppwriteSpotifyProfile) {
+//    init(profile: SpotifyProfile) {
 //        self.profile = profile
 //    }
 //    

@@ -13,7 +13,6 @@
 		CB0854C32C15583A0088E87D /* RealmDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C22C15583A0088E87D /* RealmDatabase.swift */; };
 		CB0854C72C15723C0088E87D /* SpotifyAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C62C15723C0088E87D /* SpotifyAPI.swift */; };
 		CB0854C92C1573D10088E87D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C82C1573D10088E87D /* Constants.swift */; };
-		CB0854CB2C1574FE0088E87D /* SpotifyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854CA2C1574FE0088E87D /* SpotifyProfile.swift */; };
 		CB0B93632C72CD07003A9720 /* TrackList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93622C72CD07003A9720 /* TrackList.swift */; };
 		CB0B93662C770C90003A9720 /* TextPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93652C770C90003A9720 /* TextPlaceholder.swift */; };
 		CB0B93682C7711F6003A9720 /* AlbumCoverPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93672C7711F6003A9720 /* AlbumCoverPlaceholder.swift */; };
@@ -31,7 +30,7 @@
 		CB37249A2C3B2AAF004883D1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3724992C3B2AA8004883D1 /* ProfileViewModel.swift */; };
 		CB3797EE2CA6860A009F5D56 /* Appwrite in Frameworks */ = {isa = PBXBuildFile; productRef = CB3797ED2CA6860A009F5D56 /* Appwrite */; };
 		CB3797F02CA68846009F5D56 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797EF2CA68843009F5D56 /* User.swift */; };
-		CB3797F22CA68A04009F5D56 /* AppwriteSpotifyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F12CA689FF009F5D56 /* AppwriteSpotifyProfile.swift */; };
+		CB3797F22CA68A04009F5D56 /* SpotifyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F12CA689FF009F5D56 /* SpotifyProfile.swift */; };
 		CB3797F72CA7EB82009F5D56 /* AppwriteUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */; };
 		CB3797FA2CA7F665009F5D56 /* UserServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F92CA7F655009F5D56 /* UserServiceProtocol.swift */; };
 		CB3797FE2CA7F96B009F5D56 /* UserServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797FD2CA7F962009F5D56 /* UserServiceManager.swift */; };
@@ -110,7 +109,6 @@
 		CB0854C22C15583A0088E87D /* RealmDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabase.swift; sourceTree = "<group>"; };
 		CB0854C62C15723C0088E87D /* SpotifyAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAPI.swift; sourceTree = "<group>"; };
 		CB0854C82C1573D10088E87D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		CB0854CA2C1574FE0088E87D /* SpotifyProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyProfile.swift; sourceTree = "<group>"; };
 		CB0B93622C72CD07003A9720 /* TrackList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackList.swift; sourceTree = "<group>"; };
 		CB0B93652C770C90003A9720 /* TextPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPlaceholder.swift; sourceTree = "<group>"; };
 		CB0B93672C7711F6003A9720 /* AlbumCoverPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCoverPlaceholder.swift; sourceTree = "<group>"; };
@@ -127,7 +125,7 @@
 		CB3724962C3B27CA004883D1 /* ProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetails.swift; sourceTree = "<group>"; };
 		CB3724992C3B2AA8004883D1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CB3797EF2CA68843009F5D56 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		CB3797F12CA689FF009F5D56 /* AppwriteSpotifyProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteSpotifyProfile.swift; sourceTree = "<group>"; };
+		CB3797F12CA689FF009F5D56 /* SpotifyProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyProfile.swift; sourceTree = "<group>"; };
 		CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteUserService.swift; sourceTree = "<group>"; };
 		CB3797F92CA7F655009F5D56 /* UserServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceProtocol.swift; sourceTree = "<group>"; };
 		CB3797FD2CA7F962009F5D56 /* UserServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceManager.swift; sourceTree = "<group>"; };
@@ -300,8 +298,7 @@
 		CB0B93802C771DA3003A9720 /* SpotifyProfile */ = {
 			isa = PBXGroup;
 			children = (
-				CB3797F12CA689FF009F5D56 /* AppwriteSpotifyProfile.swift */,
-				CB0854CA2C1574FE0088E87D /* SpotifyProfile.swift */,
+				CB3797F12CA689FF009F5D56 /* SpotifyProfile.swift */,
 				CB875CB42C351958001B364D /* SpotifyProfileMock.swift */,
 			);
 			path = SpotifyProfile;
@@ -702,7 +699,7 @@
 				CB875CAC2C313494001B364D /* GetListOfUsersFriends.swift in Sources */,
 				CB875CBD2C352652001B364D /* TrackContextMock.swift in Sources */,
 				CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */,
-				CB3797F22CA68A04009F5D56 /* AppwriteSpotifyProfile.swift in Sources */,
+				CB3797F22CA68A04009F5D56 /* SpotifyProfile.swift in Sources */,
 				CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */,
 				CB875CAE2C31507E001B364D /* FriendActivityViewModel.swift in Sources */,
 				CB9A9AE02C0C22D70073817C /* SpotifyAuth.swift in Sources */,
@@ -751,7 +748,6 @@
 				CB7C05A42C0EB4DB001A0062 /* Utils.swift in Sources */,
 				CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */,
 				CB6A5D8C2CA684F10063A757 /* Appwrite.swift in Sources */,
-				CB0854CB2C1574FE0088E87D /* SpotifyProfile.swift in Sources */,
 				CB0854BC2C14D58E0088E87D /* AuthorizationWebView.swift in Sources */,
 				CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */,
 				CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */,

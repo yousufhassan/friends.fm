@@ -64,7 +64,7 @@ class SpotifyAuth {
         let spotifyProfile = try await SpotifyAPI.shared
             .fetch(method: .GET,
                    endpoint: .getCurrentUsersProfile,
-                   responseType: AppwriteSpotifyProfile.self,
+                   responseType: SpotifyProfile.self,
                    accessToken: spotifyWebAccessToken.access_token)
 
         let friends = try await SpotifyAPI.shared

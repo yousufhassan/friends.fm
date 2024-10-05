@@ -13,8 +13,8 @@ import Foundation
 ///   - spDcCookie: The `sp_dc` cookie used for getting the internal API token.
 class User: Codable {
     let spotifyId: String
-    var spotifyProfile: AppwriteSpotifyProfile
-    var friends: [AppwriteSpotifyProfile]
+    var spotifyProfile: SpotifyProfile
+    var friends: [SpotifyProfile]
     var authorizationCode: String
     var spotifyWebAccessToken: AppwriteSpotifyWebAccessToken
     var internalAPIAccessToken: AppwriteInternalAPIAccessToken
@@ -33,7 +33,7 @@ class User: Codable {
     }
     
     /// Regular initializer for creating the object directly.
-    init(spotifyId: String, spotifyProfile: AppwriteSpotifyProfile, friends: [AppwriteSpotifyProfile],
+    init(spotifyId: String, spotifyProfile: SpotifyProfile, friends: [SpotifyProfile],
          authorizationCode: String, spotifyWebAcessToken: AppwriteSpotifyWebAccessToken,
          internalAPIAccessToken: AppwriteInternalAPIAccessToken,
          authorizationStatus: AuthorizationStatus = .unauthenticated,
@@ -66,14 +66,14 @@ class User: Codable {
         
         // Decode spotifyProfile using the Appwrite keys
         let spotifyProfileDecoder = try container.superDecoder(forKey: .spotifyProfile)
-        self.spotifyProfile = try AppwriteSpotifyProfile(fromAppwrite: spotifyProfileDecoder)
+        self.spotifyProfile = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
         
         // Decoding friends using the Appwrite keys
         var friendsContainer = try container.nestedUnkeyedContainer(forKey: .friends)
-        var friends: [AppwriteSpotifyProfile] = []
+        var friends: [SpotifyProfile] = []
         while !friendsContainer.isAtEnd {
             let friendDecoder = try friendsContainer.superDecoder()
-            let friendProfile = try AppwriteSpotifyProfile(fromAppwrite: friendDecoder)
+            let friendProfile = try SpotifyProfile(fromAppwrite: friendDecoder)
             friends.append(friendProfile)
         }
         self.friends = friends

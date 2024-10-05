@@ -9,15 +9,15 @@ struct FriendActivityView: View {
     var body: some View {
         VStack {
 //            Button("create document") {
-//                let profile = AppwriteSpotifyProfile(spotifyId: "yousuf9", spotifyUri: "someUri",
+//                let profile = SpotifyProfile(spotifyId: "yousuf9", spotifyUri: "someUri",
 //                                                     displayName: "yousuf", image: "someImage")
 //                
 //                let spDcCookie = AppwriteSpDcCookie(value: "cookieValue", expiresDate: Date())
 //                
-//                let friend1 = AppwriteSpotifyProfile(spotifyId: "friend1", spotifyUri: "someUri",
+//                let friend1 = SpotifyProfile(spotifyId: "friend1", spotifyUri: "someUri",
 //                                                     displayName: "friend1", image: "someImage")
 //                
-//                let friend2 = AppwriteSpotifyProfile(spotifyId: "friend2", spotifyUri: "someUri",
+//                let friend2 = SpotifyProfile(spotifyId: "friend2", spotifyUri: "someUri",
 //                                                     displayName: "friend2", image: "someImage")
 //                
 //                let accessToken = AppwriteSpotifyWebAccessToken(

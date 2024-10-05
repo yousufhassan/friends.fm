@@ -14,7 +14,7 @@ class AppwriteProfileService: ProfileServiceProtocol {
         return documents?.total == 1
     }
     
-    public func getProfileFromDB(withSpotifyId spotifyId: String) async throws -> AppwriteSpotifyProfile? {
+    public func getProfileFromDB(withSpotifyId spotifyId: String) async throws -> SpotifyProfile? {
         guard let document = await Appwrite.shared.getDocument(collectionId: profilesCollectionId,
                                                                documentId: spotifyId)
         else {
@@ -22,7 +22,7 @@ class AppwriteProfileService: ProfileServiceProtocol {
             return nil
         }
 
-        return try AppwriteSpotifyProfile(fromAppwrite: document.data)
+        return try SpotifyProfile(fromAppwrite: document.data)
     }
     
 //    public func saveUserToDB(_ user: User) async throws -> Void {
