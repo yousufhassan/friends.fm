@@ -38,21 +38,46 @@ class ProfileServiceManager {
         }
     }
     
-//    /// Saves a user to the database.
-//    ///
-//    /// - Parameter user: The `User` object to save.
-//    /// - Returns: This method does not return a value.
-//    /// - Note: If an error occurs during the save operation, it will be caught and logged, but not thrown.
-//    ///
-//    /// This method attempts to save the given user to the database asynchronously.
-//    /// If the operation fails, an error is logged without interrupting the flow.
-//    func saveUserToDB(_ user: User) async throws -> Void {
-//        do {
-//            return try await profileService.saveUserToDB(user)
-//        } catch {
-//            printError("Error when trying to save user (id=\(user.spotifyId) to database.")
-//            printError("\(error)")
-//            throw error
-//        }
-//    }
+    //    /// Saves a user to the database.
+    //    ///
+    //    /// - Parameter user: The `User` object to save.
+    //    /// - Returns: This method does not return a value.
+    //    /// - Note: If an error occurs during the save operation, it will be caught and logged, but not thrown.
+    //    ///
+    //    /// This method attempts to save the given user to the database asynchronously.
+    //    /// If the operation fails, an error is logged without interrupting the flow.
+    //    func saveUserToDB(_ user: User) async throws -> Void {
+    //        do {
+    //            return try await profileService.saveUserToDB(user)
+    //        } catch {
+    //            printError("Error when trying to save user (id=\(user.spotifyId) to database.")
+    //            printError("\(error)")
+    //            throw error
+    //        }
+    //    }
+    
+    /// Stores the profile picture on disk using the Spotify ID as the image name.
+    func storeProfilePictureLocally(profile: SpotifyProfile) async -> Void {
+        do {
+            let imageName = profile.spotifyId
+            let link = profile.image
+            
+            // Return early if the user does not have a profile picture
+            if link == "" { return }
+            
+            // Fetch the image data
+            guard let imageURL = URL(string: link) else { return }
+            let request = URLRequest(url: imageURL)
+            let (data, _) = try await URLSession.shared.data(for: request)
+            
+            // Store image data on disk
+            let fileURL = URL.documentsDirectory.appending(path: "images/profile_pictures/\(imageName)")
+            try createDirectoryIfNotExists(at: fileURL)
+            try data.write(to: fileURL)
+        } catch {
+            printError("When trying to the profile image (id=\(profile.spotifyId)) locally.")
+            printError("\(error)")
+        }
+    }
 }
+

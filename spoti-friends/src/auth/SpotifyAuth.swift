@@ -45,7 +45,7 @@ class SpotifyAuth {
                 return .granted
             }
             
-            await currentUser.spotifyProfile.storeProfilePictureLocally()
+            await ProfileServiceManager.shared.storeProfilePictureLocally(profile: currentUser.spotifyProfile)
             try await UserServiceManager.shared.saveUserToDB(currentUser)
             return .granted
         } catch {

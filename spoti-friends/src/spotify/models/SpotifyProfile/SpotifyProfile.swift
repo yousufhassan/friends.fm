@@ -81,36 +81,9 @@ class SpotifyProfile: Codable {
         try container.encode(displayName, forKey: .displayName)
         try container.encode(image, forKey: .image)
     }
-    
-    
-    // TODO: This should ideally be in a Service class as well. If there are enough functions that require
-    // a service class then create one. Otherwise, perhaps it can stay here.
-    static public func getSpotifyIdFromUri(spotifyUri: String) -> String {
-        return spotifyUri.components(separatedBy: ":").last ?? ""
-    }
-    
-    // TODO: Same as above. These should go into a Service class.
-    /// Stores the profile picture on disk using the Spotify ID as the image name.
-    public func storeProfilePictureLocally() async -> Void {
-        do {
-            let imageName = self.spotifyId
-            let link = self.image
-            
-            // Return early if the user does not have a profile picture
-            if link == "" { return }
-            
-            // Fetch the image data
-            guard let imageURL = URL(string: link) else { return }
-            let request = URLRequest(url: imageURL)
-            let (data, _) = try await URLSession.shared.data(for: request)
-            
-            // Store image data on disk
-            let fileURL = URL.documentsDirectory.appending(path: "images/profile_pictures/\(imageName)")
-            try createDirectoryIfNotExists(at: fileURL)
-            try data.write(to: fileURL)
-        } catch {
-            printError("\(error)")
-        }
+
+    static public func getSpotifyId(fromUri uri: String) -> String {
+        return uri.components(separatedBy: ":").last ?? ""
     }
 }
 

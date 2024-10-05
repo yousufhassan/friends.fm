@@ -31,7 +31,7 @@ extension SpotifyAPI {
     ///
     /// - Returns: The friend as a `SpotifyProfile` object.
     private func friendObjectToSpotifyProfile(_ friendObject: BuddylistFriendObject) -> SpotifyProfile {
-        let spotifyId = SpotifyProfile.getSpotifyIdFromUri(spotifyUri: friendObject.user.uri)
+        let spotifyId = SpotifyProfile.getSpotifyId(fromUri: friendObject.user.uri)
         let spotifyUri = friendObject.user.uri
         let displayName = friendObject.user.name
         let image = friendObject.user.imageUrl ?? ""
