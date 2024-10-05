@@ -56,14 +56,25 @@ class ProfileServiceManager {
     //        }
     //    }
     
-    /// Stores the profile picture on disk using the Spotify ID as the image name.
+    /// Asynchronously stores a Spotify user's profile picture locally.
+    ///
+    /// This method downloads the profile image from the provided `SpotifyProfile`, checks if the image URL is valid,
+    /// fetches the image data, and stores it on disk in a directory named `profile_pictures`. If the profile has no image or
+    /// an error occurs, it returns early or handles the error.
+    ///
+    /// - Parameter profile: The `SpotifyProfile` containing the user's `spotifyId` and profile image URL.
+    ///
+    /// - Note: The image is saved with the user's `spotifyId` as the filename.
     func storeProfilePictureLocally(profile: SpotifyProfile) async -> Void {
         do {
             let imageName = profile.spotifyId
             let link = profile.image
             
             // Return early if the user does not have a profile picture
-            if link == "" { return }
+            if link == "" {
+                printInfo("Profile has no image; skipping.")
+                return
+            }
             
             // Fetch the image data
             guard let imageURL = URL(string: link) else { return }
