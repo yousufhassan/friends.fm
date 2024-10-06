@@ -16,10 +16,10 @@ class User: Codable {
     var spotifyProfile: SpotifyProfile
     var friends: [SpotifyProfile]
     var authorizationCode: String
-    var spotifyWebAccessToken: AppwriteSpotifyWebAccessToken
-    var internalAPIAccessToken: AppwriteInternalAPIAccessToken
+    var spotifyWebAccessToken: SpotifyWebAccessToken
+    var internalAPIAccessToken: InternalAPIAccessToken
     var authorizationStatus: AuthorizationStatus
-    var spDcCookie: AppwriteSpDcCookie
+    private var spDcCookie: SpDcCookie
     
     enum CodingKeys: String, CodingKey {
         case spotifyId = "$id"
@@ -34,10 +34,10 @@ class User: Codable {
     
     /// Regular initializer for creating the object directly.
     init(spotifyId: String, spotifyProfile: SpotifyProfile, friends: [SpotifyProfile],
-         authorizationCode: String, spotifyWebAcessToken: AppwriteSpotifyWebAccessToken,
-         internalAPIAccessToken: AppwriteInternalAPIAccessToken,
+         authorizationCode: String, spotifyWebAcessToken: SpotifyWebAccessToken,
+         internalAPIAccessToken: InternalAPIAccessToken,
          authorizationStatus: AuthorizationStatus = .unauthenticated,
-         spDcCookie: AppwriteSpDcCookie) {
+         spDcCookie: SpDcCookie) {
         self.spotifyId = spotifyId
         self.spotifyProfile = spotifyProfile
         self.friends = friends
@@ -57,12 +57,12 @@ class User: Codable {
         self.spotifyId = try container.decode(String.self, forKey: .spotifyId)
         self.authorizationCode = try container.decode(String.self, forKey: .authorizationCode)
         self.spotifyWebAccessToken = try container
-            .decode(AppwriteSpotifyWebAccessToken.self, forKey: .spotifyWebAccessToken)
+            .decode(SpotifyWebAccessToken.self, forKey: .spotifyWebAccessToken)
         self.internalAPIAccessToken = try container
-            .decode(AppwriteInternalAPIAccessToken.self, forKey: .internalAPIAccessToken)
+            .decode(InternalAPIAccessToken.self, forKey: .internalAPIAccessToken)
         self.authorizationStatus = try container
             .decode(AuthorizationStatus.self, forKey: .authorizationStatus)
-        self.spDcCookie = try container.decode(AppwriteSpDcCookie.self, forKey: .spDcCookie)
+        self.spDcCookie = try container.decode(SpDcCookie.self, forKey: .spDcCookie)
         
         // Decode spotifyProfile using the Appwrite keys
         let spotifyProfileDecoder = try container.superDecoder(forKey: .spotifyProfile)
@@ -77,6 +77,26 @@ class User: Codable {
             friends.append(friendProfile)
         }
         self.friends = friends
+    }
+    
+    public func getFriends() -> [SpotifyProfile] {
+        return self.friends
+    }
+    
+    public func addFriend(_ friend: SpotifyProfile) -> Void {
+        self.friends.append(friend)
+    }
+    
+    public func isFriendsWith(_ friend: SpotifyProfile) -> Bool {
+        return self.friends.contains(friend)
+    }
+    
+    public func getInternalAPIAccessToken() -> InternalAPIAccessToken {
+        return self.internalAPIAccessToken
+    }
+    
+    public func getSpDcCookie() -> SpDcCookie {
+        return self.spDcCookie
     }
 }
 

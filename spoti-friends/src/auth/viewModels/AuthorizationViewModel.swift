@@ -5,7 +5,7 @@ import WebKit
 /// The viewmodel used for the views involving the authorization code flow.
 class AuthorizationViewModel: ObservableObject {
     @Published var user: User?
-    @Published var spDcCookie: AppwriteSpDcCookie?
+    @Published var spDcCookie: SpDcCookie?
     @Published var authorizationStatus: AuthorizationStatus = .unauthenticated
     @Published var isFetchingUser = true
     
@@ -78,7 +78,7 @@ class AuthorizationViewModel: ObservableObject {
     
     /// Handles the fetched `sp_dc` cookie.
     ///
-    /// This method converts the provided `HTTPCookie` into an `AppwriteSpDcCookie` and stores it in the ViewModel.
+    /// This method converts the provided `HTTPCookie` into an `SpDcCookie` and stores it in the ViewModel.
     ///
     /// - Parameter cookie: An optional `HTTPCookie` that contains the `sp_dc` value.
     /// - Throws: `AuthorizationError.cannotConvertSpDcCookie` if the conversion fails.
@@ -91,7 +91,7 @@ class AuthorizationViewModel: ObservableObject {
         }
     }
     
-    /// Converts an optional `HTTPCookie` to an `AppwriteSpDcCookie`.
+    /// Converts an optional `HTTPCookie` to an `SpDcCookie`.
     ///
     /// This function extracts the value and expiration date from the provided cookie,
     /// throwing an error if the cookie is nil or if either the value or expiration date
@@ -100,11 +100,11 @@ class AuthorizationViewModel: ObservableObject {
     /// - Parameter cookie: An optional `HTTPCookie` to convert.
     /// - Throws: `AuthorizationError.cannotGetSpdcCookie` if the cookie is nil,
     ///           or if the value or expiration date cannot be retrieved.
-    /// - Returns: An `AppwriteSpDcCookie` object containing the extracted value and expiration date.
-    private func convertToSpDcCookie(_ cookie: HTTPCookie?) throws -> AppwriteSpDcCookie {
+    /// - Returns: An `SpDcCookie` object containing the extracted value and expiration date.
+    private func convertToSpDcCookie(_ cookie: HTTPCookie?) throws -> SpDcCookie {
         guard let value = cookie?.value, let expiresDate = cookie?.expiresDate else {
             throw AuthorizationError.cannotConvertToSpDcCookie
         }
-        return AppwriteSpDcCookie(value: value, expiresDate: expiresDate)
+        return SpDcCookie(value: value, expiresDate: expiresDate)
     }
 }

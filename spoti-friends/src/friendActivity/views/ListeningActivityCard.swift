@@ -21,10 +21,8 @@ struct ListeningActivityCard: View, Identifiable {
     init(profile: SpotifyProfile, backgroundColor: Color) {
         self.id = profile.spotifyId
         self.profile = profile
-//        self.track = profile.currentOrMostRecentTrack!
-//        self.album = (profile.currentOrMostRecentTrack?.track?.album)!
-        self.track = CurrentOrMostRecentTrackMock.iRememberEverything
-        self.album = AlbumMock.zachBryan
+        self.track = profile.currentOrMostRecentTrack!
+        self.album = (profile.currentOrMostRecentTrack?.track.album)!
         self.backgroundColor = backgroundColor
         self.fontColor = Color(backgroundColor).isDarkBackground() ? Color.white : Color.black
     }

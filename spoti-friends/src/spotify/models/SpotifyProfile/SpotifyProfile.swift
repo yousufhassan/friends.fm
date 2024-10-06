@@ -9,12 +9,18 @@ import JSONCodable
 ///   - displayName: The display name associated with this Spotify profile.
 ///   - image: The profile image for this Spotify profile.
 ///   - currentOrMostRecentTrack: The track last played (or currently playing)  by this Spotify profile.
-class SpotifyProfile: Codable {
+class SpotifyProfile: Codable, Equatable {
     let spotifyId: String
     let spotifyUri: String
     var displayName: String
     var image: String
-    //    var currentOrMostRecentTrack: CurrentOrMostRecentTrack?
+    var currentOrMostRecentTrack: CurrentOrMostRecentTrack?
+    
+    /// Defining what makes two `SpotifyProfile` objects equal for conformance to the `Equatable` protocol.
+    /// Two `SpotifyProfile` objects are considered equal if they have the same `spotifyId` value.
+    static func == (lhs: SpotifyProfile, rhs: SpotifyProfile) -> Bool {
+        return lhs.spotifyId == rhs.spotifyId
+    }
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
     enum SpotifyAPICodingKeys: String, CodingKey {
@@ -33,11 +39,12 @@ class SpotifyProfile: Codable {
     }
     
     /// Regular initializer for creating the object directly
-    init(spotifyId: String, spotifyUri: String, displayName: String, image: String) {
+    init(spotifyId: String, spotifyUri: String, displayName: String, image: String, currentOrMostRecentTrack: CurrentOrMostRecentTrack? = nil) {
         self.spotifyId = spotifyId
         self.spotifyUri = spotifyUri
         self.displayName = displayName
         self.image = image
+        self.currentOrMostRecentTrack = currentOrMostRecentTrack
     }
     
     /// Custom initializer for decoding from Spotify API
@@ -55,7 +62,7 @@ class SpotifyProfile: Codable {
         let spotifyId = try container.decode(String.self, forKey: .spotifyId)
         let spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
         let displayName = try container.decode(String.self, forKey: .displayName)
-        let image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
+        let image = try container.decode(String.self, forKey: .image)
         self.init(spotifyId: spotifyId, spotifyUri: spotifyUri, displayName: displayName, image: image)
     }
     

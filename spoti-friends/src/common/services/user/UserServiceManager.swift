@@ -36,8 +36,7 @@ class UserServiceManager {
             let user = try await userService.getUserFromDB(withSpotifyId: spotifyId)
             return user
         } catch {
-            printError("Error when trying to get user (id=\(spotifyId)) from database.")
-            printError("\(error)")
+            printError("Error when trying to get user (id=\(spotifyId)) from database: \(error).")
             throw error // Bubble up the error to be handled specifically depending on the context
         }
     }
@@ -46,17 +45,40 @@ class UserServiceManager {
     ///
     /// - Parameter user: The `User` object to save.
     /// - Returns: This method does not return a value.
-    /// - Note: If an error occurs during the save operation, it will be caught and logged, but not thrown.
-    ///
-    /// This method attempts to save the given user to the database asynchronously.
-    /// If the operation fails, an error is logged without interrupting the flow.
     func saveUserToDB(_ user: User) async throws -> Void {
         do {
-            return try await userService.saveUserToDB(user)
+            try await userService.saveUserToDB(user)
         } catch {
-            printError("Error when trying to save user (id=\(user.spotifyId)) to database.")
-            printError("\(error)")
+            printError("Error when trying to save user (id=\(user.spotifyId)) to database: \(error).")
             throw error
         }
+    }
+    
+    /// Updates a user in the database.
+    ///
+    /// - Parameter user: The `User` object to update.
+    /// - Returns: This method does not return a value.
+    func updateUserInDB(_ user: User) async throws -> Void {
+        do {
+            try await userService.updateUserInDB(user)
+        } catch {
+            printError("Error when trying to update user (id=\(user.spotifyId)) in database: \(error).")
+            throw error
+        }
+    }
+    
+    /// Retrieves the Spotify internal API access token for the given user.
+    ///
+    /// If the user already has an existing internal API access token, it will be reused if still valid.
+    /// Otherwise, a new token is fetched using the `SpotifyAuth` service.
+    ///
+    /// - Parameter user: The `User` to fetch the token for.
+    /// - Returns: An `InternalAPIAccessToken` for making authenticated requests to Spotify's internal API.
+    /// - Throws: An error if token retrieval fails.
+    func getInternalAPIAccessToken(forUser user: User) async throws -> InternalAPIAccessToken {
+        let spDcCookie = user.getSpDcCookie()
+        let existingToken = user.getInternalAPIAccessToken()
+        return try await SpotifyAuth.shared
+            .fetchInternalAPIAccessToken(spDcCookie: spDcCookie, existingToken: existingToken)
     }
 }

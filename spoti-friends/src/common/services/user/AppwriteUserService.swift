@@ -34,4 +34,10 @@ class AppwriteUserService: UserServiceProtocol {
         try await Appwrite.shared.createDocument(collectionId: usersCollectionId,
                                                  documentId: user.spotifyId, data: data)
     }
+    
+    public func updateUserInDB(_ user: User) async throws -> Void {
+        let data = try JSONEncoder().encode(user)
+        try await Appwrite.shared.updateDocument(collectionId: usersCollectionId,
+                                                 documentId: user.spotifyId, data: data)
+    }
 }

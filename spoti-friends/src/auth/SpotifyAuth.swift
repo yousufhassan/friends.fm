@@ -24,7 +24,7 @@ class SpotifyAuth {
     }
     
     /// Handles the response from the Spotify authorization flow depending on whether the user granted authorization or denied authorization.
-    @MainActor func handleResponseUrl(url: URL, user: inout User?, spDcCookie: AppwriteSpDcCookie?)
+    @MainActor func handleResponseUrl(url: URL, user: inout User?, spDcCookie: SpDcCookie?)
     async -> AuthorizationStatus {
         do {
             guard let validatedSpDcCookie = spDcCookie else { throw AuthorizationError.missingSpDcCookie }
@@ -55,7 +55,7 @@ class SpotifyAuth {
     }
     
     // TODO: Add docs
-    @MainActor private func createUser(queryItems: [URLQueryItem], spDcCookie: AppwriteSpDcCookie)
+    @MainActor private func createUser(queryItems: [URLQueryItem], spDcCookie: SpDcCookie)
     async throws -> User {
         let authorizationCode = try getAuthorizationCodeFromQueryItems(queryItems)
         let spotifyWebAccessToken = try await requestAccessTokenObject(authorizationCode: authorizationCode)
@@ -68,7 +68,7 @@ class SpotifyAuth {
                    accessToken: spotifyWebAccessToken.access_token)
 
         let friends = try await SpotifyAPI.shared
-            .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.accessToken)
+            .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.getAccessToken())
 
         return User(spotifyId: spotifyProfile.spotifyId,
                             spotifyProfile: spotifyProfile,
@@ -134,11 +134,11 @@ class SpotifyAuth {
     }
     
     /// Requests and returns a Spotify Web Access Ttoken object.
-    private func requestAccessTokenObject(authorizationCode: String) async throws -> AppwriteSpotifyWebAccessToken {
+    private func requestAccessTokenObject(authorizationCode: String) async throws -> SpotifyWebAccessToken {
         do {
             let request = try constructAccessTokenUrlRequest(authorizationCode: authorizationCode)
             let (data, _) = try await URLSession.shared.data(for: request)
-            let accessToken = try JSONDecoder().decode(AppwriteSpotifyWebAccessToken.self, from: data)
+            let accessToken = try JSONDecoder().decode(SpotifyWebAccessToken.self, from: data)
             return accessToken
         } catch {
             printError("\(error)")
@@ -195,10 +195,10 @@ class SpotifyAuth {
     ///
     /// - Returns: The **internal** Spotify Web Player Access Token .
     @MainActor public func fetchInternalAPIAccessToken
-    (spDcCookie: AppwriteSpDcCookie, existingToken: AppwriteInternalAPIAccessToken? = nil)
-    async throws -> AppwriteInternalAPIAccessToken {
+    (spDcCookie: SpDcCookie, existingToken: InternalAPIAccessToken? = nil)
+    async throws -> InternalAPIAccessToken {
         // If there as an existing token that is still valid, return that. Otherwise return a new token.
-        if (existingToken != nil && !accessTokenIsExpired(Double(existingToken!.accessTokenExpirationTimestampMs)))
+        if (existingToken != nil && !accessTokenIsExpired(Double(existingToken!.getExpirationTimestamp())))
         {
             return existingToken!
         }
@@ -209,7 +209,7 @@ class SpotifyAuth {
         var request = URLRequest(url: endpointURL)
         request.setValue("sp_dc=\(spDcCookie.value)", forHTTPHeaderField: "Cookie")
         let (data, _) = try await URLSession.shared.data(for: request)
-        let internalAPIAccessToken = try JSONDecoder().decode(AppwriteInternalAPIAccessToken.self, from: data)
+        let internalAPIAccessToken = try JSONDecoder().decode(InternalAPIAccessToken.self, from: data)
         return internalAPIAccessToken
     }
     

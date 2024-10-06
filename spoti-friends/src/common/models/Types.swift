@@ -10,7 +10,7 @@ import AppwriteModels
 ///   - expires_in: The time period (in seconds) for which the access token is valid.
 ///   - refresh_token: The refresh token to be used to obtain new access tokens.
 ///   - accessTokenExpirationTimestampMs: Timestamp for when the access token expires.
-class AppwriteSpotifyWebAccessToken: Codable {
+class SpotifyWebAccessToken: Codable {
     var access_token: String
     var token_type: String
     var scope: String
@@ -35,7 +35,7 @@ class AppwriteSpotifyWebAccessToken: Codable {
         self.scope = try container.decode(String.self, forKey: .scope)
         self.expires_in = try container.decode(Int.self, forKey: .expires_in)
         self.refresh_token = try container.decode(String.self, forKey: .refresh_token)
-        self.accessTokenExpirationTimestampMs = Int(AppwriteSpotifyWebAccessToken.getExpiryTimestamp())
+        self.accessTokenExpirationTimestampMs = Int(SpotifyWebAccessToken.getExpiryTimestamp())
     }
     
     static public func getExpiryTimestamp() -> TimeInterval {
@@ -50,7 +50,7 @@ class AppwriteSpotifyWebAccessToken: Codable {
 /// - Parameters:
 ///   - value: The `sp_dc` cookie value.
 ///   - expiresDate: The expiry date of the `sp_dc` cookie. Note that this is passed in as a `Date`, but stored as a `String`.
-class AppwriteSpDcCookie: Codable {
+class SpDcCookie: Codable {
     var value: String
     var expiresDate: String // Appwrite expects it as a ISO8601-string (stores it in UTC)
     
@@ -67,11 +67,11 @@ class AppwriteSpDcCookie: Codable {
 ///   - accessToken: Access tokem to make internal API calls.
 ///   - accessTokenExpirationTimestampMs: Timestamp for when the access token expires.
 ///   - isAnonymous: False if the access token is associated with a valid Spotify user; True otherwise.
-class AppwriteInternalAPIAccessToken: Codable {
-    var clientId: String
-    var accessToken: String
-    var accessTokenExpirationTimestampMs: Int
-    var isAnonymous: Bool
+class InternalAPIAccessToken: Codable {
+    private var clientId: String
+    private var accessToken: String
+    private var accessTokenExpirationTimestampMs: Int
+    private var isAnonymous: Bool
     
     init(clientId: String, accessToken: String, accessTokenExpirationTimestampMs: Double, isAnonymous: Bool) {
         self.clientId = clientId
@@ -79,4 +79,21 @@ class AppwriteInternalAPIAccessToken: Codable {
         self.accessTokenExpirationTimestampMs = Int(accessTokenExpirationTimestampMs)
         self.isAnonymous = isAnonymous
     }
+    
+    public func getClientId() -> String {
+        return self.clientId
+    }
+    
+    public func getAccessToken() -> String {
+        return self.accessToken
+    }
+    
+    public func getExpirationTimestamp() -> Double {
+        return Double(self.accessTokenExpirationTimestampMs)
+    }
+    
+    public func getIsAnonymousValue() -> Bool {
+        return self.isAnonymous
+    }
+    
 }
