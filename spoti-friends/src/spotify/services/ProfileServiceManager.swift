@@ -86,7 +86,7 @@ class ProfileServiceManager {
             try createDirectoryIfNotExists(at: fileURL)
             try data.write(to: fileURL)
         } catch {
-            printError("When trying to the profile image (id=\(profile.spotifyId)) locally.")
+            printError("When trying to the store the profile image (id=\(profile.spotifyId)) locally.")
             printError("\(error)")
         }
     }
