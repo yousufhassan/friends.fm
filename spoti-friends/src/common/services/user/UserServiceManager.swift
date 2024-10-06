@@ -67,22 +67,6 @@ class UserServiceManager {
         }
     }
     
-    /// Adds a new friend for the user and updates the database.
-    ///
-    /// - Parameters:
-    ///   - user: The user to add the friend for.
-    ///   - friend: The `SpotifyProfile` of the friend to add.
-    func addFriend(forUser user: User, friend: SpotifyProfile) async throws -> Void {
-        do {
-            user.addFriend(friend)
-            try await userService.updateUserInDB(user)
-        }
-        catch {
-            printError("Error when trying to add new friend (id=\(friend.spotifyId) for the user (id=\(user.spotifyId): \(error)")
-            throw error
-        }
-    }
-    
     /// Retrieves the Spotify internal API access token for the given user.
     ///
     /// If the user already has an existing internal API access token, it will be reused if still valid.
