@@ -69,7 +69,19 @@ class Appwrite {
         }
     }
     
-    // TODO: Add docs
+    /// Updates the specified document in the specified Appwrite collection.
+    ///
+    /// - Parameters:
+    ///   - databaseId: Optional. The database ID. If nil, the default database ID is used.
+    ///   - collectionId: The ID of the collection where the document will be created.
+    ///   - documentId: The ID of the document to create.
+    ///   - data: The `Data` object representing the document content.
+    ///   - permissions: Optional. A list of permissions to assign to the document.
+    ///
+    /// - Throws: Throws an error if the document creation fails.
+    ///
+    /// This method updates a document in the specified collection, ensuring that the `$id` field is removed from the data object
+    /// before sending the request to the server because that needs to be passed in as the `documentId` and not part of `data`.
     public func updateDocument(databaseId: String? = nil, collectionId: String, documentId: String,
                                data: Data, permissions: [String]? = nil) async throws {
         do {
