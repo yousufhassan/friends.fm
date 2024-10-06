@@ -32,5 +32,7 @@ protocol UserServiceProtocol {
     /// This method attempts to save the given user to the database asynchronously.
     /// If the operation fails, an error is logged without interrupting the flow.
     func saveUserToDB(_ user: User) async throws -> Void
+    
+    func updateUserInDB(_ user: User) async throws -> Void
 }
 

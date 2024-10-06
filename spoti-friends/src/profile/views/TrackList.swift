@@ -24,7 +24,7 @@ struct TrackList: View {
         // Actual list once data is available
         else {
             VStack (alignment: .leading) {
-                ForEach(tracks.indices, id: \.self) { index in
+                ForEach(tracks.indices) { index in
                     let track = tracks[index]
                     
                     Link(destination: URL(string: track.spotifyUri)!) {
@@ -36,7 +36,7 @@ struct TrackList: View {
                                     .frame(width: 20)
                                     .padding(.trailing, 2)
                             }
-                            ImageWithSpecs(imageUrl: track.album?.image ?? "", width: 36, height: 36, cornerRadius: 2)
+                            ImageWithSpecs(imageUrl: track.album.image, width: 36, height: 36, cornerRadius: 2)
                             
                             VStack (alignment: .leading) {
                                 // Track name
@@ -65,7 +65,7 @@ struct TrackList: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 4)
-                        .animation(.easeInOut(duration: 0.6), value: tracks)
+//                        .animation(.easeInOut(duration: 0.6), value: tracks)
                     }
                 }
             }

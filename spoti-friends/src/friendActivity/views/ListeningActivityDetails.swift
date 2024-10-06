@@ -1,5 +1,4 @@
 import SwiftUI
-import RealmSwift
 
 /// The View that renders the details for a listening activity item.
 ///
@@ -15,20 +14,20 @@ struct ListeningActivityDetails: View {
     let profile: SpotifyProfile
     let currentTrack: CurrentOrMostRecentTrack
     let trackDetails: Track
-    let artists: RealmSwift.List<Artist>
+    let artists: [Artist]
     let context: TrackContext
     @State var contextIcon: Image
     
     init(profile: SpotifyProfile, currentTrack: CurrentOrMostRecentTrack) {
         self.profile = profile
         self.currentTrack = currentTrack
-        self.trackDetails = currentTrack.track!
-        self.artists = (currentTrack.track?.artists) ?? List<Artist>()
-        self.context = (currentTrack.track?.context)!
+        self.trackDetails = currentTrack.track
+        self.artists = (currentTrack.track.artists)
+        self.context = (currentTrack.track.context)
         self.contextIcon = getImageForContextType()
         
         func getImageForContextType() -> Image {
-            let contextType = currentTrack.track?.context?.type
+            let contextType = currentTrack.track.context.type
             
             switch contextType {
             case .album: return Image(systemName: "smallcircle.circle")
@@ -79,7 +78,7 @@ struct ListeningActivityDetails: View {
                 HStack {
                     contextIcon
                         .padding(.trailing, -6)
-                    Text(trackDetails.context?.name ?? "Error")
+                    Text(trackDetails.context.name)
                         .lineLimit(1)
                 }
             }

@@ -56,10 +56,11 @@ class Appwrite {
             let data = try remove$IdFieldFromData(data)
             
             let dataJSONString = String(data: data, encoding: .utf8) as Any
-            let response = try await self.database.createDocument(databaseId: databaseId,
-                                                                  collectionId: collectionId,
-                                                                  documentId: documentId,
-                                                                  data: dataJSONString)
+            let _ = try await self.database.createDocument(databaseId: databaseId,
+                                                           collectionId: collectionId,
+                                                           documentId: documentId,
+                                                           data: dataJSONString,
+                                                           permissions: permissions)
             
             printInfo("Created document (id=\(documentId)) in '\(collectionId)' collection.")
         } catch {
@@ -67,7 +68,28 @@ class Appwrite {
             throw error
         }
     }
-
+    
+    // TODO: Add docs
+    public func updateDocument(databaseId: String? = nil, collectionId: String, documentId: String,
+                               data: Data, permissions: [String]? = nil) async throws {
+        do {
+            let databaseId = databaseId ?? self.getDatabaseId()
+            let data = try remove$IdFieldFromData(data)
+            
+            let dataJSONString = String(data: data, encoding: .utf8) as Any
+            let _ = try await self.database.updateDocument(databaseId: databaseId,
+                                                           collectionId: collectionId,
+                                                           documentId: documentId,
+                                                           data: dataJSONString,
+                                                           permissions: permissions)
+            
+            printInfo("Updated document (id=\(documentId)) in '\(collectionId)' collection.")
+        } catch {
+            printError("Error when trying to update Appwrite document: \(error)")
+            throw error
+        }
+    }
+    
     /// Fetches a single document from the specified Appwrite collection using the specified document ID and query filters.
     ///
     /// - Parameters:
@@ -104,7 +126,7 @@ class Appwrite {
     async -> DocumentList<[String:AnyCodable]>? {
         do {
             let databaseId = databaseId ?? self.getDatabaseId()
-
+            
             let documentList = try await self.database.listDocuments(
                 databaseId: databaseId, collectionId: collectionId, queries: queries)
             
@@ -115,7 +137,6 @@ class Appwrite {
             return nil
         }
     }
-    
     
     /// Removes the `$id` field from the provided document data.
     ///

@@ -25,14 +25,9 @@ class AppwriteProfileService: ProfileServiceProtocol {
         return try SpotifyProfile(fromAppwrite: document.data)
     }
     
-//    public func saveUserToDB(_ user: User) async throws -> Void {
-//        // If the friend already exists in the database, use that reference instead of creating
-//        // a new one. Do the same for user.SpotifyProfile.
-//        
-//        
-//        
-//        let data = try JSONEncoder().encode(user)
-//        try await Appwrite.shared.createDocument(collectionId: profilesCollectionId,
-//                                             documentId: user.spotifyId, data: data)
-//    }
+    public func saveProfileToDB(_ profile: SpotifyProfile) async throws -> Void {
+        let data = try JSONEncoder().encode(profile)
+        try await Appwrite.shared.createDocument(collectionId: profilesCollectionId,
+                                                 documentId: profile.spotifyId, data: data)
+    }
 }

@@ -38,23 +38,23 @@ class ProfileServiceManager {
         }
     }
     
-    //    /// Saves a user to the database.
-    //    ///
-    //    /// - Parameter user: The `User` object to save.
-    //    /// - Returns: This method does not return a value.
-    //    /// - Note: If an error occurs during the save operation, it will be caught and logged, but not thrown.
-    //    ///
-    //    /// This method attempts to save the given user to the database asynchronously.
-    //    /// If the operation fails, an error is logged without interrupting the flow.
-    //    func saveUserToDB(_ user: User) async throws -> Void {
-    //        do {
-    //            return try await profileService.saveUserToDB(user)
-    //        } catch {
-    //            printError("Error when trying to save user (id=\(user.spotifyId) to database.")
-    //            printError("\(error)")
-    //            throw error
-    //        }
-    //    }
+    /// Saves a Spotify Profile to the database.
+    ///
+    /// - Parameter profile: The `SpotifyProfile` object to save.
+    /// - Returns: This method does not return a value.
+    /// - Note: If an error occurs during the save operation, it will be caught and logged, but not thrown.
+    ///
+    /// This method attempts to save the given Spotify Profile to the database asynchronously.
+    /// If the operation fails, an error is logged without interrupting the flow.
+    func saveProfileToDB(_ profile: SpotifyProfile) async throws -> Void {
+        do {
+            return try await profileService.saveProfileToDB(profile)
+        } catch {
+            printError("Error when trying to save Spotify Profile (id=\(profile.spotifyId) to database.")
+            printError("\(error)")
+            throw error
+        }
+    }
     
     /// Asynchronously stores a Spotify user's profile picture locally.
     ///

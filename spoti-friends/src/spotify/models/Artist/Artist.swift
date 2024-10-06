@@ -1,28 +1,33 @@
 import Foundation
-import RealmSwift
 
 /// Object representing a Spotify Artist.
-class Artist: Object, SpotifyResource, Decodable, Identifiable {
-    @Persisted var spotifyUri: String
-    @Persisted var name: String
-    @Persisted var genres: List<String>
-    @Persisted var image: String
-    var id: String { spotifyUri }
+class Artist: SpotifyResource, Codable {
+    let spotifyUri: String
+    let name: String
+    let genres: [String]
+    let image: String
     
-    // Map the JSON keys to your object properties
-    private enum CodingKeys: String, CodingKey {
+    /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
+    enum CodingKeys: String, CodingKey {
         case spotifyUri = "uri"
         case name
         case genres
         case image = "images"
     }
     
-    convenience required init(from decoder: any Decoder) throws {
-        self.init()
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
-        self.name = try container.decode(String.self, forKey: .name)
-        self.genres = try container.decodeIfPresent(List<String>.self, forKey: .genres) ?? List<String>()
-        self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
+    init(spotifyUri: String, name: String, genres: [String], image: String) {
+        self.spotifyUri = spotifyUri
+        self.name = name
+        self.genres = genres
+        self.image = image
     }
+    
+//    convenience required init(from decoder: any Decoder) throws {
+//        self.init()
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
+//        self.name = try container.decode(String.self, forKey: .name)
+//        self.genres = try container.decodeIfPresent(List<String>.self, forKey: .genres) ?? List<String>()
+//        self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
+//    }
 }

@@ -19,8 +19,8 @@ struct UserMock {
                                 spDcCookie: self.createMockSpDcCookie())
     }
     
-    static private func createMockSpotifyWebAccessToken() -> AppwriteSpotifyWebAccessToken {
-        return AppwriteSpotifyWebAccessToken(access_token: "",
+    static private func createMockSpotifyWebAccessToken() -> SpotifyWebAccessToken {
+        return SpotifyWebAccessToken(access_token: "",
                                              token_type: "",
                                              scope: "",
                                              expires_in: 3600,
@@ -28,14 +28,14 @@ struct UserMock {
                                              accessTokenExpirationTimestampMs: 1000000000)
     }
     
-    static private func createMockInternalAPIAccessToken() -> AppwriteInternalAPIAccessToken {
-        return AppwriteInternalAPIAccessToken(clientId: "",
+    static private func createMockInternalAPIAccessToken() -> InternalAPIAccessToken {
+        return InternalAPIAccessToken(clientId: "",
                                               accessToken: "",
                                               accessTokenExpirationTimestampMs: 1000000000,
                                               isAnonymous: false)
     }
     
-    static private func createMockSpDcCookie() -> AppwriteSpDcCookie {
-        return AppwriteSpDcCookie(value: "", expiresDate: Date())
+    static private func createMockSpDcCookie() -> SpDcCookie {
+        return SpDcCookie(value: "", expiresDate: Date())
     }
 }

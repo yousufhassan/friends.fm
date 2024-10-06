@@ -20,12 +20,12 @@ struct FriendActivityView: View {
 //                let friend2 = SpotifyProfile(spotifyId: "friend2", spotifyUri: "someUri",
 //                                                     displayName: "friend2", image: "someImage")
 //                
-//                let accessToken = AppwriteSpotifyWebAccessToken(
+//                let accessToken = SpotifyWebAccessToken(
 //                    access_token: "tokenValue", token_type: "someType", scope: "scopesHere",
 //                    expires_in: 3600, refresh_token: "refreshToken",
 //                    accessTokenExpirationTimestampMs: 932847239879)
 //                
-//                let internalToken = AppwriteInternalAPIAccessToken(
+//                let internalToken = InternalAPIAccessToken(
 //                clientId: "clientId", accessToken: "accessToken",
 //                accessTokenExpirationTimestampMs: 23832849387, isAnonymous: false)
 //                
@@ -81,11 +81,11 @@ struct FriendActivityView: View {
             }
         }
         .refreshable {
-//            try? await friendActivityViewModel.setFriendActivity()
+            try? await friendActivityViewModel.setFriendActivity()
         }
         .onAppear {
             Task {
-//                try? await friendActivityViewModel.setFriendActivity()
+                try? await friendActivityViewModel.setFriendActivity()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
