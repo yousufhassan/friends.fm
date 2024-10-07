@@ -67,6 +67,20 @@ class UserServiceManager {
         }
     }
     
+    func getSpotifyWebAccessToken(forUser user: User) async throws -> SpotifyWebAccessToken {
+        let existingToken = user.getSpotifyWebAccessToken()
+        if (!SpotifyAuth.shared.accessTokenIsExpired(existingToken.getExpiryTimestamp())) {
+            return existingToken
+        }
+        
+        let newToken = try await SpotifyAuth.shared
+            .refreshAccessToken(refreshToken: existingToken.getRefreshToken())
+        user.setSpotifyWebAccessToken(newToken)
+        try await userService.updateUserInDB(user)
+        
+        return newToken
+    }
+    
     /// Retrieves the Spotify internal API access token for the given user.
     ///
     /// If the user already has an existing internal API access token, it will be reused if still valid.

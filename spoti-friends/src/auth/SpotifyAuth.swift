@@ -65,7 +65,7 @@ class SpotifyAuth {
             .fetch(method: .GET,
                    endpoint: .getCurrentUsersProfile,
                    responseType: SpotifyProfile.self,
-                   accessToken: spotifyWebAccessToken.access_token)
+                   accessToken: spotifyWebAccessToken.getAccessToken())
 
         let friends = try await SpotifyAPI.shared
             .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.getAccessToken())
@@ -79,17 +79,6 @@ class SpotifyAuth {
                             authorizationStatus: .granted,
                             spDcCookie: spDcCookie)
     }
-    
-//    /// Returns `true` if the `user` already exists in the database and `false` otherwise.
-//    private func userExistsInDatabase(_ user: User) async -> Bool {
-//        var userExists: Bool = false
-//        DispatchQueue.main.sync {
-//            let realm = RealmDatabase.shared.getRealmInstance()
-//            userExists = realm.objects(User.self).where { $0.spotifyId == user.spotifyId }.count != 0
-//        }
-//        
-//        return userExists
-//    }
     
     /// Stores the user as the signed in user in `UserDefaults`.
     private func storeSignedInUser(_ user: User) -> Void {
@@ -168,23 +157,25 @@ class SpotifyAuth {
         return request
     }
     
-//    /// Requests abd returns a refreshed Spotify Web Access Token object.
-//    ///
-//    /// - Parameters:
-//    ///   - refreshToken: The refresh token returned from the authoriztion token request.
-//    ///
-//    /// - Returns: A new `SpotifyWebAccessToken`.
-//    public func refreshAccessToken(refreshToken: String) async throws -> SpotifyWebAccessToken {
-//        do {
-//            let request = try constructRefreshAccessTokenRequest(refreshToken: refreshToken)
-//            let (data, _) = try await URLSession.shared.data(for: request)
-//            let accessToken = try JSONDecoder().decode(SpotifyWebAccessToken.self, from: data)
-//            return accessToken
-//        } catch {
-//            printError("\(error)")
-//            throw error
-//        }
-//    }
+    /// Requests and returns a refreshed Spotify Web Access Token object.
+    ///
+    /// - Parameters:
+    ///   - refreshToken: The refresh token returned from the authoriztion token request.
+    ///
+    /// - Returns: A new `SpotifyWebAccessToken`.
+    public func refreshAccessToken(refreshToken: String) async throws -> SpotifyWebAccessToken {
+        do {
+            let request = try constructRefreshAccessTokenRequest(refreshToken: refreshToken)
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let responseString = String(data: data, encoding: .utf8)
+            print("Response Data: \(responseString)")
+            let accessToken = try JSONDecoder().decode(SpotifyWebAccessToken.self, from: data)
+            return accessToken
+        } catch {
+            printError("When trying to refresh Spotify Web Access Token: \(error)")
+            throw error
+        }
+    }
     
     /// Fetches and returns the Spotify Web Player Access Token needed for calling the `/buddylist` internal API endpoint.
     /// This is different than the Access Token for the Web API.
