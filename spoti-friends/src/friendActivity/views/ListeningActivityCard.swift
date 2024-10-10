@@ -22,7 +22,7 @@ struct ListeningActivityCard: View, Identifiable {
         self.id = profile.spotifyId
         self.profile = profile
         self.track = profile.currentOrMostRecentTrack!
-        self.album = (profile.currentOrMostRecentTrack?.track?.album)!
+        self.album = (profile.currentOrMostRecentTrack?.track.album)!
         self.backgroundColor = backgroundColor
         self.fontColor = Color(backgroundColor).isDarkBackground() ? Color.white : Color.black
     }

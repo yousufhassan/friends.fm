@@ -12,13 +12,11 @@ struct SpotifyProfileMock {
     static let stanleyHudson = createMockSpotifyProfile(spotifyId: "stanleythemanly",
                                                         track: CurrentOrMostRecentTrackMock.luxury)
     
-    static func createMockSpotifyProfile(spotifyId: String, image: String = "", track: CurrentOrMostRecentTrack) -> SpotifyProfile {
-        let mockSpotifyProfile = SpotifyProfile()
-        mockSpotifyProfile.spotifyId = spotifyId
-        mockSpotifyProfile.spotifyUri = "spotify:user:\(spotifyId)"
-        mockSpotifyProfile.displayName = spotifyId
-        mockSpotifyProfile.image = image
-        mockSpotifyProfile.currentOrMostRecentTrack = track
-        return mockSpotifyProfile
+    static func createMockSpotifyProfile
+    (spotifyId: String, image: String = "", track: CurrentOrMostRecentTrack? = nil) -> SpotifyProfile {
+        return SpotifyProfile(spotifyId: spotifyId,
+                                      spotifyUri: "spotify:user:\(spotifyId)",
+                                      displayName: spotifyId,
+                                      image: image)
     }
 }

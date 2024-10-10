@@ -15,7 +15,7 @@ import Foundation
 ///   - cacheClearTimer: A timer used to automatically clear the cache every 12 hours.
 ///
 class ProfileViewModel: ObservableObject {
-    @Published var user: User
+    @Published var user: User?
     @Published private var topTracksCache: [TimeRange: [Track]] = [:]
     @Published private var topArtistsCache: [TimeRange: [Artist]] = [:]
     private var cacheClearTimer: Timer?
@@ -23,7 +23,7 @@ class ProfileViewModel: ObservableObject {
     /// Initializes the `ProfileViewModel` with the specified `User` and starts the cache timer.
     ///
     /// - Parameter user: The currently logged-in `User` object.
-    init(user: User){
+    init(user: User?){
         self.user = user
         startCacheTimer()
     }
@@ -53,16 +53,19 @@ class ProfileViewModel: ObservableObject {
     /// - Returns: The number of followers the current user has, or `-1` if the fetch fails.
     @MainActor func getCurrentUsersFollowerCount() async -> Int {
         do {
-            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            guard let signedInUser = user else { throw AuthorizationError.missingUser }
+            let accessToken = try await UserServiceManager.shared
+                .getSpotifyWebAccessToken(forUser: signedInUser)
+                .getAccessToken()
             let response = try await SpotifyAPI.shared.fetch(method: .GET,
                                                              endpoint: .getCurrentUsersProfile,
                                                              responseType: GetCurrentUserProfileResponse.self,
                                                              accessToken: accessToken)
             return response.followers.total
         } catch {
-            printError("\(error)")
+            printError("When getting the current user's follower count: \(error)")
+            return -1
         }
-        return -1
     }
     
     /// Fetches the current user's public playlist count from Spotify.
@@ -72,16 +75,19 @@ class ProfileViewModel: ObservableObject {
     /// - Returns: The number of public playlists, or `-1` if the fetch fails.
     @MainActor func getCurrentUsersPlaylistCount() async -> Int {
         do {
-            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            guard let signedInUser = user else { throw AuthorizationError.missingUser }
+            let accessToken = try await UserServiceManager.shared
+                .getSpotifyWebAccessToken(forUser: signedInUser)
+                .getAccessToken()
             let response = try await SpotifyAPI.shared.fetch(method: .GET,
                                                              endpoint: .getCurrentUsersPlaylists,
                                                              responseType: GetCurrentUserPlayistsResponse.self,
                                                              accessToken: accessToken)
             return response.total
         } catch {
-            printError("\(error)")
+            printError("When getting the current user's playlist count: \(error)")
+            return -1
         }
-        return -1
     }
     
     enum ProfileItems {
@@ -119,7 +125,10 @@ class ProfileViewModel: ObservableObject {
     @MainActor func getCurrentUsersRecentTracks(limit: Int)
     async -> TracksWithResponseMetadata? {
         do {
-            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            guard let signedInUser = user else { throw AuthorizationError.missingUser }
+            let accessToken = try await UserServiceManager.shared
+                .getSpotifyWebAccessToken(forUser: signedInUser)
+                .getAccessToken()
             let queryParams = [
                 URLQueryItem(name: "limit", value: String(limit))
             ]
@@ -132,7 +141,7 @@ class ProfileViewModel: ObservableObject {
             return TracksWithResponseMetadata(tracks: response.extractTracksFromItems(), isEmpty: response.items.isEmpty)
         }
         catch {
-            printError("\(error)")
+            printError("When getting the current user's recent tracks: \(error)")
             return nil
         }
     }
@@ -154,7 +163,10 @@ class ProfileViewModel: ObservableObject {
         }
         
         do {
-            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            guard let signedInUser = user else { throw AuthorizationError.missingUser }
+            let accessToken = try await UserServiceManager.shared
+                .getSpotifyWebAccessToken(forUser: signedInUser)
+                .getAccessToken()
             let queryParams = [
                 URLQueryItem(name: "time_range", value: timeRange.rawValue),
                 URLQueryItem(name: "limit", value: String(limit))
@@ -173,7 +185,7 @@ class ProfileViewModel: ObservableObject {
             return TracksWithResponseMetadata(tracks: response.items, isEmpty: response.items.isEmpty)
         }
         catch {
-            printError("\(error)")
+            printError("When getting the current user's top tracks: \(error)")
             return nil
         }
     }
@@ -212,7 +224,10 @@ class ProfileViewModel: ObservableObject {
         }
         
         do {
-            let accessToken = try await self.user.getSpotifyWebAccessToken().access_token
+            guard let signedInUser = user else { throw AuthorizationError.missingUser }
+            let accessToken = try await UserServiceManager.shared
+                .getSpotifyWebAccessToken(forUser: signedInUser)
+                .getAccessToken()
             let queryParams = [
                 URLQueryItem(name: "time_range", value: timeRange.rawValue),
                 URLQueryItem(name: "limit", value: String(limit))
@@ -231,7 +246,7 @@ class ProfileViewModel: ObservableObject {
             return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
         }
         catch {
-            printError("\(error)")
+            printError("When getting the current user's top artists: \(error)")
             return nil
         }
     }

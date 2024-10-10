@@ -13,7 +13,6 @@
 		CB0854C32C15583A0088E87D /* RealmDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C22C15583A0088E87D /* RealmDatabase.swift */; };
 		CB0854C72C15723C0088E87D /* SpotifyAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C62C15723C0088E87D /* SpotifyAPI.swift */; };
 		CB0854C92C1573D10088E87D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C82C1573D10088E87D /* Constants.swift */; };
-		CB0854CB2C1574FE0088E87D /* SpotifyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854CA2C1574FE0088E87D /* SpotifyProfile.swift */; };
 		CB0B93632C72CD07003A9720 /* TrackList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93622C72CD07003A9720 /* TrackList.swift */; };
 		CB0B93662C770C90003A9720 /* TextPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93652C770C90003A9720 /* TextPlaceholder.swift */; };
 		CB0B93682C7711F6003A9720 /* AlbumCoverPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93672C7711F6003A9720 /* AlbumCoverPlaceholder.swift */; };
@@ -29,6 +28,12 @@
 		CB3417FF2C1BDBC800BE70A8 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3417FE2C1BDBC800BE70A8 /* ProfileView.swift */; };
 		CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3724962C3B27CA004883D1 /* ProfileDetails.swift */; };
 		CB37249A2C3B2AAF004883D1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3724992C3B2AA8004883D1 /* ProfileViewModel.swift */; };
+		CB3797EE2CA6860A009F5D56 /* Appwrite in Frameworks */ = {isa = PBXBuildFile; productRef = CB3797ED2CA6860A009F5D56 /* Appwrite */; };
+		CB3797F02CA68846009F5D56 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797EF2CA68843009F5D56 /* User.swift */; };
+		CB3797F22CA68A04009F5D56 /* SpotifyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F12CA689FF009F5D56 /* SpotifyProfile.swift */; };
+		CB3797F72CA7EB82009F5D56 /* AppwriteUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */; };
+		CB3797FA2CA7F665009F5D56 /* UserServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797F92CA7F655009F5D56 /* UserServiceProtocol.swift */; };
+		CB3797FE2CA7F96B009F5D56 /* UserServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3797FD2CA7F962009F5D56 /* UserServiceManager.swift */; };
 		CB3B617F2C1BDFB00088DFA1 /* PageTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3B617E2C1BDFB00088DFA1 /* PageTitle.swift */; };
 		CB3B61812C1F83AE0088DFA1 /* AuthenticatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3B61802C1F83AE0088DFA1 /* AuthenticatedView.swift */; };
 		CB59BCB52C2FA08D0061C99B /* ListeningActivityCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCB42C2FA08D0061C99B /* ListeningActivityCard.swift */; };
@@ -37,13 +42,17 @@
 		CB59BCC92C30A5370061C99B /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = CB59BCC82C30A5370061C99B /* UIImageColors */; };
 		CB59BCCE2C30BA470061C99B /* ImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCCD2C30BA420061C99B /* ImageUtils.swift */; };
 		CB59BCD02C30FA360061C99B /* RotatingSyncIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */; };
+		CB6A5D8C2CA684F10063A757 /* Appwrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6A5D8B2CA684EC0063A757 /* Appwrite.swift */; };
+		CB70874F2CAB493400FE97C7 /* AppLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70874E2CAB493400FE97C7 /* AppLoadingView.swift */; };
+		CB7087522CAB675800FE97C7 /* ProfileServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7087512CAB674100FE97C7 /* ProfileServiceProtocol.swift */; };
+		CB7087542CAB685100FE97C7 /* AppwriteProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7087532CAB684200FE97C7 /* AppwriteProfileService.swift */; };
+		CB7087562CAB68F700FE97C7 /* ProfileServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */; };
 		CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */; };
 		CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89F2C8017CD00F9A197 /* ArtistList.swift */; };
 		CB70E8A22C816AAA00F9A197 /* OpenInSpotifyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */; };
 		CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */; };
 		CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */; };
 		CB7C05A42C0EB4DB001A0062 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A32C0EB4DB001A0062 /* Utils.swift */; };
-		CB7C05A92C0EBB25001A0062 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A82C0EBB25001A0062 /* User.swift */; };
 		CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05AC2C0EEEA2001A0062 /* AuthorizationConstants.swift */; };
 		CB7C05B02C0EEF7F001A0062 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05AF2C0EEF7E001A0062 /* Types.swift */; };
 		CB7C05B32C1191BA001A0062 /* AuthorizationDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05B22C1191BA001A0062 /* AuthorizationDeniedView.swift */; };
@@ -100,7 +109,6 @@
 		CB0854C22C15583A0088E87D /* RealmDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabase.swift; sourceTree = "<group>"; };
 		CB0854C62C15723C0088E87D /* SpotifyAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAPI.swift; sourceTree = "<group>"; };
 		CB0854C82C1573D10088E87D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		CB0854CA2C1574FE0088E87D /* SpotifyProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyProfile.swift; sourceTree = "<group>"; };
 		CB0B93622C72CD07003A9720 /* TrackList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackList.swift; sourceTree = "<group>"; };
 		CB0B93652C770C90003A9720 /* TextPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPlaceholder.swift; sourceTree = "<group>"; };
 		CB0B93672C7711F6003A9720 /* AlbumCoverPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCoverPlaceholder.swift; sourceTree = "<group>"; };
@@ -116,6 +124,11 @@
 		CB3417FE2C1BDBC800BE70A8 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		CB3724962C3B27CA004883D1 /* ProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetails.swift; sourceTree = "<group>"; };
 		CB3724992C3B2AA8004883D1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		CB3797EF2CA68843009F5D56 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		CB3797F12CA689FF009F5D56 /* SpotifyProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyProfile.swift; sourceTree = "<group>"; };
+		CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteUserService.swift; sourceTree = "<group>"; };
+		CB3797F92CA7F655009F5D56 /* UserServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceProtocol.swift; sourceTree = "<group>"; };
+		CB3797FD2CA7F962009F5D56 /* UserServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceManager.swift; sourceTree = "<group>"; };
 		CB3B617E2C1BDFB00088DFA1 /* PageTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTitle.swift; sourceTree = "<group>"; };
 		CB3B61802C1F83AE0088DFA1 /* AuthenticatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedView.swift; sourceTree = "<group>"; };
 		CB59BCB42C2FA08D0061C99B /* ListeningActivityCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityCard.swift; sourceTree = "<group>"; };
@@ -123,13 +136,17 @@
 		CB59BCBE2C2FAFB30061C99B /* ImageWithSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWithSpecs.swift; sourceTree = "<group>"; };
 		CB59BCCD2C30BA420061C99B /* ImageUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
 		CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingSyncIcon.swift; sourceTree = "<group>"; };
+		CB6A5D8B2CA684EC0063A757 /* Appwrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appwrite.swift; sourceTree = "<group>"; };
+		CB70874E2CAB493400FE97C7 /* AppLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLoadingView.swift; sourceTree = "<group>"; };
+		CB7087512CAB674100FE97C7 /* ProfileServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileServiceProtocol.swift; sourceTree = "<group>"; };
+		CB7087532CAB684200FE97C7 /* AppwriteProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteProfileService.swift; sourceTree = "<group>"; };
+		CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileServiceManager.swift; sourceTree = "<group>"; };
 		CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackOrArtistListPlaceholder.swift; sourceTree = "<group>"; };
 		CB70E89F2C8017CD00F9A197 /* ArtistList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistList.swift; sourceTree = "<group>"; };
 		CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInSpotifyButton.swift; sourceTree = "<group>"; };
 		CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomethingWentWrongView.swift; sourceTree = "<group>"; };
 		CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrors.swift; sourceTree = "<group>"; };
 		CB7C05A32C0EB4DB001A0062 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		CB7C05A82C0EBB25001A0062 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CB7C05AC2C0EEEA2001A0062 /* AuthorizationConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationConstants.swift; sourceTree = "<group>"; };
 		CB7C05AF2C0EEF7E001A0062 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		CB7C05B22C1191BA001A0062 /* AuthorizationDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationDeniedView.swift; sourceTree = "<group>"; };
@@ -172,6 +189,7 @@
 			files = (
 				CB59BCC92C30A5370061C99B /* UIImageColors in Frameworks */,
 				CB7C05B82C128AC4001A0062 /* RealmSwift in Frameworks */,
+				CB3797EE2CA6860A009F5D56 /* Appwrite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +207,7 @@
 		CB0854C02C14F5250088E87D /* common */ = {
 			isa = PBXGroup;
 			children = (
+				CB3797F52CA7EB6D009F5D56 /* services */,
 				CB7C05A72C0EBB18001A0062 /* models */,
 				CB0854C12C1558260088E87D /* realm */,
 				CB7C05A52C0EB8A2001A0062 /* utils */,
@@ -279,7 +298,7 @@
 		CB0B93802C771DA3003A9720 /* SpotifyProfile */ = {
 			isa = PBXGroup;
 			children = (
-				CB0854CA2C1574FE0088E87D /* SpotifyProfile.swift */,
+				CB3797F12CA689FF009F5D56 /* SpotifyProfile.swift */,
 				CB875CB42C351958001B364D /* SpotifyProfileMock.swift */,
 			);
 			path = SpotifyProfile;
@@ -297,7 +316,7 @@
 		CB0B93822C771E27003A9720 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				CB7C05A82C0EBB25001A0062 /* User.swift */,
+				CB3797EF2CA68843009F5D56 /* User.swift */,
 				CB875CB12C33C4D3001B364D /* UserMock.swift */,
 			);
 			path = User;
@@ -361,6 +380,24 @@
 			path = viewModels;
 			sourceTree = "<group>";
 		};
+		CB3797F52CA7EB6D009F5D56 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				CB3797FB2CA7F90A009F5D56 /* user */,
+			);
+			path = services;
+			sourceTree = "<group>";
+		};
+		CB3797FB2CA7F90A009F5D56 /* user */ = {
+			isa = PBXGroup;
+			children = (
+				CB3797FD2CA7F962009F5D56 /* UserServiceManager.swift */,
+				CB3797F92CA7F655009F5D56 /* UserServiceProtocol.swift */,
+				CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */,
+			);
+			path = user;
+			sourceTree = "<group>";
+		};
 		CB59BCB22C2F9EF20061C99B /* views */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,6 +421,7 @@
 		CB59BCBC2C2FAED50061C99B /* spotify */ = {
 			isa = PBXGroup;
 			children = (
+				CB7087502CAB673A00FE97C7 /* services */,
 				CB0854C52C1572270088E87D /* spotifyAPI */,
 				CB59BCBD2C2FAF7F0061C99B /* models */,
 				CB59BCBB2C2FAED50061C99B /* views */,
@@ -411,6 +449,24 @@
 				CB875CAD2C315073001B364D /* FriendActivityViewModel.swift */,
 			);
 			path = viewModels;
+			sourceTree = "<group>";
+		};
+		CB6A5D892CA684BD0063A757 /* database */ = {
+			isa = PBXGroup;
+			children = (
+				CB6A5D8B2CA684EC0063A757 /* Appwrite.swift */,
+			);
+			path = database;
+			sourceTree = "<group>";
+		};
+		CB7087502CAB673A00FE97C7 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */,
+				CB7087532CAB684200FE97C7 /* AppwriteProfileService.swift */,
+				CB7087512CAB674100FE97C7 /* ProfileServiceProtocol.swift */,
+			);
+			path = services;
 			sourceTree = "<group>";
 		};
 		CB70E8A32C838F9E00F9A197 /* errors */ = {
@@ -467,6 +523,7 @@
 				CB7C05B42C1191EC001A0062 /* UnauthenticatedView.swift */,
 				CB0854BB2C14D58E0088E87D /* AuthorizationWebView.swift */,
 				CB0854BD2C14F0580088E87D /* SignInButton.swift */,
+				CB70874E2CAB493400FE97C7 /* AppLoadingView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -519,6 +576,7 @@
 		CB9A9ADD2C0BEC170073817C /* src */ = {
 			isa = PBXGroup;
 			children = (
+				CB6A5D892CA684BD0063A757 /* database */,
 				CB9A9AAA2C0BB13E0073817C /* spotifriendsApp.swift */,
 				CB9A9ADE2C0C22620073817C /* auth */,
 				CB0854C02C14F5250088E87D /* common */,
@@ -561,6 +619,7 @@
 			packageProductDependencies = (
 				CB7C05B72C128AC4001A0062 /* RealmSwift */,
 				CB59BCC82C30A5370061C99B /* UIImageColors */,
+				CB3797ED2CA6860A009F5D56 /* Appwrite */,
 			);
 			productName = "spoti-friends";
 			productReference = CB9A9AA72C0BB13E0073817C /* friends.fm.app */;
@@ -593,6 +652,7 @@
 			packageReferences = (
 				CB7C05B62C128AC4001A0062 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				CB59BCC72C30A5370061C99B /* XCRemoteSwiftPackageReference "UIImageColors" */,
+				CB3797EC2CA6860A009F5D56 /* XCRemoteSwiftPackageReference "sdk-for-apple" */,
 			);
 			productRefGroup = CB9A9AA82C0BB13E0073817C /* Products */;
 			projectDirPath = "";
@@ -639,15 +699,18 @@
 				CB875CAC2C313494001B364D /* GetListOfUsersFriends.swift in Sources */,
 				CB875CBD2C352652001B364D /* TrackContextMock.swift in Sources */,
 				CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */,
+				CB3797F22CA68A04009F5D56 /* SpotifyProfile.swift in Sources */,
 				CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */,
 				CB875CAE2C31507E001B364D /* FriendActivityViewModel.swift in Sources */,
 				CB9A9AE02C0C22D70073817C /* SpotifyAuth.swift in Sources */,
 				CB59BCD02C30FA360061C99B /* RotatingSyncIcon.swift in Sources */,
+				CB7087562CAB68F700FE97C7 /* ProfileServiceManager.swift in Sources */,
 				CBB1A3D02C933EBA00D3D658 /* TimeRangeSelector.swift in Sources */,
 				CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */,
 				CB0B93742C771BDF003A9720 /* Album.swift in Sources */,
 				CB3417FF2C1BDBC800BE70A8 /* ProfileView.swift in Sources */,
 				CB37249A2C3B2AAF004883D1 /* ProfileViewModel.swift in Sources */,
+				CB3797F72CA7EB82009F5D56 /* AppwriteUserService.swift in Sources */,
 				CB8D3C2E2C0D28C000C493E8 /* CodeChallenge.swift in Sources */,
 				CB7C05B52C1191EC001A0062 /* UnauthenticatedView.swift in Sources */,
 				CB875CB92C3524B4001B364D /* TrackMock.swift in Sources */,
@@ -662,7 +725,9 @@
 				CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */,
 				CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */,
 				CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */,
+				CB7087522CAB675800FE97C7 /* ProfileServiceProtocol.swift in Sources */,
 				CB0854C72C15723C0088E87D /* SpotifyAPI.swift in Sources */,
+				CB3797FE2CA7F96B009F5D56 /* UserServiceManager.swift in Sources */,
 				CB0B93782C771C23003A9720 /* Artist.swift in Sources */,
 				CB875CC02C352A4E001B364D /* ListeningActivityCardMock.swift in Sources */,
 				CB9A9AAD2C0BB13E0073817C /* RootView.swift in Sources */,
@@ -670,21 +735,24 @@
 				CB9A9AAB2C0BB13E0073817C /* spotifriendsApp.swift in Sources */,
 				CB875CB22C33C4D6001B364D /* UserMock.swift in Sources */,
 				CB0B936A2C771285003A9720 /* PlaceholderAnimation.swift in Sources */,
-				CB7C05A92C0EBB25001A0062 /* User.swift in Sources */,
+				CB7087542CAB685100FE97C7 /* AppwriteProfileService.swift in Sources */,
 				CB59BCCE2C30BA470061C99B /* ImageUtils.swift in Sources */,
+				CB3797FA2CA7F665009F5D56 /* UserServiceProtocol.swift in Sources */,
 				CB0B93662C770C90003A9720 /* TextPlaceholder.swift in Sources */,
 				CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */,
 				CB70E8A22C816AAA00F9A197 /* OpenInSpotifyButton.swift in Sources */,
+				CB3797F02CA68846009F5D56 /* User.swift in Sources */,
 				CB9A9ADA2C0BE2EE0073817C /* ColourExtension.swift in Sources */,
 				CB875CBB2C3525C3001B364D /* ArtistMock.swift in Sources */,
 				CB7C05B02C0EEF7F001A0062 /* Types.swift in Sources */,
 				CB7C05A42C0EB4DB001A0062 /* Utils.swift in Sources */,
 				CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */,
-				CB0854CB2C1574FE0088E87D /* SpotifyProfile.swift in Sources */,
+				CB6A5D8C2CA684F10063A757 /* Appwrite.swift in Sources */,
 				CB0854BC2C14D58E0088E87D /* AuthorizationWebView.swift in Sources */,
 				CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */,
 				CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */,
 				CB0B93762C771C04003A9720 /* TrackContext.swift in Sources */,
+				CB70874F2CAB493400FE97C7 /* AppLoadingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -901,6 +969,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CB3797EC2CA6860A009F5D56 /* XCRemoteSwiftPackageReference "sdk-for-apple" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/appwrite/sdk-for-apple";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		CB59BCC72C30A5370061C99B /* XCRemoteSwiftPackageReference "UIImageColors" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jathu/UIImageColors";
@@ -920,6 +996,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CB3797ED2CA6860A009F5D56 /* Appwrite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB3797EC2CA6860A009F5D56 /* XCRemoteSwiftPackageReference "sdk-for-apple" */;
+			productName = Appwrite;
+		};
 		CB59BCC82C30A5370061C99B /* UIImageColors */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CB59BCC72C30A5370061C99B /* XCRemoteSwiftPackageReference "UIImageColors" */;

@@ -21,8 +21,8 @@ struct ProfileView: View {
     /// NOTE: `topTracks` and `topArtists` default to `[]` so that we don't need to pass them in from `AuthenticatedView`.
     /// However, we do want to pass in mock data for previews, so that's why we want them as optional parameters.
     init(profile: SpotifyProfile, recentTracks: [Track] = [], topTracks: [Track] = [], topArtists: [Artist] = []) {
-        self.profile = profile
         _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: AuthorizationViewModel().user))
+        self.profile = profile
         self.recentTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: recentTracks)
         self.topTracks = ProfileViewModel.TracksWithResponseMetadata(tracks: topTracks)
         self.topArtists = ProfileViewModel.ArtistsWithResponseMetadata(artists: topArtists)
@@ -152,7 +152,7 @@ struct ProfileView: View {
         let topTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
         let topArtists = [ArtistMock.zachBryan, ArtistMock.jonBellion, ArtistMock.oliviaRodrigo, ArtistMock.kaceyMusgraves]
         
-        ProfileView(profile: user.spotifyProfile!, recentTracks: recentTracks, topTracks: topTracks, topArtists: topArtists)
+        ProfileView(profile: user.spotifyProfile, recentTracks: recentTracks, topTracks: topTracks, topArtists: topArtists)
             .environmentObject(AuthorizationViewModel())
             .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
     }

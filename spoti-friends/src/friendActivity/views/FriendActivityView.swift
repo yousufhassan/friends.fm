@@ -7,7 +7,7 @@ struct FriendActivityView: View {
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
     var body: some View {
-        VStack {
+        VStack {            
             // Friend Activity Header
             PageTitle(pageTitle: "Friend Activity")
             

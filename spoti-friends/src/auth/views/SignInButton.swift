@@ -2,7 +2,7 @@ import SwiftUI
 
 /// The view that renders the sign in button in the `SignInView`.
 struct SignInButton: View {
-    @EnvironmentObject var userViewModel: AuthorizationViewModel
+    @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     @Binding var showWebView: Bool
     @Binding var responseUrl: URL?
     let buttonLabel: String = "Sign in with Spotify"
@@ -19,7 +19,7 @@ struct SignInButton: View {
         .cornerRadius(30)
         .sheet(isPresented: $showWebView) {
             NavigationStack {
-                let userAuthorizationUrl = userViewModel.getUserAuthorizationUrl()
+                let userAuthorizationUrl = authorizationViewModel.getUserAuthorizationUrl()
                 AuthorizationWebView(
                     url: userAuthorizationUrl,
                     showWebView: $showWebView,
@@ -30,7 +30,9 @@ struct SignInButton: View {
         }
         .onChange(of: responseUrl) {
             if let url = responseUrl {
-                userViewModel.handleRedirectBackToApp(url)
+                Task {
+                    await authorizationViewModel.handleRedirectBackToApp(url)
+                }
             }
         }
     }
