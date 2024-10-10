@@ -15,19 +15,19 @@ struct ListeningActivityDetails: View {
     let currentTrack: CurrentOrMostRecentTrack
     let trackDetails: Track
     let artists: [Artist]
-    let context: TrackContext
+    let context: TrackContext?
     @State var contextIcon: Image
     
     init(profile: SpotifyProfile, currentTrack: CurrentOrMostRecentTrack) {
         self.profile = profile
         self.currentTrack = currentTrack
         self.trackDetails = currentTrack.track
-        self.artists = (currentTrack.track.artists)
-        self.context = (currentTrack.track.context)
+        self.artists = currentTrack.track.artists
+        self.context = currentTrack.track.context
         self.contextIcon = getImageForContextType()
         
         func getImageForContextType() -> Image {
-            let contextType = currentTrack.track.context.type
+            let contextType = currentTrack.track.context?.type
             
             switch contextType {
             case .album: return Image(systemName: "smallcircle.circle")
@@ -52,7 +52,7 @@ struct ListeningActivityDetails: View {
             }
             
             // Song details row
-            HStack {
+            HStack(spacing: 4) {
                 Link(destination: URL(string: trackDetails.spotifyUri)!) {
                     Text(trackDetails.name)
                         .lineLimit(1)
@@ -74,12 +74,14 @@ struct ListeningActivityDetails: View {
             }
             
             // Context details row
-            Link(destination: URL(string: context.spotifyUri)!) {
-                HStack {
-                    contextIcon
-                        .padding(.trailing, -6)
-                    Text(trackDetails.context.name)
-                        .lineLimit(1)
+            if let context = context {
+                Link(destination: URL(string: context.spotifyUri)!) {
+                    HStack {
+                        contextIcon
+                            .padding(.trailing, -6)
+                        Text(trackDetails.context?.name ?? "")
+                            .lineLimit(1)
+                    }
                 }
             }
         }

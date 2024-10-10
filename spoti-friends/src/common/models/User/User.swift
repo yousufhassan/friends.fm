@@ -15,10 +15,10 @@ class User: Codable {
     let spotifyId: String
     var spotifyProfile: SpotifyProfile
     var friends: [SpotifyProfile]
-    var authorizationCode: String
-    var spotifyWebAccessToken: SpotifyWebAccessToken
-    var internalAPIAccessToken: InternalAPIAccessToken
-    var authorizationStatus: AuthorizationStatus
+    private var authorizationCode: String
+    private var spotifyWebAccessToken: SpotifyWebAccessToken
+    private var internalAPIAccessToken: InternalAPIAccessToken
+    private var authorizationStatus: AuthorizationStatus
     private var spDcCookie: SpDcCookie
     
     enum CodingKeys: String, CodingKey {
@@ -91,8 +91,20 @@ class User: Codable {
         return self.friends.contains(friend)
     }
     
+    public func getSpotifyWebAccessToken() -> SpotifyWebAccessToken {
+        return self.spotifyWebAccessToken
+    }
+    
+    public func setSpotifyWebAccessToken(_ token: SpotifyWebAccessToken) -> Void {
+        self.spotifyWebAccessToken = token
+    }
+    
     public func getInternalAPIAccessToken() -> InternalAPIAccessToken {
         return self.internalAPIAccessToken
+    }
+    
+    public func getAuthorizationStatus() -> AuthorizationStatus {
+        return self.authorizationStatus
     }
     
     public func getSpDcCookie() -> SpDcCookie {

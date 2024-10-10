@@ -11,12 +11,21 @@ import AppwriteModels
 ///   - refresh_token: The refresh token to be used to obtain new access tokens.
 ///   - accessTokenExpirationTimestampMs: Timestamp for when the access token expires.
 class SpotifyWebAccessToken: Codable {
-    var access_token: String
-    var token_type: String
-    var scope: String
-    var expires_in: Int
-    var refresh_token: String
-    var accessTokenExpirationTimestampMs: Int
+    private var access_token: String
+    private var token_type: String
+    private var scope: String
+    private var expires_in: Int
+    private var refresh_token: String
+    private var accessTokenExpirationTimestampMs: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case access_token
+        case token_type
+        case scope
+        case expires_in
+        case refresh_token
+        case accessTokenExpirationTimestampMs
+    }
     
     init(access_token: String, token_type: String, scope: String, expires_in: Int,
          refresh_token: String, accessTokenExpirationTimestampMs: Double) {
@@ -35,13 +44,25 @@ class SpotifyWebAccessToken: Codable {
         self.scope = try container.decode(String.self, forKey: .scope)
         self.expires_in = try container.decode(Int.self, forKey: .expires_in)
         self.refresh_token = try container.decode(String.self, forKey: .refresh_token)
-        self.accessTokenExpirationTimestampMs = Int(SpotifyWebAccessToken.getExpiryTimestamp())
+        self.accessTokenExpirationTimestampMs = try container.decodeIfPresent(Int.self, forKey: .accessTokenExpirationTimestampMs) ?? Int(SpotifyWebAccessToken.calculateExpiryTimestamp())
     }
     
-    static public func getExpiryTimestamp() -> TimeInterval {
+    static public func calculateExpiryTimestamp() -> TimeInterval {
         let currentDate = Date()
         let oneHourFromNow = currentDate.addingTimeInterval(3600)
         return oneHourFromNow.timeIntervalSince1970 * 1000
+    }
+    
+    public func getAccessToken() -> String {
+        return self.access_token
+    }
+    
+    public func getRefreshToken() -> String {
+        return self.refresh_token
+    }
+    
+    public func getExpiryTimestamp() -> TimeInterval {
+        return TimeInterval(self.accessTokenExpirationTimestampMs)
     }
 }
 
