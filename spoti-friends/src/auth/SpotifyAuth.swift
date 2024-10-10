@@ -23,7 +23,21 @@ class SpotifyAuth {
         return url
     }
     
-    /// Handles the response from the Spotify authorization flow depending on whether the user granted authorization or denied authorization.
+    /// Handles the response from the Spotify authorization flow and processes user authentication.
+    ///
+    /// This method checks whether the user granted or denied authorization after the Spotify authentication flow.
+    /// If the user granted access, it creates a new `User` object (if needed), verifies the user's existence in the system,
+    /// and saves the user data locally. It also stores the user's profile picture and saves the user to the database.
+    ///
+    /// - Parameters:
+    ///   - url: The URL received from the Spotify authorization callback, containing query parameters such as the authorization code.
+    ///   - user: An optional inout `User` object, representing the current user. If nil, a new `User` is created based on the authorization data.
+    ///   - spDcCookie: An optional `SpDcCookie` used for fetching internal Spotify API data.
+    /// - Returns: An `AuthorizationStatus` indicating whether authorization was granted, denied, or if an error occurred.
+    /// - Throws: An error if any required data is missing, or if the process fails at any point.
+    ///
+    /// - Note: We expect a valid `spDcCookie` to be passed in by this point in the authorization flow. It is marked optional
+    /// only to match with the `AuthorizationViewModel` properties.
     @MainActor func handleResponseUrl(url: URL, user: inout User?, spDcCookie: SpDcCookie?)
     async -> AuthorizationStatus {
         do {
@@ -54,7 +68,16 @@ class SpotifyAuth {
         }
     }
     
-    // TODO: Add docs
+    /// Creates a new `User` object based on the Spotify authorization flow and the provided `spDcCookie`.
+    ///
+    /// This method fetches the authorization code from the URL query items, requests access tokens from Spotify and
+    /// the internal API, retrieves the user's Spotify profile, and fetches the user's friends.
+    ///
+    /// - Parameters:
+    ///   - queryItems: An array of `URLQueryItem` containing the query parameters from the authorization response URL.
+    ///   - spDcCookie: The cookie used to authenticate requests to Spotify's internal API.
+    /// - Returns: A newly created `User` object with the user's Spotify ID, profile, friends, and authorization tokens.
+    /// - Throws: An error if any of the steps in fetching the user's profile or friends fails.
     @MainActor private func createUser(queryItems: [URLQueryItem], spDcCookie: SpDcCookie)
     async throws -> User {
         let authorizationCode = try getAuthorizationCodeFromQueryItems(queryItems)
