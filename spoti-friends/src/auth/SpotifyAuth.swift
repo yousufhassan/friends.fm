@@ -191,7 +191,6 @@ class SpotifyAuth {
             let request = try constructRefreshAccessTokenRequest(refreshToken: refreshToken)
             let (data, _) = try await URLSession.shared.data(for: request)
             let responseString = String(data: data, encoding: .utf8)
-            print("Response Data: \(responseString)")
             let accessToken = try JSONDecoder().decode(SpotifyWebAccessToken.self, from: data)
             return accessToken
         } catch {
