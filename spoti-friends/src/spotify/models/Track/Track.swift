@@ -6,7 +6,7 @@ class Track: SpotifyResource, Codable {
     let name: String
     let artists: [Artist]
     let album: Album
-    let context: TrackContext
+    let context: TrackContext?
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
     enum CodingKeys: String, CodingKey {
@@ -17,7 +17,7 @@ class Track: SpotifyResource, Codable {
         case context
     }
     
-    init(spotifyUri: String, name: String, artists: [Artist], album: Album, context: TrackContext) {
+    init(spotifyUri: String, name: String, artists: [Artist], album: Album, context: TrackContext? = nil) {
         self.spotifyUri = spotifyUri
         self.name = name
         self.artists = artists
@@ -25,14 +25,14 @@ class Track: SpotifyResource, Codable {
         self.context = context
     }
     
-//    convenience required init(from decoder: any Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        
-//        let spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? ""
-//        let name = try container.decode(String.self, forKey: .name)
-//        let artists = try container.decode([Artist].self, forKey: .artists)
-//        let album = try container.decode(Album.self, forKey: .album)
-//        
-//        self.init(spotifyUri: spotifyUri, name: name, artists: artists, album: album, context: context)
-//    }
+    /// Custom initializer for decoding from Spotify API
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? ""
+        self.name = try container.decode(String.self, forKey: .name)
+        self.artists = try container.decode([Artist].self, forKey: .artists)
+        self.album = try container.decode(Album.self, forKey: .album)
+        self.context = try container.decodeIfPresent(TrackContext.self, forKey: .context)
+    }
 }

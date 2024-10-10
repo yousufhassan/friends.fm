@@ -19,11 +19,11 @@ class Album: SpotifyResource, Codable {
         self.image = image
     }
     
-//    convenience required init(from decoder: any Decoder) throws {
-//        self.init()
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
-//        self.name = try container.decode(String.self, forKey: .name)
-//        self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
-//    }
+    /// Custom initializer for decoding from Spotify API
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
+    }
 }
