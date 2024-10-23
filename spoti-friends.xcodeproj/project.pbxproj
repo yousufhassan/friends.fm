@@ -10,7 +10,6 @@
 		CB0854B82C1404710088E87D /* AuthorizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854B72C1404710088E87D /* AuthorizationViewModel.swift */; };
 		CB0854BC2C14D58E0088E87D /* AuthorizationWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854BB2C14D58E0088E87D /* AuthorizationWebView.swift */; };
 		CB0854BE2C14F0580088E87D /* SignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854BD2C14F0580088E87D /* SignInButton.swift */; };
-		CB0854C32C15583A0088E87D /* RealmDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C22C15583A0088E87D /* RealmDatabase.swift */; };
 		CB0854C72C15723C0088E87D /* SpotifyAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C62C15723C0088E87D /* SpotifyAPI.swift */; };
 		CB0854C92C1573D10088E87D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C82C1573D10088E87D /* Constants.swift */; };
 		CB0B93632C72CD07003A9720 /* TrackList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93622C72CD07003A9720 /* TrackList.swift */; };
@@ -106,7 +105,6 @@
 		CB0854B72C1404710088E87D /* AuthorizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewModel.swift; sourceTree = "<group>"; };
 		CB0854BB2C14D58E0088E87D /* AuthorizationWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationWebView.swift; sourceTree = "<group>"; };
 		CB0854BD2C14F0580088E87D /* SignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInButton.swift; sourceTree = "<group>"; };
-		CB0854C22C15583A0088E87D /* RealmDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabase.swift; sourceTree = "<group>"; };
 		CB0854C62C15723C0088E87D /* SpotifyAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAPI.swift; sourceTree = "<group>"; };
 		CB0854C82C1573D10088E87D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB0B93622C72CD07003A9720 /* TrackList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackList.swift; sourceTree = "<group>"; };
@@ -209,19 +207,10 @@
 			children = (
 				CB3797F52CA7EB6D009F5D56 /* services */,
 				CB7C05A72C0EBB18001A0062 /* models */,
-				CB0854C12C1558260088E87D /* realm */,
 				CB7C05A52C0EB8A2001A0062 /* utils */,
 				CB0854C42C155C510088E87D /* views */,
 			);
 			path = common;
-			sourceTree = "<group>";
-		};
-		CB0854C12C1558260088E87D /* realm */ = {
-			isa = PBXGroup;
-			children = (
-				CB0854C22C15583A0088E87D /* RealmDatabase.swift */,
-			);
-			path = realm;
 			sourceTree = "<group>";
 		};
 		CB0854C42C155C510088E87D /* views */ = {
@@ -721,7 +710,6 @@
 				CB0854B82C1404710088E87D /* AuthorizationViewModel.swift in Sources */,
 				CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */,
 				CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */,
-				CB0854C32C15583A0088E87D /* RealmDatabase.swift in Sources */,
 				CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */,
 				CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */,
 				CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */,

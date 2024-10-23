@@ -1,5 +1,4 @@
 import SwiftUI
-import RealmSwift
 
 /// The view that is rendered when the app opens, depending on the user's authorization status.
 ///
