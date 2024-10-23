@@ -15,8 +15,9 @@ struct SpotifyProfileMock {
     static func createMockSpotifyProfile
     (spotifyId: String, image: String = "", track: CurrentOrMostRecentTrack? = nil) -> SpotifyProfile {
         return SpotifyProfile(spotifyId: spotifyId,
-                                      spotifyUri: "spotify:user:\(spotifyId)",
-                                      displayName: spotifyId,
-                                      image: image)
+                              spotifyUri: "spotify:user:\(spotifyId)",
+                              displayName: spotifyId,
+                              image: image,
+                              currentOrMostRecentTrack: track)
     }
 }
