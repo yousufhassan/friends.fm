@@ -56,8 +56,6 @@
 		CB7C05B02C0EEF7F001A0062 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05AF2C0EEF7E001A0062 /* Types.swift */; };
 		CB7C05B32C1191BA001A0062 /* AuthorizationDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05B22C1191BA001A0062 /* AuthorizationDeniedView.swift */; };
 		CB7C05B52C1191EC001A0062 /* UnauthenticatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05B42C1191EC001A0062 /* UnauthenticatedView.swift */; };
-		CB7C05B82C128AC4001A0062 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CB7C05B72C128AC4001A0062 /* RealmSwift */; };
-		CB7C05B92C128B7E001A0062 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CB7C05B72C128AC4001A0062 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CB875CAC2C313494001B364D /* GetListOfUsersFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CAB2C31348A001B364D /* GetListOfUsersFriends.swift */; };
 		CB875CAE2C31507E001B364D /* FriendActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CAD2C315073001B364D /* FriendActivityViewModel.swift */; };
 		CB875CB22C33C4D6001B364D /* UserMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CB12C33C4D3001B364D /* UserMock.swift */; };
@@ -94,7 +92,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CB7C05B92C128B7E001A0062 /* RealmSwift in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -186,7 +183,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB59BCC92C30A5370061C99B /* UIImageColors in Frameworks */,
-				CB7C05B82C128AC4001A0062 /* RealmSwift in Frameworks */,
 				CB3797EE2CA6860A009F5D56 /* Appwrite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -606,7 +602,6 @@
 			);
 			name = "spoti-friends";
 			packageProductDependencies = (
-				CB7C05B72C128AC4001A0062 /* RealmSwift */,
 				CB59BCC82C30A5370061C99B /* UIImageColors */,
 				CB3797ED2CA6860A009F5D56 /* Appwrite */,
 			);
@@ -639,7 +634,6 @@
 			);
 			mainGroup = CB9A9A9E2C0BB13E0073817C;
 			packageReferences = (
-				CB7C05B62C128AC4001A0062 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				CB59BCC72C30A5370061C99B /* XCRemoteSwiftPackageReference "UIImageColors" */,
 				CB3797EC2CA6860A009F5D56 /* XCRemoteSwiftPackageReference "sdk-for-apple" */,
 			);
@@ -973,14 +967,6 @@
 				minimumVersion = 2.2.0;
 			};
 		};
-		CB7C05B62C128AC4001A0062 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.51.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -993,11 +979,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB59BCC72C30A5370061C99B /* XCRemoteSwiftPackageReference "UIImageColors" */;
 			productName = UIImageColors;
-		};
-		CB7C05B72C128AC4001A0062 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CB7C05B62C128AC4001A0062 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
