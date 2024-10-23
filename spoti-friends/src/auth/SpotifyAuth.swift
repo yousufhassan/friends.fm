@@ -1,6 +1,5 @@
 import Foundation
 import CryptoKit
-import RealmSwift
 
 /// Class that handles the Spotify Authorization Singleton.
 class SpotifyAuth {

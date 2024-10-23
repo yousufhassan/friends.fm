@@ -10,7 +10,6 @@
 		CB0854B82C1404710088E87D /* AuthorizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854B72C1404710088E87D /* AuthorizationViewModel.swift */; };
 		CB0854BC2C14D58E0088E87D /* AuthorizationWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854BB2C14D58E0088E87D /* AuthorizationWebView.swift */; };
 		CB0854BE2C14F0580088E87D /* SignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854BD2C14F0580088E87D /* SignInButton.swift */; };
-		CB0854C32C15583A0088E87D /* RealmDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C22C15583A0088E87D /* RealmDatabase.swift */; };
 		CB0854C72C15723C0088E87D /* SpotifyAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C62C15723C0088E87D /* SpotifyAPI.swift */; };
 		CB0854C92C1573D10088E87D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0854C82C1573D10088E87D /* Constants.swift */; };
 		CB0B93632C72CD07003A9720 /* TrackList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0B93622C72CD07003A9720 /* TrackList.swift */; };
@@ -57,8 +56,6 @@
 		CB7C05B02C0EEF7F001A0062 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05AF2C0EEF7E001A0062 /* Types.swift */; };
 		CB7C05B32C1191BA001A0062 /* AuthorizationDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05B22C1191BA001A0062 /* AuthorizationDeniedView.swift */; };
 		CB7C05B52C1191EC001A0062 /* UnauthenticatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05B42C1191EC001A0062 /* UnauthenticatedView.swift */; };
-		CB7C05B82C128AC4001A0062 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CB7C05B72C128AC4001A0062 /* RealmSwift */; };
-		CB7C05B92C128B7E001A0062 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CB7C05B72C128AC4001A0062 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CB875CAC2C313494001B364D /* GetListOfUsersFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CAB2C31348A001B364D /* GetListOfUsersFriends.swift */; };
 		CB875CAE2C31507E001B364D /* FriendActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CAD2C315073001B364D /* FriendActivityViewModel.swift */; };
 		CB875CB22C33C4D6001B364D /* UserMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CB12C33C4D3001B364D /* UserMock.swift */; };
@@ -95,7 +92,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CB7C05B92C128B7E001A0062 /* RealmSwift in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,7 +102,6 @@
 		CB0854B72C1404710088E87D /* AuthorizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewModel.swift; sourceTree = "<group>"; };
 		CB0854BB2C14D58E0088E87D /* AuthorizationWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationWebView.swift; sourceTree = "<group>"; };
 		CB0854BD2C14F0580088E87D /* SignInButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInButton.swift; sourceTree = "<group>"; };
-		CB0854C22C15583A0088E87D /* RealmDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabase.swift; sourceTree = "<group>"; };
 		CB0854C62C15723C0088E87D /* SpotifyAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAPI.swift; sourceTree = "<group>"; };
 		CB0854C82C1573D10088E87D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB0B93622C72CD07003A9720 /* TrackList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackList.swift; sourceTree = "<group>"; };
@@ -188,7 +183,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB59BCC92C30A5370061C99B /* UIImageColors in Frameworks */,
-				CB7C05B82C128AC4001A0062 /* RealmSwift in Frameworks */,
 				CB3797EE2CA6860A009F5D56 /* Appwrite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,19 +203,10 @@
 			children = (
 				CB3797F52CA7EB6D009F5D56 /* services */,
 				CB7C05A72C0EBB18001A0062 /* models */,
-				CB0854C12C1558260088E87D /* realm */,
 				CB7C05A52C0EB8A2001A0062 /* utils */,
 				CB0854C42C155C510088E87D /* views */,
 			);
 			path = common;
-			sourceTree = "<group>";
-		};
-		CB0854C12C1558260088E87D /* realm */ = {
-			isa = PBXGroup;
-			children = (
-				CB0854C22C15583A0088E87D /* RealmDatabase.swift */,
-			);
-			path = realm;
 			sourceTree = "<group>";
 		};
 		CB0854C42C155C510088E87D /* views */ = {
@@ -617,7 +602,6 @@
 			);
 			name = "spoti-friends";
 			packageProductDependencies = (
-				CB7C05B72C128AC4001A0062 /* RealmSwift */,
 				CB59BCC82C30A5370061C99B /* UIImageColors */,
 				CB3797ED2CA6860A009F5D56 /* Appwrite */,
 			);
@@ -650,7 +634,6 @@
 			);
 			mainGroup = CB9A9A9E2C0BB13E0073817C;
 			packageReferences = (
-				CB7C05B62C128AC4001A0062 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				CB59BCC72C30A5370061C99B /* XCRemoteSwiftPackageReference "UIImageColors" */,
 				CB3797EC2CA6860A009F5D56 /* XCRemoteSwiftPackageReference "sdk-for-apple" */,
 			);
@@ -721,7 +704,6 @@
 				CB0854B82C1404710088E87D /* AuthorizationViewModel.swift in Sources */,
 				CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */,
 				CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */,
-				CB0854C32C15583A0088E87D /* RealmDatabase.swift in Sources */,
 				CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */,
 				CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */,
 				CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */,
@@ -985,14 +967,6 @@
 				minimumVersion = 2.2.0;
 			};
 		};
-		CB7C05B62C128AC4001A0062 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.51.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1005,11 +979,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB59BCC72C30A5370061C99B /* XCRemoteSwiftPackageReference "UIImageColors" */;
 			productName = UIImageColors;
-		};
-		CB7C05B72C128AC4001A0062 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CB7C05B62C128AC4001A0062 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

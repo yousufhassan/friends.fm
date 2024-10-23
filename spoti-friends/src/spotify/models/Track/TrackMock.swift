@@ -1,5 +1,4 @@
 import Foundation
-import RealmSwift
 
 /// Struct containing mock Track objects.
 struct TrackMock {

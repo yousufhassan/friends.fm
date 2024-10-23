@@ -1,5 +1,4 @@
 import Foundation
-import RealmSwift
 
 /// This extension adds functionality related to the `/buddylist` endpoint.
 extension SpotifyAPI {
