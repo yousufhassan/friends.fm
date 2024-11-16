@@ -116,7 +116,9 @@ struct ProfileView: View {
                     
                     Task {
                         // Comment out these lines for SwiftUI Previews
-                        recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                        recentTracks = await profileViewModel.getRecentTracks(forProfile: profile, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                        
+                        // recentTracks = await profileViewModel.getCurrentUsersRecentTracks(limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
                         topTracks = await profileViewModel.getCurrentUsersTopTracks(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
                         topArtists = await profileViewModel.getCurrentUsersTopArtists(timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
                     }

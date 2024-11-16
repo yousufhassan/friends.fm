@@ -84,7 +84,7 @@ class ProfileViewModel: ObservableObject {
             let pathParams: [String:String] = ["user_id": profile.spotifyId]
             let response = try await SpotifyAPI.shared.fetch(method: .GET,
                                                              endpoint: .getUsersProfile,
-                                                             responseType: GetUsersProfileResponse.self, // TODO: make name more generic
+                                                             responseType: GetUsersProfileResponse.self,
                                                              accessToken: accessToken,
                                                              pathParams: pathParams)
             
@@ -125,18 +125,19 @@ class ProfileViewModel: ObservableObject {
         case topArtists
     }
     
-    /// Fetches the specified profile item (recent tracks, top tracks, or top artists) based on the time range.
+    /// Fetches the specified profile item (recent tracks, top tracks, or top artists) based on the time range for the specified Spotify profile.
     ///
     /// - Parameters:
+    ///   - forProfile: The Spotify profile to view more data for.
     ///   - forItem: The profile item to fetch (recent tracks, top tracks, or top artists).
     ///   - timeRange: The time range over which to calculate the data. Default is `.oneMonth`.
     /// - Returns: A `ProfileItemsResponse?` that contains either tracks or artists.
-    func viewMoreForCurrentUser(forItem: ProfileItems, timeRange: TimeRange = .oneMonth) async -> ProfileItemsResponse? {
+    func viewMore(forProfile profile: SpotifyProfile, forItem: ProfileItems, timeRange: TimeRange = .oneMonth) async -> ProfileItemsResponse? {
         let limit = 20
         
         switch forItem {
         case .recentTracks:
-            let tracks = await getCurrentUsersRecentTracks(limit: limit)
+            let tracks = await getRecentTracks(forProfile: profile, limit: limit)
             return .tracks(tracks)
         case .topTracks:
             let tracks = await getCurrentUsersTopTracks(timeRange: timeRange, limit: limit)
@@ -151,12 +152,40 @@ class ProfileViewModel: ObservableObject {
     ///
     /// - Parameter limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
     /// - Returns: A `TracksWithResponseMetadata?` containing the user's recent tracks.
-    func getCurrentUsersRecentTracks(limit: Int)
-    async -> TracksWithResponseMetadata? {
+    func getCurrentUsersRecentTracks(limit: Int) async -> TracksWithResponseMetadata? {
         do {
             guard let signedInUser = user else { throw AuthorizationError.missingUser }
             let accessToken = try await UserServiceManager.shared
                 .getSpotifyWebAccessToken(forUser: signedInUser)
+                .getAccessToken()
+            let queryParams = [
+                URLQueryItem(name: "limit", value: String(limit))
+            ]
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getCurrentUsersRecentTracks,
+                                                             responseType: GetCurrentUserRecentTracksResponse.self,
+                                                             accessToken: accessToken,
+                                                             queryParams: queryParams)
+            
+            return TracksWithResponseMetadata(tracks: response.extractTracksFromItems(), isEmpty: response.items.isEmpty)
+        }
+        catch {
+            printError("When getting the current user's recent tracks: \(error)")
+            return nil
+        }
+    }
+    
+    /// Fetches the provided profile's recent tracks.
+    ///
+    /// - Parameter limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
+    /// - Returns: A `TracksWithResponseMetadata?` containing the profile's recent tracks.
+    func getRecentTracks(forProfile profile: SpotifyProfile, limit: Int) async -> TracksWithResponseMetadata? {
+        do {
+            guard let associatedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId)
+            else { throw AuthorizationError.missingUser }
+                    
+            let accessToken = try await UserServiceManager.shared
+                .getSpotifyWebAccessToken(forUser: associatedUser)
                 .getAccessToken()
             let queryParams = [
                 URLQueryItem(name: "limit", value: String(limit))

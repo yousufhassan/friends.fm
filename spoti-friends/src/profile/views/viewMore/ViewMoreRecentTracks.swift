@@ -31,7 +31,7 @@ struct ViewMoreRecentTracks: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-                let response = await profileViewModel.viewMoreForCurrentUser(forItem: .recentTracks)
+                let response = await profileViewModel.viewMore(forProfile: profile, forItem: .recentTracks)
                 switch response {
                 case .tracks(let tracksWithMetadata):
                     recentTracks = tracksWithMetadata ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])

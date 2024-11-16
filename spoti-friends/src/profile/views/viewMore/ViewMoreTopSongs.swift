@@ -42,7 +42,7 @@ struct ViewMoreTopSongs: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-                let response = await profileViewModel.viewMoreForCurrentUser(forItem: .topTracks)
+                let response = await profileViewModel.viewMore(forProfile: profile, forItem: .topTracks)
                 switch response {
                 case .tracks(let tracksWithMetadata):
                     topTracks = tracksWithMetadata ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
@@ -54,7 +54,7 @@ struct ViewMoreTopSongs: View {
         }
         .onChange(of: selectedTimeRange) {
             Task {
-                let response = await profileViewModel.viewMoreForCurrentUser(forItem: .topTracks, timeRange: selectedTimeRange)
+                let response = await profileViewModel.viewMore(forProfile: profile, forItem: .topTracks, timeRange: selectedTimeRange)
                 switch response {
                 case .tracks(let tracksWithMetadata):
                     topTracks = tracksWithMetadata ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
