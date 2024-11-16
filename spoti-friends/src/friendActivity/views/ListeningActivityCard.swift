@@ -31,19 +31,20 @@ struct ListeningActivityCard: View, Identifiable {
         VStack {
             // Profile Image
             HStack {
-                Link(destination: URL(string: profile.spotifyUri)!) {
-                    ZStack {
-                        ProfileImage(imageName: profile.spotifyId, width: 56, height: 56)
-                            .environmentObject(friendActivityViewModel)
-                        if track.playedWithinLastFifteenMinutes {
-                            Circle()
-                                .fill(Color.blue)
-                                .frame(width: 12, height: 12)
-                                .offset(x: 22, y: -18)
+                NavigationLink(destination: ProfileView(profile: profile)
+                    .environmentObject(friendActivityViewModel)) {
+                        ZStack {
+                            ProfileImage(imageName: profile.spotifyId, width: 56, height: 56)
+                                .environmentObject(friendActivityViewModel)
+                            if track.playedWithinLastFifteenMinutes {
+                                Circle()
+                                    .fill(Color.blue)
+                                    .frame(width: 12, height: 12)
+                                    .offset(x: 22, y: -18)
+                            }
                         }
                     }
-                }
-                .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(PlainButtonStyle())
                 
                 // Listening Activity Details
                 ListeningActivityDetails(profile: profile, currentTrack: track)

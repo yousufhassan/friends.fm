@@ -4,7 +4,7 @@ import Foundation
 ///
 /// Add the response objects for the relevant API endpoints. Only add fields we are interested in.
 extension ProfileViewModel {
-    internal struct GetCurrentUserProfileResponse: Decodable {
+    internal struct GetUsersProfileResponse: Decodable {
         let followers: Followers
         
         struct Followers: Decodable {

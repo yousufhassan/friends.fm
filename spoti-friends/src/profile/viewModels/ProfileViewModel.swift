@@ -51,7 +51,7 @@ class ProfileViewModel: ObservableObject {
     /// Fetches the current user's follower count from Spotify.
     ///
     /// - Returns: The number of followers the current user has, or `-1` if the fetch fails.
-    @MainActor func getCurrentUsersFollowerCount() async -> Int {
+    func getCurrentUsersFollowerCount() async -> Int {
         do {
             guard let signedInUser = user else { throw AuthorizationError.missingUser }
             let accessToken = try await UserServiceManager.shared
@@ -59,7 +59,7 @@ class ProfileViewModel: ObservableObject {
                 .getAccessToken()
             let response = try await SpotifyAPI.shared.fetch(method: .GET,
                                                              endpoint: .getCurrentUsersProfile,
-                                                             responseType: GetCurrentUserProfileResponse.self,
+                                                             responseType: GetUsersProfileResponse.self,
                                                              accessToken: accessToken)
             return response.followers.total
         } catch {
@@ -68,12 +68,41 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    /// Fetches the follower count for this profile.
+    ///
+    /// - Parameters:
+    ///   - profile: The Spotify profile to fetch the follower count for.
+    ///
+    /// - Returns: The number of followers the profile has, or `-1` if the fetch fails.
+    func getFollowerCount(forProfile profile: SpotifyProfile) async -> Int {
+        do {
+            guard let signedInUser = user else { throw AuthorizationError.missingUser }
+            let accessToken = try await UserServiceManager.shared
+                .getSpotifyWebAccessToken(forUser: signedInUser)
+                .getAccessToken()
+            
+            let pathParams: [String:String] = ["user_id": profile.spotifyId]
+            let response = try await SpotifyAPI.shared.fetch(method: .GET,
+                                                             endpoint: .getUsersProfile,
+                                                             responseType: GetUsersProfileResponse.self, // TODO: make name more generic
+                                                             accessToken: accessToken,
+                                                             pathParams: pathParams)
+            
+            return response.followers.total
+        }
+        catch {
+            printError("When getting the follower count for the profile (id=\(profile.spotifyId)): \(error)")
+            return -1
+        }
+        
+    }
+    
     /// Fetches the current user's public playlist count from Spotify.
     ///
     /// This count only includes public playlists.
     ///
     /// - Returns: The number of public playlists, or `-1` if the fetch fails.
-    @MainActor func getCurrentUsersPlaylistCount() async -> Int {
+    func getCurrentUsersPlaylistCount() async -> Int {
         do {
             guard let signedInUser = user else { throw AuthorizationError.missingUser }
             let accessToken = try await UserServiceManager.shared
@@ -102,7 +131,7 @@ class ProfileViewModel: ObservableObject {
     ///   - forItem: The profile item to fetch (recent tracks, top tracks, or top artists).
     ///   - timeRange: The time range over which to calculate the data. Default is `.oneMonth`.
     /// - Returns: A `ProfileItemsResponse?` that contains either tracks or artists.
-    @MainActor func viewMoreForCurrentUser(forItem: ProfileItems, timeRange: TimeRange = .oneMonth) async -> ProfileItemsResponse? {
+    func viewMoreForCurrentUser(forItem: ProfileItems, timeRange: TimeRange = .oneMonth) async -> ProfileItemsResponse? {
         let limit = 20
         
         switch forItem {
@@ -122,7 +151,7 @@ class ProfileViewModel: ObservableObject {
     ///
     /// - Parameter limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
     /// - Returns: A `TracksWithResponseMetadata?` containing the user's recent tracks.
-    @MainActor func getCurrentUsersRecentTracks(limit: Int)
+    func getCurrentUsersRecentTracks(limit: Int)
     async -> TracksWithResponseMetadata? {
         do {
             guard let signedInUser = user else { throw AuthorizationError.missingUser }
@@ -152,7 +181,7 @@ class ProfileViewModel: ObservableObject {
     ///   - timeRange: The time range over which to calculate the data.
     ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
     /// - Returns: A `TracksWithResponseMetadata?` containing the user's top tracks.
-    @MainActor func getCurrentUsersTopTracks(timeRange: TimeRange, limit: Int)
+    func getCurrentUsersTopTracks(timeRange: TimeRange, limit: Int)
     async -> TracksWithResponseMetadata? {
         // The cache should only be used for the "View more" screen – hence the check for limit == 20.
         if (limit == 20) {
@@ -213,7 +242,7 @@ class ProfileViewModel: ObservableObject {
     ///   - timeRange: The time range over which to calculate the data.
     ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
     /// - Returns: An `ArtistsWithResponseMetadata?` containing the user's top artists.
-    @MainActor func getCurrentUsersTopArtists(timeRange: TimeRange, limit: Int)
+    func getCurrentUsersTopArtists(timeRange: TimeRange, limit: Int)
     async -> ArtistsWithResponseMetadata? {
         // The cache should only be used for the "View more" screen – hence the check for limit == 20.
         if (limit == 20) {
