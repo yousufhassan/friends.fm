@@ -48,26 +48,6 @@ class ProfileViewModel: ObservableObject {
         cacheClearTimer?.invalidate()
     }
     
-    /// Fetches the current user's follower count from Spotify.
-    ///
-    /// - Returns: The number of followers the current user has, or `-1` if the fetch fails.
-    func getCurrentUsersFollowerCount() async -> Int {
-        do {
-            guard let signedInUser = user else { throw AuthorizationError.missingUser }
-            let accessToken = try await UserServiceManager.shared
-                .getSpotifyWebAccessToken(forUser: signedInUser)
-                .getAccessToken()
-            let response = try await SpotifyAPI.shared.fetch(method: .GET,
-                                                             endpoint: .getCurrentUsersProfile,
-                                                             responseType: GetUsersProfileResponse.self,
-                                                             accessToken: accessToken)
-            return response.followers.total
-        } catch {
-            printError("When getting the current user's follower count: \(error)")
-            return -1
-        }
-    }
-    
     /// Fetches the follower count for this profile.
     ///
     /// - Parameters:
@@ -97,21 +77,24 @@ class ProfileViewModel: ObservableObject {
         
     }
     
-    /// Fetches the current user's public playlist count from Spotify.
+    /// Fetches the number of public playlists for this profile.
     ///
     /// This count only includes public playlists.
     ///
     /// - Returns: The number of public playlists, or `-1` if the fetch fails.
-    func getCurrentUsersPlaylistCount() async -> Int {
+    func getPlaylistCount(forProfile profile: SpotifyProfile) async -> Int {
         do {
             guard let signedInUser = user else { throw AuthorizationError.missingUser }
             let accessToken = try await UserServiceManager.shared
                 .getSpotifyWebAccessToken(forUser: signedInUser)
                 .getAccessToken()
+            
+            let pathParams: [String:String] = ["user_id": profile.spotifyId]
             let response = try await SpotifyAPI.shared.fetch(method: .GET,
-                                                             endpoint: .getCurrentUsersPlaylists,
+                                                             endpoint: .getUsersPlaylists,
                                                              responseType: GetCurrentUserPlayistsResponse.self,
-                                                             accessToken: accessToken)
+                                                             accessToken: accessToken,
+                                                             pathParams: pathParams)
             return response.total
         } catch {
             printError("When getting the current user's playlist count: \(error)")
@@ -244,50 +227,6 @@ class ProfileViewModel: ObservableObject {
     ///   - timeRange: The time range for the cached data.
     private func cacheThese(topTracks: [Track], forTimeRange timeRange: TimeRange) -> Void {
         self.topTracksCache[timeRange] = topTracks
-    }
-    
-    /// Fetches the current user's top artists over the specified time range.
-    ///
-    /// - Parameters:
-    ///   - timeRange: The time range over which to calculate the data.
-    ///   - limit: The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 50.
-    /// - Returns: An `ArtistsWithResponseMetadata?` containing the user's top artists.
-    func getCurrentUsersTopArtists(timeRange: TimeRange, limit: Int)
-    async -> ArtistsWithResponseMetadata? {
-        // The cache should only be used for the "View more" screen – hence the check for limit == 20.
-        if (limit == 20) {
-            if let artists = getTopArtistsFromCacheIfExists(timeRange: timeRange) {
-                printInfo("Found top artists in cache for time range: \(timeRange)")
-                return ArtistsWithResponseMetadata(artists: artists, isEmpty: artists.isEmpty)
-            }
-        }
-        
-        do {
-            guard let signedInUser = user else { throw AuthorizationError.missingUser }
-            let accessToken = try await UserServiceManager.shared
-                .getSpotifyWebAccessToken(forUser: signedInUser)
-                .getAccessToken()
-            let queryParams = [
-                URLQueryItem(name: "time_range", value: timeRange.rawValue),
-                URLQueryItem(name: "limit", value: String(limit))
-            ]
-            let response = try await SpotifyAPI.shared.fetch(method: .GET,
-                                                             endpoint: .getCurrentUsersTopArtists,
-                                                             responseType: GetCurrentUserTopArtistsResponse.self,
-                                                             accessToken: accessToken,
-                                                             queryParams: queryParams)
-            
-            // Only cache data when opening in "View more"
-            if (limit == 20) {
-                printInfo("Fetched top artists from Spotify for time range: \(timeRange). Saved to cache.")
-                cacheThese(topArtists: response.items, forTimeRange: timeRange)
-            }
-            return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
-        }
-        catch {
-            printError("When getting the current user's top artists: \(error)")
-            return nil
-        }
     }
     
     /// Fetches the top artists over the specified time range for the specified Spotify profile.
