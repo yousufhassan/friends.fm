@@ -66,7 +66,7 @@ extension ProfileViewModel {
     ///
     /// The reason that there is an `isEmpty` attribute is for the purposes of differentiating between a request that
     /// is still fetching data versus a request that has completed and returned no data (i.e. `tracks = []`). In the
-    /// `ProfileView`, we cannot simply call `tracks.isEmpty` (referring to the `tracks` array itself) because
+    /// `UserProfileView`, we cannot simply call `tracks.isEmpty` (referring to the `tracks` array itself) because
     /// it will return `true` even if the request has not completed. Therefore, by using this struct, we check for the
     /// `TracksWithResponseMetadata.isEmpty` value, which will default to `false`, unless we specify
     /// otherwise (which we do once the request has actually completed).
@@ -92,7 +92,7 @@ extension ProfileViewModel {
     ///
     /// The reason that there is an `isEmpty` attribute is for the purposes of differentiating between a request that
     /// is still fetching data versus a request that has completed and returned no data (i.e. `artists = []`). In the
-    /// `ProfileView`, we cannot simply call `artists.isEmpty` (referring to the `artists` array itself) because
+    /// `UserProfileView`, we cannot simply call `artists.isEmpty` (referring to the `artists` array itself) because
     /// it will return `true` even if the request has not completed. Therefore, by using this struct, we check for the
     /// `ArtistsWithResponseMetadata.isEmpty` value, which will default to `false`, unless we specify
     /// otherwise (which we do once the request has actually completed).

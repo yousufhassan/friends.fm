@@ -1,6 +1,6 @@
 import Foundation
 
-/// The `ProfileViewModel` class is responsible for managing and providing data related to the `ProfileView`
+/// The `ProfileViewModel` class is responsible for managing and providing data related to the `UserProfileView`
 /// and subviews. It handles fetching the user's top tracks, top artists, and recent tracks, and
 /// caches this data for quicker access.
 ///

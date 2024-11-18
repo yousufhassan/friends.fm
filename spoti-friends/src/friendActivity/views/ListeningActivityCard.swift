@@ -17,6 +17,7 @@ struct ListeningActivityCard: View, Identifiable {
     let backgroundColor: Color;
     @State var fontColor: Color
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
+    @EnvironmentObject var profileViewModel: ProfileViewModel
     
     init(profile: SpotifyProfile, backgroundColor: Color) {
         self.id = profile.spotifyId
@@ -32,7 +33,9 @@ struct ListeningActivityCard: View, Identifiable {
             // Profile Image
             HStack {
                 NavigationLink(destination: ProfileView(profile: profile)
-                    .environmentObject(friendActivityViewModel)) {
+                    .environmentObject(friendActivityViewModel)
+                    .environmentObject(profileViewModel)
+                ) {
                         ZStack {
                             ProfileImage(imageName: profile.spotifyId, width: 56, height: 56)
                                 .environmentObject(friendActivityViewModel)
