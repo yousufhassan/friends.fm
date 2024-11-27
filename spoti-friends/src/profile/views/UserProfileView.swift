@@ -29,7 +29,7 @@ struct UserProfileView: View {
     
     var body: some View {
         NavigationStack {
-            GeometryReader { reader in
+//            GeometryReader { reader in
                 ScrollView {
                     VStack (alignment: .leading, spacing: 34) {
                         // Profile Details
@@ -101,8 +101,16 @@ struct UserProfileView: View {
                         }
                         Spacer()
                     }
-                    .frame(minHeight: reader.size.height)
-                    .padding(.horizontal, 20)
+                    .onAppear {
+                        profileViewModel.user = authorizationViewModel.user
+                        
+                        Task {
+                            // Comment out these lines for SwiftUI Previews
+                            recentTracks = await profileViewModel.getRecentTracks(forProfile: profile, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                            topTracks = await profileViewModel.getTopTracks(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                            topArtists = await profileViewModel.getTopArtists(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+                        }
+                    }
                     
                     // Logout Button
                     LogoutButton()
@@ -110,17 +118,17 @@ struct UserProfileView: View {
                 }
                 .padding(.top)
                 .background(Color.PresetGradient.profileViewGradient(profile: profile))
-                .onAppear {
-                    profileViewModel.user = authorizationViewModel.user
-                    
-                    Task {
-                        // Comment out these lines for SwiftUI Previews
-                        recentTracks = await profileViewModel.getRecentTracks(forProfile: profile, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-                        topTracks = await profileViewModel.getTopTracks(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-                        topArtists = await profileViewModel.getTopArtists(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
-                    }
-                }
-            }
+//                .onAppear {
+//                    profileViewModel.user = authorizationViewModel.user
+//                    
+//                    Task {
+//                        // Comment out these lines for SwiftUI Previews
+//                        recentTracks = await profileViewModel.getRecentTracks(forProfile: profile, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+//                        topTracks = await profileViewModel.getTopTracks(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+//                        topArtists = await profileViewModel.getTopArtists(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+//                    }
+//                }
+//            }
         }
     }
     

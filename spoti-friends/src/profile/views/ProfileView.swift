@@ -9,24 +9,32 @@ import SwiftUI
 /// - Returns: A view showing either the app user's profile or a non-user profile view.
 struct ProfileView: View {
     let profile: SpotifyProfile
-    @State var isAppUser: Bool = true
+    @State var isAppUser: Bool
+    @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     @EnvironmentObject var profileViewModel: ProfileViewModel
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
-    init(profile: SpotifyProfile) {
+    init(profile: SpotifyProfile, isAppUser: Bool = true) {
         self.profile = profile
+        self.isAppUser = isAppUser
     }
     
     var body: some View {
-        HStack {
-            if (isAppUser) {
-                UserProfileView(profile: profile)
-                    .environmentObject(friendActivityViewModel)
-                    .environmentObject(profileViewModel)
-            } else {
-                NonUserProfileView()
+        GeometryReader { reader in
+            Group {
+                if (isAppUser) {
+                    UserProfileView(profile: profile)
+                        .environmentObject(authorizationViewModel)
+                        .environmentObject(friendActivityViewModel)
+                        .environmentObject(profileViewModel)
+                } else {
+                    NonUserProfileView()
+                }
             }
+            .frame(minHeight: reader.size.height)
+            .padding(.horizontal, 20)
         }
+        .background(Color.PresetGradient.profileViewGradient(profile: profile))
         .onAppear {
             Task {
                 self.isAppUser = await UserServiceManager.shared.userExists(withSpotifyId: profile.spotifyId)

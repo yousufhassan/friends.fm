@@ -12,12 +12,14 @@ import Foundation
 ///   - user: The `User` object representing the currently logged-in user.
 ///   - topTracksCache: A dictionary that caches the user's top tracks based on the time range.
 ///   - topArtistsCache: A dictionary that caches the user's top artists based on the time range.
+///   - usersCache: A dictionary that caches User objects that have been queried for in the database. They are mapped by the spotifyId.
 ///   - cacheClearTimer: A timer used to automatically clear the cache every 12 hours.
 ///
 class ProfileViewModel: ObservableObject {
     @Published var user: User?
-    @Published private var topTracksCache: [TimeRange: [Track]] = [:]
-    @Published private var topArtistsCache: [TimeRange: [Artist]] = [:]
+    private var topTracksCache: [TimeRange: [Track]] = [:]
+    private var topArtistsCache: [TimeRange: [Artist]] = [:]
+    private var usersCache: [String : User] = [:]
     private var cacheClearTimer: Timer?
     
     /// Initializes the `ProfileViewModel` with the specified `User` and starts the cache timer.
@@ -46,6 +48,23 @@ class ProfileViewModel: ObservableObject {
     /// Invalidates the cache timer when the `ProfileViewModel` is deallocated.
     deinit {
         cacheClearTimer?.invalidate()
+    }
+    
+    /// Retrieves the cached user matching the spotifyId, if it exists.
+    ///
+    /// - Parameter spotifyId: The spotifyId of the user's Spotify profile.
+    /// - Returns: An optional `User` object if cached data is available.
+    private func getUserFromCacheIfExists(spotifyId: String) -> User? {
+        return usersCache[spotifyId]
+    }
+    
+    /// Caches the specified user for the associated `spotifyId`.
+    ///
+    /// - Parameters:
+    ///   - user: A `User` object to cache.
+    ///   - spotifyId: The spotifyId associated with the user's Spotify profile.
+    private func cache(user: User, withSpotifyId spotifyId: String) -> Void {
+        self.usersCache[spotifyId] = user
     }
     
     /// Fetches the follower count for this profile.
@@ -139,9 +158,17 @@ class ProfileViewModel: ObservableObject {
     /// - Returns: A `TracksWithResponseMetadata?` containing the profile's recent tracks.
     func getRecentTracks(forProfile profile: SpotifyProfile, limit: Int) async -> TracksWithResponseMetadata? {
         do {
-            guard let associatedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId)
-            else { throw AuthorizationError.missingUser }
-                    
+            var associatedUser: User
+            
+            if let cachedUser = getUserFromCacheIfExists(spotifyId: profile.spotifyId) {
+                associatedUser = cachedUser
+            } else if let fetchedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId) {
+                associatedUser = fetchedUser
+                cache(user: fetchedUser, withSpotifyId: profile.spotifyId)
+            } else {
+                throw AuthorizationError.missingUser
+            }
+            
             let accessToken = try await UserServiceManager.shared
                 .getSpotifyWebAccessToken(forUser: associatedUser)
                 .getAccessToken()
@@ -171,8 +198,9 @@ class ProfileViewModel: ObservableObject {
     /// - Returns: A `TracksWithResponseMetadata?` containing the user's top tracks.
     func getTopTracks(forProfile profile: SpotifyProfile, timeRange: TimeRange, limit: Int)
     async -> TracksWithResponseMetadata? {
-        // The cache should only be used for the "View more" screen – hence the check for limit == 20.
-        if (limit == 20) {
+        // The cache should only be used for the logged in user's "View more" screen – hence the
+        // check for limit == 20 and correct profile.
+        if (limit == 20 && user?.spotifyProfile == profile) {
             if let tracks = getTopTracksFromCacheIfExists(timeRange: timeRange) {
                 printInfo("Found top tracks in cache for time range: \(timeRange)")
                 return TracksWithResponseMetadata(tracks: tracks, isEmpty: tracks.isEmpty)
@@ -180,10 +208,17 @@ class ProfileViewModel: ObservableObject {
         }
         
         do {
+            var associatedUser: User
             
-            guard let associatedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId)
-            else { throw AuthorizationError.missingUser }
-
+            if let cachedUser = getUserFromCacheIfExists(spotifyId: profile.spotifyId) {
+                associatedUser = cachedUser
+            } else if let fetchedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId) {
+                associatedUser = fetchedUser
+                cache(user: fetchedUser, withSpotifyId: profile.spotifyId)
+            } else {
+                throw AuthorizationError.missingUser
+            }
+            
             let accessToken = try await UserServiceManager.shared
                 .getSpotifyWebAccessToken(forUser: associatedUser)
                 .getAccessToken()
@@ -197,10 +232,10 @@ class ProfileViewModel: ObservableObject {
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
             
-            // Only cache data when opening in "View more"
-            if (limit == 20) {
+            // Only cache data when opening in "View more" for the logged in user
+            if (limit == 20 && user?.spotifyProfile == profile) {
                 printInfo("Fetched top tracks from Spotify for time range: \(timeRange). Saved to cache.")
-                cacheThese(topTracks: response.items, forTimeRange: timeRange)
+                cache(topTracks: response.items, forTimeRange: timeRange)
             }
             return TracksWithResponseMetadata(tracks: response.items, isEmpty: response.items.isEmpty)
         }
@@ -225,7 +260,7 @@ class ProfileViewModel: ObservableObject {
     /// - Parameters:
     ///   - topTracks: An array of `Track` objects to cache.
     ///   - timeRange: The time range for the cached data.
-    private func cacheThese(topTracks: [Track], forTimeRange timeRange: TimeRange) -> Void {
+    private func cache(topTracks: [Track], forTimeRange timeRange: TimeRange) -> Void {
         self.topTracksCache[timeRange] = topTracks
     }
     
@@ -238,8 +273,9 @@ class ProfileViewModel: ObservableObject {
     /// - Returns: An `ArtistsWithResponseMetadata?` containing the profile's top artists.
     func getTopArtists(forProfile profile: SpotifyProfile, timeRange: TimeRange, limit: Int)
     async -> ArtistsWithResponseMetadata? {
-        // The cache should only be used for the "View more" screen – hence the check for limit == 20.
-        if (limit == 20) {
+        // The cache should only be used for the logged in user's "View more" screen – hence the
+        // check for limit == 20 and correct profile.
+        if (limit == 20 && user?.spotifyProfile == profile) {
             if let artists = getTopArtistsFromCacheIfExists(timeRange: timeRange) {
                 printInfo("Found top artists in cache for time range: \(timeRange)")
                 return ArtistsWithResponseMetadata(artists: artists, isEmpty: artists.isEmpty)
@@ -247,8 +283,16 @@ class ProfileViewModel: ObservableObject {
         }
         
         do {
-            guard let associatedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId)
-            else { throw AuthorizationError.missingUser }
+            var associatedUser: User
+            
+            if let cachedUser = getUserFromCacheIfExists(spotifyId: profile.spotifyId) {
+                associatedUser = cachedUser
+            } else if let fetchedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId) {
+                associatedUser = fetchedUser
+                cache(user: fetchedUser, withSpotifyId: profile.spotifyId)
+            } else {
+                throw AuthorizationError.missingUser
+            }
             
             let accessToken = try await UserServiceManager.shared
                 .getSpotifyWebAccessToken(forUser: associatedUser)
@@ -263,10 +307,10 @@ class ProfileViewModel: ObservableObject {
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
             
-            // Only cache data when opening in "View more"
-            if (limit == 20) {
+            // Only cache data when opening in "View more" for the logged in user.
+            if (limit == 20 && user?.spotifyProfile == profile) {
                 printInfo("Fetched top artists from Spotify for time range: \(timeRange). Saved to cache.")
-                cacheThese(topArtists: response.items, forTimeRange: timeRange)
+                cache(topArtists: response.items, forTimeRange: timeRange)
             }
             return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
         }
@@ -289,7 +333,7 @@ class ProfileViewModel: ObservableObject {
     /// - Parameters:
     ///   - topArtists: An array of `Artist` objects to cache.
     ///   - timeRange: The time range for the cached data.
-    private func cacheThese(topArtists: [Artist], forTimeRange timeRange: TimeRange) -> Void {
+    private func cache(topArtists: [Artist], forTimeRange timeRange: TimeRange) -> Void {
         self.topArtistsCache[timeRange] = topArtists
     }
     
