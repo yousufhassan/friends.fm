@@ -107,9 +107,11 @@ struct UserProfileView: View {
                     }
                 }
                 
-                // Logout Button
-                LogoutButton()
-                    .padding(.bottom, 10)
+                // Render logout button if viewing own profile
+                if (profileViewModel.user?.spotifyId == profile.spotifyId) {
+                    LogoutButton()
+                        .padding(.bottom, 10)
+                }
             }
             .padding(.top)
             .background(Color.PresetGradient.profileViewGradient(profile: profile))
