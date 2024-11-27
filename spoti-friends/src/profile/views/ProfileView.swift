@@ -26,7 +26,7 @@ struct ProfileView: View {
                         .environmentObject(authorizationViewModel)
                         .environmentObject(profileViewModel)
                 } else {
-                    NonUserProfileView()
+                    NonUserProfileView(profile: profile)
                         .environmentObject(profileViewModel)
                 }
             }
@@ -47,4 +47,6 @@ struct ProfileView: View {
     let profile = SpotifyProfileMock.michaelScott
     
     ProfileView(profile: profile)
+        .environmentObject(AuthorizationViewModel())
+        .environmentObject(ProfileViewModel(user: user))
 }

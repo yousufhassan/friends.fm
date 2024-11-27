@@ -98,7 +98,7 @@ struct UserProfileView: View {
                     }
                     Spacer()
                 }
-                .onAppear {                    
+                .onAppear {
                     Task {
                         // Comment out these lines for SwiftUI Previews
                         recentTracks = await profileViewModel.getRecentTracks(forProfile: profile, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
@@ -115,23 +115,23 @@ struct UserProfileView: View {
             .background(Color.PresetGradient.profileViewGradient(profile: profile))
         }
     }
+}
+
+// Logout button
+struct LogoutButton: View {
+    @EnvironmentObject private var authorizationViewModel: AuthorizationViewModel
     
-    // Logout button
-    struct LogoutButton: View {
-        @EnvironmentObject private var authorizationViewModel: AuthorizationViewModel
-        
-        var body: some View {
-            let buttonLabel = "Log out"
-            Button(action: {
-                authorizationViewModel.signOutUser()
-            }) {
-                Text(buttonLabel)
-                    .frame(width: 320, height: 50)
-                    .background(Color.PresetColour.transparentMaroon)
-                    .foregroundColor(Color.PresetColour.red)
-                    .fontWeight(.semibold)
-                    .cornerRadius(12)
-            }
+    var body: some View {
+        let buttonLabel = "Log out"
+        Button(action: {
+            authorizationViewModel.signOutUser()
+        }) {
+            Text(buttonLabel)
+                .frame(width: 320, height: 50)
+                .background(Color.PresetColour.transparentMaroon)
+                .foregroundColor(Color.PresetColour.red)
+                .fontWeight(.semibold)
+                .cornerRadius(12)
         }
     }
 }
@@ -145,5 +145,6 @@ struct UserProfileView: View {
         
         UserProfileView(profile: user.spotifyProfile, recentTracks: recentTracks, topTracks: topTracks, topArtists: topArtists)
             .environmentObject(AuthorizationViewModel())
+            .environmentObject(ProfileViewModel(user: user))
     }
 }

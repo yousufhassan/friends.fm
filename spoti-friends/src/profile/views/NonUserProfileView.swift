@@ -9,11 +9,23 @@ struct NonUserProfileView: View {
     }
     
     var body: some View {
-        VStack (alignment: .leading, spacing: 34) {
+        VStack {
             // Profile Details
             ProfileDetails(profile: profile)
                 .environmentObject(profileViewModel)
+            
+            Spacer()
+                .frame(height: 70)
+            
+            VStack {
+                Text("\(profile.displayName) has not joined the app yet.")
+                Text("Invite them to be part of the fun!")
+            }
+            .foregroundStyle(Color.PresetColour.whitePrimary)
+            
+            Spacer()
         }
+        .padding(.top)
     }
 }
 
@@ -21,4 +33,5 @@ struct NonUserProfileView: View {
     let user = UserMock.userJimHalpert
     
     NonUserProfileView(profile: user.spotifyProfile)
+        .environmentObject(ProfileViewModel(user: user))
 }
