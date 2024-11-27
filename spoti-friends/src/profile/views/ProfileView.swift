@@ -27,6 +27,7 @@ struct ProfileView: View {
                         .environmentObject(profileViewModel)
                 } else {
                     NonUserProfileView()
+                        .environmentObject(profileViewModel)
                 }
             }
             .frame(minHeight: reader.size.height)
