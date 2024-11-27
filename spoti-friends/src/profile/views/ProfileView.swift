@@ -12,7 +12,6 @@ struct ProfileView: View {
     @State var isAppUser: Bool
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     @EnvironmentObject var profileViewModel: ProfileViewModel
-    @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
     init(profile: SpotifyProfile, isAppUser: Bool = true) {
         self.profile = profile
@@ -25,7 +24,6 @@ struct ProfileView: View {
                 if (isAppUser) {
                     UserProfileView(profile: profile)
                         .environmentObject(authorizationViewModel)
-                        .environmentObject(friendActivityViewModel)
                         .environmentObject(profileViewModel)
                 } else {
                     NonUserProfileView()
@@ -48,5 +46,4 @@ struct ProfileView: View {
     let profile = SpotifyProfileMock.michaelScott
     
     ProfileView(profile: profile)
-        .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
 }

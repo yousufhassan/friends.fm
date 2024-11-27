@@ -16,7 +16,6 @@ struct UserProfileView: View {
     @State private var topArtists: ProfileViewModel.ArtistsWithResponseMetadata
     @EnvironmentObject var profileViewModel: ProfileViewModel
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
-    @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
     /// NOTE: `topTracks` and `topArtists` default to `[]` so that we don't need to pass them in from `AuthenticatedView`.
     /// However, we do want to pass in mock data for previews, so that's why we want them as optional parameters.
@@ -29,106 +28,91 @@ struct UserProfileView: View {
     
     var body: some View {
         NavigationStack {
-//            GeometryReader { reader in
-                ScrollView {
-                    VStack (alignment: .leading, spacing: 34) {
-                        // Profile Details
-                        ProfileDetails(profile: profile)
-                            .environmentObject(profileViewModel)
-                            .environmentObject(friendActivityViewModel)
+            ScrollView {
+                VStack (alignment: .leading, spacing: 34) {
+                    // Profile Details
+                    ProfileDetails(profile: profile)
+                        .environmentObject(profileViewModel)
+                    
+                    // Recent Tracks
+                    VStack (alignment: .leading) {
+                        Text("Recent Songs")
+                            .font(.body)
+                            .foregroundStyle(Color.PresetColour.whitePrimary)
                         
-                        // Recent Tracks
-                        VStack (alignment: .leading) {
-                            Text("Recent Songs")
-                                .font(.body)
-                                .foregroundStyle(Color.PresetColour.whitePrimary)
-                            
-                            if recentTracks.isEmpty {
-                                Text("It's oddly quiet here...")
-                                    .font(.callout)
-                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
-                                    .padding(.vertical, 4)
-                            } else {
-                                TrackList(tracks: recentTracks.tracks)
-                                ViewMoreButton(destination: ViewMoreRecentTracks(profile: profile)
-                                    .environmentObject(profileViewModel))
-                                .padding(.top, 4)
-                            }
-                        }
-                        
-                        // Top Tracks
-                        VStack (alignment: .leading) {
-                            Text("Top Songs")
-                                .font(.body)
-                                .foregroundStyle(Color.PresetColour.whitePrimary)
-                            Text("From this month")
-                                .font(.footnote)
+                        if recentTracks.isEmpty {
+                            Text("It's oddly quiet here...")
+                                .font(.callout)
                                 .foregroundStyle(Color.PresetColour.whiteSecondary)
-                            
-                            if topTracks.isEmpty {
-                                Text("Not enough listening data this month.")
-                                    .font(.callout)
-                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
-                                    .padding(.vertical, 4)
-                            } else {
-                                TrackList(tracks: topTracks.tracks)
-                                ViewMoreButton(destination: ViewMoreTopSongs(profile: profile)
-                                    .environmentObject(profileViewModel))
-                                .padding(.top, 4)
-                            }
-                        }
-                        
-                        // Top Artists
-                        VStack (alignment: .leading) {
-                            Text("Top Artists")
-                                .font(.body)
-                                .foregroundStyle(Color.PresetColour.whitePrimary)
-                            Text("From this month")
-                                .font(.footnote)
-                                .foregroundStyle(Color.PresetColour.whiteSecondary)
-                            
-                            if topArtists.isEmpty {
-                                Text("Not enough listening data this month.")
-                                    .font(.callout)
-                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
-                                    .padding(.vertical, 4)
-                            } else {
-                                ArtistList(artists: topArtists.artists)
-                                ViewMoreButton(destination: ViewMoreTopArtists(profile: profile)
-                                    .environmentObject(profileViewModel))
-                                .padding(.top, 4)
-                            }
-                        }
-                        Spacer()
-                    }
-                    .onAppear {
-                        profileViewModel.user = authorizationViewModel.user
-                        
-                        Task {
-                            // Comment out these lines for SwiftUI Previews
-                            recentTracks = await profileViewModel.getRecentTracks(forProfile: profile, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-                            topTracks = await profileViewModel.getTopTracks(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-                            topArtists = await profileViewModel.getTopArtists(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+                                .padding(.vertical, 4)
+                        } else {
+                            TrackList(tracks: recentTracks.tracks)
+                            ViewMoreButton(destination: ViewMoreRecentTracks(profile: profile)
+                                .environmentObject(profileViewModel))
+                            .padding(.top, 4)
                         }
                     }
                     
-                    // Logout Button
-                    LogoutButton()
-                        .padding(.bottom, 10)
+                    // Top Tracks
+                    VStack (alignment: .leading) {
+                        Text("Top Songs")
+                            .font(.body)
+                            .foregroundStyle(Color.PresetColour.whitePrimary)
+                        Text("From this month")
+                            .font(.footnote)
+                            .foregroundStyle(Color.PresetColour.whiteSecondary)
+                        
+                        if topTracks.isEmpty {
+                            Text("Not enough listening data this month.")
+                                .font(.callout)
+                                .foregroundStyle(Color.PresetColour.whiteSecondary)
+                                .padding(.vertical, 4)
+                        } else {
+                            TrackList(tracks: topTracks.tracks)
+                            ViewMoreButton(destination: ViewMoreTopSongs(profile: profile)
+                                .environmentObject(profileViewModel))
+                            .padding(.top, 4)
+                        }
+                    }
+                    
+                    // Top Artists
+                    VStack (alignment: .leading) {
+                        Text("Top Artists")
+                            .font(.body)
+                            .foregroundStyle(Color.PresetColour.whitePrimary)
+                        Text("From this month")
+                            .font(.footnote)
+                            .foregroundStyle(Color.PresetColour.whiteSecondary)
+                        
+                        if topArtists.isEmpty {
+                            Text("Not enough listening data this month.")
+                                .font(.callout)
+                                .foregroundStyle(Color.PresetColour.whiteSecondary)
+                                .padding(.vertical, 4)
+                        } else {
+                            ArtistList(artists: topArtists.artists)
+                            ViewMoreButton(destination: ViewMoreTopArtists(profile: profile)
+                                .environmentObject(profileViewModel))
+                            .padding(.top, 4)
+                        }
+                    }
+                    Spacer()
                 }
-                .padding(.top)
-                .background(Color.PresetGradient.profileViewGradient(profile: profile))
-//                .onAppear {
-//                    profileViewModel.user = authorizationViewModel.user
-//                    
-//                    Task {
-//                        // Comment out these lines for SwiftUI Previews
-//                        recentTracks = await profileViewModel.getRecentTracks(forProfile: profile, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-//                        topTracks = await profileViewModel.getTopTracks(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
-//                        topArtists = await profileViewModel.getTopArtists(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
-//                    }
-//                }
-//            }
+                .onAppear {                    
+                    Task {
+                        // Comment out these lines for SwiftUI Previews
+                        recentTracks = await profileViewModel.getRecentTracks(forProfile: profile, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                        topTracks = await profileViewModel.getTopTracks(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.TracksWithResponseMetadata(tracks: [])
+                        topArtists = await profileViewModel.getTopArtists(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
+                    }
+                }
+                
+                // Logout Button
+                LogoutButton()
+                    .padding(.bottom, 10)
+            }
+            .padding(.top)
+            .background(Color.PresetGradient.profileViewGradient(profile: profile))
         }
     }
     
@@ -161,6 +145,5 @@ struct UserProfileView: View {
         
         UserProfileView(profile: user.spotifyProfile, recentTracks: recentTracks, topTracks: topTracks, topArtists: topArtists)
             .environmentObject(AuthorizationViewModel())
-            .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
     }
 }

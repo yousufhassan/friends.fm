@@ -12,7 +12,6 @@ struct ProfileDetails: View {
     @State private var playlistCount: Int?
     @State private var fetchedDetails: Bool = true
     @EnvironmentObject var profileViewModel: ProfileViewModel
-    @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
     init(profile: SpotifyProfile) {
         self.profile = profile
@@ -21,7 +20,6 @@ struct ProfileDetails: View {
     var body: some View {
         HStack(spacing: 12) {
             ProfileImage(imageName: profile.spotifyId, width: 80, height: 80)
-                .environmentObject(friendActivityViewModel)
             
             VStack(alignment: .leading) {
                 // Display name
@@ -81,6 +79,5 @@ struct ProfileDetails: View {
         let user = UserMock.userJimHalpert
         ProfileDetails(profile: user.spotifyProfile)
             .environmentObject(ProfileViewModel(user: user))
-            .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
     }
 }

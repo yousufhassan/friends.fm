@@ -10,7 +10,7 @@ struct AuthenticatedView: View {
         _friendActivityViewModel = StateObject(
             wrappedValue: FriendActivityViewModel(user: nil, friendActivites: [])
         )
-        _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: AuthorizationViewModel().user))
+        _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: nil))
         
         let standardAppearance = UITabBarAppearance()
         standardAppearance.backgroundColor = UIColor(Color.PresetColour.darkgrey)
@@ -32,7 +32,6 @@ struct AuthenticatedView: View {
                 Label("My Profile", systemImage: "person")
             }
             .environmentObject(authorizationViewModel)
-            .environmentObject(friendActivityViewModel)
             .environmentObject(profileViewModel)
         }
         .tint(Color.PresetColour.spotifyGreen)
@@ -42,6 +41,7 @@ struct AuthenticatedView: View {
                 return
             }
             friendActivityViewModel.user = signedInUser
+            profileViewModel.user = signedInUser
         }
     }
 }
