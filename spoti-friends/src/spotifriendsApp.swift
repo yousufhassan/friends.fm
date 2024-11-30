@@ -8,11 +8,6 @@ struct spoti_friendsApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(authorizationViewModel)
-                .onAppear {
-                    Task {
-                        await authorizationViewModel.fetchAndUpdateUser()
-                    }
-                }
         }
     }
 }

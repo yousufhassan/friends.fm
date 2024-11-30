@@ -3,14 +3,10 @@ import SwiftUI
 /// The view for when a user is signed into the app.
 struct AuthenticatedView: View {
     @StateObject var friendActivityViewModel: FriendActivityViewModel
-    @StateObject private var profileViewModel: ProfileViewModel
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     
     init() {
-        _friendActivityViewModel = StateObject(
-            wrappedValue: FriendActivityViewModel(user: nil, friendActivites: [])
-        )
-        _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: nil))
+        _friendActivityViewModel = StateObject(wrappedValue: FriendActivityViewModel(user: AuthorizationViewModel().user, friendActivites: []))
         
         let standardAppearance = UITabBarAppearance()
         standardAppearance.backgroundColor = UIColor(Color.PresetColour.darkgrey)
@@ -27,21 +23,15 @@ struct AuthenticatedView: View {
                 Label("Friend Activity", systemImage: "figure.socialdance")
             }
             .environmentObject(friendActivityViewModel)
-            .environmentObject(profileViewModel)
-            ProfileView(profile: friendActivityViewModel.user?.spotifyProfile ?? SpotifyProfileMock.jimHalpert).tabItem {
+            ProfileView(profile: friendActivityViewModel.user.spotifyProfile ?? SpotifyProfile()).tabItem {
                 Label("My Profile", systemImage: "person")
             }
             .environmentObject(authorizationViewModel)
-            .environmentObject(profileViewModel)
+            .environmentObject(friendActivityViewModel)
         }
         .tint(Color.PresetColour.spotifyGreen)
         .onAppear {
-            guard let signedInUser = authorizationViewModel.user else {
-                printError("Expected user but found none (AuthenticatedView)")
-                return
-            }
-            friendActivityViewModel.user = signedInUser
-            profileViewModel.user = signedInUser
+            friendActivityViewModel.user = authorizationViewModel.user
         }
     }
 }

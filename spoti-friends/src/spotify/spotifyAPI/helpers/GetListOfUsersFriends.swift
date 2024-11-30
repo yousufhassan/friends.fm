@@ -1,4 +1,5 @@
 import Foundation
+import RealmSwift
 
 /// This extension adds functionality related to the `/buddylist` endpoint.
 extension SpotifyAPI {
@@ -30,14 +31,14 @@ extension SpotifyAPI {
     ///
     /// - Returns: The friend as a `SpotifyProfile` object.
     private func friendObjectToSpotifyProfile(_ friendObject: BuddylistFriendObject) -> SpotifyProfile {
-        let spotifyId = SpotifyProfile.getSpotifyId(fromUri: friendObject.user.uri)
-        let spotifyUri = friendObject.user.uri
-        let displayName = friendObject.user.name
-        let image = friendObject.user.imageUrl ?? ""
-        let currentOrMostRecentTrack = getCurrentOrMostRecentTrackForFriend(friendObject)
+        let spotifyProfile = SpotifyProfile()
+        spotifyProfile.spotifyId = spotifyProfile.getSpotifyIdFromUri(spotifyUri: friendObject.user.uri)
+        spotifyProfile.spotifyUri = friendObject.user.uri
+        spotifyProfile.displayName = friendObject.user.name
+        spotifyProfile.image = friendObject.user.imageUrl ?? ""
+        spotifyProfile.currentOrMostRecentTrack = getCurrentOrMostRecentTrackForFriend(friendObject)
         
-        return SpotifyProfile(spotifyId: spotifyId, spotifyUri: spotifyUri, displayName: displayName,
-                              image: image, currentOrMostRecentTrack: currentOrMostRecentTrack)
+        return spotifyProfile
     }
     
     /// Creates and returns the `CurrentOrMostRecentTrack` for the friend from the `/buddylist` endpoint response object.
@@ -47,14 +48,23 @@ extension SpotifyAPI {
     ///
     /// - Returns: The `CurrentOrMostRecentTrack` for this friend.
     private func getCurrentOrMostRecentTrackForFriend(_ friendObject: BuddylistFriendObject) -> CurrentOrMostRecentTrack {
+        let track = Track()
+        let artists = List<Artist>()
+        artists.append(friendObject.track.artist.buddylistArtistToSpotifyArist())
+        
+        track.spotifyUri = friendObject.track.uri
+        track.name = friendObject.track.name
+        track.artists = artists
+        track.album = friendObject.track.album.buddylistArtistToSpotifyAlbum(imageURL: friendObject.track.imageUrl)
+        track.context = friendObject.track.context.buddylistArtistToTrackContext()
+        
+        let currentOrMostRecentTrack = CurrentOrMostRecentTrack()
         let timestampInSeconds = friendObject.timestamp / 1000 // Spotify returns it in milliseconds, we want it in seconds
-        let track = Track(spotifyUri: friendObject.track.uri,
-                          name: friendObject.track.name,
-                          artists: [friendObject.track.artist.buddylistArtistToSpotifyArist()],
-                          album: friendObject.track.album.buddylistArtistToSpotifyAlbum(imageURL: friendObject.track.imageUrl),
-                          context: friendObject.track.context.buddylistArtistToTrackContext())
-
-        return CurrentOrMostRecentTrack(timestamp: timestampInSeconds, track: track)
+        currentOrMostRecentTrack.timestamp = timestampInSeconds
+        currentOrMostRecentTrack.track = track
+        currentOrMostRecentTrack.playedWithinLastFifteenMinutes = currentOrMostRecentTrack.isTrackPlayingNow()
+        
+        return currentOrMostRecentTrack
     }
 }
 
@@ -90,7 +100,10 @@ private struct BuddylistResponseObject: Codable {
         let name: String
         
         func buddylistArtistToSpotifyArist() -> Artist {
-            return Artist(spotifyUri: self.uri, name: self.name, genres: [], image: "")
+            let artist = Artist()
+            artist.spotifyUri = self.uri
+            artist.name = self.name
+            return artist
         }
     }
     
@@ -99,7 +112,11 @@ private struct BuddylistResponseObject: Codable {
         let name: String
         
         func buddylistArtistToSpotifyAlbum(imageURL: String) -> Album {
-            return Album(spotifyUri: self.uri, name: self.name, image: imageURL)
+            let album = Album()
+            album.spotifyUri = self.uri
+            album.name = self.name
+            album.image = imageURL
+            return album
         }
     }
     
@@ -109,7 +126,11 @@ private struct BuddylistResponseObject: Codable {
         let index: Int
         
         func buddylistArtistToTrackContext() -> TrackContext {
-            return TrackContext(spotifyUri: self.uri, name: self.name)
+            let context = TrackContext()
+            context.spotifyUri = self.uri
+            context.name = self.name
+            context.type = context.extractContextTypeFromUri()
+            return context
         }
     }
 }

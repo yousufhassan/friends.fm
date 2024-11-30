@@ -1,10 +1,10 @@
 import SwiftUI
-@preconcurrency import WebKit
+import WebKit
 
 /// A SwiftUI view that wraps a WKWebView to handle Spotify authorization.
 struct AuthorizationWebView: UIViewRepresentable {
     let url: URL
-    @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
+    @EnvironmentObject var userViewModel: AuthorizationViewModel
     @Binding var showWebView: Bool
     @Binding var responseUrl: URL?
     
@@ -45,7 +45,7 @@ struct AuthorizationWebView: UIViewRepresentable {
                 // Fetch sp_dc cookie from the web view
                 let cookieName: String = "sp_dc"
                 webView.configuration.websiteDataStore.httpCookieStore.fetchCookie(named: cookieName) { cookie in
-                    self.parent.authorizationViewModel.handleFetchedSpDcCookie(cookie)
+                    self.parent.userViewModel.handleFetchedSpDcCookie(cookie)
                 }
                 
                 decisionHandler(.cancel)

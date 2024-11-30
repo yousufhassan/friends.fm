@@ -13,6 +13,10 @@ struct TrackTimestampView: View {
     
     var body: some View {
         if nowPlaying {
+            //            Image(.nowPlaying)
+            //                .resizable()
+            //                .aspectRatio(contentMode: .fit)
+            //                .frame(width: 16, height: 16)
             AnimatedSoundbarsView()
                 .frame(width: 16, height: 16)
         } else {

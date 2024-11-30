@@ -11,6 +11,10 @@ struct CurrentOrMostRecentTrackMock {
                                                            track: TrackMock.luxury)
      
     static func createMockCurrentOrMostRecentTrack(timestamp: TimeInterval, track: Track) -> CurrentOrMostRecentTrack {
-        return CurrentOrMostRecentTrack(timestamp: timestamp, track: track)
+        let currTrack = CurrentOrMostRecentTrack()
+        currTrack.timestamp = timestamp
+        currTrack.track = track
+        currTrack.playedWithinLastFifteenMinutes = currTrack.isTrackPlayingNow()
+        return currTrack
     }
 }

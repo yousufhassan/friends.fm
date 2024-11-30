@@ -1,125 +1,168 @@
 import Foundation
+import RealmSwift
 
 /// Class representing a User of the application.
-///
-/// - Parameters:
-///   - spotifyId: The Spotify ID of the user.
-///   - spotifyProfile: The user's associated Spotify Profile.
-///   - friends: A list of `SpotifyProfile`s for the user's friends.
-///   - authorizationCode: The OAuth authorization code for Spotify.
-///   - spotifyWebAcessToken: The Spotify web access token used to interact with the Web API.
-///   - internalAPIAccessToken: The Spotify Internal API access token used to interact with the internal `/buddylist` endpoint.
-///   - authorizationStatus: The status of if the user authorized the app to have access to the Spotify scopes.
-///   - spDcCookie: The `sp_dc` cookie used for getting the internal API token.
-class User: Codable {
-    let spotifyId: String
-    var spotifyProfile: SpotifyProfile
-    var friends: [SpotifyProfile]
-    private var authorizationCode: String
-    private var spotifyWebAccessToken: SpotifyWebAccessToken
-    private var internalAPIAccessToken: InternalAPIAccessToken
-    private var authorizationStatus: AuthorizationStatus
-    private var spDcCookie: SpDcCookie
+class User: Object {
+    @Persisted(primaryKey: true) var spotifyId: String
+    @Persisted var spotifyProfile: SpotifyProfile?
+    @Persisted var friends: List<SpotifyProfile>
+    @Persisted var authorizationCode: String?
+    @Persisted var spotifyWebAccessToken: SpotifyWebAccessToken?
+    @Persisted var internalAPIAccessToken: InternalAPIAccessToken?
+    @Persisted var authorizationStatus: AuthorizationStatus
+    @Persisted var spDcCookie: SpDcCookie?
     
-    enum CodingKeys: String, CodingKey {
-        case spotifyId = "$id"
-        case spotifyProfile
-        case friends
-        case authorizationCode
-        case spotifyWebAccessToken
-        case internalAPIAccessToken
-        case authorizationStatus
-        case spDcCookie
+    override init() {
+        super.init()
+        self.spotifyId = ""
+        self.spotifyProfile = nil
+        self.friends = List()
+        self.authorizationCode = nil
+        self.spotifyWebAccessToken = nil
+        self.internalAPIAccessToken = nil
+        self.authorizationStatus = .unauthenticated
+        self.spDcCookie = nil
     }
     
-    /// Regular initializer for creating the object directly.
-    init(spotifyId: String, spotifyProfile: SpotifyProfile, friends: [SpotifyProfile],
-         authorizationCode: String, spotifyWebAcessToken: SpotifyWebAccessToken,
-         internalAPIAccessToken: InternalAPIAccessToken,
-         authorizationStatus: AuthorizationStatus = .unauthenticated,
-         spDcCookie: SpDcCookie) {
-        self.spotifyId = spotifyId
-        self.spotifyProfile = spotifyProfile
-        self.friends = friends
-        self.authorizationCode = authorizationCode
-        self.spotifyWebAccessToken = spotifyWebAcessToken
-        self.internalAPIAccessToken = internalAPIAccessToken
-        self.authorizationStatus = authorizationStatus
-        self.spDcCookie = spDcCookie
+    /// Returns `true` if the user object is not set and is empty, `false` otherwise.
+    public func isEmpty() -> Bool {
+        return self.spotifyId == ""
     }
     
-    /// Custom initializer for decoding from Appwrite.
-    /// This makes sure to decode the `SpotifyProfile` using the Appwrite CodingKeys.
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        // Decode normally for other properties
-        self.spotifyId = try container.decode(String.self, forKey: .spotifyId)
-        self.authorizationCode = try container.decode(String.self, forKey: .authorizationCode)
-        self.spotifyWebAccessToken = try container
-            .decode(SpotifyWebAccessToken.self, forKey: .spotifyWebAccessToken)
-        self.internalAPIAccessToken = try container
-            .decode(InternalAPIAccessToken.self, forKey: .internalAPIAccessToken)
-        self.authorizationStatus = try container
-            .decode(AuthorizationStatus.self, forKey: .authorizationStatus)
-        self.spDcCookie = try container.decode(SpDcCookie.self, forKey: .spDcCookie)
-        
-        // Decode spotifyProfile using the Appwrite keys
-        let spotifyProfileDecoder = try container.superDecoder(forKey: .spotifyProfile)
-        self.spotifyProfile = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
-        
-        // Decoding friends using the Appwrite keys
-        var friendsContainer = try container.nestedUnkeyedContainer(forKey: .friends)
-        var friends: [SpotifyProfile] = []
-        while !friendsContainer.isAtEnd {
-            let friendDecoder = try friendsContainer.superDecoder()
-            let friendProfile = try SpotifyProfile(fromAppwrite: friendDecoder)
-            friends.append(friendProfile)
+    /// Returns `true` if the `User` exists in the database and `false` otherwise.
+    public func existsInDatabase() -> Bool {
+        let realm = RealmDatabase.shared.getRealmInstance()
+        if realm.object(ofType: User.self, forPrimaryKey: self.spotifyId) == nil {
+            return false
         }
+        return true
+    }
+    
+    /// Sets the user's `spotifyId` to their Spotify Account ID.
+    public func setSpotifyId(_ spotifyId: String) -> Void {
+        self.spotifyId = spotifyId
+    }
+    
+    /// Sets the user's `spotifyProfile`.
+    public func setSpotifyProfile(_ spotifyProfile: SpotifyProfile) -> Void {
+        self.spotifyProfile = spotifyProfile
+    }
+    
+    /// Sets the user's `friends`.
+    public func setFriends(_ friendsAsSpotifyProfiles: [SpotifyProfile]) -> Void {
+        let friends = List<SpotifyProfile>()
+        friends.append(objectsIn: friendsAsSpotifyProfiles)
         self.friends = friends
     }
     
-    public func getFriends() -> [SpotifyProfile] {
-        return self.friends
-    }
-    
+    /// Adds `friend` as a friend for the user.
     public func addFriend(_ friend: SpotifyProfile) -> Void {
-        self.friends.append(friend)
+        let realm = RealmDatabase.shared.getRealmInstance()
+        try! realm.write {
+            self.friends.append(friend)
+        }
     }
     
-    public func isFriendsWith(_ friend: SpotifyProfile) -> Bool {
-        return self.friends.contains(friend)
+    /// Sets the user's `authorizationCode`.
+    public func setAuthorizationCode(_ code: String) -> Void {
+        self.authorizationCode = code
     }
     
-    public func getSpotifyWebAccessToken() -> SpotifyWebAccessToken {
-        return self.spotifyWebAccessToken
+    /// Gets the user's `spotifyWebAccessToken`.
+    @MainActor public func getSpotifyWebAccessToken() async throws -> SpotifyWebAccessToken {
+        do {
+            // If the token is not expired
+            if !SpotifyAuth.shared.accessTokenIsExpired(self.spotifyWebAccessToken!.accessTokenExpirationTimestampMs) {
+                return self.spotifyWebAccessToken!
+            }
+            
+            // Otherwise, refresh token, save to database, and return
+            let token = try await SpotifyAuth.shared.refreshAccessToken(refreshToken: self.spotifyWebAccessToken!.refresh_token)
+            RealmDatabase.shared.updateObjectInRealm {
+                self.setSpotifyWebAccessToken(token)
+            }
+            
+            return token
+        } catch {
+            printError("\(error)")
+            throw error
+        }
     }
     
-    public func setSpotifyWebAccessToken(_ token: SpotifyWebAccessToken) -> Void {
-        self.spotifyWebAccessToken = token
+    /// Sets the user's `spotifyWebAccessToken`.
+    public func setSpotifyWebAccessToken(_ spotifyWebAccessToken: SpotifyWebAccessToken) -> Void {
+        self.spotifyWebAccessToken = spotifyWebAccessToken
+        self.spotifyWebAccessToken?.setExpiryTimestamp()
     }
     
-    public func getInternalAPIAccessToken() -> InternalAPIAccessToken {
-        return self.internalAPIAccessToken
+    /// Sets the user's `internalAPIAccessToken`.
+    public func setInternalAPIAccessToken(_ internalAPIAccessToken: InternalAPIAccessToken) -> Void {
+        self.internalAPIAccessToken = internalAPIAccessToken
     }
     
-    public func getAuthorizationStatus() -> AuthorizationStatus {
-        return self.authorizationStatus
+    /// Gets the user's `internalAPIAccessToken`.
+    @MainActor public func getInternalAPIAccessToken() async throws -> InternalAPIAccessToken {
+        do {
+            guard let cookie: String = self.spDcCookie?.value else { throw AppError(.valueNotFound) }
+            let token = try await SpotifyAuth.shared.fetchInternalAPIAccessToken(spDcCookieValue: cookie, existingToken: self.internalAPIAccessToken)
+            
+            // Store the new token since the existing one expired
+            if token != self.internalAPIAccessToken {
+                RealmDatabase.shared.updateObjectInRealm {
+                    self.setInternalAPIAccessToken(token)
+                }
+            }
+            
+            return token
+        } catch {
+            printError("\(error)")
+            throw error
+        }
     }
     
-    public func getSpDcCookie() -> SpDcCookie {
-        return self.spDcCookie
+    /// Sets the user's `authorizationStatus` as `status`.
+    public func setAuthorizationStatusAs(_ status: AuthorizationStatus) -> Void {
+        self.authorizationStatus = status
     }
+    
+//    public func getSpDcCookie() -> SpDcCookie {
+//        let realm = RealmDatabase.shared.getRealmInstance()
+//        let user = realm.obje
+//    }
+    
+    /// Sets the spDcCookie.
+    public func setSpDcCookie(_ cookie: SpDcCookie) {
+        let realm = try! Realm()
+        try! realm.write {
+            self.spDcCookie = cookie
+        }
+    }
+    
+    // List of methods to implement when the time comes
+    //    getSpotifyProfile()
+    //
+    //    getFriendList()
+    //    setFriendList()
+    //
+    //    isSpDcValid()
+    //    setSpDcAsValid()
+    //    setSpDcAsExpired()
 }
 
-/// The status of if the user authorized the app to have access to the Spotify scopes.
-enum AuthorizationStatus: String, Codable {
-    /// The user has not yet been authenticated.
+
+/// The user's status for granting the application authorization.
+///
+/// `unauthenticated` when the user has not granted nor denied authorization and will need to make a choice.
+///
+/// `granted` when the user has granted authorization and can use the application normally.
+///
+/// `denied` when the user has denied authorization and will not be able to use the application.
+///
+/// `error` when something went wrong in authorizing the user and the user will not be able to use the application.
+enum AuthorizationStatus: String, PersistableEnum {
     case unauthenticated
-    /// The user accepted the app scopes.
     case granted
-    /// The user denied the app scopes.
     case denied
-    /// There was an error during the authentication process.
     case error
 }
+
