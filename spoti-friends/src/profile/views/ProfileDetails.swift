@@ -30,28 +30,27 @@ struct ProfileDetails: View {
                 
                 // Follower and playlist counts
                 HStack {
-                        // Viewing the profile of an app user
-                        if (followerCount == nil || playlistCount == nil) {
-                            // Show placeholder while fetching data
-                            Group {
-                                Text("\(String(describing: followerCount)) followers")
-                                    .redacted(reason: .placeholder)
-                                Text("\(String(describing: playlistCount)) playlists")
-                                    .redacted(reason: .placeholder)
-                            }
-                            .lineLimit(1)
-                            .opacity(fetchedDetails ? 0.6 : 1.0)
-                            .animation(
-                                .easeInOut(duration: 0.8)
-                                .repeatForever(autoreverses: true),
-                                value: fetchedDetails
-                            )
-                        } else {
-                            // Show data once it is fetched
-                            Text("\(followerCount!) followers")
-                            Text("•")
-                            Text("\(playlistCount!) playlists")
+                    if (followerCount == nil || playlistCount == nil) {
+                        // Show placeholder while fetching data
+                        Group {
+                            Text("\(String(describing: followerCount)) followers")
+                                .redacted(reason: .placeholder)
+                            Text("\(String(describing: playlistCount)) playlists")
+                                .redacted(reason: .placeholder)
                         }
+                        .lineLimit(1)
+                        .opacity(fetchedDetails ? 0.6 : 1.0)
+                        .animation(
+                            .easeInOut(duration: 0.8)
+                            .repeatForever(autoreverses: true),
+                            value: fetchedDetails
+                        )
+                    } else {
+                        // Show data once it is fetched
+                        Text("\(followerCount!) followers")
+                        Text("•")
+                        Text("\(playlistCount!) playlists")
+                    }
                 }
                 .foregroundStyle(Color.PresetColour.whiteSecondary)
                 .onAppear {
