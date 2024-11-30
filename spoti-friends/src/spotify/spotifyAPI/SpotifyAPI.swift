@@ -12,12 +12,14 @@ class SpotifyAPI {
     ///   - responseType: The type the response data should conform to.
     ///   - accessToken: The Spotify Web Access Token string.
     ///   - queryParams: An optional array of query parmeters to add to the URL request.
+    ///   - pathParams: An optional array of URL path parameters to add to the URL request.
     ///
     /// - Returns: The response data from the `endpoint` in the form of `responseType`.
     public func fetch<T: Decodable>(method: RequestMethod, endpoint: APIEndpoint, responseType: T.Type,
-                                    accessToken: String, queryParams: [URLQueryItem] = []) async throws -> T {
+                                    accessToken: String, queryParams: [URLQueryItem] = [],
+                                    pathParams: [String:String] = [:]) async throws -> T {
         let request = try createRequestTo(endpoint: endpoint, accessToken: accessToken,
-                                          method: method, queryParams: queryParams)
+                                          method: method, queryParams: queryParams, pathParams: pathParams)
         let (data, response) = try await URLSession.shared.data(for: request)
         if (requestFailed(response as! HTTPURLResponse)) { throw try throwSpotifyAPIError(response as! HTTPURLResponse) }
         let decodedResponse = try JSONDecoder().decode(T.self, from: data)
@@ -55,8 +57,19 @@ extension SpotifyAPI {
     /// Creates and returns the URLRequest object to corresponding Spotify API `endpoint`
     ///
     /// `endpoint` should be prepended with a "/".
-    private func createRequestTo(endpoint: APIEndpoint, accessToken: String, method: RequestMethod, queryParams: [URLQueryItem]) throws -> URLRequest {
-        guard var urlComponents = URLComponents(string: APIConstants.host + endpoint.rawValue) else { throw URLError(.badURL) }
+    private func createRequestTo(endpoint: APIEndpoint, accessToken: String, method: RequestMethod,
+                                 queryParams: [URLQueryItem], pathParams: [String:String]) throws -> URLRequest {
+        var endpointPath = endpoint.rawValue
+        
+        // Add path parameters to the URL, if any
+        if (!pathParams.isEmpty) {
+            for (paramName, paramValue) in pathParams {
+                // Replace placeholders in the format {paramName} with the corresponding paramValue
+                endpointPath = endpointPath.replacingOccurrences(of: "{\(paramName)}", with: paramValue)
+            }
+        }
+        
+        guard var urlComponents = URLComponents(string: APIConstants.host + endpointPath) else { throw URLError(.badURL) }
 
         // Add query parameters to the URL, if any
         if (!queryParams.isEmpty) {

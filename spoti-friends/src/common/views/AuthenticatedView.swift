@@ -3,12 +3,14 @@ import SwiftUI
 /// The view for when a user is signed into the app.
 struct AuthenticatedView: View {
     @StateObject var friendActivityViewModel: FriendActivityViewModel
+    @StateObject private var profileViewModel: ProfileViewModel
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     
     init() {
         _friendActivityViewModel = StateObject(
             wrappedValue: FriendActivityViewModel(user: nil, friendActivites: [])
         )
+        _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: nil))
         
         let standardAppearance = UITabBarAppearance()
         standardAppearance.backgroundColor = UIColor(Color.PresetColour.darkgrey)
@@ -25,11 +27,12 @@ struct AuthenticatedView: View {
                 Label("Friend Activity", systemImage: "figure.socialdance")
             }
             .environmentObject(friendActivityViewModel)
+            .environmentObject(profileViewModel)
             ProfileView(profile: friendActivityViewModel.user?.spotifyProfile ?? SpotifyProfileMock.jimHalpert).tabItem {
                 Label("My Profile", systemImage: "person")
             }
             .environmentObject(authorizationViewModel)
-            .environmentObject(friendActivityViewModel)
+            .environmentObject(profileViewModel)
         }
         .tint(Color.PresetColour.spotifyGreen)
         .onAppear {
@@ -38,6 +41,7 @@ struct AuthenticatedView: View {
                 return
             }
             friendActivityViewModel.user = signedInUser
+            profileViewModel.user = signedInUser
         }
     }
 }

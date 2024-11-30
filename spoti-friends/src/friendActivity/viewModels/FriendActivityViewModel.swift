@@ -41,7 +41,10 @@ class FriendActivityViewModel: ObservableObject {
                     addedNewFriends = true
                 }
                 
-                await ProfileServiceManager.shared.storeProfilePictureLocally(profile: friend)
+                // Store the friend's profile image, if it exists
+                if (friend.image != "") {
+                    await ProfileServiceManager.shared.storeProfilePictureLocally(profile: friend)
+                }
 
                 let backgroundColor = Color(try await getAccentColorForImage((friend.currentOrMostRecentTrack?.track.album.image) ?? ""))
                 let activity = ListeningActivityCard(profile: friend, backgroundColor: backgroundColor)

@@ -12,7 +12,6 @@ struct ProfileImage: View {
     let imageName: String
     let width, height: CGFloat
     @State private var profileImage: UIImage? = nil
-    @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
     var body: some View {
         Group {
@@ -38,6 +37,5 @@ struct ProfileImage: View {
     ZStack {
         let user = UserMock.userJimHalpert
         ProfileImage(imageName: "", width: 80, height: 80)
-            .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
     }
 }

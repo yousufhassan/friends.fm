@@ -70,12 +70,6 @@ class ProfileServiceManager {
             let imageName = profile.spotifyId
             let link = profile.image
             
-            // Return early if the user does not have a profile picture
-            if link == "" {
-                printInfo("Profile has no image; skipping.")
-                return
-            }
-            
             // Fetch the image data
             guard let imageURL = URL(string: link) else { return }
             let request = URLRequest(url: imageURL)
