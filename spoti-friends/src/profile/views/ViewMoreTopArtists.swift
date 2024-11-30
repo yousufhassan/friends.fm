@@ -42,7 +42,7 @@ struct ViewMoreTopArtists: View {
         .toolbarBackground(Color.PresetColour.darkgrey, for: .navigationBar)
         .onAppear {
             Task {
-                let response = await profileViewModel.viewMore(forProfile: profile, forItem: .topArtists)
+                let response = await profileViewModel.viewMoreForCurrentUser(forItem: .topArtists)
                 switch response {
                 case .artists(let artistsWithMetadata):
                     topArtists = artistsWithMetadata ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
@@ -54,7 +54,7 @@ struct ViewMoreTopArtists: View {
         }
         .onChange(of: selectedTimeRange) {
             Task {
-                let response = await profileViewModel.viewMore(forProfile: profile, forItem: .topArtists, timeRange: selectedTimeRange)
+                let response = await profileViewModel.viewMoreForCurrentUser(forItem: .topArtists, timeRange: selectedTimeRange)
                 switch response {
                 case .artists(let artistsWithMetadata):
                     topArtists = artistsWithMetadata ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])

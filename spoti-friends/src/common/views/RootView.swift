@@ -1,4 +1,5 @@
 import SwiftUI
+import RealmSwift
 
 /// The view that is rendered when the app opens, depending on the user's authorization status.
 ///
@@ -15,25 +16,20 @@ struct RootView: View {
     var body: some View {
         // Navigate to the appropriate view depending on the user's authorization status
         NavigationStack {
-            if (authorizationViewModel.isFetchingUser) {
-                AppLoadingView()
+            VStack {
+                // Main content based on authorization status
+                switch authorizationStatus {
+                case .unauthenticated, .error:
+                    UnauthenticatedView()
+                case .granted:
+                    AuthenticatedView()
+                        .environmentObject(authorizationViewModel)
+                case .denied:
+                    AuthorizationDeniedView()
+                }
             }
-            else {
-                VStack {
-                    // Main content based on authorization status
-                    switch authorizationStatus {
-                    case .unauthenticated, .error:
-                        UnauthenticatedView()
-                    case .granted:
-                        AuthenticatedView()
-                            .environmentObject(authorizationViewModel)
-                    case .denied:
-                        AuthorizationDeniedView()
-                    }
-                }
-                .navigationDestination(isPresented: $showErrorView) {
-                    SomethingWentWrongView()
-                }
+            .navigationDestination(isPresented: $showErrorView) {
+                SomethingWentWrongView()
             }
         }
         // The onReceive is called when the `authorizationViewModel.authorizationStatus` variable

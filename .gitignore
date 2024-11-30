@@ -90,6 +90,3 @@ fastlane/test_output
 iOSInjectionProject/
 
 .DS_Store
-
-# Appwrite files
-Appwrite.json

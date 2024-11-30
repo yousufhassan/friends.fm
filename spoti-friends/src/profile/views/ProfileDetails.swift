@@ -2,7 +2,7 @@ import SwiftUI
 
 
 /// Renders the View for a user's Spotify Profile details.
-/// Show the profile image, display name, follower count, and playlist count.
+/// In other words: their profile image, display name, follower count, and playlist count.
 ///
 /// - Parameters:
 ///   - profile: The `SpotifyProfile` to display the details for.
@@ -12,6 +12,7 @@ struct ProfileDetails: View {
     @State private var playlistCount: Int?
     @State private var fetchedDetails: Bool = true
     @EnvironmentObject var profileViewModel: ProfileViewModel
+    @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
     
     init(profile: SpotifyProfile) {
         self.profile = profile
@@ -20,6 +21,7 @@ struct ProfileDetails: View {
     var body: some View {
         HStack(spacing: 12) {
             ProfileImage(imageName: profile.spotifyId, width: 80, height: 80)
+                .environmentObject(friendActivityViewModel)
             
             VStack(alignment: .leading) {
                 // Display name
@@ -56,9 +58,9 @@ struct ProfileDetails: View {
                 .onAppear {
                     fetchedDetails = false
                     Task {
-                        // NOTE: Comment out these lines to fix SwiftUI Previews
-                        followerCount = await profileViewModel.getFollowerCount(forProfile: profile)
-                        playlistCount = await profileViewModel.getPlaylistCount(forProfile: profile)
+                        // NOTE: Comment out these two lines to fix SwiftUI Previews
+                        followerCount = await profileViewModel.getCurrentUsersFollowerCount()
+                        playlistCount = await profileViewModel.getCurrentUsersPlaylistCount()
                         fetchedDetails = true
                     }
                 }
@@ -76,7 +78,8 @@ struct ProfileDetails: View {
 #Preview {
     ZStack {
         let user = UserMock.userJimHalpert
-        ProfileDetails(profile: user.spotifyProfile)
+        ProfileDetails(profile: user.spotifyProfile!)
             .environmentObject(ProfileViewModel(user: user))
+            .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
     }
 }
