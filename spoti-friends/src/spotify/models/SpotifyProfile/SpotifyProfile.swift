@@ -1,5 +1,5 @@
 import Foundation
-import RealmSwift
+import JSONCodable
 
 /// Class representing a `SpotifyProfile` object.
 ///
@@ -9,72 +9,91 @@ import RealmSwift
 ///   - displayName: The display name associated with this Spotify profile.
 ///   - image: The profile image for this Spotify profile.
 ///   - currentOrMostRecentTrack: The track last played (or currently playing)  by this Spotify profile.
-class SpotifyProfile: Object, Decodable {
-    @Persisted(primaryKey: true) var spotifyId: String
-    @Persisted var spotifyUri: String
-    @Persisted var displayName: String
-    @Persisted var image: String
-    @Persisted var currentOrMostRecentTrack: CurrentOrMostRecentTrack?
+class SpotifyProfile: Codable, Equatable {
+    let spotifyId: String
+    let spotifyUri: String
+    var displayName: String
+    var image: String
+    var currentOrMostRecentTrack: CurrentOrMostRecentTrack?
     
-    convenience required init(from decoder: Decoder) throws {
-        self.init()
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.spotifyId = try container.decode(String.self, forKey: .spotifyId)
-        self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
-        self.displayName = try container.decode(String.self, forKey: .displayName)
-        self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
+    /// Defining what makes two `SpotifyProfile` objects equal for conformance to the `Equatable` protocol.
+    /// Two `SpotifyProfile` objects are considered equal if they have the same `spotifyId` value.
+    static func == (lhs: SpotifyProfile, rhs: SpotifyProfile) -> Bool {
+        return lhs.spotifyId == rhs.spotifyId
     }
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
-    private enum CodingKeys: String, CodingKey {
+    enum SpotifyAPICodingKeys: String, CodingKey {
         case spotifyId = "id"
         case spotifyUri = "uri"
         case displayName = "display_name"
         case image = "images"
     }
     
-    @MainActor public func getSpotifyId() -> String {
-        return self.spotifyId
+    /// Mapping of the Swift object properties to the Appwrite Collection model.
+    enum AppwriteCodingKeys: String, CodingKey {
+        case spotifyId = "$id"
+        case spotifyUri
+        case displayName
+        case image
     }
     
-    @MainActor public func getImage() -> String {
-        return self.image
+    /// Regular initializer for creating the object directly
+    init(spotifyId: String, spotifyUri: String, displayName: String, image: String, currentOrMostRecentTrack: CurrentOrMostRecentTrack? = nil) {
+        self.spotifyId = spotifyId
+        self.spotifyUri = spotifyUri
+        self.displayName = displayName
+        self.image = image
+        self.currentOrMostRecentTrack = currentOrMostRecentTrack
     }
     
-    public func getSpotifyIdFromUri(spotifyUri: String) -> String {
-        return spotifyUri.components(separatedBy: ":").last ?? ""
+    /// Custom initializer for decoding from Spotify API
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: SpotifyAPICodingKeys.self)
+        self.spotifyId = try container.decode(String.self, forKey: .spotifyId)
+        self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
+        self.displayName = try container.decode(String.self, forKey: .displayName)
+        self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
     }
     
-    /// Returns `true` if the `SpotifyProfile` exists in the database and `false` otherwise.
-    public func existsInDatabase() -> Bool {
-        let realm = RealmDatabase.shared.getRealmInstance()
-        if realm.object(ofType: SpotifyProfile.self, forPrimaryKey: self.spotifyId) == nil {
-            return false
+    /// Custom initializer for decoding an Appwrite response from a Decoder
+    convenience init(fromAppwrite decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: AppwriteCodingKeys.self)
+        let spotifyId = try container.decode(String.self, forKey: .spotifyId)
+        let spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
+        let displayName = try container.decode(String.self, forKey: .displayName)
+        let image = try container.decode(String.self, forKey: .image)
+        self.init(spotifyId: spotifyId, spotifyUri: spotifyUri, displayName: displayName, image: image)
+    }
+    
+    /// Custom initializer for decoding an Appwrite response from the Appwrite document data
+    convenience init(fromAppwrite data: [String:AnyCodable]) throws {
+        guard let spotifyId = data[AppwriteCodingKeys.spotifyId.rawValue]?.value as? String,
+              let spotifyUri = data[AppwriteCodingKeys.spotifyUri.rawValue]?.value as? String,
+              let displayName = data[AppwriteCodingKeys.displayName.rawValue]?.value as? String,
+              let image = data[AppwriteCodingKeys.image.rawValue]?.value as? String
+        else {
+            printError("When trying to decode Appwrite data to SpotifyProfile object.")
+            throw SpotifyProfileError.failedAppwriteDecode
         }
-        return true
+        
+        self.init(spotifyId: spotifyId, spotifyUri: spotifyUri, displayName: displayName, image: image)
     }
     
-    /// Stores the profile picture on disk using the Spotify ID as the image name.
-    public func storeProfilePictureLocally() async -> Void {
-        do {
-            let imageName = await self.getSpotifyId()
-            let link = await self.getImage()
-            
-            // Return early if the user does not have a profile picture
-            if link == "" { return }
-            
-            // Fetch the image data
-            guard let imageURL = URL(string: link) else { return }
-            let request = URLRequest(url: imageURL)
-            let (data, _) = try await URLSession.shared.data(for: request)
-            
-            // Store image data on disk
-            let fileURL = URL.documentsDirectory.appending(path: "images/profile_pictures/\(imageName)")
-            try createDirectoryIfNotExists(at: fileURL)
-            try data.write(to: fileURL)
-        } catch {
-            printError("\(error)")
-        }
+    /// Custom encode method for Appwrite
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: AppwriteCodingKeys.self)
+        try container.encode(spotifyId, forKey: .spotifyId)
+        try container.encode(spotifyUri, forKey: .spotifyUri)
+        try container.encode(displayName, forKey: .displayName)
+        try container.encode(image, forKey: .image)
     }
+
+    static public func getSpotifyId(fromUri uri: String) -> String {
+        return uri.components(separatedBy: ":").last ?? ""
+    }
+}
+
+enum SpotifyProfileError: Error {
+    case failedAppwriteDecode
 }

@@ -17,12 +17,13 @@ struct ListeningActivityCard: View, Identifiable {
     let backgroundColor: Color;
     @State var fontColor: Color
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
+    @EnvironmentObject var profileViewModel: ProfileViewModel
     
     init(profile: SpotifyProfile, backgroundColor: Color) {
         self.id = profile.spotifyId
         self.profile = profile
         self.track = profile.currentOrMostRecentTrack!
-        self.album = (profile.currentOrMostRecentTrack?.track?.album)!
+        self.album = (profile.currentOrMostRecentTrack?.track.album)!
         self.backgroundColor = backgroundColor
         self.fontColor = Color(backgroundColor).isDarkBackground() ? Color.white : Color.black
     }
@@ -31,7 +32,10 @@ struct ListeningActivityCard: View, Identifiable {
         VStack {
             // Profile Image
             HStack {
-                Link(destination: URL(string: profile.spotifyUri)!) {
+                NavigationLink(destination: ProfileView(profile: profile)
+                    .environmentObject(friendActivityViewModel)
+                    .environmentObject(profileViewModel)
+                ) {
                     ZStack {
                         ProfileImage(imageName: profile.spotifyId, width: 56, height: 56)
                             .environmentObject(friendActivityViewModel)

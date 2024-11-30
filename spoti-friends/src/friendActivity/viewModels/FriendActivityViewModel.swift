@@ -3,11 +3,11 @@ import Combine
 import SwiftUI
 
 class FriendActivityViewModel: ObservableObject {
-    @Published var user: User
+    @Published var user: User?
     @Published var friendActivites: [ListeningActivityCard]
     private var cancellables = Set<AnyCancellable>()
     
-    init(user: User, friendActivites: [ListeningActivityCard]) {
+    init(user: User?, friendActivites: [ListeningActivityCard]) {
         self.user = user
         self.friendActivites = friendActivites
         
@@ -22,21 +22,38 @@ class FriendActivityViewModel: ObservableObject {
     
     @MainActor public func setFriendActivity() async throws -> Void {
         do {
-            let accessToken = try await self.user.getInternalAPIAccessToken().accessToken
-            let friends: [SpotifyProfile] = try await SpotifyAPI.shared.getListOfUsersFriends(internalAPIAccessToken: accessToken)
+            guard let signedInUser = user else {
+                throw FriendActivityError.missingUser
+            }
+            
+            let accessToken = try await UserServiceManager.shared
+                .getInternalAPIAccessToken(forUser: signedInUser)
+                .getAccessToken()
+            let friends: [SpotifyProfile] = try await SpotifyAPI.shared
+                .getListOfUsersFriends(internalAPIAccessToken: accessToken)
+            
             var friendActivities: [ListeningActivityCard] = []
+            var addedNewFriends = false
             for friend in friends.reversed() {
-                // If the friend does not exist in the database already, then
-                // add them as a friend for the user (which automatically saves them to the database)
-                if !friend.existsInDatabase() {
-                    self.user.addFriend(friend)
+                // If this is a new friend, update the `User` object to add them as a friend.
+                if (!signedInUser.isFriendsWith(friend)) {
+                    signedInUser.addFriend(friend)
+                    addedNewFriends = true
                 }
                 
-                await friend.storeProfilePictureLocally()
-                
-                let backgroundColor = Color(try await getAccentColorForImage((friend.currentOrMostRecentTrack?.track?.album!.image)!))
+                // Store the friend's profile image, if it exists
+                if (friend.image != "") {
+                    await ProfileServiceManager.shared.storeProfilePictureLocally(profile: friend)
+                }
+
+                let backgroundColor = Color(try await getAccentColorForImage((friend.currentOrMostRecentTrack?.track.album.image) ?? ""))
                 let activity = ListeningActivityCard(profile: friend, backgroundColor: backgroundColor)
                 friendActivities.append(activity)
+            }
+            
+            // Update the user document if new friends were added.
+            if addedNewFriends {
+                try await UserServiceManager.shared.updateUserInDB(signedInUser)
             }
             self.friendActivites = friendActivities
         } catch {
@@ -50,4 +67,9 @@ class FriendActivityViewModel: ObservableObject {
             try? await setFriendActivity()
         }
     }
+}
+
+enum FriendActivityError: Error {
+    case missingAccessToken
+    case missingUser
 }

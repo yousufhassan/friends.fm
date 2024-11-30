@@ -13,13 +13,13 @@ import Foundation
 ///   - spDcCookie: The `sp_dc` cookie used for getting the internal API token.
 class User: Codable {
     let spotifyId: String
-    var spotifyProfile: SpotifyProfile
-    var friends: [SpotifyProfile]
-    private var authorizationCode: String
-    private var spotifyWebAccessToken: SpotifyWebAccessToken
-    private var internalAPIAccessToken: InternalAPIAccessToken
-    private var authorizationStatus: AuthorizationStatus
-    private var spDcCookie: SpDcCookie
+    var spotifyProfile: AppwriteSpotifyProfile
+    var friends: [AppwriteSpotifyProfile]
+    var authorizationCode: String
+    var spotifyWebAccessToken: AppwriteSpotifyWebAccessToken
+    var internalAPIAccessToken: AppwriteInternalAPIAccessToken
+    var authorizationStatus: AppwriteAuthorizationStatus
+    var spDcCookie: AppwriteSpDcCookie
     
     enum CodingKeys: String, CodingKey {
         case spotifyId = "$id"
@@ -33,11 +33,11 @@ class User: Codable {
     }
     
     /// Regular initializer for creating the object directly.
-    init(spotifyId: String, spotifyProfile: SpotifyProfile, friends: [SpotifyProfile],
-         authorizationCode: String, spotifyWebAcessToken: SpotifyWebAccessToken,
-         internalAPIAccessToken: InternalAPIAccessToken,
-         authorizationStatus: AuthorizationStatus = .unauthenticated,
-         spDcCookie: SpDcCookie) {
+    init(spotifyId: String, spotifyProfile: AppwriteSpotifyProfile, friends: [AppwriteSpotifyProfile],
+         authorizationCode: String, spotifyWebAcessToken: AppwriteSpotifyWebAccessToken,
+         internalAPIAccessToken: AppwriteInternalAPIAccessToken,
+         authorizationStatus: AppwriteAuthorizationStatus = .unauthenticated,
+         spDcCookie: AppwriteSpDcCookie) {
         self.spotifyId = spotifyId
         self.spotifyProfile = spotifyProfile
         self.friends = friends
@@ -57,63 +57,31 @@ class User: Codable {
         self.spotifyId = try container.decode(String.self, forKey: .spotifyId)
         self.authorizationCode = try container.decode(String.self, forKey: .authorizationCode)
         self.spotifyWebAccessToken = try container
-            .decode(SpotifyWebAccessToken.self, forKey: .spotifyWebAccessToken)
+            .decode(AppwriteSpotifyWebAccessToken.self, forKey: .spotifyWebAccessToken)
         self.internalAPIAccessToken = try container
-            .decode(InternalAPIAccessToken.self, forKey: .internalAPIAccessToken)
+            .decode(AppwriteInternalAPIAccessToken.self, forKey: .internalAPIAccessToken)
         self.authorizationStatus = try container
-            .decode(AuthorizationStatus.self, forKey: .authorizationStatus)
-        self.spDcCookie = try container.decode(SpDcCookie.self, forKey: .spDcCookie)
+            .decode(AppwriteAuthorizationStatus.self, forKey: .authorizationStatus)
+        self.spDcCookie = try container.decode(AppwriteSpDcCookie.self, forKey: .spDcCookie)
         
         // Decode spotifyProfile using the Appwrite keys
         let spotifyProfileDecoder = try container.superDecoder(forKey: .spotifyProfile)
-        self.spotifyProfile = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
+        self.spotifyProfile = try AppwriteSpotifyProfile(fromAppwrite: spotifyProfileDecoder)
         
         // Decoding friends using the Appwrite keys
         var friendsContainer = try container.nestedUnkeyedContainer(forKey: .friends)
-        var friends: [SpotifyProfile] = []
+        var friends: [AppwriteSpotifyProfile] = []
         while !friendsContainer.isAtEnd {
             let friendDecoder = try friendsContainer.superDecoder()
-            let friendProfile = try SpotifyProfile(fromAppwrite: friendDecoder)
+            let friendProfile = try AppwriteSpotifyProfile(fromAppwrite: friendDecoder)
             friends.append(friendProfile)
         }
         self.friends = friends
     }
-    
-    public func getFriends() -> [SpotifyProfile] {
-        return self.friends
-    }
-    
-    public func addFriend(_ friend: SpotifyProfile) -> Void {
-        self.friends.append(friend)
-    }
-    
-    public func isFriendsWith(_ friend: SpotifyProfile) -> Bool {
-        return self.friends.contains(friend)
-    }
-    
-    public func getSpotifyWebAccessToken() -> SpotifyWebAccessToken {
-        return self.spotifyWebAccessToken
-    }
-    
-    public func setSpotifyWebAccessToken(_ token: SpotifyWebAccessToken) -> Void {
-        self.spotifyWebAccessToken = token
-    }
-    
-    public func getInternalAPIAccessToken() -> InternalAPIAccessToken {
-        return self.internalAPIAccessToken
-    }
-    
-    public func getAuthorizationStatus() -> AuthorizationStatus {
-        return self.authorizationStatus
-    }
-    
-    public func getSpDcCookie() -> SpDcCookie {
-        return self.spDcCookie
-    }
 }
 
 /// The status of if the user authorized the app to have access to the Spotify scopes.
-enum AuthorizationStatus: String, Codable {
+enum AppwriteAuthorizationStatus: String, Codable {
     /// The user has not yet been authenticated.
     case unauthenticated
     /// The user accepted the app scopes.
