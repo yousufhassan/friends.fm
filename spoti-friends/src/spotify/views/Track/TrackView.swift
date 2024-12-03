@@ -1,5 +1,10 @@
 import SwiftUI
 
+/// A View that displays a track with its album cover and details.
+///
+/// - Parameters:
+///   - track: A `Track` object representing the track to be displayed.
+///
 struct TrackView: View {
     let track: Track
     
@@ -8,7 +13,7 @@ struct TrackView: View {
             // Album cover
             ImageWithSpecs(imageUrl: track.album.image, width: 36, height: 36, cornerRadius: 2)
             
-            TrackDetails(track: track)
+            TrackDetailsView(track: track)
         }
     }
 }

@@ -1,16 +1,21 @@
 import SwiftUI
 
+/// A View that allows users to share songs with their friends.
+///
+/// The view contains a search bar to search for songs to share and two scrollable tabs to display
+/// songs received from friends and songs sent to friends.
+///
+/// - Parameters:
+///   - receivedTracks: An array of `Track` objects representing the songs received from friends.
+///   - sentTracks: An array of `Track` objects representing the songs sent to friends.
+///
 struct SongShareView: View {
     let searchBarPlaceholderText = "What song do you want to share?"
     @State private var selectedTab = 0
     @State private var receivedTracks: [Track]
     @State private var sentTracks: [Track]
     
-    init(receivedTracks: [Track] = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor], sentTracks: [Track] = []) {
+    init(receivedTracks: [Track] = [], sentTracks: [Track] = []) {
         // Picker background color
         UISegmentedControl.appearance().backgroundColor = UIColor(Color(red: 0.06, green: 0.06, blue: 0.06))
         
@@ -82,6 +87,6 @@ struct SongShareView: View {
                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
-    let sentTracks: [Track] = []
+    let sentTracks: [Track] = [TrackMock.luxury]
     SongShareView(receivedTracks: receivedTracks, sentTracks: sentTracks)
 }

@@ -1,5 +1,14 @@
 import SwiftUI
 
+/// A customizable search bar component.
+///
+/// Displays a text input field with a placeholder, magnifying glass icon on the left,
+/// and a clear button on the right when the user starts typing.
+///
+/// - Parameters:
+///   - placeholderText: The placeholder text displayed in the search bar.
+///
+/// - Returns: A View that renders the search bar.
 struct SearchBar: View {
     var placeholderText: String
     @State private var searchText: String = ""

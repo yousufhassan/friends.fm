@@ -1,6 +1,11 @@
 import SwiftUI
 
-struct TrackDetails: View {
+/// A View that displays information about a track such as the track name and its artists.
+///
+/// - Parameters:
+///   - track: A `Track` object representing the track to display details for.
+///
+struct TrackDetailsView: View {
     let track: Track
     
     var body: some View {
@@ -30,5 +35,5 @@ struct TrackDetails: View {
 }
 
 #Preview {
-    TrackDetails(track: TrackMock.iRememberEverything)
+    TrackDetailsView(track: TrackMock.iRememberEverything)
 }
