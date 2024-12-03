@@ -18,7 +18,7 @@ struct TrackDetailsView: View {
             
             // Artist names
             HStack(spacing: 0) {
-                let artistsArray = Array(track.artists) // Convert List<Artist> to [Artist]
+                let artistsArray = track.artists
                 ForEach(artistsArray.indices, id: \.self) { index in
                     let artist = artistsArray[index]
                     
