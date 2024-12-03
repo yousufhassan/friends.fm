@@ -33,7 +33,6 @@ struct FriendActivityView: View {
                                     .environmentObject(friendActivityViewModel)
                             }
                         }
-                        .padding()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     }
                 }
@@ -46,6 +45,7 @@ struct FriendActivityView: View {
                     try? await friendActivityViewModel.setFriendActivity()
                 }
             }
+            .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.PresetColour.darkgrey)
         }
@@ -59,5 +59,6 @@ struct FriendActivityView: View {
         
         FriendActivityView()
             .environmentObject(FriendActivityViewModel(user: user, friendActivites: activities))
+            .environmentObject(ProfileViewModel(user: user))
     }
 }

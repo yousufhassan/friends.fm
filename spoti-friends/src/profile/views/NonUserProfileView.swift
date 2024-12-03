@@ -34,6 +34,7 @@ struct NonUserProfileView: View {
             Spacer()
         }
         .padding(.top)
+        .padding(.horizontal, 20)
     }
 }
 
