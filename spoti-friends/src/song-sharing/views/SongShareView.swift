@@ -2,17 +2,62 @@ import SwiftUI
 
 struct SongShareView: View {
     let searchBarPlaceholderText = "What song do you want to share?"
+    @State private var selectedTab = 0
+    
+    init() {
+        // Picker background color
+        UISegmentedControl.appearance().backgroundColor = UIColor(Color(red: 0.06, green: 0.06, blue: 0.06))
+        
+        // Picker background color of selected
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color(red: 0.11, green: 0.11, blue: 0.11))
+        
+        // Picker foreground color of selected
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [.foregroundColor: UIColor(Color.PresetColour.spotifyGreen)], for: .selected)
+        
+        // Picker foreground color of inactive
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [.foregroundColor: UIColor(Color.PresetColour.whitePrimary)], for: .normal)
+    }
+
     
     var body: some View {
         VStack {
-            PageTitle(pageTitle: "Share")
+            VStack {
+                PageTitle(pageTitle: "Share")
+                
+                SearchBar(placeholderText: searchBarPlaceholderText)
+            }
+            .padding()
             
-            // Search bar
-            SearchBar(placeholderText: searchBarPlaceholderText)
+            // Tabs
+            ZStack (alignment: .bottom) {
+                Picker("Tabs", selection: $selectedTab) {
+                    Text("Received").tag(0)
+                        .font(.headline)
+                    Text("Sent").tag(1)
+                }
+                .pickerStyle(.segmented)
+                
+                Divider()
+                    .frame(height: 1)
+                    .background(Color.PresetColour.whitePrimary)
+                    .opacity(0.8)
+            }
             
-            Spacer()
+            // Horizontal scrollable TabView
+            TabView(selection: $selectedTab) {
+                // Received songs tab
+                TrackList(tracks: [])
+                    .tag(0)
+                
+                // Sent songs tab
+                TrackList(tracks: [])
+                    .tag(1)
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
-        .padding()
+//        .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.PresetColour.darkgrey)
     }
