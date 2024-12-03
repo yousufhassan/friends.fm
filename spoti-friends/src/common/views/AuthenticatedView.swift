@@ -28,6 +28,11 @@ struct AuthenticatedView: View {
             }
             .environmentObject(friendActivityViewModel)
             .environmentObject(profileViewModel)
+            
+            SongShareView().tabItem {
+                Label("Share", systemImage: "square.and.arrow.up")
+            }
+            
             ProfileView(profile: friendActivityViewModel.user?.spotifyProfile ?? SpotifyProfileMock.jimHalpert).tabItem {
                 Label("My Profile", systemImage: "person")
             }

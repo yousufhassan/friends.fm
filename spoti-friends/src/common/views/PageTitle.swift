@@ -13,7 +13,7 @@ struct PageTitle: View {
             
             Spacer()
         }
-        .padding()
+//        .padding()
         .padding(.leading, 8)
     }
 }
