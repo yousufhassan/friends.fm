@@ -3,8 +3,10 @@ import SwiftUI
 struct SongShareView: View {
     let searchBarPlaceholderText = "What song do you want to share?"
     @State private var selectedTab = 0
+    @State private var receivedTracks: [Track]
+    @State private var sentTracks: [Track]
     
-    init() {
+    init(receivedTracks: [Track] = [], sentTracks: [Track] = []) {
         // Picker background color
         UISegmentedControl.appearance().backgroundColor = UIColor(Color(red: 0.06, green: 0.06, blue: 0.06))
         
@@ -18,6 +20,9 @@ struct SongShareView: View {
         // Picker foreground color of inactive
         UISegmentedControl.appearance().setTitleTextAttributes(
             [.foregroundColor: UIColor(Color.PresetColour.whitePrimary)], for: .normal)
+        
+        self.receivedTracks = receivedTracks
+        self.sentTracks = sentTracks
     }
 
     
@@ -30,11 +35,10 @@ struct SongShareView: View {
             }
             .padding()
             
-            // Tabs
+            // Received/Sent Tab Bar
             ZStack (alignment: .bottom) {
                 Picker("Tabs", selection: $selectedTab) {
                     Text("Received").tag(0)
-                        .font(.headline)
                     Text("Sent").tag(1)
                 }
                 .pickerStyle(.segmented)
@@ -48,21 +52,22 @@ struct SongShareView: View {
             // Horizontal scrollable TabView
             TabView(selection: $selectedTab) {
                 // Received songs tab
-                TrackList(tracks: [])
+                TrackList(tracks: receivedTracks)
                     .tag(0)
                 
                 // Sent songs tab
-                TrackList(tracks: [])
+                TrackList(tracks: sentTracks)
                     .tag(1)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
-//        .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.PresetColour.darkgrey)
     }
 }
 
 #Preview {
-    SongShareView()
+    let receivedTracks: [Track] = [TrackMock.iRememberEverything]
+    let sentTracks: [Track] = []
+    SongShareView(receivedTracks: receivedTracks, sentTracks: sentTracks)
 }
