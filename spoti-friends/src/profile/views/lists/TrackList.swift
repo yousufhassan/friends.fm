@@ -36,36 +36,13 @@ struct TrackList: View {
                                     .frame(width: 20)
                                     .padding(.trailing, 2)
                             }
-                            ImageWithSpecs(imageUrl: track.album.image, width: 36, height: 36, cornerRadius: 2)
                             
-                            VStack (alignment: .leading) {
-                                // Track name
-                                Text(track.name)
-                                    .font(.callout)
-                                    .foregroundStyle(Color.PresetColour.whitePrimary)
-                                    .lineLimit(1)
-                                
-                                // Artist names
-                                HStack(spacing: 0) {
-                                    let artistsArray = Array(track.artists) // Convert List<Artist> to [Artist]
-                                    ForEach(artistsArray.indices, id: \.self) { index in
-                                        let artist = artistsArray[index]
-                                        
-                                        Text(index < artistsArray.count - 1
-                                             ? "\(artist.name), "
-                                             : artist.name)
-                                        .font(.footnote)
-                                        .foregroundStyle(Color.PresetColour.whiteSecondary)
-                                    }
-                                }
-                                .lineLimit(1)
-                            }
+                            TrackView(track: track)
                             
                             Spacer() // To left align the content
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 4)
-//                        .animation(.easeInOut(duration: 0.6), value: tracks)
                     }
                 }
             }

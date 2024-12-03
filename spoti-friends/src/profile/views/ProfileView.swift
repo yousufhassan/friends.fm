@@ -31,7 +31,6 @@ struct ProfileView: View {
                 }
             }
             .frame(minHeight: reader.size.height)
-            .padding(.horizontal, 20)
         }
         .background(Color.PresetGradient.profileViewGradient(profile: profile))
         .onAppear {

@@ -6,7 +6,11 @@ struct SongShareView: View {
     @State private var receivedTracks: [Track]
     @State private var sentTracks: [Track]
     
-    init(receivedTracks: [Track] = [], sentTracks: [Track] = []) {
+    init(receivedTracks: [Track] = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor], sentTracks: [Track] = []) {
         // Picker background color
         UISegmentedControl.appearance().backgroundColor = UIColor(Color(red: 0.06, green: 0.06, blue: 0.06))
         
@@ -52,12 +56,18 @@ struct SongShareView: View {
             // Horizontal scrollable TabView
             TabView(selection: $selectedTab) {
                 // Received songs tab
-                TrackList(tracks: receivedTracks)
-                    .tag(0)
+                ScrollView {
+                    TrackList(tracks: receivedTracks)
+                        .padding(.horizontal)
+                }
+                .tag(0)
                 
                 // Sent songs tab
-                TrackList(tracks: sentTracks)
-                    .tag(1)
+                ScrollView {
+                    TrackList(tracks: sentTracks)
+                        .padding(.horizontal)
+                }
+                .tag(1)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
@@ -67,7 +77,11 @@ struct SongShareView: View {
 }
 
 #Preview {
-    let receivedTracks: [Track] = [TrackMock.iRememberEverything]
+    let receivedTracks: [Track] = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
     let sentTracks: [Track] = []
     SongShareView(receivedTracks: receivedTracks, sentTracks: sentTracks)
 }
