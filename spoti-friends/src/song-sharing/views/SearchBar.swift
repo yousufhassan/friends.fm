@@ -11,8 +11,8 @@ import SwiftUI
 /// - Returns: A View that renders the search bar.
 struct SearchBar: View {
     var placeholderText: String
-    @State private var searchText: String = ""
-    @State private var isEditing = false
+    @Binding var searchText: String
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         HStack {
@@ -21,6 +21,7 @@ struct SearchBar: View {
                       prompt: Text(placeholderText)
                 .foregroundStyle(Color.PresetColour.blackSecondary)
             )
+            .focused($isFocused)
             .font(.callout)
             .padding(.vertical, 12)
             .padding(.horizontal, 32)
@@ -34,7 +35,7 @@ struct SearchBar: View {
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 8)
                     
-                    if isEditing {
+                    if (!searchText.isEmpty) {
                         Button(action: {
                             self.searchText = ""
                         }) {
@@ -46,17 +47,16 @@ struct SearchBar: View {
                 }
             )
             .padding(.horizontal, 10)
-            .onTapGesture {
-                self.isEditing = true
-            }
         }
     }
 }
 
 struct ContentView: View {
+    @State private var searchText: String = ""
+    
     var body: some View {
         VStack {
-            SearchBar(placeholderText: "Search...")
+            SearchBar(placeholderText: "Search...", searchText: $searchText)
             Spacer()
         }
         .padding()
