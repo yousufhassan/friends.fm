@@ -27,6 +27,7 @@
 		CB2FCB982CFEED510012FF0F /* TrackDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2FCB972CFEED510012FF0F /* TrackDetailsView.swift */; };
 		CB2FCB9A2CFEEE360012FF0F /* TrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2FCB992CFEEE360012FF0F /* TrackView.swift */; };
 		CB2FCB9C2D0001940012FF0F /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2FCB9B2D0001940012FF0F /* SearchView.swift */; };
+		CB2FCB9E2D003B5A0012FF0F /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2FCB9D2D003B480012FF0F /* SearchBar.swift */; };
 		CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3417FA2C180D3D00BE70A8 /* SpotifyAPIError.swift */; };
 		CB3417FF2C1BDBC800BE70A8 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3417FE2C1BDBC800BE70A8 /* UserProfileView.swift */; };
 		CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3724962C3B27CA004883D1 /* ProfileDetails.swift */; };
@@ -41,7 +42,7 @@
 		CB3B61812C1F83AE0088DFA1 /* AuthenticatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3B61802C1F83AE0088DFA1 /* AuthenticatedView.swift */; };
 		CB454D2D2CC8C73E00AE41D5 /* NonUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB454D2C2CC8C73E00AE41D5 /* NonUserProfileView.swift */; };
 		CB4AF9A62CFD330B005AE716 /* SongShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4AF9A52CFD330B005AE716 /* SongShareView.swift */; };
-		CB4AF9A82CFEB875005AE716 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4AF9A72CFEB875005AE716 /* SearchBar.swift */; };
+		CB4AF9A82CFEB875005AE716 /* DecorativeSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4AF9A72CFEB875005AE716 /* DecorativeSearchBar.swift */; };
 		CB59BCB52C2FA08D0061C99B /* ListeningActivityCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCB42C2FA08D0061C99B /* ListeningActivityCard.swift */; };
 		CB59BCB72C2FAB890061C99B /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCB62C2FAB890061C99B /* ProfileImage.swift */; };
 		CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCBE2C2FAFB30061C99B /* ImageWithSpecs.swift */; };
@@ -126,6 +127,7 @@
 		CB2FCB972CFEED510012FF0F /* TrackDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsView.swift; sourceTree = "<group>"; };
 		CB2FCB992CFEEE360012FF0F /* TrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackView.swift; sourceTree = "<group>"; };
 		CB2FCB9B2D0001940012FF0F /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		CB2FCB9D2D003B480012FF0F /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		CB3417FA2C180D3D00BE70A8 /* SpotifyAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAPIError.swift; sourceTree = "<group>"; };
 		CB3417FE2C1BDBC800BE70A8 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		CB3724962C3B27CA004883D1 /* ProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetails.swift; sourceTree = "<group>"; };
@@ -139,7 +141,7 @@
 		CB3B61802C1F83AE0088DFA1 /* AuthenticatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedView.swift; sourceTree = "<group>"; };
 		CB454D2C2CC8C73E00AE41D5 /* NonUserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonUserProfileView.swift; sourceTree = "<group>"; };
 		CB4AF9A52CFD330B005AE716 /* SongShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongShareView.swift; sourceTree = "<group>"; };
-		CB4AF9A72CFEB875005AE716 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		CB4AF9A72CFEB875005AE716 /* DecorativeSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorativeSearchBar.swift; sourceTree = "<group>"; };
 		CB59BCB42C2FA08D0061C99B /* ListeningActivityCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityCard.swift; sourceTree = "<group>"; };
 		CB59BCB62C2FAB890061C99B /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		CB59BCBE2C2FAFB30061C99B /* ImageWithSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWithSpecs.swift; sourceTree = "<group>"; };
@@ -435,8 +437,9 @@
 		CB4AF9A42CFD32E1005AE716 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				CB2FCB9D2D003B480012FF0F /* SearchBar.swift */,
 				CB4AF9A52CFD330B005AE716 /* SongShareView.swift */,
-				CB4AF9A72CFEB875005AE716 /* SearchBar.swift */,
+				CB4AF9A72CFEB875005AE716 /* DecorativeSearchBar.swift */,
 				CB2FCB9B2D0001940012FF0F /* SearchView.swift */,
 			);
 			path = views;
@@ -760,7 +763,7 @@
 				CB8D3C2E2C0D28C000C493E8 /* CodeChallenge.swift in Sources */,
 				CB7C05B52C1191EC001A0062 /* UnauthenticatedView.swift in Sources */,
 				CB2FCB9C2D0001940012FF0F /* SearchView.swift in Sources */,
-				CB4AF9A82CFEB875005AE716 /* SearchBar.swift in Sources */,
+				CB4AF9A82CFEB875005AE716 /* DecorativeSearchBar.swift in Sources */,
 				CB875CB92C3524B4001B364D /* TrackMock.swift in Sources */,
 				CB7C05B32C1191BA001A0062 /* AuthorizationDeniedView.swift in Sources */,
 				CB59BCB72C2FAB890061C99B /* ProfileImage.swift in Sources */,
@@ -799,6 +802,7 @@
 				CB6A5D8C2CA684F10063A757 /* Appwrite.swift in Sources */,
 				CB0854BC2C14D58E0088E87D /* AuthorizationWebView.swift in Sources */,
 				CB4AF9A62CFD330B005AE716 /* SongShareView.swift in Sources */,
+				CB2FCB9E2D003B5A0012FF0F /* SearchBar.swift in Sources */,
 				CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */,
 				CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */,
 				CB0B93762C771C04003A9720 /* TrackContext.swift in Sources */,

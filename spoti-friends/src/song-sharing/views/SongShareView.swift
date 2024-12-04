@@ -11,8 +11,7 @@ import SwiftUI
 ///
 struct SongShareView: View {
     let searchBarPlaceholderText = "What song do you want to share?"
-    @State private var searchText: String = ""
-    @FocusState private var isSearchBarFocused: Bool
+    @State private var isSearching: Bool = false
     
     @State private var selectedTab = 0
     @State private var receivedTracks: [Track]
@@ -39,68 +38,60 @@ struct SongShareView: View {
     
     
     var body: some View {
-        //        NavigationStack {
-        if (false) {
-            VStack {
-                //                SearchBar(placeholderText: searchBarPlaceholderText, searchText: $searchText, isEditing: $isEditing)
-                
-                SearchView()
+        ZStack {
+            if (true) {
+                SearchView(searchBarPlaceholderText: searchBarPlaceholderText)
+                    .transition(.opacity)
             }
-        } else {
-            VStack {
+            else {
                 VStack {
-                    PageTitle(pageTitle: "Share")
-                    
-                    SearchBar(placeholderText: searchBarPlaceholderText, searchText: $searchText)
-                        .focused($isSearchBarFocused)
-                }
-                .padding()
-                
-                // Received/Sent Tab Bar
-                ZStack (alignment: .bottom) {
-                    Picker("Tabs", selection: $selectedTab) {
-                        Text("Received").tag(0)
-                        Text("Sent").tag(1)
+                    VStack {
+                        PageTitle(pageTitle: "Share")
+                        
+                        DecorativeSearchBar(placeholderText: searchBarPlaceholderText)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    self.isSearching = true
+                                }
+                            }
                     }
-                    .pickerStyle(.segmented)
+                    .padding()
                     
-                    Divider()
-                        .frame(height: 1)
-                        .background(Color.PresetColour.whitePrimary)
-                        .opacity(0.8)
-                }
-                
-                // Horizontal scrollable TabView
-                TabView(selection: $selectedTab) {
-                    // Received songs tab
-                    ScrollView {
-                        TrackList(tracks: receivedTracks)
-                            .padding(.horizontal)
+                    // Received/Sent Tab Bar
+                    ZStack (alignment: .bottom) {
+                        Picker("Tabs", selection: $selectedTab) {
+                            Text("Received").tag(0)
+                            Text("Sent").tag(1)
+                        }
+                        .pickerStyle(.segmented)
+                        
+                        Divider()
+                            .frame(height: 1)
+                            .background(Color.PresetColour.whitePrimary)
+                            .opacity(0.8)
                     }
-                    .tag(0)
                     
-                    // Sent songs tab
-                    ScrollView {
-                        TrackList(tracks: sentTracks)
-                            .padding(.horizontal)
+                    // Horizontal scrollable TabView
+                    TabView(selection: $selectedTab) {
+                        // Received songs tab
+                        ScrollView {
+                            TrackList(tracks: receivedTracks)
+                                .padding(.horizontal)
+                        }
+                        .tag(0)
+                        
+                        // Sent songs tab
+                        ScrollView {
+                            TrackList(tracks: sentTracks)
+                                .padding(.horizontal)
+                        }
+                        .tag(1)
                     }
-                    .tag(1)
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.PresetColour.darkgrey)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.PresetColour.darkgrey)
-            
-            // Detect taps outside to dismiss focus
-            if isSearchBarFocused {
-                Color.clear
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        isSearchBarFocused = false // Dismiss focus
-                    }
-            }
-            
-            //        }
         }
     }
 }
