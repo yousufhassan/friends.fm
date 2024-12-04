@@ -2,93 +2,28 @@ import SwiftUI
 
 /// A View that allows users to share songs with their friends.
 ///
-/// The view contains a search bar to search for songs to share and two scrollable tabs to display
-/// songs received from friends and songs sent to friends.
+/// This view provides a search bar for finding songs to share, along with two tabs
+/// to display songs received from friends and songs sent to friends. The `isSearching`
+/// state determines whether the user is actively searching for a song or viewing
+/// the main tabs.
 ///
-/// - Parameters:
-///   - receivedTracks: An array of `Track` objects representing the songs received from friends.
-///   - sentTracks: An array of `Track` objects representing the songs sent to friends.
+/// The view dynamically switches between `SearchView` for searching and
+/// `SongShareHomeView` for displaying received/sent songs.
 ///
+/// - Properties:
+///   - searchBarPlaceholderText: A string used as placeholder text in the search bar.
+///   - isSearching: A state variable that tracks whether the user is in search mode.
 struct SongShareView: View {
     let searchBarPlaceholderText = "What song do you want to share?"
     @State private var isSearching: Bool = false
     
-    @State private var selectedTab = 0
-    @State private var receivedTracks: [Track]
-    @State private var sentTracks: [Track]
-    
-    init(receivedTracks: [Track] = [], sentTracks: [Track] = []) {
-        // Picker background color
-        UISegmentedControl.appearance().backgroundColor = UIColor(Color(red: 0.06, green: 0.06, blue: 0.06))
-        
-        // Picker background color of selected
-        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color(red: 0.11, green: 0.11, blue: 0.11))
-        
-        // Picker foreground color of selected
-        UISegmentedControl.appearance().setTitleTextAttributes(
-            [.foregroundColor: UIColor(Color.PresetColour.spotifyGreen)], for: .selected)
-        
-        // Picker foreground color of inactive
-        UISegmentedControl.appearance().setTitleTextAttributes(
-            [.foregroundColor: UIColor(Color.PresetColour.whitePrimary)], for: .normal)
-        
-        self.receivedTracks = receivedTracks
-        self.sentTracks = sentTracks
-    }
-    
-    
     var body: some View {
         ZStack {
             if (self.isSearching) {
-                SearchView(searchBarPlaceholderText: searchBarPlaceholderText, isSearching: $isSearching)
+                SongSearchView(searchBarPlaceholderText: searchBarPlaceholderText, isSearching: $isSearching)
                     .transition(.opacity)
-            }
-            else {
-                VStack {
-                    VStack {
-                        PageTitle(pageTitle: "Share")
-                        
-                        DecorativeSearchBar(placeholderText: searchBarPlaceholderText)
-                            .onTapGesture {
-                                withAnimation(.easeOut(duration: 0.2)) {
-                                    self.isSearching = true
-                                }
-                            }
-                    }
-                    .padding()
-                    
-                    // Received/Sent Tab Bar
-                    ZStack (alignment: .bottom) {
-                        Picker("Tabs", selection: $selectedTab) {
-                            Text("Received").tag(0)
-                            Text("Sent").tag(1)
-                        }
-                        .pickerStyle(.segmented)
-                        
-                        Divider()
-                            .frame(height: 1)
-                            .background(Color.PresetColour.whitePrimary)
-                            .opacity(0.8)
-                    }
-                    
-                    // Horizontal scrollable TabView
-                    TabView(selection: $selectedTab) {
-                        // Received songs tab
-                        ScrollView {
-                            TrackList(tracks: receivedTracks)
-                                .padding(.horizontal)
-                        }
-                        .tag(0)
-                        
-                        // Sent songs tab
-                        ScrollView {
-                            TrackList(tracks: sentTracks)
-                                .padding(.horizontal)
-                        }
-                        .tag(1)
-                    }
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                }
+            } else {
+                SongShareHomeView(searchBarPlaceholderText: searchBarPlaceholderText, isSearching: $isSearching)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -97,11 +32,5 @@ struct SongShareView: View {
 }
 
 #Preview {
-    let receivedTracks: [Track] = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
-    let sentTracks: [Track] = [TrackMock.luxury]
-    SongShareView(receivedTracks: receivedTracks, sentTracks: sentTracks)
+    SongShareView()
 }

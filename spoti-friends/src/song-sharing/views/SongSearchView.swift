@@ -1,9 +1,10 @@
 import SwiftUI
 
-struct SearchView: View {
+// TODO: Add docs
+struct SongSearchView: View {
     let searchBarPlaceholderText: String
-    @State private var searchText = ""
     @Binding var isSearching: Bool
+    @State private var searchText = ""
     
     var body: some View {
         VStack {
@@ -32,5 +33,7 @@ struct SearchView: View {
 
 #Preview {
     @Previewable @State var isSearching: Bool = true
-    SearchView(searchBarPlaceholderText: "Search...", isSearching: $isSearching)
+    SongSearchView(searchBarPlaceholderText: "Search...", isSearching: $isSearching)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.PresetColour.darkgrey)
 }
