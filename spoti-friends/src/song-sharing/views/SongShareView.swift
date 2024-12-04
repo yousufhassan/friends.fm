@@ -39,8 +39,8 @@ struct SongShareView: View {
     
     var body: some View {
         ZStack {
-            if (true) {
-                SearchView(searchBarPlaceholderText: searchBarPlaceholderText)
+            if (self.isSearching) {
+                SearchView(searchBarPlaceholderText: searchBarPlaceholderText, isSearching: $isSearching)
                     .transition(.opacity)
             }
             else {
@@ -50,7 +50,7 @@ struct SongShareView: View {
                         
                         DecorativeSearchBar(placeholderText: searchBarPlaceholderText)
                             .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.2)) {
+                                withAnimation(.easeOut(duration: 0.2)) {
                                     self.isSearching = true
                                 }
                             }
@@ -89,10 +89,10 @@ struct SongShareView: View {
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.PresetColour.darkgrey)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.PresetColour.darkgrey)
     }
 }
 

@@ -3,20 +3,34 @@ import SwiftUI
 struct SearchView: View {
     let searchBarPlaceholderText: String
     @State private var searchText = ""
+    @Binding var isSearching: Bool
     
     var body: some View {
-            VStack {
-                DecorativeSearchBar(placeholderText: searchBarPlaceholderText)
-                Text("Hello!")
+        VStack {
+            HStack {
+                SearchBar(placeholderText: searchBarPlaceholderText, searchText: $searchText)
+                Button(action: {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        self.isSearching = false
+                    }
+                    
+                }) {
+                    Text("Cancel")
+                        .font(.footnote)
+                }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.PresetColour.darkgrey)
-            .searchable(text: $searchText, prompt: searchBarPlaceholderText)
+            
+            Spacer()
+            
+        }
+        .padding()
+        .searchable(text: $searchText, prompt: searchBarPlaceholderText)
         
     }
 }
 
 
 #Preview {
-    SearchView(searchBarPlaceholderText: "Search...")
+    @Previewable @State var isSearching: Bool = true
+    SearchView(searchBarPlaceholderText: "Search...", isSearching: $isSearching)
 }

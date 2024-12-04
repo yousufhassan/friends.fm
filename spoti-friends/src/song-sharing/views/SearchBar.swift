@@ -1,80 +1,70 @@
-//import SwiftUI
-//
-//struct SearchBar: View {
-//    var placeholderText: String
-//    
-//    var body: some View {
-//        HStack {
-//            Text(placeholderText)
-//                .font(.callout)
-//                .foregroundStyle(Color.PresetColour.blackSecondary)
-//                .padding(.vertical, 12)
-//                .padding(.horizontal, 32)
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//                .background(Color.PresetColour.whitePrimary)
-//                .cornerRadius(8)
-//                .overlay(
-//                    HStack {
-//                        Image(systemName: "magnifyingglass")
-//                            .foregroundColor(Color.PresetColour.blackSecondary)
-//                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-//                            .padding(.leading, 8)
-//                    }
-//                )
-//        }
-//        .frame(maxWidth: .infinity)
-//        .padding(.horizontal, 10)
-//        .contentShape(Rectangle())
-//    }
-//}
-//
-//
-//#Preview {
-//    SearchBar(placeholderText: "Search...")
-//}
-
 import SwiftUI
 
+/// A customizable search bar component.
+///
+/// Displays a text input field with a placeholder, magnifying glass icon on the left,
+/// and a clear button on the right when the user starts typing.
+///
+/// - Parameters:
+///   - placeholderText: The placeholder text displayed in the search bar.
+///
+/// - Returns: A View that renders the search bar.
 struct SearchBar: View {
     var placeholderText: String
     @Binding var searchText: String
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         HStack {
-            TextField(placeholderText, text: $searchText)
-                .font(.callout)
-                .foregroundStyle(Color.PresetColour.blackSecondary)
-                .padding(.vertical, 12)
-                .padding(.horizontal, 32)
-                .background(Color.PresetColour.whitePrimary)
-                .cornerRadius(8)
-                .overlay(
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(Color.PresetColour.blackSecondary)
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 8)
-                        
-                        if !searchText.isEmpty {
-                            Button(action: {
-                                searchText = ""
-                            }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.gray)
-                                    .padding(.trailing, 8)
-                            }
+            TextField("",
+                      text: $searchText,
+                      prompt: Text(placeholderText)
+                .foregroundStyle(Color.PresetColour.whiteSecondary)
+            )
+            .focused($isFocused)
+            .font(.footnote)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 36)
+            .background(Color.PresetColour.blackSecondary)
+            .foregroundStyle(Color.PresetColour.whitePrimary)
+            .cornerRadius(8)
+            .overlay(
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(Color.PresetColour.whitePrimary)
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 8)
+                    
+                    if (!searchText.isEmpty) {
+                        Button(action: {
+                            self.searchText = ""
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 8)
                         }
                     }
-                )
+                }
+            )
+            .padding(.horizontal, 0)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 10)
-        .contentShape(Rectangle())
     }
 }
 
-#Preview {
-    @Previewable @State var searchText = ""
+struct ContentView: View {
+    @State private var searchText: String = ""
     
-    return SearchBar(placeholderText: "Search...", searchText: $searchText)
+    var body: some View {
+        VStack {
+            SearchBar(placeholderText: "Search...", searchText: $searchText)
+            Spacer()
+        }
+        .padding()
+    }
+}
+
+struct SearchBar_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
