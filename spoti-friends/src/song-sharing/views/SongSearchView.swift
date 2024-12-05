@@ -35,8 +35,8 @@ struct SongSearchView: View {
                     }
                     .padding(.horizontal)
                     .sheet(item: $selectedTrack) { track in
-                        // Replace with your sheet view
-                        SendToFriendsSheet(track: track, friends: [])
+                        SendToFriendsSheet(track: track, friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
+                                                                   SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson])
                     }
                 }
                 .scrollDismissesKeyboard(.immediately)

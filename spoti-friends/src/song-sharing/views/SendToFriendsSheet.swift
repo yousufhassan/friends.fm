@@ -1,5 +1,15 @@
 import SwiftUI
 
+/// A sheet that allows the user to send a track to selected friends.
+///
+/// This view displays a grid of friends, where each friend can be tapped to select or deselect them.
+/// Once at least one friend is selected, a "Send" button is displayed at the bottom.
+///
+/// - Parameters:
+///   - track: The track to be sent to friends.
+///   - friends: A list of the user's friends.
+///   - selectedFriends: Tracks the currently selected friends to send the song to.
+///
 struct SendToFriendsSheet: View {
     let track: Track
     let friends: [SpotifyProfile]
@@ -38,7 +48,9 @@ struct SendToFriendsSheet: View {
                             FriendGridItem(friend: friend)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    toggleSelected(forFriend: friend)
+                                    withAnimation(.easeInOut(duration: 0.1)) {
+                                        toggleSelected(forFriend: friend)
+                                    }
                                 }
                             
                             if isSelected(friend: friend){
@@ -49,6 +61,10 @@ struct SendToFriendsSheet: View {
                     }
                 }
                 .padding(.horizontal, 8)
+            }
+            
+            if (!selectedFriends.isEmpty) {
+                SendTrackButton(track: track, toFriends: $selectedFriends)
             }
             
             Spacer()
@@ -75,6 +91,13 @@ struct SendToFriendsSheet: View {
 }
 
 
+/// A view that represents a friend in a grid layout.
+///
+/// This view shows the friend's profile image and display name.
+///
+/// - Parameters:
+///   - friend: The friend to display, including their profile image and display name.
+///
 struct FriendGridItem: View {
     let friend: SpotifyProfile
     
@@ -95,6 +118,10 @@ struct FriendGridItem: View {
     }
 }
 
+
+/// A visual indicator for a selected friend in the grid.
+///
+/// This view overlays a circle with a checkmark to indicate that the friend is selected.
 struct FriendSelectedIndicator: View {
     var body: some View {
         Circle()
@@ -114,5 +141,41 @@ struct FriendSelectedIndicator: View {
                     .fontWeight(.bold)
             )
             .offset(x: 26, y: 10)
+    }
+}
+
+
+/// A button that allows the user to send the selected track to friends.
+///
+/// The button displays the number of selected friends when more than one friend is selected.
+/// It animates when shown or hidden.
+///
+/// - Parameters:
+///   - track: The track to be sent.
+///   - selectedFriends: A binding to the set of currently selected friends.
+struct SendTrackButton: View {
+    let track: Track
+    @Binding var selectedFriends: Set<SpotifyProfile>
+    
+    init(track: Track, toFriends: Binding<Set<SpotifyProfile>>) {
+        self.track = track
+        self._selectedFriends = toFriends
+    }
+    
+    var body: some View {
+        Button(action: {
+            let friendNames = selectedFriends.map { $0.displayName }.joined(separator: ", ")
+            printInfo("Sending \(track.name) to \(friendNames)")
+        }) {
+            Text(selectedFriends.count > 1 ? "Send (\(selectedFriends.count))" : "Send")
+                .bold()
+                .frame(maxWidth: .infinity)
+                .padding()
+                .foregroundColor(Color.PresetColour.whitePrimary)
+                .background(Color.PresetColour.spotifyGreen)
+                .cornerRadius(16)
+        }
+        .padding(.horizontal)
+        .transition(.move(edge: .bottom))
     }
 }
