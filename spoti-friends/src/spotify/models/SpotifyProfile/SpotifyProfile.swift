@@ -9,7 +9,7 @@ import JSONCodable
 ///   - displayName: The display name associated with this Spotify profile.
 ///   - image: The profile image for this Spotify profile.
 ///   - currentOrMostRecentTrack: The track last played (or currently playing)  by this Spotify profile.
-class SpotifyProfile: Codable, Equatable, Identifiable {
+class SpotifyProfile: Codable, Equatable, Identifiable, Hashable {
     var id: String { spotifyId }
     let spotifyId: String
     let spotifyUri: String
@@ -21,6 +21,10 @@ class SpotifyProfile: Codable, Equatable, Identifiable {
     /// Two `SpotifyProfile` objects are considered equal if they have the same `spotifyId` value.
     static func == (lhs: SpotifyProfile, rhs: SpotifyProfile) -> Bool {
         return lhs.spotifyId == rhs.spotifyId
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(spotifyId)
     }
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
