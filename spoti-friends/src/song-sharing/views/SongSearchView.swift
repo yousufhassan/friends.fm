@@ -6,6 +6,7 @@ struct SongSearchView: View {
     @Binding var isSearching: Bool
     @State private var searchText = ""
     @FocusState private var isSearchFieldFocused: Bool
+    @State private var selectedTrack: Track?
     
     var body: some View {
         VStack {
@@ -26,16 +27,22 @@ struct SongSearchView: View {
             }
             .padding()
             
-            Spacer() // To top-align the search bar when there are no results to show
-            
             // Search results
             if (searchText != "") {
                 ScrollView {
-                    TrackList(tracks: [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor])
-                        .padding(.horizontal)
+                    TrackList(tracks: [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]) { tappedTrack in
+                        selectedTrack = tappedTrack
+                    }
+                    .padding(.horizontal)
+                    .sheet(item: $selectedTrack) { track in
+                        // Replace with your sheet view
+                        Text("Share \(track.name) with a friend")
+                    }
                 }
                 .scrollDismissesKeyboard(.immediately)
             }
+            
+            Spacer() // To top-align the search bar when there are no results to show
         }
         .background(
             // Adding a clear background to capture taps to hide the keyboard

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Object representing a Spotify Track.
-class Track: SpotifyResource, Codable {
+class Track: SpotifyResource, Codable, Identifiable {
     let spotifyUri: String
     let name: String
     let artists: [Artist]

@@ -17,7 +17,6 @@ struct TrackView: View {
         self.onTap = onTap ?? {
             if let url = URL(string: track.spotifyUri) {
                 UIApplication.shared.open(url)
-                print("yo")
             }
         }
     }

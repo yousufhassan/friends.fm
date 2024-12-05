@@ -4,15 +4,19 @@ import SwiftUI
 ///
 /// - Parameters:
 ///   - tracks: The list of `Track` objects to render as a list.
+///   - showItemNumbers: Whether to display the track numbers alongside the list.
+///   - onTrackTap: A closure defining the action to perform when a track is tapped.
 ///
 /// - Returns: A View that renders a list of tracks.
 struct TrackList: View {
     let tracks: [Track]
     let showItemNumbers: Bool
+    let onTrackTap: ((Track) -> Void)?
     
-    init(tracks: [Track], showItemNumbers: Bool = false) {
+    init(tracks: [Track], showItemNumbers: Bool = false, onTrackTap: ((Track) -> Void)? = nil) {
         self.tracks = tracks
         self.showItemNumbers = showItemNumbers
+        self.onTrackTap = onTrackTap
     }
     
     var body: some View {
@@ -35,7 +39,13 @@ struct TrackList: View {
                                 .padding(.trailing, 2)
                         }
                         
-                        TrackView(track: track)
+                        if (onTrackTap == nil) {
+                            TrackView(track: track)
+                        } else {
+                            TrackView(track: track) {
+                                onTrackTap?(track)
+                            }
+                        }
                         
                         Spacer() // To left align the content
                     }
