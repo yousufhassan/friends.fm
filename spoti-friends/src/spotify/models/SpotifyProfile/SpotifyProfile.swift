@@ -9,7 +9,8 @@ import JSONCodable
 ///   - displayName: The display name associated with this Spotify profile.
 ///   - image: The profile image for this Spotify profile.
 ///   - currentOrMostRecentTrack: The track last played (or currently playing)  by this Spotify profile.
-class SpotifyProfile: Codable, Equatable {
+class SpotifyProfile: Codable, Equatable, Identifiable {
+    var id: String { spotifyId }
     let spotifyId: String
     let spotifyUri: String
     var displayName: String

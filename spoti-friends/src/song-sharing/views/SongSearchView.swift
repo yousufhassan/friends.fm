@@ -36,7 +36,7 @@ struct SongSearchView: View {
                     .padding(.horizontal)
                     .sheet(item: $selectedTrack) { track in
                         // Replace with your sheet view
-                        Text("Share \(track.name) with a friend")
+                        SendToFriendsSheet(track: track, friends: [])
                     }
                 }
                 .scrollDismissesKeyboard(.immediately)

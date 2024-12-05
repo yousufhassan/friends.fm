@@ -29,6 +29,7 @@
 		CB2FCB9C2D0001940012FF0F /* SongSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2FCB9B2D0001940012FF0F /* SongSearchView.swift */; };
 		CB2FCB9E2D003B5A0012FF0F /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2FCB9D2D003B480012FF0F /* SearchBar.swift */; };
 		CB2FCBA02D0047BA0012FF0F /* SongShareHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2FCB9F2D0047B60012FF0F /* SongShareHomeView.swift */; };
+		CB2FCBA32D0166EE0012FF0F /* SendToFriendsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2FCBA22D0166EE0012FF0F /* SendToFriendsSheet.swift */; };
 		CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3417FA2C180D3D00BE70A8 /* SpotifyAPIError.swift */; };
 		CB3417FF2C1BDBC800BE70A8 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3417FE2C1BDBC800BE70A8 /* UserProfileView.swift */; };
 		CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3724962C3B27CA004883D1 /* ProfileDetails.swift */; };
@@ -130,6 +131,7 @@
 		CB2FCB9B2D0001940012FF0F /* SongSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongSearchView.swift; sourceTree = "<group>"; };
 		CB2FCB9D2D003B480012FF0F /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		CB2FCB9F2D0047B60012FF0F /* SongShareHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongShareHomeView.swift; sourceTree = "<group>"; };
+		CB2FCBA22D0166EE0012FF0F /* SendToFriendsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToFriendsSheet.swift; sourceTree = "<group>"; };
 		CB3417FA2C180D3D00BE70A8 /* SpotifyAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAPIError.swift; sourceTree = "<group>"; };
 		CB3417FE2C1BDBC800BE70A8 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		CB3724962C3B27CA004883D1 /* ProfileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetails.swift; sourceTree = "<group>"; };
@@ -452,6 +454,7 @@
 				CB2FCB9F2D0047B60012FF0F /* SongShareHomeView.swift */,
 				CB4AF9A52CFD330B005AE716 /* SongShareView.swift */,
 				CB2FCB9B2D0001940012FF0F /* SongSearchView.swift */,
+				CB2FCBA22D0166EE0012FF0F /* SendToFriendsSheet.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -785,6 +788,7 @@
 				CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */,
 				CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */,
 				CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */,
+				CB2FCBA32D0166EE0012FF0F /* SendToFriendsSheet.swift in Sources */,
 				CB454D2D2CC8C73E00AE41D5 /* NonUserProfileView.swift in Sources */,
 				CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */,
 				CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */,
