@@ -5,12 +5,15 @@ struct SongSearchView: View {
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
     @State private var searchText = ""
+    @FocusState private var isSearchFieldFocused: Bool
     
     var body: some View {
         VStack {
             // Search bar with conditional cancel button
             HStack {
                 SearchBar(placeholderText: searchBarPlaceholderText, searchText: $searchText)
+                    .focused($isSearchFieldFocused)
+                
                 Button(action: {
                     withAnimation(.easeOut(duration: 0.2)) {
                         self.isSearching = false
@@ -29,12 +32,11 @@ struct SongSearchView: View {
             if (searchText != "") {
                 ScrollView {
                     TrackList(tracks: [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor])
-                    .padding(.horizontal)
+                        .padding(.horizontal)
                 }
                 .scrollDismissesKeyboard(.immediately)
             }
         }
-        .searchable(text: $searchText, prompt: searchBarPlaceholderText)
         .background(
             // Adding a clear background to capture taps to hide the keyboard
             Color.clear
@@ -43,6 +45,9 @@ struct SongSearchView: View {
                     hideKeyboard()
                 }
         )
+        .onAppear {
+            isSearchFieldFocused = true
+        }
     }
 }
 
