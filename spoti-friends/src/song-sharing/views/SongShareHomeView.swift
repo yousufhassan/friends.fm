@@ -12,14 +12,15 @@ import SwiftUI
 struct SongShareHomeView: View {
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
-    
-    @State private var selectedTab = 0
+    @Binding var selectedTab: SongShareTab
     @State private var receivedTracks: [Track]
     @State private var sentTracks: [Track]
     
-    init(searchBarPlaceholderText: String, isSearching: Binding<Bool>, receivedTracks: [Track] = [], sentTracks: [Track] = []) {
+    init(searchBarPlaceholderText: String, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>,
+         receivedTracks: [Track] = [], sentTracks: [Track] = []) {
         self.searchBarPlaceholderText = searchBarPlaceholderText
         self._isSearching = isSearching
+        self._selectedTab = selectedTab
         self.receivedTracks = receivedTracks
         self.sentTracks = sentTracks
         
@@ -56,8 +57,8 @@ struct SongShareHomeView: View {
             // Received/Sent Tab Bar
             ZStack (alignment: .bottom) {
                 Picker("Tabs", selection: $selectedTab) {
-                    Text("Received").tag(0)
-                    Text("Sent").tag(1)
+                    Text("Received").tag(SongShareTab.received)
+                    Text("Sent").tag(SongShareTab.sent)
                 }
                 .pickerStyle(.segmented)
                 
@@ -74,14 +75,14 @@ struct SongShareHomeView: View {
                     TrackList(tracks: receivedTracks)
                         .padding(.horizontal)
                 }
-                .tag(0)
+                .tag(SongShareTab.received)
                 
                 // Sent songs tab
                 ScrollView {
                     TrackList(tracks: sentTracks)
                         .padding(.horizontal)
                 }
-                .tag(1)
+                .tag(SongShareTab.sent)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
@@ -90,6 +91,7 @@ struct SongShareHomeView: View {
 
 #Preview {
     @Previewable @State var isSearching = false
+    @Previewable @State var selectedTab = SongShareTab.received
     let placeholderText = "What song do you want to share?"
     let receivedTracks: [Track] = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
@@ -98,7 +100,7 @@ struct SongShareHomeView: View {
                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
     let sentTracks: [Track] = [TrackMock.luxury]
     
-    SongShareHomeView(searchBarPlaceholderText: placeholderText, isSearching: $isSearching,
+    SongShareHomeView(searchBarPlaceholderText: placeholderText, isSearching: $isSearching, selectedTab: $selectedTab,
                       receivedTracks: receivedTracks, sentTracks: sentTracks)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.PresetColour.darkgrey)

@@ -14,6 +14,8 @@ struct SendToFriendsSheet: View {
     let track: Track
     let friends: [SpotifyProfile]
     @State var selectedFriends: Set<SpotifyProfile> = []
+    @Binding var isSearching: Bool
+    @Binding var selectedTab: SongShareTab
     
     /// Toggles the selected status for `friend`.
     ///
@@ -64,7 +66,7 @@ struct SendToFriendsSheet: View {
             }
             
             if (!selectedFriends.isEmpty) {
-                SendTrackButton(track: track, toFriends: $selectedFriends)
+                SendTrackButton(track: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab)
             }
             
             Spacer()
@@ -78,6 +80,7 @@ struct SendToFriendsSheet: View {
 
 #Preview {
     @Previewable @State var showSheet = true
+    @Previewable @State var selectedTab = SongShareTab.received
     let track = TrackMock.traitor
     let friends = [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
                    SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson]
@@ -86,7 +89,7 @@ struct SendToFriendsSheet: View {
         showSheet = true
     }
     .sheet(isPresented: $showSheet) {
-        SendToFriendsSheet(track: track, friends: friends)
+        SendToFriendsSheet(track: track, friends: friends, isSearching: $showSheet, selectedTab: $selectedTab)
     }
 }
 
@@ -156,16 +159,27 @@ struct FriendSelectedIndicator: View {
 struct SendTrackButton: View {
     let track: Track
     @Binding var selectedFriends: Set<SpotifyProfile>
+    @Binding var isSearching: Bool
+    @Binding var selectedTab: SongShareTab
     
-    init(track: Track, toFriends: Binding<Set<SpotifyProfile>>) {
+    init(track: Track, toFriends: Binding<Set<SpotifyProfile>>, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>) {
         self.track = track
         self._selectedFriends = toFriends
+        self._isSearching = isSearching
+        self._selectedTab = selectedTab
     }
     
     var body: some View {
         Button(action: {
             let friendNames = selectedFriends.map { $0.displayName }.joined(separator: ", ")
             printInfo("Sending \(track.name) to \(friendNames)")
+            
+            // Redirect back to the Song Share - Sent tab
+            withAnimation(.easeOut(duration: 0.2)) {
+                self.selectedTab = SongShareTab.sent
+                self.isSearching = false
+            }
+            
         }) {
             Text(selectedFriends.count > 1 ? "Send (\(selectedFriends.count))" : "Send")
                 .bold()

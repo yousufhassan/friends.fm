@@ -4,6 +4,7 @@ import SwiftUI
 struct SongSearchView: View {
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
+    @Binding var selectedTab: SongShareTab
     @State private var searchText = ""
     @FocusState private var isSearchFieldFocused: Bool
     @State private var selectedTrack: Track?
@@ -35,8 +36,11 @@ struct SongSearchView: View {
                     }
                     .padding(.horizontal)
                     .sheet(item: $selectedTrack) { track in
-                        SendToFriendsSheet(track: track, friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
-                                                                   SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson])
+                        SendToFriendsSheet(track: track,
+                                           friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
+                                                     SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson],
+                                           isSearching: $isSearching,
+                                           selectedTab: $selectedTab)
                     }
                 }
                 .scrollDismissesKeyboard(.immediately)
@@ -67,7 +71,8 @@ extension View {
 
 #Preview {
     @Previewable @State var isSearching: Bool = true
-    SongSearchView(searchBarPlaceholderText: "Search...", isSearching: $isSearching)
+    @Previewable @State var selectedTab = SongShareTab.received
+    SongSearchView(searchBarPlaceholderText: "Search...", isSearching: $isSearching, selectedTab: $selectedTab)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.PresetColour.darkgrey)
 }

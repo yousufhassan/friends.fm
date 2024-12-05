@@ -1,5 +1,10 @@
 import SwiftUI
 
+enum SongShareTab {
+    case received
+    case sent
+}
+
 /// A View that allows users to share songs with their friends.
 ///
 /// This view provides a search bar for finding songs to share, along with two tabs
@@ -16,14 +21,19 @@ import SwiftUI
 struct SongShareView: View {
     let searchBarPlaceholderText = "What song do you want to share?"
     @State private var isSearching: Bool = false
+    @State var selectedTab: SongShareTab = .received
     
     var body: some View {
         ZStack {
             if (self.isSearching) {
-                SongSearchView(searchBarPlaceholderText: searchBarPlaceholderText, isSearching: $isSearching)
-                    .transition(.opacity)
+                SongSearchView(searchBarPlaceholderText: searchBarPlaceholderText,
+                               isSearching: $isSearching,
+                               selectedTab: $selectedTab)
+                .transition(.opacity)
             } else {
-                SongShareHomeView(searchBarPlaceholderText: searchBarPlaceholderText, isSearching: $isSearching)
+                SongShareHomeView(searchBarPlaceholderText: searchBarPlaceholderText,
+                                  isSearching: $isSearching,
+                                  selectedTab: $selectedTab)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
