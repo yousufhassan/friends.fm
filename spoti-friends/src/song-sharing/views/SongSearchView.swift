@@ -1,6 +1,15 @@
 import SwiftUI
 
-// TODO: Add docs
+/// A view that allows the user to search for songs, displays the search results, and send the selected tracks to their friends.
+///
+/// This view contains a search bar for the user to input song names and a list of search results.
+/// Once a track is selected, a sheet is presented to allow the user to send the track to selected friends.
+///
+/// - Parameters:
+///   - searchBarPlaceholderText: The placeholder text to display in the search bar.
+///   - isSearching: A binding to a boolean that indicates whether the user is currently searching.
+///   - selectedTab: A binding to the selected tab in the song sharing section, used for navigation or tab-related actions.
+///   
 struct SongSearchView: View {
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
