@@ -26,23 +26,18 @@ struct TrackList: View {
             VStack (alignment: .leading) {
                 ForEach(tracks.indices) { index in
                     let track = tracks[index]
-                    
-                    Link(destination: URL(string: track.spotifyUri)!) {
-                        HStack {
-                            if (showItemNumbers) {
-                                Text(String(index + 1))
-                                    .foregroundStyle(Color.PresetColour.whiteSecondary)
-                                    .font(.footnote)
-                                    .frame(width: 20)
-                                    .padding(.trailing, 2)
-                            }
-                            
-                            TrackView(track: track)
-                            
-                            Spacer() // To left align the content
+                    HStack {
+                        if (showItemNumbers) {
+                            Text(String(index + 1))
+                                .foregroundStyle(Color.PresetColour.whiteSecondary)
+                                .font(.footnote)
+                                .frame(width: 20)
+                                .padding(.trailing, 2)
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 4)
+                        
+                        TrackView(track: track)
+                        
+                        Spacer() // To left align the content
                     }
                 }
             }
