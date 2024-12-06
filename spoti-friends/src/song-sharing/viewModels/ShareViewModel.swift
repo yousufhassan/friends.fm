@@ -15,10 +15,11 @@ class ShareViewModel: ObservableObject {
     
     /// An enum representing the types of resources that can be searched on Spotify, such as `track`, `album`, and `artist`.
     enum SearchableResource: String, CaseIterable {
-        case album
-        case artist
-        // case playlist  // TODO: Maybe add functionality in the future.
         case track
+        // TODO: Maybe add functionality in the future.
+        // case album
+        // case artist
+        // case playlist
     }
     
     /// Searches for tracks, albums, and artists on Spotify based on the provided query and resource types.
