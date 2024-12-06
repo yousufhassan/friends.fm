@@ -14,7 +14,7 @@ import Foundation
 class User: Codable {
     let spotifyId: String
     var spotifyProfile: SpotifyProfile
-    var friends: [SpotifyProfile]
+    private var friends: [SpotifyProfile]
     private var authorizationCode: String
     private var spotifyWebAccessToken: SpotifyWebAccessToken
     private var internalAPIAccessToken: InternalAPIAccessToken

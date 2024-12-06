@@ -30,11 +30,14 @@ struct SearchResults: View {
                 }
                 .padding(.horizontal)
                 .sheet(item: $selectedTrack) { track in
-                    SendToFriendsSheet(track: track,
-                                       friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
-                                                 SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson],
-                                       isSearching: $isSearching,
-                                       selectedTab: $selectedTab)
+                    if let user = shareViewModel.user {
+                        SendToFriendsSheet(track: track,
+                                           friends: user.getFriends(),
+                                           isSearching: $isSearching,
+                                           selectedTab: $selectedTab)
+                    } else {
+                        SomethingWentWrongView()
+                    }
                 }
             }
         }
