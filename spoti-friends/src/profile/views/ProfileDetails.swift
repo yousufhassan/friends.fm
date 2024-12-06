@@ -19,7 +19,7 @@ struct ProfileDetails: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            ProfileImage(imageName: profile.spotifyId, width: 80, height: 80)
+            ProfileImage(profile: profile, width: 80, height: 80)
             
             VStack(alignment: .leading) {
                 // Display name

@@ -119,7 +119,7 @@ struct FriendGridItem: View {
     var body: some View {
         VStack(spacing: 8) {
             // Profile image
-            ImageWithSpecs(imageUrl: friend.image, width: 64, height: 64, cornerRadius: 100)
+            ProfileImage(profile: friend, width: 64, height: 64)
                 .padding(.horizontal)
             
             // Friend's name
