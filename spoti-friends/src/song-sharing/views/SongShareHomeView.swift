@@ -42,6 +42,7 @@ struct SongShareHomeView: View {
     
     var body: some View {
         VStack {
+            // Page Title and Search Bar
             VStack {
                 PageTitle(pageTitle: "Share")
                 
