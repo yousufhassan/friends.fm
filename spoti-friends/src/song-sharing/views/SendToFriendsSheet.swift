@@ -47,6 +47,7 @@ struct SendToFriendsSheet: View {
                 LazyVGrid(columns: threeColumns, spacing: 8) {
                     ForEach(friends) { friend in
                         ZStack {
+                            // Friend item with profile image and name
                             FriendGridItem(friend: friend)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
@@ -55,6 +56,7 @@ struct SendToFriendsSheet: View {
                                     }
                                 }
                             
+                            // Conditional Selected Indicator, if friend is selected
                             if isSelected(friend: friend){
                                 FriendSelectedIndicator()
                             }
@@ -65,6 +67,7 @@ struct SendToFriendsSheet: View {
                 .padding(.horizontal, 8)
             }
             
+            // Conditional Send Button, if friend(s) are selected
             if (!selectedFriends.isEmpty) {
                 SendTrackButton(track: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab)
             }
@@ -106,11 +109,11 @@ struct FriendGridItem: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            // Image - fixed size for all items to keep them aligned
+            // Profile image
             ImageWithSpecs(imageUrl: friend.image, width: 64, height: 64, cornerRadius: 100)
                 .padding(.horizontal)
             
-            // Text - limited to two lines and centered
+            // Friend's name
             Text(friend.displayName)
                 .foregroundStyle(Color.PresetColour.whiteSecondary)
                 .font(.footnote)
@@ -136,7 +139,8 @@ struct FriendSelectedIndicator: View {
                     .stroke(Color.PresetColour.darkgrey, lineWidth: 2)
             )
             .overlay(
-                Image(systemName: "checkmark") // Checkmark inside the circle
+                // Checkmark inside the circle
+                Image(systemName: "checkmark")
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(Color.PresetColour.darkgrey)
