@@ -2,39 +2,38 @@ import SwiftUI
 
 /// A customizable search bar component.
 ///
-/// Displays a text input field with a placeholder, magnifying glass icon on the left,
-/// and a clear button on the right when the user starts typing.
+/// Displays a text input field with a placeholder and a magnifying glass icon on the left.
 ///
 /// - Parameters:
 ///   - placeholderText: The placeholder text displayed in the search bar.
+///   - searchText: The text to search for.
 ///
 /// - Returns: A View that renders the search bar.
 struct SearchBar: View {
     var placeholderText: String
-    @State private var searchText: String = ""
-    @State private var isEditing = false
+    @Binding var searchText: String
     
     var body: some View {
         HStack {
             TextField("",
                       text: $searchText,
                       prompt: Text(placeholderText)
-                .foregroundStyle(Color.PresetColour.blackSecondary)
+                .foregroundStyle(Color.PresetColour.whiteSecondary)
             )
-            .font(.callout)
-            .padding(.vertical, 12)
-            .padding(.horizontal, 32)
-            .background(Color.PresetColour.whitePrimary)
-            .foregroundStyle(Color.PresetColour.blackSecondary)
+            .font(.footnote)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 36)
+            .background(Color.PresetColour.blackSecondary)
+            .foregroundStyle(Color.PresetColour.whitePrimary)
             .cornerRadius(8)
             .overlay(
                 HStack {
                     Image(systemName: "magnifyingglass")
-                        .foregroundColor(Color.PresetColour.blackSecondary)
+                        .foregroundColor(Color.PresetColour.whitePrimary)
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 8)
                     
-                    if isEditing {
+                    if (!searchText.isEmpty) {
                         Button(action: {
                             self.searchText = ""
                         }) {
@@ -45,18 +44,17 @@ struct SearchBar: View {
                     }
                 }
             )
-            .padding(.horizontal, 10)
-            .onTapGesture {
-                self.isEditing = true
-            }
+            .padding(.horizontal, 0)
         }
     }
 }
 
 struct ContentView: View {
+    @State private var searchText: String = ""
+    
     var body: some View {
         VStack {
-            SearchBar(placeholderText: "Search...")
+            SearchBar(placeholderText: "Search...", searchText: $searchText)
             Spacer()
         }
         .padding()
