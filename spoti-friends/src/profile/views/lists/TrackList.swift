@@ -42,6 +42,8 @@ struct TrackList: View {
                         if (onTrackTap == nil) {
                             TrackView(track: track)
                         } else {
+                            // Provided an override for the default on track tap action, so
+                            // pass it into the TrackView
                             TrackView(track: track) {
                                 onTrackTap?(track)
                             }
