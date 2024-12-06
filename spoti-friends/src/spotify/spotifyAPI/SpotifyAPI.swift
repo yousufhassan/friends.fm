@@ -26,6 +26,16 @@ class SpotifyAPI {
         return decodedResponse
     }
     
+    public func fetchNextResults<T: Decodable>(url urlString: String) async throws -> T {
+        guard let url = URL(string: urlString) else { throw URLError(.badURL) }
+        let request = URLRequest(url: url)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if (requestFailed(response as! HTTPURLResponse)) { throw try throwSpotifyAPIError(response as! HTTPURLResponse) }
+        let decodedResponse = try JSONDecoder().decode(T.self, from: data)
+        return decodedResponse
+    }
+    
     /// Returns a list of the user's friends as `SpotifyProfile`s.
     ///
     /// - Parameters:

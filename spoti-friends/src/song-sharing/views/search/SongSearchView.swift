@@ -9,14 +9,14 @@ import SwiftUI
 ///   - searchBarPlaceholderText: The placeholder text to display in the search bar.
 ///   - isSearching: A binding to a boolean that indicates whether the user is currently searching.
 ///   - selectedTab: A binding to the selected tab in the song sharing section, used for navigation or tab-related actions.
-///   
+///
 struct SongSearchView: View {
+    @EnvironmentObject var shareViewModel: ShareViewModel
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
     @State private var searchText = ""
     @FocusState private var isSearchFieldFocused: Bool
-    @State private var selectedTrack: Track?
     
     var body: some View {
         VStack {
@@ -38,22 +38,8 @@ struct SongSearchView: View {
             .padding()
             
             // Search results
-            if (searchText != "") {
-                ScrollView {
-                    TrackList(tracks: [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]) { tappedTrack in
-                        selectedTrack = tappedTrack
-                    }
-                    .padding(.horizontal)
-                    .sheet(item: $selectedTrack) { track in
-                        SendToFriendsSheet(track: track,
-                                           friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
-                                                     SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson],
-                                           isSearching: $isSearching,
-                                           selectedTab: $selectedTab)
-                    }
-                }
-                .scrollDismissesKeyboard(.immediately)
-            }
+            SearchResults(searchText: $searchText, isSearching: $isSearching, selectedTab: $selectedTab)
+                .environmentObject(shareViewModel)
             
             Spacer() // To top-align the search bar when there are no results to show
         }
@@ -66,6 +52,7 @@ struct SongSearchView: View {
                 }
         )
         .onAppear {
+            // Open the keyboard when this view is rendered
             isSearchFieldFocused = true
         }
     }
@@ -81,7 +68,10 @@ extension View {
 #Preview {
     @Previewable @State var isSearching: Bool = true
     @Previewable @State var selectedTab = SongShareTab.received
+    let user = UserMock.userJimHalpert
+    
     SongSearchView(searchBarPlaceholderText: "Search...", isSearching: $isSearching, selectedTab: $selectedTab)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.PresetColour.darkgrey)
+        .environmentObject(ShareViewModel(user: user))
 }

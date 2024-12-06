@@ -25,7 +25,7 @@ class ProfileViewModel: ObservableObject {
     /// Initializes the `ProfileViewModel` with the specified `User` and starts the cache timer.
     ///
     /// - Parameter user: The currently logged-in `User` object.
-    init(user: User?){
+    init(user: User?) {
         self.user = user
         startCacheTimer()
     }

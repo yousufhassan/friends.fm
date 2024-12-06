@@ -89,7 +89,10 @@
 		CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */; };
 		CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3CD2C8FCAA300D3D658 /* ViewMoreTopArtists.swift */; };
 		CBB1A3D02C933EBA00D3D658 /* TimeRangeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3CF2C933EBA00D3D658 /* TimeRangeSelector.swift */; };
-		CBB1A3D22C93942B00D3D658 /* ApiResponseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3D12C93942B00D3D658 /* ApiResponseObjects.swift */; };
+		CBB1A3D22C93942B00D3D658 /* ProfileApiResponseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3D12C93942B00D3D658 /* ProfileApiResponseObjects.swift */; };
+		CBB7D0C72D029B94002572C6 /* ShareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0C62D029B94002572C6 /* ShareViewModel.swift */; };
+		CBB7D0C92D02B9D0002572C6 /* ShareApiResponseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0C82D02B9C9002572C6 /* ShareApiResponseObjects.swift */; };
+		CBB7D0CC2D02D6EE002572C6 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */; };
 		CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F512C3673DB00442795 /* TimeUtils.swift */; };
 		CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F552C36770500442795 /* ListeningActivityDetails.swift */; };
 		CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F572C37A6B200442795 /* TrackTimestampView.swift */; };
@@ -191,7 +194,10 @@
 		CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTopSongs.swift; sourceTree = "<group>"; };
 		CBB1A3CD2C8FCAA300D3D658 /* ViewMoreTopArtists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTopArtists.swift; sourceTree = "<group>"; };
 		CBB1A3CF2C933EBA00D3D658 /* TimeRangeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangeSelector.swift; sourceTree = "<group>"; };
-		CBB1A3D12C93942B00D3D658 /* ApiResponseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResponseObjects.swift; sourceTree = "<group>"; };
+		CBB1A3D12C93942B00D3D658 /* ProfileApiResponseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileApiResponseObjects.swift; sourceTree = "<group>"; };
+		CBB7D0C62D029B94002572C6 /* ShareViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewModel.swift; sourceTree = "<group>"; };
+		CBB7D0C82D02B9C9002572C6 /* ShareApiResponseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareApiResponseObjects.swift; sourceTree = "<group>"; };
+		CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		CBC75F512C3673DB00442795 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		CBC75F552C36770500442795 /* ListeningActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityDetails.swift; sourceTree = "<group>"; };
 		CBC75F572C37A6B200442795 /* TrackTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTimestampView.swift; sourceTree = "<group>"; };
@@ -221,8 +227,8 @@
 		CB0854C02C14F5250088E87D /* common */ = {
 			isa = PBXGroup;
 			children = (
-				CB3797F52CA7EB6D009F5D56 /* services */,
 				CB7C05A72C0EBB18001A0062 /* models */,
+				CB3797F52CA7EB6D009F5D56 /* services */,
 				CB7C05A52C0EB8A2001A0062 /* utils */,
 				CB0854C42C155C510088E87D /* views */,
 			);
@@ -232,15 +238,15 @@
 		CB0854C42C155C510088E87D /* views */ = {
 			isa = PBXGroup;
 			children = (
-				CB2FCBA12D004B1E0012FF0F /* searchBars */,
-				CB70E8A32C838F9E00F9A197 /* errors */,
 				CB3B61802C1F83AE0088DFA1 /* AuthenticatedView.swift */,
+				CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */,
 				CB3B617E2C1BDFB00088DFA1 /* PageTitle.swift */,
 				CB9A9AAC2C0BB13E0073817C /* RootView.swift */,
 				CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */,
-				CB0B93642C770C7A003A9720 /* placeholders */,
-				CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */,
 				CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */,
+				CB70E8A32C838F9E00F9A197 /* errors */,
+				CB0B93642C770C7A003A9720 /* placeholders */,
+				CB2FCBA12D004B1E0012FF0F /* searchBars */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -375,12 +381,12 @@
 		CB3417FD2C1BDBB300BE70A8 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				CB454D2C2CC8C73E00AE41D5 /* NonUserProfileView.swift */,
+				CB3724962C3B27CA004883D1 /* ProfileDetails.swift */,
+				CB0E59252CEA5B0B003B30D7 /* ProfileView.swift */,
+				CB3417FE2C1BDBC800BE70A8 /* UserProfileView.swift */,
 				CB454D2B2CC8C71400AE41D5 /* lists */,
 				CB454D2A2CC8C67F00AE41D5 /* viewMore */,
-				CB3724962C3B27CA004883D1 /* ProfileDetails.swift */,
-				CB3417FE2C1BDBC800BE70A8 /* UserProfileView.swift */,
-				CB454D2C2CC8C73E00AE41D5 /* NonUserProfileView.swift */,
-				CB0E59252CEA5B0B003B30D7 /* ProfileView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -395,8 +401,8 @@
 		CB3724982C3B2A99004883D1 /* viewModels */ = {
 			isa = PBXGroup;
 			children = (
+				CBB1A3D12C93942B00D3D658 /* ProfileApiResponseObjects.swift */,
 				CB3724992C3B2AA8004883D1 /* ProfileViewModel.swift */,
-				CBB1A3D12C93942B00D3D658 /* ApiResponseObjects.swift */,
 			);
 			path = viewModels;
 			sourceTree = "<group>";
@@ -443,6 +449,7 @@
 		CB4AF9A32CFD3291005AE716 /* song-sharing */ = {
 			isa = PBXGroup;
 			children = (
+				CBB7D0C52D029B6B002572C6 /* viewModels */,
 				CB4AF9A42CFD32E1005AE716 /* views */,
 			);
 			path = "song-sharing";
@@ -451,10 +458,9 @@
 		CB4AF9A42CFD32E1005AE716 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				CBB7D0CA2D02D6BF002572C6 /* search */,
 				CB2FCB9F2D0047B60012FF0F /* SongShareHomeView.swift */,
 				CB4AF9A52CFD330B005AE716 /* SongShareView.swift */,
-				CB2FCB9B2D0001940012FF0F /* SongSearchView.swift */,
-				CB2FCBA22D0166EE0012FF0F /* SendToFriendsSheet.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -483,9 +489,9 @@
 		CB59BCBC2C2FAED50061C99B /* spotify */ = {
 			isa = PBXGroup;
 			children = (
+				CB59BCBD2C2FAF7F0061C99B /* models */,
 				CB7087502CAB673A00FE97C7 /* services */,
 				CB0854C52C1572270088E87D /* spotifyAPI */,
-				CB59BCBD2C2FAF7F0061C99B /* models */,
 				CB59BCBB2C2FAED50061C99B /* views */,
 			);
 			path = spotify;
@@ -638,13 +644,13 @@
 		CB9A9ADD2C0BEC170073817C /* src */ = {
 			isa = PBXGroup;
 			children = (
-				CB4AF9A32CFD3291005AE716 /* song-sharing */,
 				CB9A9AAA2C0BB13E0073817C /* spotifriendsApp.swift */,
-				CB6A5D892CA684BD0063A757 /* database */,
 				CB9A9ADE2C0C22620073817C /* auth */,
 				CB0854C02C14F5250088E87D /* common */,
+				CB6A5D892CA684BD0063A757 /* database */,
 				CB7C05A62C0EB8F0001A0062 /* friendActivity */,
 				CB3417FC2C1BDB9A00BE70A8 /* profile */,
+				CB4AF9A32CFD3291005AE716 /* song-sharing */,
 				CB59BCBC2C2FAED50061C99B /* spotify */,
 			);
 			path = src;
@@ -660,6 +666,25 @@
 				CB7C05B12C1191A7001A0062 /* views */,
 			);
 			path = auth;
+			sourceTree = "<group>";
+		};
+		CBB7D0C52D029B6B002572C6 /* viewModels */ = {
+			isa = PBXGroup;
+			children = (
+				CBB7D0C82D02B9C9002572C6 /* ShareApiResponseObjects.swift */,
+				CBB7D0C62D029B94002572C6 /* ShareViewModel.swift */,
+			);
+			path = viewModels;
+			sourceTree = "<group>";
+		};
+		CBB7D0CA2D02D6BF002572C6 /* search */ = {
+			isa = PBXGroup;
+			children = (
+				CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */,
+				CB2FCB9B2D0001940012FF0F /* SongSearchView.swift */,
+				CB2FCBA22D0166EE0012FF0F /* SendToFriendsSheet.swift */,
+			);
+			path = search;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -745,13 +770,14 @@
 				CB875CB72C35220C001B364D /* AlbumMock.swift in Sources */,
 				CBB1A3CA2C8E5A8200D3D658 /* ViewMoreRecentTracks.swift in Sources */,
 				CB0B93722C771BBB003A9720 /* Track.swift in Sources */,
-				CBB1A3D22C93942B00D3D658 /* ApiResponseObjects.swift in Sources */,
+				CBB1A3D22C93942B00D3D658 /* ProfileApiResponseObjects.swift in Sources */,
 				CB0B93682C7711F6003A9720 /* AlbumCoverPlaceholder.swift in Sources */,
 				CB3B61812C1F83AE0088DFA1 /* AuthenticatedView.swift in Sources */,
 				CB0B937F2C771D5D003A9720 /* CurrentOrMostRecentTrackMock.swift in Sources */,
 				CB9A9ADC2C0BEC080073817C /* FriendActivityView.swift in Sources */,
 				CB59BCB52C2FA08D0061C99B /* ListeningActivityCard.swift in Sources */,
 				CB3B617F2C1BDFB00088DFA1 /* PageTitle.swift in Sources */,
+				CBB7D0C72D029B94002572C6 /* ShareViewModel.swift in Sources */,
 				CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */,
 				CB875CB52C35195E001B364D /* SpotifyProfileMock.swift in Sources */,
 				CB0854C92C1573D10088E87D /* Constants.swift in Sources */,
@@ -760,6 +786,7 @@
 				CB875CAC2C313494001B364D /* GetListOfUsersFriends.swift in Sources */,
 				CB2FCBA02D0047BA0012FF0F /* SongShareHomeView.swift in Sources */,
 				CB875CBD2C352652001B364D /* TrackContextMock.swift in Sources */,
+				CBB7D0C92D02B9D0002572C6 /* ShareApiResponseObjects.swift in Sources */,
 				CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */,
 				CB3797F22CA68A04009F5D56 /* SpotifyProfile.swift in Sources */,
 				CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */,
@@ -786,6 +813,7 @@
 				CB0B93702C771B47003A9720 /* SpotifyResource.swift in Sources */,
 				CB0854B82C1404710088E87D /* AuthorizationViewModel.swift in Sources */,
 				CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */,
+				CBB7D0CC2D02D6EE002572C6 /* SearchResults.swift in Sources */,
 				CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */,
 				CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */,
 				CB2FCBA32D0166EE0012FF0F /* SendToFriendsSheet.swift in Sources */,

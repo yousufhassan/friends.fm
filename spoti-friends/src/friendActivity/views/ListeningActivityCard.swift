@@ -37,7 +37,7 @@ struct ListeningActivityCard: View, Identifiable {
                     .environmentObject(profileViewModel)
                 ) {
                     ZStack {
-                        ProfileImage(imageName: profile.spotifyId, width: 56, height: 56)
+                        ProfileImage(profile: profile, width: 56, height: 56)
                             .environmentObject(friendActivityViewModel)
                         if track.playedWithinLastFifteenMinutes {
                             Circle()
@@ -76,5 +76,6 @@ struct ListeningActivityCard: View, Identifiable {
         
         ListeningActivityCard(profile: profile, backgroundColor: Color.gray)
             .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
+            .environmentObject(ProfileViewModel(user: user))
     }
 }

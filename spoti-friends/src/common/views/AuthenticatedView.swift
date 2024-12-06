@@ -3,6 +3,7 @@ import SwiftUI
 /// The view for when a user is signed into the app.
 struct AuthenticatedView: View {
     @StateObject var friendActivityViewModel: FriendActivityViewModel
+    @StateObject private var shareViewModel: ShareViewModel
     @StateObject private var profileViewModel: ProfileViewModel
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     
@@ -10,6 +11,7 @@ struct AuthenticatedView: View {
         _friendActivityViewModel = StateObject(
             wrappedValue: FriendActivityViewModel(user: nil, friendActivites: [])
         )
+        _shareViewModel = StateObject(wrappedValue: ShareViewModel(user: nil))
         _profileViewModel = StateObject(wrappedValue: ProfileViewModel(user: nil))
         
         let standardAppearance = UITabBarAppearance()
@@ -32,6 +34,7 @@ struct AuthenticatedView: View {
             SongShareView().tabItem {
                 Label("Share", systemImage: "square.and.arrow.up")
             }
+            .environmentObject(shareViewModel)
             
             ProfileView(profile: friendActivityViewModel.user?.spotifyProfile ?? SpotifyProfileMock.jimHalpert).tabItem {
                 Label("My Profile", systemImage: "person")
@@ -46,6 +49,7 @@ struct AuthenticatedView: View {
                 return
             }
             friendActivityViewModel.user = signedInUser
+            shareViewModel.user = signedInUser
             profileViewModel.user = signedInUser
         }
     }

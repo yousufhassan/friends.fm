@@ -23,6 +23,7 @@ struct SongShareView: View {
     let searchBarPlaceholderText = "What song do you want to share?"
     @State private var isSearching: Bool = false
     @State var selectedTab: SongShareTab = .received
+    @EnvironmentObject var shareViewModel: ShareViewModel
     
     var body: some View {
         ZStack {
@@ -31,6 +32,7 @@ struct SongShareView: View {
                                isSearching: $isSearching,
                                selectedTab: $selectedTab)
                 .transition(.opacity)
+                .environmentObject(shareViewModel)
             } else {
                 SongShareHomeView(searchBarPlaceholderText: searchBarPlaceholderText,
                                   isSearching: $isSearching,
