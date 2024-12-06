@@ -92,6 +92,7 @@
 		CBB1A3D22C93942B00D3D658 /* ApiResponseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3D12C93942B00D3D658 /* ApiResponseObjects.swift */; };
 		CBB7D0C72D029B94002572C6 /* ShareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0C62D029B94002572C6 /* ShareViewModel.swift */; };
 		CBB7D0C92D02B9D0002572C6 /* ShareApiResponseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0C82D02B9C9002572C6 /* ShareApiResponseObjects.swift */; };
+		CBB7D0CC2D02D6EE002572C6 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */; };
 		CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F512C3673DB00442795 /* TimeUtils.swift */; };
 		CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F552C36770500442795 /* ListeningActivityDetails.swift */; };
 		CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F572C37A6B200442795 /* TrackTimestampView.swift */; };
@@ -196,6 +197,7 @@
 		CBB1A3D12C93942B00D3D658 /* ApiResponseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResponseObjects.swift; sourceTree = "<group>"; };
 		CBB7D0C62D029B94002572C6 /* ShareViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewModel.swift; sourceTree = "<group>"; };
 		CBB7D0C82D02B9C9002572C6 /* ShareApiResponseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareApiResponseObjects.swift; sourceTree = "<group>"; };
+		CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		CBC75F512C3673DB00442795 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		CBC75F552C36770500442795 /* ListeningActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityDetails.swift; sourceTree = "<group>"; };
 		CBC75F572C37A6B200442795 /* TrackTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTimestampView.swift; sourceTree = "<group>"; };
@@ -456,10 +458,9 @@
 		CB4AF9A42CFD32E1005AE716 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				CBB7D0CA2D02D6BF002572C6 /* search */,
 				CB2FCB9F2D0047B60012FF0F /* SongShareHomeView.swift */,
 				CB4AF9A52CFD330B005AE716 /* SongShareView.swift */,
-				CB2FCB9B2D0001940012FF0F /* SongSearchView.swift */,
-				CB2FCBA22D0166EE0012FF0F /* SendToFriendsSheet.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -676,6 +677,16 @@
 			path = viewModels;
 			sourceTree = "<group>";
 		};
+		CBB7D0CA2D02D6BF002572C6 /* search */ = {
+			isa = PBXGroup;
+			children = (
+				CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */,
+				CB2FCB9B2D0001940012FF0F /* SongSearchView.swift */,
+				CB2FCBA22D0166EE0012FF0F /* SendToFriendsSheet.swift */,
+			);
+			path = search;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -802,6 +813,7 @@
 				CB0B93702C771B47003A9720 /* SpotifyResource.swift in Sources */,
 				CB0854B82C1404710088E87D /* AuthorizationViewModel.swift in Sources */,
 				CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */,
+				CBB7D0CC2D02D6EE002572C6 /* SearchResults.swift in Sources */,
 				CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */,
 				CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */,
 				CB2FCBA32D0166EE0012FF0F /* SendToFriendsSheet.swift in Sources */,

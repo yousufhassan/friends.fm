@@ -16,9 +16,7 @@ struct SongSearchView: View {
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
     @State private var searchText = ""
-    @State private var searchResults: [Track]? = []
     @FocusState private var isSearchFieldFocused: Bool
-    @State private var selectedTrack: Track?
     
     var body: some View {
         VStack {
@@ -40,36 +38,8 @@ struct SongSearchView: View {
             .padding()
             
             // Search results
-            if let searchResults {
-                //                ScrollView {
-                //                    TrackList(tracks: searchResults) { tappedTrack in
-                //                        selectedTrack = tappedTrack
-                //                    }
-                LazyVStack {
-                    ForEach(searchResults, id: \.id) { track in
-                        TrackView(track: track) { tappedTrack in
-                            selectedTrack = tappedTrack
-                        }
-                        .onAppear {
-                            if track == searchResults.last {
-                                Task {
-                                    ShareViewModel.fetchNextSearchResults()
-                                }
-                            }
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                .sheet(item: $selectedTrack) { track in
-                    SendToFriendsSheet(track: track,
-                                       friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
-                                                 SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson],
-                                       isSearching: $isSearching,
-                                       selectedTab: $selectedTab)
-                }
-                //                }
-                //                .scrollDismissesKeyboard(.immediately)
-            }
+            SearchResults(searchText: $searchText, isSearching: $isSearching, selectedTab: $selectedTab)
+                .environmentObject(shareViewModel)
             
             Spacer() // To top-align the search bar when there are no results to show
         }
@@ -85,13 +55,6 @@ struct SongSearchView: View {
             // Open the keyboard when this view is rendered
             isSearchFieldFocused = true
         }
-        .onChange(of: searchText) { oldSearchText, newSearchText in
-            if (!searchText.isEmpty) {
-                Task {
-                    self.searchResults = await shareViewModel.searchSpotify(for: [.track], text: newSearchText)
-                }
-            }
-        }
     }
 }
 
@@ -105,7 +68,10 @@ extension View {
 #Preview {
     @Previewable @State var isSearching: Bool = true
     @Previewable @State var selectedTab = SongShareTab.received
+    let user = UserMock.userJimHalpert
+    
     SongSearchView(searchBarPlaceholderText: "Search...", isSearching: $isSearching, selectedTab: $selectedTab)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.PresetColour.darkgrey)
+        .environmentObject(ShareViewModel(user: user))
 }

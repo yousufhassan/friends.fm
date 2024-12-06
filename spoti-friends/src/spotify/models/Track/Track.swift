@@ -1,13 +1,21 @@
 import Foundation
 
 /// Object representing a Spotify Track.
-class Track: SpotifyResource, Codable, Identifiable {
+class Track: SpotifyResource, Codable, Identifiable, Equatable {
     var id: String { spotifyUri }
     let spotifyUri: String
     let name: String
     let artists: [Artist]
     let album: Album
     let context: TrackContext?
+    
+    
+    /// Defining what makes two `Track` objects equal for conformance to the `Equatable` protocol.
+    /// Two `Track` objects are considered equal if they have the same `spotifyUri` value.
+    static func == (lhs: Track, rhs: Track) -> Bool {
+        return lhs.spotifyUri == rhs.spotifyUri
+    }
+    
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
     enum CodingKeys: String, CodingKey {
