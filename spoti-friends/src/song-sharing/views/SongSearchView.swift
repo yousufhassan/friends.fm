@@ -9,12 +9,14 @@ import SwiftUI
 ///   - searchBarPlaceholderText: The placeholder text to display in the search bar.
 ///   - isSearching: A binding to a boolean that indicates whether the user is currently searching.
 ///   - selectedTab: A binding to the selected tab in the song sharing section, used for navigation or tab-related actions.
-///   
+///
 struct SongSearchView: View {
+    @EnvironmentObject var shareViewModel: ShareViewModel
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
     @State private var searchText = ""
+    @State private var searchResults: [Track]? = []
     @FocusState private var isSearchFieldFocused: Bool
     @State private var selectedTrack: Track?
     
@@ -40,16 +42,18 @@ struct SongSearchView: View {
             // Search results
             if (searchText != "") {
                 ScrollView {
-                    TrackList(tracks: [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]) { tappedTrack in
-                        selectedTrack = tappedTrack
-                    }
-                    .padding(.horizontal)
-                    .sheet(item: $selectedTrack) { track in
-                        SendToFriendsSheet(track: track,
-                                           friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
-                                                     SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson],
-                                           isSearching: $isSearching,
-                                           selectedTab: $selectedTab)
+                    if let searchResults {
+                        TrackList(tracks: searchResults) { tappedTrack in
+                            selectedTrack = tappedTrack
+                        }
+                        .padding(.horizontal)
+                        .sheet(item: $selectedTrack) { track in
+                            SendToFriendsSheet(track: track,
+                                               friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
+                                                         SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson],
+                                               isSearching: $isSearching,
+                                               selectedTab: $selectedTab)
+                        }
                     }
                 }
                 .scrollDismissesKeyboard(.immediately)
@@ -66,7 +70,15 @@ struct SongSearchView: View {
                 }
         )
         .onAppear {
+            // Open the keyboard when this view is rendered
             isSearchFieldFocused = true
+        }
+        .onChange(of: searchText) { oldSearchText, newSearchText in
+            if (!searchText.isEmpty) {
+                Task {
+                    self.searchResults = await shareViewModel.searchSpotify(text: newSearchText)
+                }
+            }
         }
     }
 }

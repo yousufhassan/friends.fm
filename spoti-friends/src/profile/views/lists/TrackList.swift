@@ -28,7 +28,7 @@ struct TrackList: View {
         // Actual list once data is available
         else {
             VStack (alignment: .leading) {
-                ForEach(tracks.indices) { index in
+                ForEach(tracks.indices, id: \.self) { index in
                     let track = tracks[index]
                     HStack {
                         if (showItemNumbers) {
