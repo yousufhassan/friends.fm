@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// An enum for the available tabs in the song sharing home view.
 enum SongShareTab {
     case received
     case sent
