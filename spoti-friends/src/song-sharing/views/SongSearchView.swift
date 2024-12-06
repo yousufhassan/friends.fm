@@ -40,23 +40,35 @@ struct SongSearchView: View {
             .padding()
             
             // Search results
-            if (searchText != "") {
-                ScrollView {
-                    if let searchResults {
-                        TrackList(tracks: searchResults) { tappedTrack in
+            if let searchResults {
+                //                ScrollView {
+                //                    TrackList(tracks: searchResults) { tappedTrack in
+                //                        selectedTrack = tappedTrack
+                //                    }
+                LazyVStack {
+                    ForEach(searchResults, id: \.id) { track in
+                        TrackView(track: track) { tappedTrack in
                             selectedTrack = tappedTrack
                         }
-                        .padding(.horizontal)
-                        .sheet(item: $selectedTrack) { track in
-                            SendToFriendsSheet(track: track,
-                                               friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
-                                                         SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson],
-                                               isSearching: $isSearching,
-                                               selectedTab: $selectedTab)
+                        .onAppear {
+                            if track == searchResults.last {
+                                Task {
+                                    ShareViewModel.fetchNextSearchResults()
+                                }
+                            }
                         }
                     }
                 }
-                .scrollDismissesKeyboard(.immediately)
+                .padding(.horizontal)
+                .sheet(item: $selectedTrack) { track in
+                    SendToFriendsSheet(track: track,
+                                       friends: [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
+                                                 SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson],
+                                       isSearching: $isSearching,
+                                       selectedTab: $selectedTab)
+                }
+                //                }
+                //                .scrollDismissesKeyboard(.immediately)
             }
             
             Spacer() // To top-align the search bar when there are no results to show
@@ -76,7 +88,7 @@ struct SongSearchView: View {
         .onChange(of: searchText) { oldSearchText, newSearchText in
             if (!searchText.isEmpty) {
                 Task {
-                    self.searchResults = await shareViewModel.searchSpotify(text: newSearchText)
+                    self.searchResults = await shareViewModel.searchSpotify(for: [.track], text: newSearchText)
                 }
             }
         }

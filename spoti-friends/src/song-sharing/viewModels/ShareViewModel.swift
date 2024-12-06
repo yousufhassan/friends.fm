@@ -16,7 +16,6 @@ class ShareViewModel: ObservableObject {
     
     
     public func searchSpotify(for resourceTypes: [SearchableResource]? = nil, text: String) async -> [Track]? {
-        printInfo("Search: \(text)")
         do {
             guard let signedInUser = user else { throw AuthorizationError.missingUser }
             let accessToken = try await UserServiceManager.shared
@@ -38,11 +37,16 @@ class ShareViewModel: ObservableObject {
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
             
+            printInfo("Searching Spotify for query: \(text), types: [\(resourceTypesAsStrings)]")
             return response.tracks.items
             
         } catch {
             printError("When performing Spotify search: \(error)")
             return nil
         }
+    }
+    
+    public func fetchNextSearchResults () {
+        printInfo("Fetching more results")
     }
 }
