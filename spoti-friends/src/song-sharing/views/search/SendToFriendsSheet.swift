@@ -40,9 +40,18 @@ struct SendToFriendsSheet: View {
     
     var body: some View {
         VStack {
+            // Send to label
             Text("Send to")
                 .bold()
             
+            // Preview of track to send
+            TrackView(track: track) {
+                () // Overriding the on-tap gesture to do nothing.
+            }
+            .padding(.horizontal)
+            Divider()
+            
+            // List of friends
             ScrollView {
                 LazyVGrid(columns: threeColumns, spacing: 8) {
                     ForEach(friends) { friend in
