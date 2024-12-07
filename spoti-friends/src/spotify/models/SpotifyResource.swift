@@ -1,7 +1,7 @@
 import Foundation
 
 /// The `SpotifyResource` protocol ensures each abiding object has a well-defined spotifyUri attribute.
-protocol SpotifyResource {
+protocol SpotifyResource: Codable {
     var spotifyUri: String { get }
     var name: String { get }
 }

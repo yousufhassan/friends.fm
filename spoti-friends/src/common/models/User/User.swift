@@ -50,7 +50,7 @@ class User: Codable {
     }
     
     /// Custom initializer for decoding from Appwrite.
-    /// This makes sure to decode the `SpotifyProfile` using the Appwrite CodingKeys.
+    /// This makes sure to decode the `User` using the Appwrite CodingKeys.
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
