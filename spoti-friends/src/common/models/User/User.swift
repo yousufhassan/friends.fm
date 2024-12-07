@@ -21,6 +21,7 @@ class User: Codable {
     private var authorizationStatus: AuthorizationStatus
     private var spDcCookie: SpDcCookie
     
+    /// Mapping of the Swift object properties to the Appwrite `User` Collection model.
     enum CodingKeys: String, CodingKey {
         case spotifyId = "$id"
         case spotifyProfile
