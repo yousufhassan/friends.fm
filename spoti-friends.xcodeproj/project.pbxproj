@@ -94,6 +94,7 @@
 		CBB7D0C92D02B9D0002572C6 /* ShareApiResponseObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0C82D02B9C9002572C6 /* ShareApiResponseObjects.swift */; };
 		CBB7D0CC2D02D6EE002572C6 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */; };
 		CBB7D0D12D041E8C002572C6 /* SharedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0D02D041E86002572C6 /* SharedResource.swift */; };
+		CBB7D0D42D052B4B002572C6 /* ShareServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0D32D052B43002572C6 /* ShareServiceProtocol.swift */; };
 		CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F512C3673DB00442795 /* TimeUtils.swift */; };
 		CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F552C36770500442795 /* ListeningActivityDetails.swift */; };
 		CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F572C37A6B200442795 /* TrackTimestampView.swift */; };
@@ -200,6 +201,7 @@
 		CBB7D0C82D02B9C9002572C6 /* ShareApiResponseObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareApiResponseObjects.swift; sourceTree = "<group>"; };
 		CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		CBB7D0D02D041E86002572C6 /* SharedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedResource.swift; sourceTree = "<group>"; };
+		CBB7D0D32D052B43002572C6 /* ShareServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareServiceProtocol.swift; sourceTree = "<group>"; };
 		CBC75F512C3673DB00442795 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		CBC75F552C36770500442795 /* ListeningActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityDetails.swift; sourceTree = "<group>"; };
 		CBC75F572C37A6B200442795 /* TrackTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTimestampView.swift; sourceTree = "<group>"; };
@@ -448,14 +450,15 @@
 			path = lists;
 			sourceTree = "<group>";
 		};
-		CB4AF9A32CFD3291005AE716 /* song-sharing */ = {
+		CB4AF9A32CFD3291005AE716 /* share */ = {
 			isa = PBXGroup;
 			children = (
+				CBB7D0D22D052B35002572C6 /* services */,
 				CBB7D0D02D041E86002572C6 /* SharedResource.swift */,
 				CBB7D0C52D029B6B002572C6 /* viewModels */,
 				CB4AF9A42CFD32E1005AE716 /* views */,
 			);
-			path = "song-sharing";
+			path = share;
 			sourceTree = "<group>";
 		};
 		CB4AF9A42CFD32E1005AE716 /* views */ = {
@@ -653,7 +656,7 @@
 				CB6A5D892CA684BD0063A757 /* database */,
 				CB7C05A62C0EB8F0001A0062 /* friendActivity */,
 				CB3417FC2C1BDB9A00BE70A8 /* profile */,
-				CB4AF9A32CFD3291005AE716 /* song-sharing */,
+				CB4AF9A32CFD3291005AE716 /* share */,
 				CB59BCBC2C2FAED50061C99B /* spotify */,
 			);
 			path = src;
@@ -688,6 +691,14 @@
 				CB2FCBA22D0166EE0012FF0F /* SendToFriendsSheet.swift */,
 			);
 			path = search;
+			sourceTree = "<group>";
+		};
+		CBB7D0D22D052B35002572C6 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				CBB7D0D32D052B43002572C6 /* ShareServiceProtocol.swift */,
+			);
+			path = services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -827,6 +838,7 @@
 				CB7087522CAB675800FE97C7 /* ProfileServiceProtocol.swift in Sources */,
 				CB0854C72C15723C0088E87D /* SpotifyAPI.swift in Sources */,
 				CB3797FE2CA7F96B009F5D56 /* UserServiceManager.swift in Sources */,
+				CBB7D0D42D052B4B002572C6 /* ShareServiceProtocol.swift in Sources */,
 				CB0B93782C771C23003A9720 /* Artist.swift in Sources */,
 				CB875CC02C352A4E001B364D /* ListeningActivityCardMock.swift in Sources */,
 				CB9A9AAD2C0BB13E0073817C /* RootView.swift in Sources */,
