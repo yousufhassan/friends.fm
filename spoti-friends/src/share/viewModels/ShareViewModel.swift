@@ -61,6 +61,31 @@ class ShareViewModel: ObservableObject {
         }
     }
     
+    /// Shares a Spotify resource (e.g., track) with a set of receivers.
+    ///
+    /// - Parameters:
+    ///   - resource: The Spotify resource to be shared. The resource must conform to the `SpotifyResource` protocol.
+    ///   - receivers: A set of `SpotifyProfile` objects representing the users to whom the resource will be shared.
+    ///
+    /// - Returns: A Boolean indicating whether the sharing operation was successful (`true`) or failed (`false`).
+    ///
+    /// The signed in user is the sender.
+    public func share<T: SpotifyResource>(resource: T, to receivers: Set<SpotifyProfile>)
+    async -> Bool {
+        do {
+            guard let sender = self.user else { throw AuthorizationError.missingUser }
+            
+            for receiver in receivers {
+                let sharedResource = SharedResource(resource: resource, sender: sender, receiver: receiver)
+                try await ShareServiceManager.shared.share(resource: sharedResource)
+            }
+            return true
+        } catch {
+            printError("When sharing resources: \(error)")
+            return false
+        }
+    }
+    
     // TODO: Complete when implementing pagination
     public func fetchNextSearchResults () {}
 }

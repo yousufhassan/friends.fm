@@ -95,6 +95,8 @@
 		CBB7D0CC2D02D6EE002572C6 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */; };
 		CBB7D0D12D041E8C002572C6 /* SharedResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0D02D041E86002572C6 /* SharedResource.swift */; };
 		CBB7D0D42D052B4B002572C6 /* ShareServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0D32D052B43002572C6 /* ShareServiceProtocol.swift */; };
+		CBB7D0D62D053403002572C6 /* AppwriteShareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0D52D0533FB002572C6 /* AppwriteShareService.swift */; };
+		CBB7D0D82D053486002572C6 /* ShareServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7D0D72D053481002572C6 /* ShareServiceManager.swift */; };
 		CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F512C3673DB00442795 /* TimeUtils.swift */; };
 		CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F552C36770500442795 /* ListeningActivityDetails.swift */; };
 		CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F572C37A6B200442795 /* TrackTimestampView.swift */; };
@@ -202,6 +204,8 @@
 		CBB7D0CB2D02D6EE002572C6 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		CBB7D0D02D041E86002572C6 /* SharedResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedResource.swift; sourceTree = "<group>"; };
 		CBB7D0D32D052B43002572C6 /* ShareServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareServiceProtocol.swift; sourceTree = "<group>"; };
+		CBB7D0D52D0533FB002572C6 /* AppwriteShareService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppwriteShareService.swift; sourceTree = "<group>"; };
+		CBB7D0D72D053481002572C6 /* ShareServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareServiceManager.swift; sourceTree = "<group>"; };
 		CBC75F512C3673DB00442795 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		CBC75F552C36770500442795 /* ListeningActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityDetails.swift; sourceTree = "<group>"; };
 		CBC75F572C37A6B200442795 /* TrackTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTimestampView.swift; sourceTree = "<group>"; };
@@ -422,9 +426,9 @@
 		CB3797FB2CA7F90A009F5D56 /* user */ = {
 			isa = PBXGroup;
 			children = (
+				CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */,
 				CB3797FD2CA7F962009F5D56 /* UserServiceManager.swift */,
 				CB3797F92CA7F655009F5D56 /* UserServiceProtocol.swift */,
-				CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */,
 			);
 			path = user;
 			sourceTree = "<group>";
@@ -696,6 +700,8 @@
 		CBB7D0D22D052B35002572C6 /* services */ = {
 			isa = PBXGroup;
 			children = (
+				CBB7D0D52D0533FB002572C6 /* AppwriteShareService.swift */,
+				CBB7D0D72D053481002572C6 /* ShareServiceManager.swift */,
 				CBB7D0D32D052B43002572C6 /* ShareServiceProtocol.swift */,
 			);
 			path = services;
@@ -784,7 +790,9 @@
 				CB875CB72C35220C001B364D /* AlbumMock.swift in Sources */,
 				CBB1A3CA2C8E5A8200D3D658 /* ViewMoreRecentTracks.swift in Sources */,
 				CB0B93722C771BBB003A9720 /* Track.swift in Sources */,
+				CBB7D0D82D053486002572C6 /* ShareServiceManager.swift in Sources */,
 				CBB1A3D22C93942B00D3D658 /* ProfileApiResponseObjects.swift in Sources */,
+				CBB7D0D62D053403002572C6 /* AppwriteShareService.swift in Sources */,
 				CB0B93682C7711F6003A9720 /* AlbumCoverPlaceholder.swift in Sources */,
 				CB3B61812C1F83AE0088DFA1 /* AuthenticatedView.swift in Sources */,
 				CB0B937F2C771D5D003A9720 /* CurrentOrMostRecentTrackMock.swift in Sources */,

@@ -35,6 +35,7 @@ struct SearchResults: View {
                                            friends: user.getFriends(),
                                            isSearching: $isSearching,
                                            selectedTab: $selectedTab)
+                        .environmentObject(shareViewModel)
                     } else {
                         SomethingWentWrongView()
                     }

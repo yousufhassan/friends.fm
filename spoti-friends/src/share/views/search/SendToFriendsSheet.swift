@@ -11,6 +11,7 @@ import SwiftUI
 ///   - selectedFriends: Tracks the currently selected friends to send the song to.
 ///
 struct SendToFriendsSheet: View {
+    @EnvironmentObject var shareViewModel: ShareViewModel
     let track: Track
     let friends: [SpotifyProfile]
     @State var selectedFriends: Set<SpotifyProfile> = []
@@ -79,6 +80,7 @@ struct SendToFriendsSheet: View {
             // Conditional Send Button, if friend(s) are selected
             if (!selectedFriends.isEmpty) {
                 SendTrackButton(track: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab)
+                    .environmentObject(shareViewModel)
             }
             
             Spacer()
@@ -170,6 +172,7 @@ struct FriendSelectedIndicator: View {
 ///   - track: The track to be sent.
 ///   - selectedFriends: A binding to the set of currently selected friends.
 struct SendTrackButton: View {
+    @EnvironmentObject var shareViewModel: ShareViewModel
     let track: Track
     @Binding var selectedFriends: Set<SpotifyProfile>
     @Binding var isSearching: Bool
@@ -186,6 +189,14 @@ struct SendTrackButton: View {
         Button(action: {
             let friendNames = selectedFriends.map { $0.displayName }.joined(separator: ", ")
             printInfo("Sending \(track.name) to \(friendNames)")
+            Task {
+                let successful = await shareViewModel.share(resource: track, to: selectedFriends)
+                
+                if (!successful) {
+                    // TODO: Render the error to the user
+                }
+            }
+            
             
             // Redirect back to the Song Share - Sent tab
             withAnimation(.easeOut(duration: 0.2)) {
