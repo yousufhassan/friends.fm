@@ -7,12 +7,19 @@ class Album: SpotifyResource, Codable {
     let image: String
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
-    enum CodingKeys: String, CodingKey {
+    enum SpotifyCodingKeys: String, CodingKey {
         case spotifyUri = "uri"
         case name
         case image = "images"
     }
     
+//    /// Mapping of the Swift object properties to the Appwrite Collection model.
+//    enum AppwriteCodingKeys: String, CodingKey {
+//        case spotifyUri = "uri"
+//        case name
+//        case image = "images"
+//    }
+//    
     init(spotifyUri: String, name: String, image: String) {
         self.spotifyUri = spotifyUri
         self.name = name
@@ -21,7 +28,7 @@ class Album: SpotifyResource, Codable {
     
     /// Custom initializer for decoding from Spotify API
     required init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: SpotifyCodingKeys.self)
         self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
         self.name = try container.decode(String.self, forKey: .name)
         self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)

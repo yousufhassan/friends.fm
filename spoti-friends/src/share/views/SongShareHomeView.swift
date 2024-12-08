@@ -93,6 +93,7 @@ struct SongShareHomeView: View {
                 if let tracks: [SharedResource<Track>] = await shareViewModel.getCurrentUsersSentResources() {
                     sentTracks = tracks.compactMap { $0.getResource() as Track }
                 }
+                print("done")
             }
         }
     }

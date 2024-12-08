@@ -27,10 +27,22 @@ struct SpotifyImage: Decodable {
 ///   - container: The `KeyedDecodingContainer` from which to decode the images.
 ///   - key: The key used to decode the array of `SpotifyImage` objects.
 /// - Returns: The URL of the first image if available; otherwise, an empty string.
+///
+/// IMPORTANT NOTE: This function has been extended to decode from Appwrite as well, which stores a single image as a `String`.
+/// I did not create new decoders for tracks, albums, artists, and more because we are not storing them in the database as of writing this/
+/// We don't want to persist or manage the data; Spotify is responsible for that. However, the decoders for these tracks, artists, albums
+/// are still specific to the Spotify API response objects and they use this function to decode the images. I have added the `else if`
+/// branch which the code will fall into if it cannot decode it as a `[SpotifyImage]`. That would indicate we are decoding from
+/// Appwrite and not Spotify.
+/// I know. I don't like it either. But I thought it was better than writing new decoders for each Spotify resource type, considering they won't
+/// even be stored in the database.
 public func decodeAndExtractFirstSpotifyImageURL<K: CodingKey>(from container: KeyedDecodingContainer<K>, forKey key: K) -> String {
     if let images = try? container.decode([SpotifyImage].self, forKey: key) {
         return images.first?.url ?? ""
-    } else {
+    } else if let images = try? container.decode(String.self, forKey: key) {
+        return images
+    }
+    else {
         return ""
     }
 }
