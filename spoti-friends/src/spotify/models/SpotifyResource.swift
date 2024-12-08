@@ -36,13 +36,11 @@ struct SpotifyImage: Decodable {
 /// Appwrite and not Spotify.
 /// I know. I don't like it either. But I thought it was better than writing new decoders for each Spotify resource type, considering they won't
 /// even be stored in the database.
-public func decodeAndExtractFirstSpotifyImageURL<K: CodingKey>(from container: KeyedDecodingContainer<K>, forKey key: K) -> String {
-    if let images = try? container.decode([SpotifyImage].self, forKey: key) {
-        return images.first?.url ?? ""
-    } else if let images = try? container.decode(String.self, forKey: key) {
-        return images
-    }
-    else {
-        return ""
+public func decodeAndExtractFirstSpotifyImageURL<K: CodingKey>(from container: KeyedDecodingContainer<K>, forKey key: K) -> String {    
+    if let images = try? container.decode([SpotifyImage].self, forKey: key),
+              let firstImage = images.first {
+        return firstImage.url
+    } else {
+        return "" // Default to empty string if no image is found
     }
 }

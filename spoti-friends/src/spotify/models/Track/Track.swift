@@ -18,12 +18,20 @@ class Track: SpotifyResource, Codable, Identifiable, Equatable {
     
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
-    enum CodingKeys: String, CodingKey {
+    enum SpotifyCodingKeys: String, CodingKey {
         case spotifyUri = "uri"
         case name
         case artists
         case album
         case context
+    }
+    
+    /// Mapping of the Swift object properties to the Appwrite Collection model.
+    enum AppwriteCodingKeys: String, CodingKey {
+        case spotifyUri = "uri"
+        case name
+        case artists
+        case album
     }
     
     init(spotifyUri: String, name: String, artists: [Artist], album: Album, context: TrackContext? = nil) {
@@ -36,12 +44,26 @@ class Track: SpotifyResource, Codable, Identifiable, Equatable {
     
     /// Custom initializer for decoding from Spotify API
     required init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: SpotifyCodingKeys.self)
         
         self.spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? ""
         self.name = try container.decode(String.self, forKey: .name)
         self.artists = try container.decode([Artist].self, forKey: .artists)
         self.album = try container.decode(Album.self, forKey: .album)
         self.context = try container.decodeIfPresent(TrackContext.self, forKey: .context)
+    }
+    
+    /// Custom initializer for decoding an Appwrite response from the Appwrite document data
+    convenience init(fromAppwrite decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: AppwriteCodingKeys.self)
+        let spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? ""
+        let name = try container.decode(String.self, forKey: .name)
+        let artists = try container.decode([Artist].self, forKey: .artists)
+        let album = try container.decode(Album.self, forKey: .album)
+        
+        //        let albumDecoder = try container.superDecoder(forKey: .album)
+        //        let album = try Album(fromAppwrite: albumDecoder)
+        
+        self.init(spotifyUri: spotifyUri, name: name, artists: artists, album: album)
     }
 }
