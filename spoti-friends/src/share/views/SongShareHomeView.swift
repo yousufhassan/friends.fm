@@ -14,16 +14,16 @@ struct SongShareHomeView: View {
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @State private var receivedTracks: [Track]
-    @State private var sentTracks: [Track]
+    @Binding var receivedTracks: [Track]
+    @Binding var sentTracks: [Track]
     
     init(searchBarPlaceholderText: String, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>,
-         receivedTracks: [Track] = [], sentTracks: [Track] = []) {
+         receivedTracks: Binding<[Track]>, sentTracks: Binding<[Track]>) {
         self.searchBarPlaceholderText = searchBarPlaceholderText
         self._isSearching = isSearching
         self._selectedTab = selectedTab
-        self.receivedTracks = receivedTracks
-        self.sentTracks = sentTracks
+        self._receivedTracks = receivedTracks
+        self._sentTracks = sentTracks
         
         
         // Picker background color
@@ -102,16 +102,12 @@ struct SongShareHomeView: View {
 #Preview {
     @Previewable @State var isSearching = false
     @Previewable @State var selectedTab = SongShareTab.received
+    @Previewable @State var receivedTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
+    @Previewable @State var sentTracks = [TrackMock.iRememberEverything]
     let placeholderText = "What song do you want to share?"
-    let receivedTracks: [Track] = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
-    let sentTracks: [Track] = [TrackMock.luxury]
     
     SongShareHomeView(searchBarPlaceholderText: placeholderText, isSearching: $isSearching, selectedTab: $selectedTab,
-                      receivedTracks: receivedTracks, sentTracks: sentTracks)
+                      receivedTracks: $receivedTracks, sentTracks: $sentTracks)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.PresetColour.darkgrey)
 }

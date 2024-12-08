@@ -20,23 +20,28 @@ enum SongShareTab {
 ///   - searchBarPlaceholderText: A string used as placeholder text in the search bar.
 ///   - isSearching: A state variable that tracks whether the user is in search mode.
 struct SongShareView: View {
+    @EnvironmentObject var shareViewModel: ShareViewModel
     let searchBarPlaceholderText = "What song do you want to share?"
     @State private var isSearching: Bool = false
     @State var selectedTab: SongShareTab = .received
-    @EnvironmentObject var shareViewModel: ShareViewModel
+    @State var receivedTracks: [Track] = []
+    @State var sentTracks: [Track] = []
     
     var body: some View {
         ZStack {
             if (self.isSearching) {
                 SongSearchView(searchBarPlaceholderText: searchBarPlaceholderText,
                                isSearching: $isSearching,
-                               selectedTab: $selectedTab)
+                               selectedTab: $selectedTab,
+                               sentTracks: $sentTracks)
                 .transition(.opacity)
                 .environmentObject(shareViewModel)
             } else {
                 SongShareHomeView(searchBarPlaceholderText: searchBarPlaceholderText,
                                   isSearching: $isSearching,
-                                  selectedTab: $selectedTab)
+                                  selectedTab: $selectedTab,
+                                  receivedTracks: $receivedTracks,
+                                  sentTracks: $sentTracks)
                 .environmentObject(shareViewModel)
             }
         }
@@ -46,5 +51,14 @@ struct SongShareView: View {
 }
 
 #Preview {
-    SongShareView()
+    let user = UserMock.userJimHalpert
+    let receivedTracks: [Track] = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
+                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
+    let sentTracks: [Track] = [TrackMock.luxury]
+    
+    SongShareView(receivedTracks: receivedTracks, sentTracks: sentTracks)
+        .environmentObject(ShareViewModel(user: user))
 }

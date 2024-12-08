@@ -17,6 +17,7 @@ struct SendToFriendsSheet: View {
     @State var selectedFriends: Set<SpotifyProfile> = []
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
+    @Binding var sentTracks: [Track]
     
     /// Toggles the selected status for `friend`.
     ///
@@ -79,7 +80,7 @@ struct SendToFriendsSheet: View {
             
             // Conditional Send Button, if friend(s) are selected
             if (!selectedFriends.isEmpty) {
-                SendTrackButton(track: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab)
+                SendTrackButton(track: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab, sentTracks: $sentTracks)
                     .environmentObject(shareViewModel)
             }
             
@@ -95,6 +96,7 @@ struct SendToFriendsSheet: View {
 #Preview {
     @Previewable @State var showSheet = true
     @Previewable @State var selectedTab = SongShareTab.received
+    @Previewable @State var sentTracks = [TrackMock.luxury]
     let track = TrackMock.traitor
     let friends = [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
                    SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson]
@@ -103,7 +105,8 @@ struct SendToFriendsSheet: View {
         showSheet = true
     }
     .sheet(isPresented: $showSheet) {
-        SendToFriendsSheet(track: track, friends: friends, isSearching: $showSheet, selectedTab: $selectedTab)
+        SendToFriendsSheet(track: track, friends: friends, isSearching: $showSheet,
+                           selectedTab: $selectedTab, sentTracks: $sentTracks)
     }
 }
 
@@ -177,12 +180,15 @@ struct SendTrackButton: View {
     @Binding var selectedFriends: Set<SpotifyProfile>
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
+    @Binding var sentTracks: [Track]
     
-    init(track: Track, toFriends: Binding<Set<SpotifyProfile>>, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>) {
+    init(track: Track, toFriends: Binding<Set<SpotifyProfile>>, isSearching: Binding<Bool>,
+         selectedTab: Binding<SongShareTab>, sentTracks: Binding<[Track]>) {
         self.track = track
         self._selectedFriends = toFriends
         self._isSearching = isSearching
         self._selectedTab = selectedTab
+        self._sentTracks = sentTracks
     }
     
     var body: some View {
@@ -192,7 +198,10 @@ struct SendTrackButton: View {
             Task {
                 let successful = await shareViewModel.share(resource: track, to: selectedFriends)
                 
-                if (!successful) {
+                if (successful) {
+                    sentTracks.append(track)
+                }
+                else {
                     // TODO: Render the error to the user
                 }
             }
