@@ -86,6 +86,26 @@ class ShareViewModel: ObservableObject {
         }
     }
     
+    public func getCurrentUsersSentResources<T: SpotifyResource>() async -> [SharedResource<T>]? {
+        do {
+            guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
+            return await self.getSentResources(sender: signedInUser)
+        } catch {
+            printError("When getting resources sent: \(error).")
+            return nil
+        }
+    }
+    
+    public func getSentResources<T: SpotifyResource>(sender: User) async -> [SharedResource<T>]? {
+        do {
+            let resources: [SharedResource<T>] = try await ShareServiceManager.shared.fetchSentResources(sender: sender)
+            return resources
+        } catch {
+            printError("When getting resources sent: \(error).")
+            return nil
+        }
+    }
+    
     // TODO: Complete when implementing pagination
     public func fetchNextSearchResults () {}
 }

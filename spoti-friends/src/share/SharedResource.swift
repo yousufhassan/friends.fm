@@ -37,7 +37,10 @@ class SharedResource<T: SpotifyResource>: Codable, Identifiable {
         self.id = try container.decode(UUID.self, forKey: .id)
         self.type = try container.decode(ResourceType.self, forKey: .type)
         self.sender = try container.decode(User.self, forKey: .sender)
-        self.receiver = try container.decode(SpotifyProfile.self, forKey: .receiver)
+
+        // Decode spotifyProfile using the Appwrite keys
+        let spotifyProfileDecoder = try container.superDecoder(forKey: .receiver)
+        self.receiver = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
         
         /// Converting from `Integer` to `TimeInterval` since Appwrite only supports the former.
         let sharedTsInt = try container.decode(Int.self, forKey: .sharedTs)
@@ -110,6 +113,10 @@ class SharedResource<T: SpotifyResource>: Codable, Identifiable {
     // Getters (no setters since those attributes should be immutable once initialized)
     public func getId() -> UUID {
         return self.id
+    }
+    
+    public func getIdString() -> String {
+        return self.id.uuidString
     }
     
     public func getType() -> ResourceType {

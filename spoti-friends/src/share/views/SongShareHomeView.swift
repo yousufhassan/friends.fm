@@ -10,6 +10,7 @@ import SwiftUI
 ///   - isSearching: A boolean denoting whether or not the search bar is focused (true) or unfocused (false).
 ///
 struct SongShareHomeView: View {
+    @EnvironmentObject var shareViewModel: ShareViewModel
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
@@ -86,6 +87,13 @@ struct SongShareHomeView: View {
                 .tag(SongShareTab.sent)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        }
+        .onAppear {
+            Task {
+                if let tracks: [SharedResource<Track>] = await shareViewModel.getCurrentUsersSentResources() {
+                    sentTracks = tracks.compactMap { $0.getResource() as Track }
+                }
+            }
         }
     }
 }

@@ -26,4 +26,22 @@ class ShareServiceManager {
     func share<T: SpotifyResource>(resource: SharedResource<T>) async throws -> Void {
         return try await self.shareService.share(resource: resource)
     }
+    
+    /// Fetches a list of shared resources sent by the `sender`, with support for cursor-based pagination.
+    /// This function retrieves shared resources starting after the provided `lastResourceId`,
+    /// and limits the number of results based on the specified `limit`.
+    ///
+    /// - Parameters:
+    ///   - sender: The user who sent these resources.
+    ///   - limit: Optional. The maximum number of resources to fetch in one request. Default: 25.
+    ///   - lastResourceId: Optional. The ID of the last resource from the previous fetch for cursor pagination.
+    ///     If `nil`, the request fetches resources from the beginning.
+    ///
+    /// - Returns: An array of `SharedResource` objects of type `T`, where `T` conforms to `SpotifyResource`.
+    /// - Throws: This function throws an error if the data cannot be fetched, such as a network error or invalid data response.
+    func fetchSentResources<T: SpotifyResource>(sender: User, limit: Int = 25, lastResourceId: UUID? = nil)
+    async throws -> [SharedResource<T>] {
+        return try await
+        self.shareService.fetchSentResources(sender: sender, limit: limit, lastResourceId: lastResourceId)
+    }
 }

@@ -37,6 +37,7 @@ struct SongShareView: View {
                 SongShareHomeView(searchBarPlaceholderText: searchBarPlaceholderText,
                                   isSearching: $isSearching,
                                   selectedTab: $selectedTab)
+                .environmentObject(shareViewModel)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
