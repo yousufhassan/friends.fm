@@ -5,6 +5,7 @@ import SwiftUI
 /// - Returns: The friend activity page view.
 struct FriendActivityView: View {
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
+    @State private var contentHeight: CGFloat = 0
     
     var body: some View {
         NavigationStack {
@@ -35,6 +36,18 @@ struct FriendActivityView: View {
                         }
                         .padding()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        
+                        VStack {
+                            Text("Data provided by")
+                                .font(.callout)
+                                .foregroundStyle(Color.PresetColour.spotifyDarkGrey)
+                            Image("spotify-logo-black")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 170)
+                        }
+                        .padding(.vertical, 12)
+                        
                     }
                 }
             }
@@ -59,5 +72,6 @@ struct FriendActivityView: View {
         
         FriendActivityView()
             .environmentObject(FriendActivityViewModel(user: user, friendActivites: activities))
+            .environmentObject(ProfileViewModel(user: user))
     }
 }
