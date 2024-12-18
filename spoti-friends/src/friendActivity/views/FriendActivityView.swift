@@ -37,6 +37,7 @@ struct FriendActivityView: View {
                         .padding()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         
+                        // Spotify Attribution
                         VStack {
                             Text("Data provided by")
                                 .font(.callout)
@@ -44,7 +45,7 @@ struct FriendActivityView: View {
                             Image("spotify-logo-black")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 170)
+                                .frame(width: 120)
                         }
                         .padding(.vertical, 12)
                         

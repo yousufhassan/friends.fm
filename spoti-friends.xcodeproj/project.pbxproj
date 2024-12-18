@@ -50,7 +50,7 @@
 		CB7087562CAB68F700FE97C7 /* ProfileServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */; };
 		CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */; };
 		CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89F2C8017CD00F9A197 /* ArtistList.swift */; };
-		CB70E8A22C816AAA00F9A197 /* OpenInSpotifyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */; };
+		CB70E8A22C816AAA00F9A197 /* OpenSpotifyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A12C816AAA00F9A197 /* OpenSpotifyButton.swift */; };
 		CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */; };
 		CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */; };
 		CB7C05A42C0EB4DB001A0062 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A32C0EB4DB001A0062 /* Utils.swift */; };
@@ -142,7 +142,7 @@
 		CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileServiceManager.swift; sourceTree = "<group>"; };
 		CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackOrArtistListPlaceholder.swift; sourceTree = "<group>"; };
 		CB70E89F2C8017CD00F9A197 /* ArtistList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistList.swift; sourceTree = "<group>"; };
-		CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInSpotifyButton.swift; sourceTree = "<group>"; };
+		CB70E8A12C816AAA00F9A197 /* OpenSpotifyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSpotifyButton.swift; sourceTree = "<group>"; };
 		CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomethingWentWrongView.swift; sourceTree = "<group>"; };
 		CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrors.swift; sourceTree = "<group>"; };
 		CB7C05A32C0EB4DB001A0062 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -222,7 +222,7 @@
 				CB9A9AAC2C0BB13E0073817C /* RootView.swift */,
 				CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */,
 				CB0B93642C770C7A003A9720 /* placeholders */,
-				CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */,
+				CB70E8A12C816AAA00F9A197 /* OpenSpotifyButton.swift */,
 				CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */,
 			);
 			path = views;
@@ -745,7 +745,7 @@
 				CB3797FA2CA7F665009F5D56 /* UserServiceProtocol.swift in Sources */,
 				CB0B93662C770C90003A9720 /* TextPlaceholder.swift in Sources */,
 				CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */,
-				CB70E8A22C816AAA00F9A197 /* OpenInSpotifyButton.swift in Sources */,
+				CB70E8A22C816AAA00F9A197 /* OpenSpotifyButton.swift in Sources */,
 				CB0E59262CEA5B0B003B30D7 /* ProfileView.swift in Sources */,
 				CB3797F02CA68846009F5D56 /* User.swift in Sources */,
 				CB9A9ADA2C0BE2EE0073817C /* ColourExtension.swift in Sources */,
