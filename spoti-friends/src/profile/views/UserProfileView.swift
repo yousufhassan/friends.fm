@@ -30,9 +30,22 @@ struct UserProfileView: View {
         NavigationStack {
             ScrollView {
                 VStack (alignment: .leading, spacing: 34) {
-                    // Profile Details
-                    ProfileDetails(profile: profile)
-                        .environmentObject(profileViewModel)
+                    HStack (alignment: .top) {
+                        // Profile Details
+                        ProfileDetails(profile: profile)
+                            .environmentObject(profileViewModel)
+                        
+                        // Render settings button if user is on their own profile page
+                        if (self.profile == profileViewModel.user?.spotifyProfile) {
+                            NavigationLink(destination: SettingsView()) {
+                                Image(systemName: "gearshape.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundStyle(Color.PresetColour.whitePrimary)
+                            }
+                        }
+                    }
                     
                     // Recent Tracks
                     VStack (alignment: .leading) {
