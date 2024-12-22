@@ -2,8 +2,8 @@ import SwiftUI
 import SafariServices
 
 struct SettingsView: View {
-    @State private var isShowingSafariView = false
-    @State private var externalUrl: URL?
+    @State var isShowingSafariView: Bool = false
+    @State var externalUrl: URL?
     
     var body: some View {
         VStack {
@@ -17,13 +17,13 @@ struct SettingsView: View {
                     
                     // Privacy Policy - opens in SafariView
                     ExternalLinkListItem(label: "Privacy Policy",
-                                         redirectUrl: "https://www.google.com",
+                                         redirectUrl: "https://friendsfm.super.site/privacy",
                                          isShowingSafariView: $isShowingSafariView,
                                          externalUrl: $externalUrl)
                     
                     // License Agreement - opens in SafariView
                     ExternalLinkListItem(label: "License Agreement",
-                                         redirectUrl: "https://www.google.com",
+                                         redirectUrl: "https://friendsfm.super.site/eula",
                                          isShowingSafariView: $isShowingSafariView,
                                          externalUrl: $externalUrl)
                     
