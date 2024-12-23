@@ -111,6 +111,7 @@ struct UserProfileView: View {
                     }
                     Spacer()
                 }
+                .padding(.horizontal, 20)
                 .onAppear {
                     Task {
                         // Comment out these lines for SwiftUI Previews

@@ -28,10 +28,10 @@ struct ProfileView: View {
                 } else {
                     NonUserProfileView(profile: profile)
                         .environmentObject(profileViewModel)
+                        .padding(.horizontal, 20)
                 }
             }
             .frame(minHeight: reader.size.height)
-            .padding(.horizontal, 20)
         }
         .background(Color.PresetGradient.profileViewGradient(profile: profile))
         .onAppear {
