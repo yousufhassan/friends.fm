@@ -18,13 +18,11 @@ struct ViewMoreRecentTracks: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .center) {
+            VStack(alignment: .leading) {
                 Text("Recent Songs")
                     .foregroundStyle(Color.PresetColour.whitePrimary)
                     .font(.title2)
                 TrackList(tracks: recentTracks.tracks)
-                OpenSpotifyButton()
-                    .padding(.vertical, 12)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20)
