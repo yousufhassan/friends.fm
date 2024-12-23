@@ -25,7 +25,7 @@ struct SongShareView: View {
     @State private var isSearching: Bool = false
     @State var selectedTab: SongShareTab = .received
     @State var receivedTracks: [Track] = []
-    @State var sentTracks: [Track] = []
+    @State var sentResources: [SharedResource] = []
     
     var body: some View {
         ZStack {
@@ -33,7 +33,7 @@ struct SongShareView: View {
                 SongSearchView(searchBarPlaceholderText: searchBarPlaceholderText,
                                isSearching: $isSearching,
                                selectedTab: $selectedTab,
-                               sentTracks: $sentTracks)
+                               sentResources: $sentResources)
                 .transition(.opacity)
                 .environmentObject(shareViewModel)
             } else {
@@ -41,7 +41,7 @@ struct SongShareView: View {
                                   isSearching: $isSearching,
                                   selectedTab: $selectedTab,
                                   receivedTracks: $receivedTracks,
-                                  sentTracks: $sentTracks)
+                                  sentResources: $sentResources)
                 .environmentObject(shareViewModel)
             }
         }
@@ -57,8 +57,8 @@ struct SongShareView: View {
                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
                                    TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
-    let sentTracks: [Track] = [TrackMock.luxury]
+    let sentResources: [SharedResource] = SharedResourceMock.sentResources
     
-    SongShareView(receivedTracks: receivedTracks, sentTracks: sentTracks)
+    SongShareView(receivedTracks: receivedTracks, sentResources: sentResources)
         .environmentObject(ShareViewModel(user: user))
 }

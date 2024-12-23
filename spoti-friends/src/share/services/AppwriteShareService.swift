@@ -6,17 +6,17 @@ import Appwrite
 class AppwriteShareService: ShareServiceProtocol {
     let sharedResourcesCollectionId = "sharedResources"
     
-    public func share<T: SpotifyResource>(resource: SharedResource<T>) async throws -> Void {
+    public func share(resource: SharedResource) async throws -> Void {
         let data = try JSONEncoder().encode(resource)
         try await Appwrite.shared.createDocument(collectionId: sharedResourcesCollectionId,
                                                  documentId: resource.getIdString(),
                                                  data: data)
     }
     
-    func fetchSentResources<T: SpotifyResource>(sender: User, limit: Int, lastResourceId: UUID?)
-    async throws -> [SharedResource<T>] {
+    func fetchSentResources(sender: User, limit: Int, lastResourceId: UUID?)
+    async throws -> [SharedResource] {
         // Create queries
-        let senderQuery = Query.equal(SharedResource<T>.CodingKeys.sender.rawValue, value: sender.spotifyId)
+        let senderQuery = Query.equal(SharedResource.CodingKeys.sender.rawValue, value: sender.spotifyId)
         let limitQuery = Query.limit(limit)
         var queries = [senderQuery, limitQuery]
         
@@ -33,10 +33,10 @@ class AppwriteShareService: ShareServiceProtocol {
         }
         
         // Convert each document to a SharedResource and return as an array
-        var sentResources: [SharedResource<T>] = []
+        var sentResources: [SharedResource] = []
         for document in documents.documents {
             let data = try JSONEncoder().encode(document.data)
-            let resource = try JSONDecoder().decode(SharedResource<T>.self, from: data)
+            let resource = try JSONDecoder().decode(SharedResource.self, from: data)
             sentResources.append(resource)
         }
         

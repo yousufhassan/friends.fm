@@ -15,7 +15,7 @@ struct SongSearchView: View {
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @Binding var sentTracks: [Track]
+    @Binding var sentResources: [SharedResource]
     @State private var searchText = ""
     @FocusState private var isSearchFieldFocused: Bool
     
@@ -42,7 +42,7 @@ struct SongSearchView: View {
             SearchResults(searchText: $searchText,
                           isSearching: $isSearching,
                           selectedTab: $selectedTab,
-                          sentTracks: $sentTracks)
+                          sentResources: $sentResources)
                 .environmentObject(shareViewModel)
             
             Spacer() // To top-align the search bar when there are no results to show
@@ -72,11 +72,11 @@ extension View {
 #Preview {
     @Previewable @State var isSearching: Bool = true
     @Previewable @State var selectedTab = SongShareTab.received
-    @Previewable @State var sentTracks: [Track] = [TrackMock.luxury]
+    @Previewable @State var sentResources = SharedResourceMock.sentResources
     let user = UserMock.userJimHalpert
     
     SongSearchView(searchBarPlaceholderText: "Search...", isSearching: $isSearching,
-                   selectedTab: $selectedTab, sentTracks: $sentTracks)
+                   selectedTab: $selectedTab, sentResources: $sentResources)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.PresetColour.darkgrey)
         .environmentObject(ShareViewModel(user: user))

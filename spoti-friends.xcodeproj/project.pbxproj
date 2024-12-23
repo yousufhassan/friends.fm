@@ -100,6 +100,8 @@
 		CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F512C3673DB00442795 /* TimeUtils.swift */; };
 		CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F552C36770500442795 /* ListeningActivityDetails.swift */; };
 		CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F572C37A6B200442795 /* TrackTimestampView.swift */; };
+		CBC930852D19F462002C93FF /* SentResourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC930842D19F462002C93FF /* SentResourceView.swift */; };
+		CBC930882D1A1C6D002C93FF /* SharedResourceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC930872D1A1C6D002C93FF /* SharedResourceMock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -209,6 +211,8 @@
 		CBC75F512C3673DB00442795 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		CBC75F552C36770500442795 /* ListeningActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityDetails.swift; sourceTree = "<group>"; };
 		CBC75F572C37A6B200442795 /* TrackTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTimestampView.swift; sourceTree = "<group>"; };
+		CBC930842D19F462002C93FF /* SentResourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentResourceView.swift; sourceTree = "<group>"; };
+		CBC930872D1A1C6D002C93FF /* SharedResourceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedResourceMock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -457,8 +461,8 @@
 		CB4AF9A32CFD3291005AE716 /* share */ = {
 			isa = PBXGroup;
 			children = (
+				CBC930862D1A1C58002C93FF /* models */,
 				CBB7D0D22D052B35002572C6 /* services */,
-				CBB7D0D02D041E86002572C6 /* SharedResource.swift */,
 				CBB7D0C52D029B6B002572C6 /* viewModels */,
 				CB4AF9A42CFD32E1005AE716 /* views */,
 			);
@@ -471,6 +475,7 @@
 				CBB7D0CA2D02D6BF002572C6 /* search */,
 				CB2FCB9F2D0047B60012FF0F /* SongShareHomeView.swift */,
 				CB4AF9A52CFD330B005AE716 /* SongShareView.swift */,
+				CBC930842D19F462002C93FF /* SentResourceView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -707,6 +712,15 @@
 			path = services;
 			sourceTree = "<group>";
 		};
+		CBC930862D1A1C58002C93FF /* models */ = {
+			isa = PBXGroup;
+			children = (
+				CBB7D0D02D041E86002572C6 /* SharedResource.swift */,
+				CBC930872D1A1C6D002C93FF /* SharedResourceMock.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -811,6 +825,7 @@
 				CBB7D0C92D02B9D0002572C6 /* ShareApiResponseObjects.swift in Sources */,
 				CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */,
 				CB3797F22CA68A04009F5D56 /* SpotifyProfile.swift in Sources */,
+				CBC930882D1A1C6D002C93FF /* SharedResourceMock.swift in Sources */,
 				CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */,
 				CB875CAE2C31507E001B364D /* FriendActivityViewModel.swift in Sources */,
 				CB9A9AE02C0C22D70073817C /* SpotifyAuth.swift in Sources */,
@@ -841,6 +856,7 @@
 				CB2FCBA32D0166EE0012FF0F /* SendToFriendsSheet.swift in Sources */,
 				CB454D2D2CC8C73E00AE41D5 /* NonUserProfileView.swift in Sources */,
 				CBB7D0D12D041E8C002572C6 /* SharedResource.swift in Sources */,
+				CBC930852D19F462002C93FF /* SentResourceView.swift in Sources */,
 				CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */,
 				CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */,
 				CB7087522CAB675800FE97C7 /* ProfileServiceProtocol.swift in Sources */,

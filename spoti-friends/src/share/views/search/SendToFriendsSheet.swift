@@ -17,7 +17,7 @@ struct SendToFriendsSheet: View {
     @State var selectedFriends: Set<SpotifyProfile> = []
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @Binding var sentTracks: [Track]
+    @Binding var sentResources: [SharedResource]
     
     /// Toggles the selected status for `friend`.
     ///
@@ -80,7 +80,7 @@ struct SendToFriendsSheet: View {
             
             // Conditional Send Button, if friend(s) are selected
             if (!selectedFriends.isEmpty) {
-                SendTrackButton(track: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab, sentTracks: $sentTracks)
+                SendTrackButton(resource: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab, sentResources: $sentResources)
                     .environmentObject(shareViewModel)
             }
             
@@ -96,7 +96,7 @@ struct SendToFriendsSheet: View {
 #Preview {
     @Previewable @State var showSheet = true
     @Previewable @State var selectedTab = SongShareTab.received
-    @Previewable @State var sentTracks = [TrackMock.luxury]
+    @Previewable @State var sentResources = SharedResourceMock.sentResources
     let track = TrackMock.traitor
     let friends = [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
                    SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson]
@@ -106,7 +106,7 @@ struct SendToFriendsSheet: View {
     }
     .sheet(isPresented: $showSheet) {
         SendToFriendsSheet(track: track, friends: friends, isSearching: $showSheet,
-                           selectedTab: $selectedTab, sentTracks: $sentTracks)
+                           selectedTab: $selectedTab, sentResources: $sentResources)
     }
 }
 
@@ -166,40 +166,38 @@ struct FriendSelectedIndicator: View {
 }
 
 
-/// A button that allows the user to send the selected track to friends.
+/// A button that allows the user to send the selected resource to friends.
 ///
 /// The button displays the number of selected friends when more than one friend is selected.
 /// It animates when shown or hidden.
 ///
 /// - Parameters:
-///   - track: The track to be sent.
+///   - resource: The resource to be sent.
 ///   - selectedFriends: A binding to the set of currently selected friends.
 struct SendTrackButton: View {
     @EnvironmentObject var shareViewModel: ShareViewModel
-    let track: Track
+    let resource: SpotifyResource
     @Binding var selectedFriends: Set<SpotifyProfile>
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @Binding var sentTracks: [Track]
+    @Binding var sentResources: [SharedResource]
     
-    init(track: Track, toFriends: Binding<Set<SpotifyProfile>>, isSearching: Binding<Bool>,
-         selectedTab: Binding<SongShareTab>, sentTracks: Binding<[Track]>) {
-        self.track = track
+    init(resource: SpotifyResource, toFriends: Binding<Set<SpotifyProfile>>, isSearching: Binding<Bool>,
+         selectedTab: Binding<SongShareTab>, sentResources: Binding<[SharedResource]>) {
+        self.resource = resource
         self._selectedFriends = toFriends
         self._isSearching = isSearching
         self._selectedTab = selectedTab
-        self._sentTracks = sentTracks
+        self._sentResources = sentResources
     }
     
     var body: some View {
         Button(action: {
             let friendNames = selectedFriends.map { $0.displayName }.joined(separator: ", ")
-            printInfo("Sending \(track.name) to \(friendNames)")
+            printInfo("Sending \(resource.name) to \(friendNames)")
             Task {
-                let successful = await shareViewModel.share(resource: track, to: selectedFriends)
-                
-                if (successful) {
-                    sentTracks.append(track)
+                if let sent = await shareViewModel.share(resource: resource, to: selectedFriends) {
+                    sentResources.append(contentsOf: sent)
                 }
                 else {
                     // TODO: Render the error to the user

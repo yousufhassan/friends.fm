@@ -15,7 +15,7 @@ struct SearchResults: View {
     @Binding var searchText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @Binding var sentTracks: [Track]
+    @Binding var sentResources: [SharedResource]
     @State private var searchResults: [Track]? = []
     @State private var selectedTrack: Track?
     
@@ -36,7 +36,7 @@ struct SearchResults: View {
                                            friends: user.getFriends(),
                                            isSearching: $isSearching,
                                            selectedTab: $selectedTab,
-                                           sentTracks: $sentTracks)
+                                           sentResources: $sentResources)
                         .environmentObject(shareViewModel)
                     } else {
                         SomethingWentWrongView()

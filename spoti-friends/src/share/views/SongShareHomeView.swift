@@ -15,15 +15,15 @@ struct SongShareHomeView: View {
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
     @Binding var receivedTracks: [Track]
-    @Binding var sentTracks: [Track]
+    @Binding var sentResources: [SharedResource]
     
     init(searchBarPlaceholderText: String, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>,
-         receivedTracks: Binding<[Track]>, sentTracks: Binding<[Track]>) {
+         receivedTracks: Binding<[Track]>, sentResources: Binding<[SharedResource]>) {
         self.searchBarPlaceholderText = searchBarPlaceholderText
         self._isSearching = isSearching
         self._selectedTab = selectedTab
         self._receivedTracks = receivedTracks
-        self._sentTracks = sentTracks
+        self._sentResources = sentResources
         
         
         // Picker background color
@@ -81,8 +81,12 @@ struct SongShareHomeView: View {
                 
                 // Sent songs tab
                 ScrollView {
-                    TrackList(tracks: sentTracks)
-                        .padding(.horizontal)
+                    LazyVStack {
+                        ForEach(sentResources) { resource in
+                            SentResourceView(resource: resource)
+                        }
+                    }
+                    .padding(.horizontal)
                 }
                 .tag(SongShareTab.sent)
             }
@@ -90,8 +94,8 @@ struct SongShareHomeView: View {
         }
         .onAppear {
             Task {
-                if let tracks: [SharedResource<Track>] = await shareViewModel.getCurrentUsersSentResources() {
-                    sentTracks = tracks.compactMap { $0.getResource() as Track }
+                if let resources: [SharedResource] = await shareViewModel.getCurrentUsersSentResources() {
+                    sentResources = resources
                 }
                 print("done")
             }
@@ -103,11 +107,15 @@ struct SongShareHomeView: View {
     @Previewable @State var isSearching = false
     @Previewable @State var selectedTab = SongShareTab.received
     @Previewable @State var receivedTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
-    @Previewable @State var sentTracks = [TrackMock.iRememberEverything]
+    @Previewable @State var sentResources = SharedResourceMock.sentResources
     let placeholderText = "What song do you want to share?"
     
-    SongShareHomeView(searchBarPlaceholderText: placeholderText, isSearching: $isSearching, selectedTab: $selectedTab,
-                      receivedTracks: $receivedTracks, sentTracks: $sentTracks)
+    SongShareHomeView(searchBarPlaceholderText: placeholderText,
+                      isSearching: $isSearching,
+                      selectedTab: $selectedTab,
+                      receivedTracks: $receivedTracks,
+                      sentResources: $sentResources)
+    .environmentObject(ShareViewModel(user: UserMock.userJimHalpert))
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.PresetColour.darkgrey)
 }

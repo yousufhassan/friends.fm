@@ -1,13 +1,13 @@
 import Foundation
 
 // TODO: Add docs. Include brief explanation on why resource is stored as a String.
-class SharedResource<T: SpotifyResource>: Codable, Identifiable {
+class SharedResource: Codable, Identifiable {
     let id: UUID
     private let type: ResourceType
     private let sender: User
     private let receiver: SpotifyProfile
     private let sharedTs: TimeInterval
-    private let resource: T  // The resource could be any type conforming to SpotifyResource
+    private let resource: SpotifyResource  // The resource could be any type conforming to SpotifyResource
     
     /// Mapping of the Swift object properties to the Appwrite `SharedResource` Collection model.
     enum CodingKeys: String, CodingKey {
@@ -20,7 +20,7 @@ class SharedResource<T: SpotifyResource>: Codable, Identifiable {
     }
     
     /// Regular initializer for creating the object directly.
-    init(resource: T, sender: User, receiver: SpotifyProfile) {
+    init(resource: SpotifyResource, sender: User, receiver: SpotifyProfile) {
         self.id = UUID()
         self.type = SharedResource.determineType(for: resource)
         self.resource = resource
@@ -54,11 +54,11 @@ class SharedResource<T: SpotifyResource>: Codable, Identifiable {
         // Decode the resource dynamically based on the resource type.
         switch type {
         case .album:
-            self.resource = try JSONDecoder().decode(Album.self, from: resourceData) as! T
+            self.resource = try JSONDecoder().decode(Album.self, from: resourceData)
         case .artist:
-            self.resource = try JSONDecoder().decode(Artist.self, from: resourceData) as! T
+            self.resource = try JSONDecoder().decode(Artist.self, from: resourceData)
         case .track:
-            self.resource = try JSONDecoder().decode(Track.self, from: resourceData) as! T
+            self.resource = try JSONDecoder().decode(Track.self, from: resourceData)
         }
     }
     
@@ -84,15 +84,15 @@ class SharedResource<T: SpotifyResource>: Codable, Identifiable {
         //      ideal since we will be accessing this data frequently.
         switch type {
         case .album:
-            let jsonData = try JSONEncoder().encode(resource as! Album)
+            let jsonData = try JSONEncoder().encode(resource)
             let jsonString = String(data: jsonData, encoding: .utf8)
             try container.encode(jsonString, forKey: .resource)
         case .artist:
-            let jsonData = try JSONEncoder().encode(resource as! Artist)
+            let jsonData = try JSONEncoder().encode(resource)
             let jsonString = String(data: jsonData, encoding: .utf8)
             try container.encode(jsonString, forKey: .resource)
         case .track:
-            let jsonData = try JSONEncoder().encode(resource as! Track)
+            let jsonData = try JSONEncoder().encode(resource)
             let jsonString = String(data: jsonData, encoding: .utf8)
             try container.encode(jsonString, forKey: .resource)
         }
@@ -139,7 +139,7 @@ class SharedResource<T: SpotifyResource>: Codable, Identifiable {
     }
     
     
-    public func getResource() -> T {
+    public func getResource() -> SpotifyResource {
         return self.resource
     }
     

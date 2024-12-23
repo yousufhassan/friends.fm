@@ -67,26 +67,28 @@ class ShareViewModel: ObservableObject {
     ///   - resource: The Spotify resource to be shared. The resource must conform to the `SpotifyResource` protocol.
     ///   - receivers: A set of `SpotifyProfile` objects representing the users to whom the resource will be shared.
     ///
-    /// - Returns: A Boolean indicating whether the sharing operation was successful (`true`) or failed (`false`).
+    /// - Returns: The list of `SharedResource` created and shared, or `nil` on error.
     ///
     /// The signed in user is the sender.
-    public func share<T: SpotifyResource>(resource: T, to receivers: Set<SpotifyProfile>)
-    async -> Bool {
+    public func share(resource: SpotifyResource, to receivers: Set<SpotifyProfile>)
+    async -> [SharedResource]? {
         do {
             guard let sender = self.user else { throw AuthorizationError.missingUser }
+            var sharedResources: [SharedResource] = []
             
             for receiver in receivers {
                 let sharedResource = SharedResource(resource: resource, sender: sender, receiver: receiver)
                 try await ShareServiceManager.shared.share(resource: sharedResource)
+                sharedResources.append(sharedResource)
             }
-            return true
+            return sharedResources
         } catch {
             printError("When sharing resources: \(error)")
-            return false
+            return nil
         }
     }
     
-    public func getCurrentUsersSentResources<T: SpotifyResource>() async -> [SharedResource<T>]? {
+    public func getCurrentUsersSentResources() async -> [SharedResource]? {
         do {
             guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
             return await self.getSentResources(sender: signedInUser)
@@ -96,9 +98,9 @@ class ShareViewModel: ObservableObject {
         }
     }
     
-    public func getSentResources<T: SpotifyResource>(sender: User) async -> [SharedResource<T>]? {
+    public func getSentResources(sender: User) async -> [SharedResource]? {
         do {
-            let resources: [SharedResource<T>] = try await ShareServiceManager.shared.fetchSentResources(sender: sender)
+            let resources: [SharedResource] = try await ShareServiceManager.shared.fetchSentResources(sender: sender)
             return resources
         } catch {
             printError("When getting resources sent: \(error).")

@@ -23,7 +23,7 @@ class ShareServiceManager {
     ///
     /// This method takes a `SharedResource` object, which can encapsulate any type of Spotify resource
     /// (e.g., a track, album, etc), and stores it in the database for sharing purposes.
-    func share<T: SpotifyResource>(resource: SharedResource<T>) async throws -> Void {
+    func share(resource: SharedResource) async throws -> Void {
         return try await self.shareService.share(resource: resource)
     }
     
@@ -39,8 +39,8 @@ class ShareServiceManager {
     ///
     /// - Returns: An array of `SharedResource` objects of type `T`, where `T` conforms to `SpotifyResource`.
     /// - Throws: This function throws an error if the data cannot be fetched, such as a network error or invalid data response.
-    func fetchSentResources<T: SpotifyResource>(sender: User, limit: Int = 25, lastResourceId: UUID? = nil)
-    async throws -> [SharedResource<T>] {
+    func fetchSentResources(sender: User, limit: Int = 25, lastResourceId: UUID? = nil)
+    async throws -> [SharedResource] {
         return try await
         self.shareService.fetchSentResources(sender: sender, limit: limit, lastResourceId: lastResourceId)
     }
