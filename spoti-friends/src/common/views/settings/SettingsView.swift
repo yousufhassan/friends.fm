@@ -2,8 +2,6 @@ import SwiftUI
 import SafariServices
 
 struct SettingsView: View {
-    @State var isShowingSafariView: Bool = false
-    @State var externalUrl: URL?
     var appVersion: String = getStringFromUserDefaultsValueForKey("appVersion")
     
     var body: some View {
@@ -19,15 +17,11 @@ struct SettingsView: View {
                     
                     // Privacy Policy - opens in SafariView
                     ExternalLinkListItem(label: "Privacy Policy",
-                                         redirectUrl: "https://friendsfm.super.site/privacy",
-                                         isShowingSafariView: $isShowingSafariView,
-                                         externalUrl: $externalUrl)
+                                         redirectUrl: "https://friendsfm.super.site/privacy")
                     
                     // License Agreement - opens in SafariView
                     ExternalLinkListItem(label: "License Agreement",
-                                         redirectUrl: "https://friendsfm.super.site/eula",
-                                         isShowingSafariView: $isShowingSafariView,
-                                         externalUrl: $externalUrl)
+                                         redirectUrl: "https://friendsfm.super.site/eula")
                     
                     // App version
                     HStack {
@@ -48,11 +42,6 @@ struct SettingsView: View {
             LogoutButton()
         }
         .background(Color.PresetColour.darkgrey)
-        .sheet(isPresented: $isShowingSafariView) {
-            if let url = externalUrl {
-                SafariView(url: url)
-            }
-        }
     }
 }
 
@@ -65,13 +54,11 @@ struct SettingsView: View {
 struct ExternalLinkListItem: View {
     let label: String
     let redirectUrl: String
-    @Binding var isShowingSafariView: Bool
-    @Binding var externalUrl: URL?
     
     var body: some View {
         Button(action: {
-            self.externalUrl = URL(string: redirectUrl)
-            self.isShowingSafariView = true
+            let url = URL(string: redirectUrl)!
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }) {
             HStack {
                 Text(label)
