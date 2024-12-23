@@ -71,6 +71,7 @@
 		CB8A63572D19C6A000B2E0FB /* v1.3.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8A63562D19C6A000B2E0FB /* v1.3.0.swift */; };
 		CB8A63592D19C71400B2E0FB /* v1.2.2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8A63582D19C70900B2E0FB /* v1.2.2.swift */; };
 		CB8A635B2D19C7C000B2E0FB /* v1.2.1.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8A635A2D19C7BD00B2E0FB /* v1.2.1.swift */; };
+		CB8A635D2D19D12100B2E0FB /* v.1.3.1.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8A635C2D19D11B00B2E0FB /* v.1.3.1.swift */; };
 		CB8D3C2E2C0D28C000C493E8 /* CodeChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8D3C2D2C0D28C000C493E8 /* CodeChallenge.swift */; };
 		CB94BCCE2C78385D00A7542B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB94BCCD2C78385D00A7542B /* LaunchScreen.storyboard */; };
 		CB9A9AAB2C0BB13E0073817C /* spotifriendsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9A9AAA2C0BB13E0073817C /* spotifriendsApp.swift */; };
@@ -168,6 +169,7 @@
 		CB8A63562D19C6A000B2E0FB /* v1.3.0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.3.0.swift; sourceTree = "<group>"; };
 		CB8A63582D19C70900B2E0FB /* v1.2.2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.2.2.swift; sourceTree = "<group>"; };
 		CB8A635A2D19C7BD00B2E0FB /* v1.2.1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.2.1.swift; sourceTree = "<group>"; };
+		CB8A635C2D19D11B00B2E0FB /* v.1.3.1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v.1.3.1.swift; sourceTree = "<group>"; };
 		CB8D3C2C2C0D1E5000C493E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CB8D3C2D2C0D28C000C493E8 /* CodeChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeChallenge.swift; sourceTree = "<group>"; };
 		CB94BCCD2C78385D00A7542B /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -567,6 +569,7 @@
 		CB8A63552D19C68900B2E0FB /* changelogs */ = {
 			isa = PBXGroup;
 			children = (
+				CB8A635C2D19D11B00B2E0FB /* v.1.3.1.swift */,
 				CB8A635A2D19C7BD00B2E0FB /* v1.2.1.swift */,
 				CB8A63582D19C70900B2E0FB /* v1.2.2.swift */,
 				CB8A63562D19C6A000B2E0FB /* v1.3.0.swift */,
@@ -738,6 +741,7 @@
 				CB875CBD2C352652001B364D /* TrackContextMock.swift in Sources */,
 				CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */,
 				CB3797F22CA68A04009F5D56 /* SpotifyProfile.swift in Sources */,
+				CB8A635D2D19D12100B2E0FB /* v.1.3.1.swift in Sources */,
 				CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */,
 				CB875CAE2C31507E001B364D /* FriendActivityViewModel.swift in Sources */,
 				CB9A9AE02C0C22D70073817C /* SpotifyAuth.swift in Sources */,
