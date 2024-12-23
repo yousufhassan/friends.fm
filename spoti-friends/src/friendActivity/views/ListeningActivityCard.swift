@@ -76,5 +76,6 @@ struct ListeningActivityCard: View, Identifiable {
         
         ListeningActivityCard(profile: profile, backgroundColor: Color.gray)
             .environmentObject(FriendActivityViewModel(user: user, friendActivites: []))
+            .environmentObject(ProfileViewModel(user: user))
     }
 }

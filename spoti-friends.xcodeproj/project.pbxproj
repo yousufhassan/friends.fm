@@ -50,7 +50,7 @@
 		CB7087562CAB68F700FE97C7 /* ProfileServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */; };
 		CB70E89E2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */; };
 		CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89F2C8017CD00F9A197 /* ArtistList.swift */; };
-		CB70E8A22C816AAA00F9A197 /* OpenInSpotifyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */; };
+		CB70E8A22C816AAA00F9A197 /* OpenSpotifyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A12C816AAA00F9A197 /* OpenSpotifyButton.swift */; };
 		CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */; };
 		CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */; };
 		CB7C05A42C0EB4DB001A0062 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A32C0EB4DB001A0062 /* Utils.swift */; };
@@ -67,6 +67,11 @@
 		CB875CBB2C3525C3001B364D /* ArtistMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CBA2C3525C0001B364D /* ArtistMock.swift */; };
 		CB875CBD2C352652001B364D /* TrackContextMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CBC2C35264F001B364D /* TrackContextMock.swift */; };
 		CB875CC02C352A4E001B364D /* ListeningActivityCardMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB875CBF2C352A48001B364D /* ListeningActivityCardMock.swift */; };
+		CB8A63542D19C03300B2E0FB /* ChangelogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8A63532D19C03300B2E0FB /* ChangelogView.swift */; };
+		CB8A63572D19C6A000B2E0FB /* v1.3.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8A63562D19C6A000B2E0FB /* v1.3.0.swift */; };
+		CB8A63592D19C71400B2E0FB /* v1.2.2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8A63582D19C70900B2E0FB /* v1.2.2.swift */; };
+		CB8A635B2D19C7C000B2E0FB /* v1.2.1.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8A635A2D19C7BD00B2E0FB /* v1.2.1.swift */; };
+		CB8A635D2D19D12100B2E0FB /* v1.3.1.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8A635C2D19D11B00B2E0FB /* v1.3.1.swift */; };
 		CB8D3C2E2C0D28C000C493E8 /* CodeChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8D3C2D2C0D28C000C493E8 /* CodeChallenge.swift */; };
 		CB94BCCE2C78385D00A7542B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB94BCCD2C78385D00A7542B /* LaunchScreen.storyboard */; };
 		CB9A9AAB2C0BB13E0073817C /* spotifriendsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9A9AAA2C0BB13E0073817C /* spotifriendsApp.swift */; };
@@ -85,6 +90,7 @@
 		CBC75F522C3673DF00442795 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F512C3673DB00442795 /* TimeUtils.swift */; };
 		CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F552C36770500442795 /* ListeningActivityDetails.swift */; };
 		CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC75F572C37A6B200442795 /* TrackTimestampView.swift */; };
+		CBF7035E2D13A1B1004D8FA4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF7035D2D13A1B1004D8FA4 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -142,7 +148,7 @@
 		CB7087552CAB68EF00FE97C7 /* ProfileServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileServiceManager.swift; sourceTree = "<group>"; };
 		CB70E89D2C80174D00F9A197 /* TrackOrArtistListPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackOrArtistListPlaceholder.swift; sourceTree = "<group>"; };
 		CB70E89F2C8017CD00F9A197 /* ArtistList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistList.swift; sourceTree = "<group>"; };
-		CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInSpotifyButton.swift; sourceTree = "<group>"; };
+		CB70E8A12C816AAA00F9A197 /* OpenSpotifyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSpotifyButton.swift; sourceTree = "<group>"; };
 		CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomethingWentWrongView.swift; sourceTree = "<group>"; };
 		CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrors.swift; sourceTree = "<group>"; };
 		CB7C05A32C0EB4DB001A0062 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -159,6 +165,11 @@
 		CB875CBA2C3525C0001B364D /* ArtistMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistMock.swift; sourceTree = "<group>"; };
 		CB875CBC2C35264F001B364D /* TrackContextMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackContextMock.swift; sourceTree = "<group>"; };
 		CB875CBF2C352A48001B364D /* ListeningActivityCardMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityCardMock.swift; sourceTree = "<group>"; };
+		CB8A63532D19C03300B2E0FB /* ChangelogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangelogView.swift; sourceTree = "<group>"; };
+		CB8A63562D19C6A000B2E0FB /* v1.3.0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.3.0.swift; sourceTree = "<group>"; };
+		CB8A63582D19C70900B2E0FB /* v1.2.2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.2.2.swift; sourceTree = "<group>"; };
+		CB8A635A2D19C7BD00B2E0FB /* v1.2.1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.2.1.swift; sourceTree = "<group>"; };
+		CB8A635C2D19D11B00B2E0FB /* v1.3.1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.3.1.swift; sourceTree = "<group>"; };
 		CB8D3C2C2C0D1E5000C493E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CB8D3C2D2C0D28C000C493E8 /* CodeChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeChallenge.swift; sourceTree = "<group>"; };
 		CB94BCCD2C78385D00A7542B /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -179,6 +190,7 @@
 		CBC75F512C3673DB00442795 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		CBC75F552C36770500442795 /* ListeningActivityDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityDetails.swift; sourceTree = "<group>"; };
 		CBC75F572C37A6B200442795 /* TrackTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTimestampView.swift; sourceTree = "<group>"; };
+		CBF7035D2D13A1B1004D8FA4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,13 +228,14 @@
 		CB0854C42C155C510088E87D /* views */ = {
 			isa = PBXGroup;
 			children = (
+				CB8A63522D19C02100B2E0FB /* settings */,
 				CB70E8A32C838F9E00F9A197 /* errors */,
 				CB3B61802C1F83AE0088DFA1 /* AuthenticatedView.swift */,
 				CB3B617E2C1BDFB00088DFA1 /* PageTitle.swift */,
 				CB9A9AAC2C0BB13E0073817C /* RootView.swift */,
 				CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */,
 				CB0B93642C770C7A003A9720 /* placeholders */,
-				CB70E8A12C816AAA00F9A197 /* OpenInSpotifyButton.swift */,
+				CB70E8A12C816AAA00F9A197 /* OpenSpotifyButton.swift */,
 				CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */,
 			);
 			path = views;
@@ -543,6 +556,27 @@
 			path = mocked;
 			sourceTree = "<group>";
 		};
+		CB8A63522D19C02100B2E0FB /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				CB8A63552D19C68900B2E0FB /* changelogs */,
+				CBF7035D2D13A1B1004D8FA4 /* SettingsView.swift */,
+				CB8A63532D19C03300B2E0FB /* ChangelogView.swift */,
+			);
+			path = settings;
+			sourceTree = "<group>";
+		};
+		CB8A63552D19C68900B2E0FB /* changelogs */ = {
+			isa = PBXGroup;
+			children = (
+				CB8A635C2D19D11B00B2E0FB /* v1.3.1.swift */,
+				CB8A635A2D19C7BD00B2E0FB /* v1.2.1.swift */,
+				CB8A63582D19C70900B2E0FB /* v1.2.2.swift */,
+				CB8A63562D19C6A000B2E0FB /* v1.3.0.swift */,
+			);
+			path = changelogs;
+			sourceTree = "<group>";
+		};
 		CB9A9A9E2C0BB13E0073817C = {
 			isa = PBXGroup;
 			children = (
@@ -687,6 +721,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB875CB72C35220C001B364D /* AlbumMock.swift in Sources */,
+				CB8A63572D19C6A000B2E0FB /* v1.3.0.swift in Sources */,
 				CBB1A3CA2C8E5A8200D3D658 /* ViewMoreRecentTracks.swift in Sources */,
 				CB0B93722C771BBB003A9720 /* Track.swift in Sources */,
 				CBB1A3D22C93942B00D3D658 /* ApiResponseObjects.swift in Sources */,
@@ -695,6 +730,7 @@
 				CB0B937F2C771D5D003A9720 /* CurrentOrMostRecentTrackMock.swift in Sources */,
 				CB9A9ADC2C0BEC080073817C /* FriendActivityView.swift in Sources */,
 				CB59BCB52C2FA08D0061C99B /* ListeningActivityCard.swift in Sources */,
+				CB8A63592D19C71400B2E0FB /* v1.2.2.swift in Sources */,
 				CB3B617F2C1BDFB00088DFA1 /* PageTitle.swift in Sources */,
 				CBC75F582C37A6B200442795 /* TrackTimestampView.swift in Sources */,
 				CB875CB52C35195E001B364D /* SpotifyProfileMock.swift in Sources */,
@@ -705,6 +741,7 @@
 				CB875CBD2C352652001B364D /* TrackContextMock.swift in Sources */,
 				CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */,
 				CB3797F22CA68A04009F5D56 /* SpotifyProfile.swift in Sources */,
+				CB8A635D2D19D12100B2E0FB /* v1.3.1.swift in Sources */,
 				CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */,
 				CB875CAE2C31507E001B364D /* FriendActivityViewModel.swift in Sources */,
 				CB9A9AE02C0C22D70073817C /* SpotifyAuth.swift in Sources */,
@@ -729,6 +766,8 @@
 				CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */,
 				CB454D2D2CC8C73E00AE41D5 /* NonUserProfileView.swift in Sources */,
 				CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */,
+				CB8A63542D19C03300B2E0FB /* ChangelogView.swift in Sources */,
+				CBF7035E2D13A1B1004D8FA4 /* SettingsView.swift in Sources */,
 				CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */,
 				CB7087522CAB675800FE97C7 /* ProfileServiceProtocol.swift in Sources */,
 				CB0854C72C15723C0088E87D /* SpotifyAPI.swift in Sources */,
@@ -745,7 +784,7 @@
 				CB3797FA2CA7F665009F5D56 /* UserServiceProtocol.swift in Sources */,
 				CB0B93662C770C90003A9720 /* TextPlaceholder.swift in Sources */,
 				CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */,
-				CB70E8A22C816AAA00F9A197 /* OpenInSpotifyButton.swift in Sources */,
+				CB70E8A22C816AAA00F9A197 /* OpenSpotifyButton.swift in Sources */,
 				CB0E59262CEA5B0B003B30D7 /* ProfileView.swift in Sources */,
 				CB3797F02CA68846009F5D56 /* User.swift in Sources */,
 				CB9A9ADA2C0BE2EE0073817C /* ColourExtension.swift in Sources */,
@@ -755,6 +794,7 @@
 				CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */,
 				CB6A5D8C2CA684F10063A757 /* Appwrite.swift in Sources */,
 				CB0854BC2C14D58E0088E87D /* AuthorizationWebView.swift in Sources */,
+				CB8A635B2D19C7C000B2E0FB /* v1.2.1.swift in Sources */,
 				CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */,
 				CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */,
 				CB0B93762C771C04003A9720 /* TrackContext.swift in Sources */,
@@ -908,7 +948,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yousufhassan.spoti-friends";
 				PRODUCT_NAME = friends.fm;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -942,7 +982,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yousufhassan.spoti-friends";
 				PRODUCT_NAME = friends.fm;
 				SWIFT_EMIT_LOC_STRINGS = YES;
