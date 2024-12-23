@@ -1,6 +1,13 @@
 import SwiftUI
 import SafariServices
 
+/// A SwiftUI view that provides a settings page for the app.
+///
+/// This view includes:
+/// - Navigation links to the Changelog, Privacy Policy, and License Agreement.
+/// - A display of the app version retrieved from UserDefaults.
+/// - A logout button at the bottom.
+///
 struct SettingsView: View {
     var appVersion: String = getStringFromUserDefaultsValueForKey("appVersion")
     
@@ -51,6 +58,12 @@ struct SettingsView: View {
     }
 }
 
+/// A SwiftUI view for a button that opens an external link.
+///
+/// Features:
+/// - Displays a label and a right-facing chevron icon.
+/// - Opens the specified URL in the default web browser.
+/// 
 struct ExternalLinkListItem: View {
     let label: String
     let redirectUrl: String
@@ -73,28 +86,7 @@ struct ExternalLinkListItem: View {
             }
         }
     }
-    
 }
-
-struct SafariView: View {
-    let url: URL
-    
-    var body: some View {
-        SafariViewControllerWrapper(url: url)
-    }
-}
-
-struct SafariViewControllerWrapper: UIViewControllerRepresentable {
-    let url: URL
-    
-    func makeUIViewController(context: Context) -> SFSafariViewController {
-        return SFSafariViewController(url: url)
-    }
-    
-    func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {}
-}
-
-
 
 // Logout button
 struct LogoutButton: View {

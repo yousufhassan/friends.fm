@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// A SwiftUI view displaying the app's changelog. Includes version updates in a list.
 struct ChangelogView: View {
     var body: some View {
         ScrollView {
