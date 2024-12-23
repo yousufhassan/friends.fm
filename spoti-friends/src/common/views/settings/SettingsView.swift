@@ -4,6 +4,7 @@ import SafariServices
 struct SettingsView: View {
     @State var isShowingSafariView: Bool = false
     @State var externalUrl: URL?
+    var appVersion: String = getStringFromUserDefaultsValueForKey("appVersion")
     
     var body: some View {
         VStack {
@@ -32,7 +33,7 @@ struct SettingsView: View {
                     HStack {
                         Text("Version")
                         Spacer()
-                        Text("1.3.0")
+                        Text(appVersion)
                             .foregroundStyle(Color.PresetColour.whiteSecondary)
                     }
                 }
