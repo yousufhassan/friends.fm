@@ -12,6 +12,7 @@ struct FriendActivityView: View {
             VStack {
                 // Friend Activity Header
                 PageTitle(pageTitle: "Friend Activity")
+                    .padding()
                 
                 // List of friend's listening activities
                 if friendActivityViewModel.friendActivites.isEmpty {

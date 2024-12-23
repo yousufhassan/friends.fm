@@ -8,10 +8,11 @@ struct SettingsView: View {
     var body: some View {
         VStack {
             PageTitle(pageTitle: "Settings")
+                .padding()
             
             List {
                 Group {
-                    NavigationLink(destination: Text("Changelog")) {
+                    NavigationLink(destination: ChangelogView()) {
                         Text("Changelog")
                     }
                     
