@@ -88,6 +88,44 @@ class ShareViewModel: ObservableObject {
         }
     }
     
+    /// Retrieves the resources received by the currently signed-in user.
+    ///
+    /// - Returns: An array of `SharedResource` objects if successful, or `nil` if an error occurs.
+    ///
+    /// This function fetches the resources shared with the currently signed-in user.
+    /// It first validates that a user is signed in and then delegates the fetching to `getReceivedResources(receiver:)`.
+    public func getCurrentUsersReceivedResources() async -> [SharedResource]? {
+        do {
+            guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
+            return await self.getReceivedResources(receiver: signedInUser)
+        } catch {
+            printError("When getting resources received: \(error).")
+            return nil
+        }
+    }
+    
+    /// Retrieves the resources received by a specific user.
+    ///
+    /// - Parameter receiver: The `User` object representing the recipient of the shared resources.
+    /// - Returns: An array of `SharedResource` objects if successful, or `nil` if an error occurs.
+    ///
+    /// This function fetches the shared resources received by the specified user from the `ShareServiceManager`.
+    public func getReceivedResources(receiver: User) async -> [SharedResource]? {
+        do {
+            let resources: [SharedResource] = try await ShareServiceManager.shared.fetchReceivedResources(receiver: receiver)
+            return resources
+        } catch {
+            printError("When getting resources received: \(error).")
+            return nil
+        }
+    }
+    
+    /// Retrieves the resources sent by the currently signed-in user.
+    ///
+    /// - Returns: An array of `SharedResource` objects if successful, or `nil` if an error occurs.
+    ///
+    /// This function fetches the resources shared by the currently signed-in user.
+    /// It first validates that a user is signed in and then delegates the fetching to `getSentResources(sender:)`.
     public func getCurrentUsersSentResources() async -> [SharedResource]? {
         do {
             guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
@@ -98,6 +136,12 @@ class ShareViewModel: ObservableObject {
         }
     }
     
+    /// Retrieves the resources sent by a specific user.
+    ///
+    /// - Parameter sender: The `User` object representing the sender of the shared resources.
+    /// - Returns: An array of `SharedResource` objects if successful, or `nil` if an error occurs.
+    ///
+    /// This function fetches the shared resources sent by the specified user from the `ShareServiceManager`.
     public func getSentResources(sender: User) async -> [SharedResource]? {
         do {
             let resources: [SharedResource] = try await ShareServiceManager.shared.fetchSentResources(sender: sender)

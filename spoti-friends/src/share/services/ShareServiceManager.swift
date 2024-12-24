@@ -44,4 +44,10 @@ class ShareServiceManager {
         return try await
         self.shareService.fetchSentResources(sender: sender, limit: limit, lastResourceId: lastResourceId)
     }
+    
+    func fetchReceivedResources(receiver: User, limit: Int = 25, lastResourceId: UUID? = nil)
+    async throws -> [SharedResource] {
+        return try await
+        self.shareService.fetchReceivedResources(receiver: receiver, limit: limit, lastResourceId: lastResourceId)
+    }
 }

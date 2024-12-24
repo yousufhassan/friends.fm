@@ -1,8 +1,8 @@
 import Foundation
 
 struct SharedResourceMock {
+    static let receivedResources = [resource2, resource1, resource4, resource3]
     static let sentResources = [resource1, resource2, resource3, resource4]
-    static let receivedResources = [resource1, resource2, resource3, resource4]
     
     static let resource1 = SharedResource(resource: TrackMock.iRememberEverything,
                                           sender: UserMock.userJimHalpert,
