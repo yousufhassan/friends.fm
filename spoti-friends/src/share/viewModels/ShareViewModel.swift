@@ -61,6 +61,53 @@ class ShareViewModel: ObservableObject {
         }
     }
     
+    /// Shares a Spotify resource (e.g., track) with a set of receivers.
+    ///
+    /// - Parameters:
+    ///   - resource: The Spotify resource to be shared. The resource must conform to the `SpotifyResource` protocol.
+    ///   - receivers: A set of `SpotifyProfile` objects representing the users to whom the resource will be shared.
+    ///
+    /// - Returns: The list of `SharedResource` created and shared, or `nil` on error.
+    ///
+    /// The signed in user is the sender.
+    public func share(resource: SpotifyResource, to receivers: Set<SpotifyProfile>)
+    async -> [SharedResource]? {
+        do {
+            guard let sender = self.user else { throw AuthorizationError.missingUser }
+            var sharedResources: [SharedResource] = []
+            
+            for receiver in receivers {
+                let sharedResource = SharedResource(resource: resource, sender: sender, receiver: receiver)
+                try await ShareServiceManager.shared.share(resource: sharedResource)
+                sharedResources.append(sharedResource)
+            }
+            return sharedResources
+        } catch {
+            printError("When sharing resources: \(error)")
+            return nil
+        }
+    }
+    
+    public func getCurrentUsersSentResources() async -> [SharedResource]? {
+        do {
+            guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
+            return await self.getSentResources(sender: signedInUser)
+        } catch {
+            printError("When getting resources sent: \(error).")
+            return nil
+        }
+    }
+    
+    public func getSentResources(sender: User) async -> [SharedResource]? {
+        do {
+            let resources: [SharedResource] = try await ShareServiceManager.shared.fetchSentResources(sender: sender)
+            return resources
+        } catch {
+            printError("When getting resources sent: \(error).")
+            return nil
+        }
+    }
+    
     // TODO: Complete when implementing pagination
     public func fetchNextSearchResults () {}
 }

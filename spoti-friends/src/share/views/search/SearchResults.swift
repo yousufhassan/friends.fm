@@ -15,6 +15,7 @@ struct SearchResults: View {
     @Binding var searchText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
+    @Binding var sentResources: [SharedResource]
     @State private var searchResults: [Track]? = []
     @State private var selectedTrack: Track?
     
@@ -25,6 +26,7 @@ struct SearchResults: View {
                     ForEach(searchResults, id: \.id) { track in
                         TrackView(track: track) {
                             selectedTrack = track
+                            printInfo("search results")
                         }
                     }
                 }
@@ -34,7 +36,9 @@ struct SearchResults: View {
                         SendToFriendsSheet(track: track,
                                            friends: user.getFriends(),
                                            isSearching: $isSearching,
-                                           selectedTab: $selectedTab)
+                                           selectedTab: $selectedTab,
+                                           sentResources: $sentResources)
+                        .environmentObject(shareViewModel)
                     } else {
                         SomethingWentWrongView()
                     }

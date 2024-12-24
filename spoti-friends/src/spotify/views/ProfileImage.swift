@@ -22,7 +22,7 @@ struct ProfileImage: View {
                     .resizable()
                 
             } else {
-                Text(profile.displayName.prefix(1))
+                Text(profile.displayName.prefix(1).capitalized)
                     .font(.system(size: width / 2))
                     .frame(width: width, height: height)
                     .foregroundColor(Color.PresetColour.whitePrimary)

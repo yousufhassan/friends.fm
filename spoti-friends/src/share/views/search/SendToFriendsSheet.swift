@@ -11,11 +11,13 @@ import SwiftUI
 ///   - selectedFriends: Tracks the currently selected friends to send the song to.
 ///
 struct SendToFriendsSheet: View {
+    @EnvironmentObject var shareViewModel: ShareViewModel
     let track: Track
     let friends: [SpotifyProfile]
     @State var selectedFriends: Set<SpotifyProfile> = []
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
+    @Binding var sentResources: [SharedResource]
     
     /// Toggles the selected status for `friend`.
     ///
@@ -42,6 +44,7 @@ struct SendToFriendsSheet: View {
         VStack {
             // Send to label
             Text("Send to")
+                .foregroundStyle(Color.PresetColour.whitePrimary)
                 .bold()
             
             // Preview of track to send
@@ -78,7 +81,8 @@ struct SendToFriendsSheet: View {
             
             // Conditional Send Button, if friend(s) are selected
             if (!selectedFriends.isEmpty) {
-                SendTrackButton(track: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab)
+                SendTrackButton(resource: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab, sentResources: $sentResources)
+                    .environmentObject(shareViewModel)
             }
             
             Spacer()
@@ -86,6 +90,7 @@ struct SendToFriendsSheet: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.top)
         .presentationDetents([.medium, .large])
+        .background(Color.PresetColour.darkgrey)
     }
 }
 
@@ -93,6 +98,7 @@ struct SendToFriendsSheet: View {
 #Preview {
     @Previewable @State var showSheet = true
     @Previewable @State var selectedTab = SongShareTab.received
+    @Previewable @State var sentResources = SharedResourceMock.sentResources
     let track = TrackMock.traitor
     let friends = [SpotifyProfileMock.dwightSchrute, SpotifyProfileMock.jimHalpert,
                    SpotifyProfileMock.michaelScott, SpotifyProfileMock.stanleyHudson]
@@ -101,7 +107,8 @@ struct SendToFriendsSheet: View {
         showSheet = true
     }
     .sheet(isPresented: $showSheet) {
-        SendToFriendsSheet(track: track, friends: friends, isSearching: $showSheet, selectedTab: $selectedTab)
+        SendToFriendsSheet(track: track, friends: friends, isSearching: $showSheet,
+                           selectedTab: $selectedTab, sentResources: $sentResources)
     }
 }
 
@@ -161,31 +168,44 @@ struct FriendSelectedIndicator: View {
 }
 
 
-/// A button that allows the user to send the selected track to friends.
+/// A button that allows the user to send the selected resource to friends.
 ///
 /// The button displays the number of selected friends when more than one friend is selected.
 /// It animates when shown or hidden.
 ///
 /// - Parameters:
-///   - track: The track to be sent.
+///   - resource: The resource to be sent.
 ///   - selectedFriends: A binding to the set of currently selected friends.
 struct SendTrackButton: View {
-    let track: Track
+    @EnvironmentObject var shareViewModel: ShareViewModel
+    let resource: SpotifyResource
     @Binding var selectedFriends: Set<SpotifyProfile>
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
+    @Binding var sentResources: [SharedResource]
     
-    init(track: Track, toFriends: Binding<Set<SpotifyProfile>>, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>) {
-        self.track = track
+    init(resource: SpotifyResource, toFriends: Binding<Set<SpotifyProfile>>, isSearching: Binding<Bool>,
+         selectedTab: Binding<SongShareTab>, sentResources: Binding<[SharedResource]>) {
+        self.resource = resource
         self._selectedFriends = toFriends
         self._isSearching = isSearching
         self._selectedTab = selectedTab
+        self._sentResources = sentResources
     }
     
     var body: some View {
         Button(action: {
             let friendNames = selectedFriends.map { $0.displayName }.joined(separator: ", ")
-            printInfo("Sending \(track.name) to \(friendNames)")
+            printInfo("Sending \(resource.name) to \(friendNames)")
+            Task {
+                if let sent = await shareViewModel.share(resource: resource, to: selectedFriends) {
+                    sentResources.append(contentsOf: sent)
+                }
+                else {
+                    // TODO: Render the error to the user
+                }
+            }
+            
             
             // Redirect back to the Song Share - Sent tab
             withAnimation(.easeOut(duration: 0.2)) {

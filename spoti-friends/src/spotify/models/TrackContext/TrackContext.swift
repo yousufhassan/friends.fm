@@ -3,6 +3,7 @@ import Foundation
 /// Object representing a Spotify Track Content.
 class TrackContext: SpotifyResource, Codable {
     let spotifyUri: String
+    let spotifyId: String
     let name: String
     let type: ContextType
     
@@ -16,6 +17,7 @@ class TrackContext: SpotifyResource, Codable {
     
     init(spotifyUri: String, name: String) {
         self.spotifyUri = spotifyUri
+        self.spotifyId = extractSpotifyIdFrom(uri: spotifyUri)
         self.name = name
         self.type = TrackContext.getContextType(fromUri: spotifyUri)
     }

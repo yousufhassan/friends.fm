@@ -11,11 +11,6 @@ struct spoti_friendsApp: App {
                 .onAppear {
                     Task {
                         await authorizationViewModel.fetchAndUpdateUser()
-                        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                            print("App Version: \(appVersion)")
-                            storeInUserDefaults(key: "appVersion", value: appVersion)
-                        }
-
                     }
                 }
         }
