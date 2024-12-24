@@ -44,6 +44,7 @@ struct SendToFriendsSheet: View {
         VStack {
             // Send to label
             Text("Send to")
+                .foregroundStyle(Color.PresetColour.whitePrimary)
                 .bold()
             
             // Preview of track to send
@@ -89,6 +90,7 @@ struct SendToFriendsSheet: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.top)
         .presentationDetents([.medium, .large])
+        .background(Color.PresetColour.darkgrey)
     }
 }
 
