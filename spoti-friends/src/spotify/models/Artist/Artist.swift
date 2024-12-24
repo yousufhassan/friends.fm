@@ -3,6 +3,7 @@ import Foundation
 /// Object representing a Spotify Artist.
 class Artist: SpotifyResource, Codable {
     let spotifyUri: String
+    let spotifyId: String
     let name: String
     let genres: [String]
     let image: String
@@ -17,6 +18,7 @@ class Artist: SpotifyResource, Codable {
     
     init(spotifyUri: String, name: String, genres: [String], image: String) {
         self.spotifyUri = spotifyUri
+        self.spotifyId = extractSpotifyIdFrom(uri: spotifyUri)
         self.name = name
         self.genres = genres
         self.image = image
@@ -26,6 +28,7 @@ class Artist: SpotifyResource, Codable {
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
+        self.spotifyId = extractSpotifyIdFrom(uri: spotifyUri)
         self.name = try container.decode(String.self, forKey: .name)
         self.genres = try container.decodeIfPresent([String].self, forKey: .genres) ?? []
         self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)

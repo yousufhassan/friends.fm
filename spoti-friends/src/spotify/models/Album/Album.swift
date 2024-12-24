@@ -3,6 +3,7 @@ import Foundation
 /// Object representing a Spotify Album.
 class Album: SpotifyResource, Codable {
     let spotifyUri: String
+    let spotifyId: String
     let name: String
     let image: String
     
@@ -22,6 +23,7 @@ class Album: SpotifyResource, Codable {
     
     init(spotifyUri: String, name: String, image: String) {
         self.spotifyUri = spotifyUri
+        self.spotifyId = extractSpotifyIdFrom(uri: spotifyUri)
         self.name = name
         self.image = image
     }
@@ -33,6 +35,7 @@ class Album: SpotifyResource, Codable {
         
         self.spotifyUri = try spotifyContainer.decodeIfPresent(String.self, forKey: .spotifyUri) ??
         appwriteContainer.decode(String.self, forKey: .spotifyUri)
+        self.spotifyId = extractSpotifyIdFrom(uri: spotifyUri)
         
         self.name = try spotifyContainer.decode(String.self, forKey: .name)
         

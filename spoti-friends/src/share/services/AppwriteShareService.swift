@@ -36,8 +36,16 @@ class AppwriteShareService: ShareServiceProtocol {
         var sentResources: [SharedResource] = []
         for document in documents.documents {
             let data = try JSONEncoder().encode(document.data)
-            let resource = try JSONDecoder().decode(SharedResource.self, from: data)
-            sentResources.append(resource)
+            let sharedResource = try JSONDecoder().decode(SharedResource.self, from: data)
+            
+            // TODO: Extract into helper method because fetch call will be different depending on `resourceType`.
+            let pathParams: [String:String] = ["id": sharedResource.getResourceId()]
+            let resource = try await SpotifyAPI.shared.fetch(method: .GET, endpoint: .getTrack,
+                                                             responseType: Track.self,
+                                                             accessToken: sender.getSpotifyWebAccessToken().getAccessToken(),
+                                                             pathParams: pathParams)
+            sharedResource.setResource(resource: resource)
+            sentResources.append(sharedResource)
         }
         
         return sentResources

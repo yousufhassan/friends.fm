@@ -4,6 +4,7 @@ import Foundation
 class Track: SpotifyResource, Codable, Identifiable, Equatable {
     var id: String { spotifyUri }
     let spotifyUri: String
+    let spotifyId: String
     let name: String
     let artists: [Artist]
     let album: Album
@@ -36,6 +37,7 @@ class Track: SpotifyResource, Codable, Identifiable, Equatable {
     
     init(spotifyUri: String, name: String, artists: [Artist], album: Album, context: TrackContext? = nil) {
         self.spotifyUri = spotifyUri
+        self.spotifyId = extractSpotifyIdFrom(uri: spotifyUri)
         self.name = name
         self.artists = artists
         self.album = album
@@ -47,6 +49,7 @@ class Track: SpotifyResource, Codable, Identifiable, Equatable {
         let container = try decoder.container(keyedBy: SpotifyCodingKeys.self)
         
         self.spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? ""
+        self.spotifyId = extractSpotifyIdFrom(uri: spotifyUri)
         self.name = try container.decode(String.self, forKey: .name)
         self.artists = try container.decode([Artist].self, forKey: .artists)
         self.album = try container.decode(Album.self, forKey: .album)
@@ -57,12 +60,10 @@ class Track: SpotifyResource, Codable, Identifiable, Equatable {
     convenience init(fromAppwrite decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: AppwriteCodingKeys.self)
         let spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? ""
+        let spotifyId = extractSpotifyIdFrom(uri: spotifyUri)
         let name = try container.decode(String.self, forKey: .name)
         let artists = try container.decode([Artist].self, forKey: .artists)
         let album = try container.decode(Album.self, forKey: .album)
-        
-        //        let albumDecoder = try container.superDecoder(forKey: .album)
-        //        let album = try Album(fromAppwrite: albumDecoder)
         
         self.init(spotifyUri: spotifyUri, name: name, artists: artists, album: album)
     }

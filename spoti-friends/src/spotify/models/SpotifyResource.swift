@@ -3,15 +3,26 @@ import Foundation
 /// The `SpotifyResource` protocol ensures each abiding object has a well-defined spotifyUri attribute.
 protocol SpotifyResource: Codable {
     var spotifyUri: String { get }
+    var spotifyId: String { get }
     var name: String { get }
 }
 
 /// This extensions defines the function that returns the `spotifyUri` for all `spotifyResource` objects.
 extension SpotifyResource {
-    /// Returns the `spotifyUri` for this `spotifyResource`.
+    /// Returns the `spotifyUri` for this `SpotifyResource`.
     func getSpotifyUri() -> String {
-        return self.spotifyUri  // might need to omit the 'self' if it binds itself to the `SpotifyProfile` object
+        return self.spotifyUri
     }
+
+    /// Returns the `spotifyId` for this `SpotifyResource`.
+    func getSpotifyId() -> String {
+        return self.spotifyId
+    }
+}
+
+/// Returns the `spotifyId` for this `SpotifyResource`.
+func extractSpotifyIdFrom(uri: String) -> String {
+    return String(uri.split(separator: ":").last ?? "")
 }
 
 /// A struct representing the structure of an image object from Spotify.
