@@ -24,10 +24,23 @@ protocol ShareServiceProtocol {
     ///   - lastResourceId: Optional. The ID of the last resource from the previous fetch for cursor pagination.
     ///     If `nil`, the request fetches resources from the beginning.
     ///
-    /// - Returns: An array of `SharedResource` objects of type `T`, where `T` conforms to `SpotifyResource`.
+    /// - Returns: An array of `SharedResource` objects.
     /// - Throws: This function throws an error if the data cannot be fetched, such as a network error or invalid data response.
     func fetchSentResources(sender: User, limit: Int, lastResourceId: UUID?)
     async throws -> [SharedResource]
     
-//    func fetchReceivedResources()
+    /// Fetches a list of shared resources received by the `receiver`, with support for cursor-based pagination.
+    /// This function retrieves shared resources starting after the provided `lastResourceId`,
+    /// and limits the number of results based on the specified `limit`.
+    ///
+    /// - Parameters:
+    ///   - receiver: The user who received these resources.
+    ///   - limit: Optional. The maximum number of resources to fetch in one request. Default: 25.
+    ///   - lastResourceId: Optional. The ID of the last resource from the previous fetch for cursor pagination.
+    ///     If `nil`, the request fetches resources from the beginning.
+    ///
+    /// - Returns: An array of `SharedResource` objects.
+    /// - Throws: This function throws an error if the data cannot be fetched, such as a network error or invalid data response.
+    func fetchReceivedResources(receiver: User, limit: Int, lastResourceId: UUID?)
+    async throws -> [SharedResource]
 }

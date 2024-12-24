@@ -14,15 +14,15 @@ struct SongShareHomeView: View {
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @Binding var receivedTracks: [Track]
+    @Binding var receivedResources: [SharedResource]
     @Binding var sentResources: [SharedResource]
     
     init(searchBarPlaceholderText: String, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>,
-         receivedTracks: Binding<[Track]>, sentResources: Binding<[SharedResource]>) {
+         receivedResources: Binding<[SharedResource]>, sentResources: Binding<[SharedResource]>) {
         self.searchBarPlaceholderText = searchBarPlaceholderText
         self._isSearching = isSearching
         self._selectedTab = selectedTab
-        self._receivedTracks = receivedTracks
+        self._receivedResources = receivedResources
         self._sentResources = sentResources
         
         
@@ -74,8 +74,12 @@ struct SongShareHomeView: View {
             TabView(selection: $selectedTab) {
                 // Received songs tab
                 ScrollView {
-                    TrackList(tracks: receivedTracks)
-                        .padding(.horizontal)
+                    LazyVStack {
+                        ForEach(receivedResources) { resource in
+                            ReceivedResourceView(resource: resource)
+                        }
+                    }
+                    .padding(.horizontal)
                 }
                 .tag(SongShareTab.received)
                 
@@ -94,8 +98,12 @@ struct SongShareHomeView: View {
         }
         .onAppear {
             Task {
-                if let resources: [SharedResource] = await shareViewModel.getCurrentUsersSentResources() {
-                    sentResources = resources
+                if let receivedResources = await shareViewModel.getCurrentUsersReceivedResources() {
+                    self.receivedResources = receivedResources
+                }
+                
+                if let sentResources = await shareViewModel.getCurrentUsersSentResources() {
+                    self.sentResources = sentResources
                 }
             }
         }
@@ -105,14 +113,14 @@ struct SongShareHomeView: View {
 #Preview {
     @Previewable @State var isSearching = false
     @Previewable @State var selectedTab = SongShareTab.received
-    @Previewable @State var receivedTracks = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
+    @Previewable @State var receivedResources = SharedResourceMock.receivedResources
     @Previewable @State var sentResources = SharedResourceMock.sentResources
     let placeholderText = "What song do you want to share?"
     
     SongShareHomeView(searchBarPlaceholderText: placeholderText,
                       isSearching: $isSearching,
                       selectedTab: $selectedTab,
-                      receivedTracks: $receivedTracks,
+                      receivedResources: $receivedResources,
                       sentResources: $sentResources)
     .environmentObject(ShareViewModel(user: UserMock.userJimHalpert))
     .frame(maxWidth: .infinity, maxHeight: .infinity)

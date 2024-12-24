@@ -24,7 +24,7 @@ struct SongShareView: View {
     let searchBarPlaceholderText = "What song do you want to share?"
     @State private var isSearching: Bool = false
     @State var selectedTab: SongShareTab = .received
-    @State var receivedTracks: [Track] = []
+    @State var receivedTracks: [SharedResource] = []
     @State var sentResources: [SharedResource] = []
     
     var body: some View {
@@ -40,7 +40,7 @@ struct SongShareView: View {
                 SongShareHomeView(searchBarPlaceholderText: searchBarPlaceholderText,
                                   isSearching: $isSearching,
                                   selectedTab: $selectedTab,
-                                  receivedTracks: $receivedTracks,
+                                  receivedResources: $receivedTracks,
                                   sentResources: $sentResources)
                 .environmentObject(shareViewModel)
             }
@@ -52,11 +52,7 @@ struct SongShareView: View {
 
 #Preview {
     let user = UserMock.userJimHalpert
-    let receivedTracks: [Track] = [TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor,
-                                   TrackMock.iRememberEverything, TrackMock.luxury, TrackMock.traitor]
+    let receivedTracks: [SharedResource] = SharedResourceMock.receivedResources
     let sentResources: [SharedResource] = SharedResourceMock.sentResources
     
     SongShareView(receivedTracks: receivedTracks, sentResources: sentResources)

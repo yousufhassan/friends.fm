@@ -88,6 +88,26 @@ class ShareViewModel: ObservableObject {
         }
     }
     
+    public func getCurrentUsersReceivedResources() async -> [SharedResource]? {
+        do {
+            guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
+            return await self.getReceivedResources(receiver: signedInUser)
+        } catch {
+            printError("When getting resources received: \(error).")
+            return nil
+        }
+    }
+    
+    public func getReceivedResources(receiver: User) async -> [SharedResource]? {
+        do {
+            let resources: [SharedResource] = try await ShareServiceManager.shared.fetchReceivedResources(receiver: receiver)
+            return resources
+        } catch {
+            printError("When getting resources received: \(error).")
+            return nil
+        }
+    }
+    
     public func getCurrentUsersSentResources() async -> [SharedResource]? {
         do {
             guard let signedInUser = self.user else { throw AuthorizationError.missingUser }

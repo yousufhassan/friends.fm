@@ -26,7 +26,6 @@ struct SearchResults: View {
                     ForEach(searchResults, id: \.id) { track in
                         TrackView(track: track) {
                             selectedTrack = track
-                            printInfo("search results")
                         }
                     }
                 }

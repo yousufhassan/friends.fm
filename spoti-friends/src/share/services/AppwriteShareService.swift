@@ -39,10 +39,50 @@ class AppwriteShareService: ShareServiceProtocol {
             let sharedResource = try JSONDecoder().decode(SharedResource.self, from: data)
             
             // TODO: Extract into helper method because fetch call will be different depending on `resourceType`.
+            let accessToken = try await UserServiceManager.shared.getSpotifyWebAccessToken(forUser: sender)
             let pathParams: [String:String] = ["id": sharedResource.getResourceId()]
             let resource = try await SpotifyAPI.shared.fetch(method: .GET, endpoint: .getTrack,
                                                              responseType: Track.self,
-                                                             accessToken: sender.getSpotifyWebAccessToken().getAccessToken(),
+                                                             accessToken: accessToken.getAccessToken(),
+                                                             pathParams: pathParams)
+            sharedResource.setResource(resource: resource)
+            sentResources.append(sharedResource)
+        }
+        
+        return sentResources
+    }
+    
+    func fetchReceivedResources(receiver: User, limit: Int, lastResourceId: UUID?)
+    async throws -> [SharedResource] {
+        // Create queries
+        let receiverQuery = Query.equal(SharedResource.CodingKeys.receiver.rawValue, value: receiver.spotifyId)
+        let limitQuery = Query.limit(limit)
+        var queries = [receiverQuery, limitQuery]
+        
+        if let lastResourceId = lastResourceId {
+            let paginationQuery = Query.cursorAfter(lastResourceId.uuidString)
+            queries.append(paginationQuery)
+        }
+        
+        // Fetch matching documents
+        guard let documents = await
+                Appwrite.shared.listDocuments(collectionId: sharedResourcesCollectionId, queries: queries) else {
+            printInfo("No received resources found for the signed in user.")
+            return []
+        }
+        
+        // Convert each document to a SharedResource and return as an array
+        var sentResources: [SharedResource] = []
+        for document in documents.documents {
+            let data = try JSONEncoder().encode(document.data)
+            let sharedResource = try JSONDecoder().decode(SharedResource.self, from: data)
+            
+            // TODO: Extract into helper method because fetch call will be different depending on `resourceType`.
+            let pathParams: [String:String] = ["id": sharedResource.getResourceId()]
+            let accessToken = try await UserServiceManager.shared.getSpotifyWebAccessToken(forUser: receiver)
+            let resource = try await SpotifyAPI.shared.fetch(method: .GET, endpoint: .getTrack,
+                                                             responseType: Track.self,
+                                                             accessToken: accessToken.getAccessToken(),
                                                              pathParams: pathParams)
             sharedResource.setResource(resource: resource)
             sentResources.append(sharedResource)
