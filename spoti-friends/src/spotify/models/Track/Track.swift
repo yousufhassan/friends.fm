@@ -28,7 +28,7 @@ class Track: SpotifyResource, Codable, Identifiable, Equatable {
     
     /// Mapping of the Swift object properties to the Appwrite Collection model.
     enum AppwriteCodingKeys: String, CodingKey {
-        case spotifyUri = "uri"
+        case spotifyUri
         case name
         case artists
         case album

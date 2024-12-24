@@ -5,9 +5,9 @@ struct SentResourceView: View {
     var body: some View {
         HStack {
             if (resource.getType() == .track) {
-
                 TrackView(track: resource.getResource() as! Track)
             }
+            
             Spacer()
             ProfileImage(profile: resource.getReceiver(), width: 24, height: 24)
         }

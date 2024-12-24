@@ -84,15 +84,15 @@ class SharedResource: Codable, Identifiable {
         //      ideal since we will be accessing this data frequently.
         switch type {
         case .album:
-            let jsonData = try JSONEncoder().encode(resource)
+            let jsonData = try JSONEncoder().encode(resource as! Album)
             let jsonString = String(data: jsonData, encoding: .utf8)
             try container.encode(jsonString, forKey: .resource)
         case .artist:
-            let jsonData = try JSONEncoder().encode(resource)
+            let jsonData = try JSONEncoder().encode(resource as! Artist)
             let jsonString = String(data: jsonData, encoding: .utf8)
             try container.encode(jsonString, forKey: .resource)
         case .track:
-            let jsonData = try JSONEncoder().encode(resource)
+            let jsonData = try JSONEncoder().encode(resource as! Track)
             let jsonString = String(data: jsonData, encoding: .utf8)
             try container.encode(jsonString, forKey: .resource)
         }

@@ -18,12 +18,14 @@ struct TrackView: View {
             if let url = URL(string: track.spotifyUri) {
                 UIApplication.shared.open(url)
             }
+            printInfo("Default")
         }
     }
     
     var body: some View {
         Button(action: {
             onTap?()
+            printInfo("Clicked")
         }) {
             HStack {
                 // Album cover

@@ -97,7 +97,6 @@ struct SongShareHomeView: View {
                 if let resources: [SharedResource] = await shareViewModel.getCurrentUsersSentResources() {
                     sentResources = resources
                 }
-                print("done")
             }
         }
     }
