@@ -112,7 +112,14 @@ class ShareViewModel: ObservableObject {
     /// This function fetches the shared resources received by the specified user from the `ShareServiceManager`.
     public func getReceivedResources(receiver: User) async -> [SharedResource]? {
         do {
+            if let resources = Cache.shared.getCachedReceivedResources(forKey: receiver.spotifyId) {
+                printInfo("Retrieved received resources from cache for user (id=\(receiver.spotifyId))")
+                return resources
+            }
+            
             let resources: [SharedResource] = try await ShareServiceManager.shared.fetchReceivedResources(receiver: receiver)
+            Cache.shared.cacheReceivedResources(resources, forKey: receiver.spotifyId)
+            printInfo("Cached received resources for user (id=\(receiver.spotifyId))")
             return resources
         } catch {
             printError("When getting resources received: \(error).")
@@ -144,7 +151,14 @@ class ShareViewModel: ObservableObject {
     /// This function fetches the shared resources sent by the specified user from the `ShareServiceManager`.
     public func getSentResources(sender: User) async -> [SharedResource]? {
         do {
+            if let resources = Cache.shared.getCachedSentResources(forKey: sender.spotifyId) {
+                printInfo("Retrieved sent resources from cache for user (id=\(sender.spotifyId))")
+                return resources
+            }
+            
             let resources: [SharedResource] = try await ShareServiceManager.shared.fetchSentResources(sender: sender)
+            Cache.shared.cacheSentResources(resources, forKey: sender.spotifyId)
+            printInfo("Cached sent resources for user (id=\(sender.spotifyId))")
             return resources
         } catch {
             printError("When getting resources sent: \(error).")
