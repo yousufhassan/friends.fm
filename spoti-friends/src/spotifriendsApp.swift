@@ -38,10 +38,10 @@ func fetchAndCacheDataOnAppLoad(signedInUser: User) async throws {
     
     let userProfile = signedInUser.spotifyProfile
     let receivedResources = try await ShareServiceManager.shared.fetchReceivedResources(receiver: userProfile)
-    Cache.shared.cacheReceivedResources(receivedResources, forKey: signedInUser.spotifyId)
+    Cache.shared.cacheReceivedResources(receivedResources, spotifyId: signedInUser.spotifyId)
     printInfo("Cached received resources for user (id=\(signedInUser.spotifyId))")
     
     let sentResources = try await ShareServiceManager.shared.fetchSentResources(sender: userProfile)
-    Cache.shared.cacheSentResources(sentResources, forKey: signedInUser.spotifyId)
+    Cache.shared.cacheSentResources(sentResources, spotifyId: signedInUser.spotifyId)
     printInfo("Cached sent resources for user (id=\(signedInUser.spotifyId))")
 }

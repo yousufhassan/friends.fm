@@ -82,6 +82,8 @@ class ShareViewModel: ObservableObject {
                 try await ShareServiceManager.shared.share(resource: sharedResource)
                 sharedResources.append(sharedResource)
             }
+            
+            Cache.shared.appendToSentResources(spotifyId: signedInUser.spotifyId, newResources: sharedResources)
             return sharedResources
         } catch {
             printError("When sharing resources: \(error)")
@@ -114,13 +116,13 @@ class ShareViewModel: ObservableObject {
     /// This function fetches the shared resources received by the specified user from the `ShareServiceManager`.
     public func getReceivedResources(receiver: SpotifyProfile) async -> [SharedResource]? {
         do {
-            if let resources = Cache.shared.getCachedReceivedResources(forKey: receiver.getSpotifyId()) {
+            if let resources = Cache.shared.getReceivedResources(spotifyId: receiver.getSpotifyId()) {
                 printInfo("Retrieved received resources from cache for user (id=\(receiver.getSpotifyId()))")
                 return resources
             }
             
             let resources: [SharedResource] = try await ShareServiceManager.shared.fetchReceivedResources(receiver: receiver)
-            Cache.shared.cacheReceivedResources(resources, forKey: receiver.getSpotifyId())
+            Cache.shared.cacheReceivedResources(resources, spotifyId: receiver.getSpotifyId())
             printInfo("Cached received resources for user (id=\(receiver.getSpotifyId()))")
             return resources
         } catch {
@@ -154,13 +156,13 @@ class ShareViewModel: ObservableObject {
     /// This function fetches the shared resources sent by the specified user from the `ShareServiceManager`.
     public func getSentResources(sender: SpotifyProfile) async -> [SharedResource]? {
         do {
-            if let resources = Cache.shared.getCachedSentResources(forKey: sender.getSpotifyId()) {
+            if let resources = Cache.shared.getSentResources(spotifyId: sender.getSpotifyId()) {
                 printInfo("Retrieved sent resources from cache for user (id=\(sender.getSpotifyId()))")
                 return resources
             }
             
             let resources: [SharedResource] = try await ShareServiceManager.shared.fetchSentResources(sender: sender)
-            Cache.shared.cacheSentResources(resources, forKey: sender.getSpotifyId())
+            Cache.shared.cacheSentResources(resources, spotifyId: sender.getSpotifyId())
             printInfo("Cached sent resources for user (id=\(sender.getSpotifyId()))")
             return resources
         } catch {

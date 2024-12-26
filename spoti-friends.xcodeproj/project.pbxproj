@@ -592,9 +592,9 @@
 		CB7C05A72C0EBB18001A0062 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				CBA995C82D1E0CBC0076E9B8 /* cache */,
 				CB7C05AF2C0EEF7E001A0062 /* Types.swift */,
 				CB0B93822C771E27003A9720 /* User */,
-				CBA995C42D1B79DB0076E9B8 /* Cache.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -690,6 +690,14 @@
 				CB7C05B12C1191A7001A0062 /* views */,
 			);
 			path = auth;
+			sourceTree = "<group>";
+		};
+		CBA995C82D1E0CBC0076E9B8 /* cache */ = {
+			isa = PBXGroup;
+			children = (
+				CBA995C42D1B79DB0076E9B8 /* Cache.swift */,
+			);
+			path = cache;
 			sourceTree = "<group>";
 		};
 		CBB7D0C52D029B6B002572C6 /* viewModels */ = {
