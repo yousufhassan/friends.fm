@@ -20,10 +20,10 @@ struct ListeningActivityCard: View, Identifiable {
     @EnvironmentObject var profileViewModel: ProfileViewModel
     
     init(profile: SpotifyProfile, backgroundColor: Color) {
-        self.id = profile.spotifyId
+        self.id = profile.getSpotifyId()
         self.profile = profile
-        self.track = profile.currentOrMostRecentTrack!
-        self.album = (profile.currentOrMostRecentTrack?.track.album)!
+        self.track = profile.getCurrentOrMostRecentTrack()!
+        self.album = (profile.getCurrentOrMostRecentTrack()?.track.album)!
         self.backgroundColor = backgroundColor
         self.fontColor = Color(backgroundColor).isDarkBackground() ? Color.white : Color.black
     }

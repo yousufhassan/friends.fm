@@ -92,7 +92,7 @@ class SpotifyAuth {
         let friends = try await SpotifyAPI.shared
             .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.getAccessToken())
 
-        return User(spotifyId: spotifyProfile.spotifyId,
+        return User(spotifyId: spotifyProfile.getSpotifyId(),
                             spotifyProfile: spotifyProfile,
                             friends: friends,
                             authorizationCode: authorizationCode,

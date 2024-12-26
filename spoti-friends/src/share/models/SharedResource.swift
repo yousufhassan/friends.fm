@@ -6,7 +6,7 @@ class SharedResource: Codable, Identifiable {
     private var resource: SpotifyResource?
     private let resourceId: String
     private let type: ResourceType
-    private let sender: User
+    private let sender: SpotifyProfile
     private let receiver: SpotifyProfile
     private let sharedTs: TimeInterval
     
@@ -21,7 +21,7 @@ class SharedResource: Codable, Identifiable {
     }
     
     /// Regular initializer for creating the object directly.
-    init(resource: SpotifyResource, sender: User, receiver: SpotifyProfile) {
+    init(resource: SpotifyResource, sender: SpotifyProfile, receiver: SpotifyProfile) {
         self.id = UUID()
         self.resource = resource
         self.resourceId = resource.getSpotifyId()
@@ -40,10 +40,10 @@ class SharedResource: Codable, Identifiable {
         self.resource = nil  // This will be set after the init, when fetched from Spotify
         self.resourceId = try container.decode(String.self, forKey: .resourceId)
         self.type = try container.decode(ResourceType.self, forKey: .type)
-        self.sender = try container.decode(User.self, forKey: .sender)
 
-        // Decode spotifyProfile using the Appwrite keys
+        // Decode sender and receiver using the Appwrite keys for `SpotifyProfile`
         let spotifyProfileDecoder = try container.superDecoder(forKey: .receiver)
+        self.sender = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
         self.receiver = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
         
         /// Converting from `Integer` to `TimeInterval` since Appwrite only supports the former.
@@ -100,7 +100,7 @@ class SharedResource: Codable, Identifiable {
     }
     
     
-    public func getSender() -> User {
+    public func getSender() -> SpotifyProfile {
         return self.sender
     }
     

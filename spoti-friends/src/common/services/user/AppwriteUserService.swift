@@ -17,12 +17,12 @@ class AppwriteUserService: UserServiceProtocol {
         return documents?.total == 1
     }
     
-    public func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User? {
+    public func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User {
         guard let document = await Appwrite.shared.getDocument(collectionId: usersCollectionId,
                                                                documentId: spotifyId)
         else {
             printInfo("User (id=\(spotifyId)) could not be found.")
-            return nil
+            throw UserServiceError.userNotFound
         }
         let data = try JSONEncoder().encode(document.data)
         let user = try JSONDecoder().decode(User.self, from: data)
@@ -39,5 +39,19 @@ class AppwriteUserService: UserServiceProtocol {
         let data = try JSONEncoder().encode(user)
         try await Appwrite.shared.updateDocument(collectionId: usersCollectionId,
                                                  documentId: user.spotifyId, data: data)
+    }
+    
+    public func getSpotifyWebAccessToken(forUserWithSpotifyId spotifyId: String) async throws -> SpotifyWebAccessToken {
+        let selectQuery = Query.select(["spotifyWebAccessToken"])
+        guard let document = await Appwrite.shared.getDocument(collectionId: usersCollectionId,
+                                                         documentId: spotifyId,
+                                                         queries: [selectQuery])
+        else {
+            printError("Spotify Web Access Token for user (id=\(spotifyId)) could not be found.")
+            throw UserServiceError.spotifyWebAccessTokenNotFound
+        }
+        let data = try JSONEncoder().encode(document.data)
+        let accessToken = try JSONDecoder().decode(SpotifyWebAccessToken.self, from: data)
+        return accessToken
     }
 }

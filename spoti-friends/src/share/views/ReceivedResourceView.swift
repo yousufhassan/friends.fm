@@ -17,13 +17,13 @@ struct ReceivedResourceView: View {
             }
             
             Spacer()
-            ProfileImage(profile: resource.getSender().spotifyProfile, width: 24, height: 24)
+            ProfileImage(profile: resource.getSender(), width: 24, height: 24)
         }
     }
 }
 
 #Preview {
-    let sender = UserMock.userJimHalpert
+    let sender = SpotifyProfileMock.jimHalpert
     let receiver = SpotifyProfileMock.michaelScott
     let resource = SharedResource(resource: TrackMock.iRememberEverything, sender: sender, receiver: receiver)
     ReceivedResourceView(resource: resource)

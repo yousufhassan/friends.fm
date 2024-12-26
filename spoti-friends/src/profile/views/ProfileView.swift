@@ -35,7 +35,7 @@ struct ProfileView: View {
         .background(Color.PresetGradient.profileViewGradient(profile: profile))
         .onAppear {
             Task {
-                self.isAppUser = await UserServiceManager.shared.userExists(withSpotifyId: profile.spotifyId)
+                self.isAppUser = await UserServiceManager.shared.userExists(withSpotifyId: profile.getSpotifyId())
             }
         }
     }

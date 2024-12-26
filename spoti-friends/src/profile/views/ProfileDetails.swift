@@ -23,7 +23,7 @@ struct ProfileDetails: View {
             
             VStack(alignment: .leading) {
                 // Display name
-                Text(profile.displayName)
+                Text(profile.getDisplayName())
                     .foregroundStyle(Color.PresetColour.whitePrimary)
                 
                 Spacer().frame(height: 4)
@@ -66,7 +66,7 @@ struct ProfileDetails: View {
                 Spacer().frame(height: 8)
                 
                 // Open in Spotify button
-                OpenInSpotifyButton(redirectLink: profile.spotifyUri)
+                OpenInSpotifyButton(redirectLink: profile.getSpotifyUri())
             }
             Spacer()
         }

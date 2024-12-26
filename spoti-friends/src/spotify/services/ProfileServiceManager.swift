@@ -50,7 +50,7 @@ class ProfileServiceManager {
         do {
             return try await profileService.saveProfileToDB(profile)
         } catch {
-            printError("Error when trying to save Spotify Profile (id=\(profile.spotifyId) to database.")
+            printError("Error when trying to save Spotify Profile (id=\(profile.getSpotifyId()) to database.")
             printError("\(error)")
             throw error
         }
@@ -67,8 +67,8 @@ class ProfileServiceManager {
     /// - Note: The image is saved with the user's `spotifyId` as the filename.
     func storeProfilePictureLocally(profile: SpotifyProfile) async -> Void {
         do {
-            let imageName = profile.spotifyId
-            let link = profile.image
+            let imageName = profile.getSpotifyId()
+            let link = profile.getImage()
             
             // Fetch the image data
             guard let imageURL = URL(string: link) else { return }
@@ -80,7 +80,7 @@ class ProfileServiceManager {
             try createDirectoryIfNotExists(at: fileURL)
             try data.write(to: fileURL)
         } catch {
-            printError("When trying to the store the profile image (id=\(profile.spotifyId)) locally.")
+            printError("When trying to the store the profile image (id=\(profile.getSpotifyId())) locally.")
             printError("\(error)")
         }
     }

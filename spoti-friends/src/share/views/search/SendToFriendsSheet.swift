@@ -130,7 +130,7 @@ struct FriendGridItem: View {
                 .padding(.horizontal)
             
             // Friend's name
-            Text(friend.displayName)
+            Text(friend.getDisplayName())
                 .foregroundStyle(Color.PresetColour.whiteSecondary)
                 .font(.footnote)
                 .lineLimit(1)
@@ -195,7 +195,7 @@ struct SendTrackButton: View {
     
     var body: some View {
         Button(action: {
-            let friendNames = selectedFriends.map { $0.displayName }.joined(separator: ", ")
+            let friendNames = selectedFriends.map { $0.getDisplayName() }.joined(separator: ", ")
             printInfo("Sending \(resource.name) to \(friendNames)")
             Task {
                 if let sent = await shareViewModel.share(resource: resource, to: selectedFriends) {

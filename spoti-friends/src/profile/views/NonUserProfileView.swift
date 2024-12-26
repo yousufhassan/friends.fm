@@ -26,7 +26,7 @@ struct NonUserProfileView: View {
                 .frame(height: 70)
             
             VStack {
-                Text("\(profile.displayName) has not joined the app yet.")
+                Text("\(profile.getDisplayName()) has not joined the app yet.")
                 Text("Invite them to be part of the fun!")
             }
             .foregroundStyle(Color.PresetColour.whitePrimary)

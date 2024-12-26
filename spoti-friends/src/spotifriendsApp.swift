@@ -25,6 +25,7 @@ struct spoti_friendsApp: App {
 /// Fetches and caches data for the signed-in user during app load.
 ///
 /// This function fetches and caches the following data:
+///   - `signedInUser`
 ///   - `receivedResources`
 ///   - `sentResources`
 ///
@@ -32,10 +33,15 @@ struct spoti_friendsApp: App {
 /// - Throws: An error if fetching the received or sent resources from `ShareServiceManager` fails.
 ///
 func fetchAndCacheDataOnAppLoad(signedInUser: User) async throws {
-    let receivedResources = try await ShareServiceManager.shared.fetchReceivedResources(receiver: signedInUser)
-    let sentResources = try await ShareServiceManager.shared.fetchSentResources(sender: signedInUser)
+    Cache.shared.cacheUser(signedInUser)
+    printInfo("Cached signed in user")
+    
+    let userProfile = signedInUser.spotifyProfile
+    let receivedResources = try await ShareServiceManager.shared.fetchReceivedResources(receiver: userProfile)
     Cache.shared.cacheReceivedResources(receivedResources, forKey: signedInUser.spotifyId)
-    Cache.shared.cacheSentResources(sentResources, forKey: signedInUser.spotifyId)
     printInfo("Cached received resources for user (id=\(signedInUser.spotifyId))")
+    
+    let sentResources = try await ShareServiceManager.shared.fetchSentResources(sender: userProfile)
+    Cache.shared.cacheSentResources(sentResources, forKey: signedInUser.spotifyId)
     printInfo("Cached sent resources for user (id=\(signedInUser.spotifyId))")
 }

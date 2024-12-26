@@ -109,7 +109,7 @@ struct UserProfileView: View {
                 }
                 
                 // Render logout button if viewing own profile
-                if (profileViewModel.user?.spotifyId == profile.spotifyId) {
+                if (profileViewModel.user?.spotifyId == profile.getSpotifyId()) {
                     LogoutButton()
                         .padding(.bottom, 10)
                 }

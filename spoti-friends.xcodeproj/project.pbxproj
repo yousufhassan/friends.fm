@@ -86,6 +86,7 @@
 		CB9A9AE02C0C22D70073817C /* SpotifyAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9A9ADF2C0C22D70073817C /* SpotifyAuth.swift */; };
 		CBA995BC2D1B25FD0076E9B8 /* ReceivedResourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995BB2D1B25F70076E9B8 /* ReceivedResourceView.swift */; };
 		CBA995C52D1B79DB0076E9B8 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995C42D1B79DB0076E9B8 /* Cache.swift */; };
+		CBA995C72D1DE12C0076E9B8 /* UserServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995C62D1DE12C0076E9B8 /* UserServiceError.swift */; };
 		CBB1A3C82C8E59BE00D3D658 /* ViewMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */; };
 		CBB1A3CA2C8E5A8200D3D658 /* ViewMoreRecentTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3C92C8E5A8200D3D658 /* ViewMoreRecentTracks.swift */; };
 		CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */; };
@@ -199,6 +200,7 @@
 		CB9A9ADF2C0C22D70073817C /* SpotifyAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAuth.swift; sourceTree = "<group>"; };
 		CBA995BB2D1B25F70076E9B8 /* ReceivedResourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedResourceView.swift; sourceTree = "<group>"; };
 		CBA995C42D1B79DB0076E9B8 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		CBA995C62D1DE12C0076E9B8 /* UserServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceError.swift; sourceTree = "<group>"; };
 		CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreButton.swift; sourceTree = "<group>"; };
 		CBB1A3C92C8E5A8200D3D658 /* ViewMoreRecentTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRecentTracks.swift; sourceTree = "<group>"; };
 		CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTopSongs.swift; sourceTree = "<group>"; };
@@ -437,6 +439,7 @@
 				CB3797F62CA7EB74009F5D56 /* AppwriteUserService.swift */,
 				CB3797FD2CA7F962009F5D56 /* UserServiceManager.swift */,
 				CB3797F92CA7F655009F5D56 /* UserServiceProtocol.swift */,
+				CBA995C62D1DE12C0076E9B8 /* UserServiceError.swift */,
 			);
 			path = user;
 			sourceTree = "<group>";
@@ -815,6 +818,7 @@
 				CBB7D0D62D053403002572C6 /* AppwriteShareService.swift in Sources */,
 				CB0B93682C7711F6003A9720 /* AlbumCoverPlaceholder.swift in Sources */,
 				CB3B61812C1F83AE0088DFA1 /* AuthenticatedView.swift in Sources */,
+				CBA995C72D1DE12C0076E9B8 /* UserServiceError.swift in Sources */,
 				CB0B937F2C771D5D003A9720 /* CurrentOrMostRecentTrackMock.swift in Sources */,
 				CB9A9ADC2C0BEC080073817C /* FriendActivityView.swift in Sources */,
 				CB59BCB52C2FA08D0061C99B /* ListeningActivityCard.swift in Sources */,

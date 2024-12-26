@@ -22,18 +22,18 @@ struct ProfileImage: View {
                     .resizable()
                 
             } else {
-                Text(profile.displayName.prefix(1).capitalized)
+                Text(profile.getDisplayName().prefix(1).capitalized)
                     .font(.system(size: width / 2))
                     .frame(width: width, height: height)
                     .foregroundColor(Color.PresetColour.whitePrimary)
-                    .background(Color.PresetColour.generateDarkColour(from: profile.spotifyId))
+                    .background(Color.PresetColour.generateDarkColour(from: profile.getSpotifyId()))
             }
         }
         .aspectRatio(contentMode: .fill)
         .frame(width: width, height: height)
         .clipShape(Circle())
         .onAppear {
-            profileImage = getProfilePictureFromDisk(imageName: profile.spotifyId)
+            profileImage = getProfilePictureFromDisk(imageName: profile.getSpotifyId())
         }
     }
 }
