@@ -107,7 +107,7 @@ class UserServiceManager {
         let existingToken = user.getSpotifyWebAccessToken()
         if (!SpotifyAuth.shared.accessTokenIsExpired(existingToken.getExpiryTimestamp())) {
             return existingToken
-        }dd
+        }
         
         let newToken = try await SpotifyAuth.shared
             .refreshAccessToken(refreshToken: existingToken.getRefreshToken())
