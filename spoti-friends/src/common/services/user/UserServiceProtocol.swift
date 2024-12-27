@@ -15,9 +15,7 @@ protocol UserServiceProtocol {
     
     /// Retrieves a user from the database using their Spotify ID.
     ///
-    /// - Parameters:
-    ///   - spotifyId: The Spotify ID of the user to retrieve.
-    ///   - fields: Optional. The `User` object fields to return. Default: all fields.
+    /// - Parameter spotifyId: The Spotify ID of the user to retrieve.
     /// - Returns: An optional `User` object representing the user, or `nil` if the user could not be found.
     /// - Throws: An error if the retrieval process fails.
     ///
