@@ -38,7 +38,7 @@ extension Color {
         static var mainDarkGradient: Gradient {return  Gradient(colors: [Color(red: 0.12, green: 0.12, blue: 0.12), Color(red: 0.06, green: 0.06, blue: 0.06)])}
         
         static func profileViewGradient(profile: SpotifyProfile) -> LinearGradient {
-            let profileBackgroundColor = getBackgroundColorForImage(getProfilePictureFromDisk(imageName: profile.spotifyId), defaultColor: Color.PresetColour.spotifyGreen)
+            let profileBackgroundColor = getBackgroundColorForImage(getProfilePictureFromDisk(imageName: profile.getSpotifyId()), defaultColor: Color.PresetColour.spotifyGreen)
             return LinearGradient(
                 colors: [
                     Color(profileBackgroundColor),

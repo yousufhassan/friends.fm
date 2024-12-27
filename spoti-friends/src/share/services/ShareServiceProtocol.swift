@@ -19,14 +19,14 @@ protocol ShareServiceProtocol {
     /// and limits the number of results based on the specified `limit`.
     ///
     /// - Parameters:
-    ///   - sender: The user who sent these resources.
+    ///   - sender: The `SpotifyProfile` who sent these resources.
     ///   - limit: Optional. The maximum number of resources to fetch in one request. Default: 25.
     ///   - lastResourceId: Optional. The ID of the last resource from the previous fetch for cursor pagination.
     ///     If `nil`, the request fetches resources from the beginning.
     ///
     /// - Returns: An array of `SharedResource` objects.
     /// - Throws: This function throws an error if the data cannot be fetched, such as a network error or invalid data response.
-    func fetchSentResources(sender: User, limit: Int, lastResourceId: UUID?)
+    func fetchSentResources(sender: SpotifyProfile, limit: Int, lastResourceId: UUID?)
     async throws -> [SharedResource]
     
     /// Fetches a list of shared resources received by the `receiver`, with support for cursor-based pagination.
@@ -34,13 +34,13 @@ protocol ShareServiceProtocol {
     /// and limits the number of results based on the specified `limit`.
     ///
     /// - Parameters:
-    ///   - receiver: The user who received these resources.
+    ///   - receiver: The `SpotifyProfile` who received these resources.
     ///   - limit: Optional. The maximum number of resources to fetch in one request. Default: 25.
     ///   - lastResourceId: Optional. The ID of the last resource from the previous fetch for cursor pagination.
     ///     If `nil`, the request fetches resources from the beginning.
     ///
     /// - Returns: An array of `SharedResource` objects.
     /// - Throws: This function throws an error if the data cannot be fetched, such as a network error or invalid data response.
-    func fetchReceivedResources(receiver: User, limit: Int, lastResourceId: UUID?)
+    func fetchReceivedResources(receiver: SpotifyProfile, limit: Int, lastResourceId: UUID?)
     async throws -> [SharedResource]
 }

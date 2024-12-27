@@ -11,8 +11,37 @@ struct spoti_friendsApp: App {
                 .onAppear {
                     Task {
                         await authorizationViewModel.fetchAndUpdateUser()
+                        guard let signedInUser = authorizationViewModel.user else {
+                            throw AuthorizationError.missingUser
+                        }
+                        
+                        try await fetchAndCacheDataOnAppLoad(signedInUser: signedInUser)
                     }
                 }
         }
     }
+}
+
+/// Fetches and caches data for the signed-in user during app load.
+///
+/// This function fetches and caches the following data:
+///   - `signedInUser`
+///   - `receivedResources`
+///   - `sentResources`
+///
+/// - Parameter signedInUser: The currently signed-in user.
+/// - Throws: An error if fetching the received or sent resources from `ShareServiceManager` fails.
+///
+func fetchAndCacheDataOnAppLoad(signedInUser: User) async throws {
+    Cache.shared.cacheUser(signedInUser)
+    printInfo("Cached signed in user")
+    
+    let userProfile = signedInUser.spotifyProfile
+    let receivedResources = try await ShareServiceManager.shared.fetchReceivedResources(receiver: userProfile)
+    Cache.shared.cacheReceivedResources(receivedResources, spotifyId: signedInUser.spotifyId)
+    printInfo("Cached received resources for user (id=\(signedInUser.spotifyId))")
+    
+    let sentResources = try await ShareServiceManager.shared.fetchSentResources(sender: userProfile)
+    Cache.shared.cacheSentResources(sentResources, spotifyId: signedInUser.spotifyId)
+    printInfo("Cached sent resources for user (id=\(signedInUser.spotifyId))")
 }

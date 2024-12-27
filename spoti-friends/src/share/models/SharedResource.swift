@@ -1,14 +1,19 @@
 import Foundation
 
 // TODO: Add docs. Include brief explanation on why resource is stored as a String.
-class SharedResource: Codable, Identifiable {
+class SharedResource: Codable, Identifiable, Equatable {
     let id: UUID
     private var resource: SpotifyResource?
     private let resourceId: String
     private let type: ResourceType
-    private let sender: User
+    private let sender: SpotifyProfile
     private let receiver: SpotifyProfile
     private let sharedTs: TimeInterval
+    
+    /// Implement Equatable protocol
+    static func == (lhs: SharedResource, rhs: SharedResource) -> Bool {
+            return lhs.id == rhs.id
+        }
     
     /// Mapping of the Swift object properties to the Appwrite `SharedResource` Collection model.
     enum CodingKeys: String, CodingKey {
@@ -21,7 +26,7 @@ class SharedResource: Codable, Identifiable {
     }
     
     /// Regular initializer for creating the object directly.
-    init(resource: SpotifyResource, sender: User, receiver: SpotifyProfile) {
+    init(resource: SpotifyResource, sender: SpotifyProfile, receiver: SpotifyProfile) {
         self.id = UUID()
         self.resource = resource
         self.resourceId = resource.getSpotifyId()
@@ -40,10 +45,10 @@ class SharedResource: Codable, Identifiable {
         self.resource = nil  // This will be set after the init, when fetched from Spotify
         self.resourceId = try container.decode(String.self, forKey: .resourceId)
         self.type = try container.decode(ResourceType.self, forKey: .type)
-        self.sender = try container.decode(User.self, forKey: .sender)
 
-        // Decode spotifyProfile using the Appwrite keys
+        // Decode sender and receiver using the Appwrite keys for `SpotifyProfile`
         let spotifyProfileDecoder = try container.superDecoder(forKey: .receiver)
+        self.sender = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
         self.receiver = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
         
         /// Converting from `Integer` to `TimeInterval` since Appwrite only supports the former.
@@ -100,7 +105,7 @@ class SharedResource: Codable, Identifiable {
     }
     
     
-    public func getSender() -> User {
+    public func getSender() -> SpotifyProfile {
         return self.sender
     }
     

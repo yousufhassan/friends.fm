@@ -130,7 +130,7 @@ struct FriendGridItem: View {
                 .padding(.horizontal)
             
             // Friend's name
-            Text(friend.displayName)
+            Text(friend.getDisplayName())
                 .foregroundStyle(Color.PresetColour.whiteSecondary)
                 .font(.footnote)
                 .lineLimit(1)
@@ -195,15 +195,28 @@ struct SendTrackButton: View {
     
     var body: some View {
         Button(action: {
-            let friendNames = selectedFriends.map { $0.displayName }.joined(separator: ", ")
+            let friendNames = selectedFriends.map { $0.getDisplayName() }.joined(separator: ", ")
             printInfo("Sending \(resource.name) to \(friendNames)")
             Task {
-                if let sent = await shareViewModel.share(resource: resource, to: selectedFriends) {
-                    sentResources.append(contentsOf: sent)
-                }
-                else {
-                    // TODO: Render the error to the user
-                }
+                var sentResourcesToAdd: [SharedResource] = []
+                if (await shareViewModel.share(resource: resource, to: selectedFriends, optimisticUpdate: { resources in
+                    sentResourcesToAdd = resources
+//                    self.sentResources.append(contentsOf: resources) // Update UI immediately
+                })) != nil {
+                        // Handle success (resources already appended optimistically)
+                        printInfo("Successfully shared \(sentResourcesToAdd.count) resources to \(selectedFriends.map {$0.getDisplayName()})")
+                    } else {
+                        printError("Failed to share \(sentResourcesToAdd.count) resources to \(selectedFriends.map {$0.getDisplayName()})")
+                        // TODO: render error
+                        
+                        // Handle error (rollback the changes)
+                        guard let signedInUser = shareViewModel.user else { throw AuthorizationError.missingUser }
+                        Cache.shared.removeFromSentResources(spotifyId: signedInUser.spotifyId, resourcesToRemove: sentResourcesToAdd)
+//                        self.sentResources.removeAll { resource in
+//                            sentResourcesToAdd.contains { $0.id == resource.id }
+//                        }
+                    }
+
             }
             
             

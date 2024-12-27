@@ -32,20 +32,32 @@ class ShareServiceManager {
     /// and limits the number of results based on the specified `limit`.
     ///
     /// - Parameters:
-    ///   - sender: The user who sent these resources.
+    ///   - sender: The `SpotifyProfile` who sent these resources.
     ///   - limit: Optional. The maximum number of resources to fetch in one request. Default: 25.
     ///   - lastResourceId: Optional. The ID of the last resource from the previous fetch for cursor pagination.
     ///     If `nil`, the request fetches resources from the beginning.
     ///
     /// - Returns: An array of `SharedResource` objects of type `T`, where `T` conforms to `SpotifyResource`.
     /// - Throws: This function throws an error if the data cannot be fetched, such as a network error or invalid data response.
-    func fetchSentResources(sender: User, limit: Int = 25, lastResourceId: UUID? = nil)
+    func fetchSentResources(sender: SpotifyProfile, limit: Int = 25, lastResourceId: UUID? = nil)
     async throws -> [SharedResource] {
         return try await
         self.shareService.fetchSentResources(sender: sender, limit: limit, lastResourceId: lastResourceId)
     }
     
-    func fetchReceivedResources(receiver: User, limit: Int = 25, lastResourceId: UUID? = nil)
+    /// Fetches a list of shared resources received by the `receiver`, with support for cursor-based pagination.
+    /// This function retrieves shared resources starting after the provided `lastResourceId`,
+    /// and limits the number of results based on the specified `limit`.
+    ///
+    /// - Parameters:
+    ///   - receiver: The `SpotifyProfile` who received these resources.
+    ///   - limit: Optional. The maximum number of resources to fetch in one request. Default: 25.
+    ///   - lastResourceId: Optional. The ID of the last resource from the previous fetch for cursor pagination.
+    ///     If `nil`, the request fetches resources from the beginning.
+    ///
+    /// - Returns: An array of `SharedResource` objects.
+    /// - Throws: This function throws an error if the data cannot be fetched, such as a network error or invalid data response.
+    func fetchReceivedResources(receiver: SpotifyProfile, limit: Int = 25, lastResourceId: UUID? = nil)
     async throws -> [SharedResource] {
         return try await
         self.shareService.fetchReceivedResources(receiver: receiver, limit: limit, lastResourceId: lastResourceId)

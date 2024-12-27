@@ -70,17 +70,27 @@ class ShareViewModel: ObservableObject {
     /// - Returns: The list of `SharedResource` created and shared, or `nil` on error.
     ///
     /// The signed in user is the sender.
-    public func share(resource: SpotifyResource, to receivers: Set<SpotifyProfile>)
+    public func share(resource: SpotifyResource,
+                      to receivers: Set<SpotifyProfile>,
+                      optimisticUpdate: (([SharedResource]) -> Void)? = nil)
     async -> [SharedResource]? {
         do {
-            guard let sender = self.user else { throw AuthorizationError.missingUser }
+            guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
+            let sender = signedInUser.spotifyProfile
             var sharedResources: [SharedResource] = []
             
             for receiver in receivers {
                 let sharedResource = SharedResource(resource: resource, sender: sender, receiver: receiver)
-                try await ShareServiceManager.shared.share(resource: sharedResource)
                 sharedResources.append(sharedResource)
             }
+            
+            Cache.shared.appendToSentResources(spotifyId: signedInUser.spotifyId, newResources: sharedResources)
+            optimisticUpdate?(sharedResources)
+            
+            for resource in sharedResources {
+                try await ShareServiceManager.shared.share(resource: resource)
+            }
+            
             return sharedResources
         } catch {
             printError("When sharing resources: \(error)")
@@ -97,7 +107,8 @@ class ShareViewModel: ObservableObject {
     public func getCurrentUsersReceivedResources() async -> [SharedResource]? {
         do {
             guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
-            return await self.getReceivedResources(receiver: signedInUser)
+            let receiver = signedInUser.spotifyProfile
+            return await self.getReceivedResources(receiver: receiver)
         } catch {
             printError("When getting resources received: \(error).")
             return nil
@@ -110,9 +121,16 @@ class ShareViewModel: ObservableObject {
     /// - Returns: An array of `SharedResource` objects if successful, or `nil` if an error occurs.
     ///
     /// This function fetches the shared resources received by the specified user from the `ShareServiceManager`.
-    public func getReceivedResources(receiver: User) async -> [SharedResource]? {
+    public func getReceivedResources(receiver: SpotifyProfile) async -> [SharedResource]? {
         do {
+            if let resources = Cache.shared.getReceivedResources(spotifyId: receiver.getSpotifyId()) {
+                printInfo("Retrieved received resources from cache for user (id=\(receiver.getSpotifyId()))")
+                return resources
+            }
+            
             let resources: [SharedResource] = try await ShareServiceManager.shared.fetchReceivedResources(receiver: receiver)
+            Cache.shared.cacheReceivedResources(resources, spotifyId: receiver.getSpotifyId())
+            printInfo("Cached received resources for user (id=\(receiver.getSpotifyId()))")
             return resources
         } catch {
             printError("When getting resources received: \(error).")
@@ -129,7 +147,8 @@ class ShareViewModel: ObservableObject {
     public func getCurrentUsersSentResources() async -> [SharedResource]? {
         do {
             guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
-            return await self.getSentResources(sender: signedInUser)
+            let sender = signedInUser.spotifyProfile
+            return await self.getSentResources(sender: sender)
         } catch {
             printError("When getting resources sent: \(error).")
             return nil
@@ -142,9 +161,16 @@ class ShareViewModel: ObservableObject {
     /// - Returns: An array of `SharedResource` objects if successful, or `nil` if an error occurs.
     ///
     /// This function fetches the shared resources sent by the specified user from the `ShareServiceManager`.
-    public func getSentResources(sender: User) async -> [SharedResource]? {
+    public func getSentResources(sender: SpotifyProfile) async -> [SharedResource]? {
         do {
+            if let resources = Cache.shared.getSentResources(spotifyId: sender.getSpotifyId()) {
+                printInfo("Retrieved sent resources from cache for user (id=\(sender.getSpotifyId()))")
+                return resources
+            }
+            
             let resources: [SharedResource] = try await ShareServiceManager.shared.fetchSentResources(sender: sender)
+            Cache.shared.cacheSentResources(resources, spotifyId: sender.getSpotifyId())
+            printInfo("Cached sent resources for user (id=\(sender.getSpotifyId()))")
             return resources
         } catch {
             printError("When getting resources sent: \(error).")
