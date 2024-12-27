@@ -26,14 +26,14 @@ class SharedResource: Codable, Identifiable, Equatable {
     }
     
     /// Regular initializer for creating the object directly.
-    init(resource: SpotifyResource, sender: SpotifyProfile, receiver: SpotifyProfile) {
+    init(resource: SpotifyResource, sender: SpotifyProfile, receiver: SpotifyProfile, sharedTs: TimeInterval = Date().timeIntervalSince1970) {
         self.id = UUID()
         self.resource = resource
         self.resourceId = resource.getSpotifyId()
         self.type = SharedResource.determineType(for: resource)
         self.sender = sender
         self.receiver = receiver
-        self.sharedTs = Date().timeIntervalSince1970 // Set to current timestamp
+        self.sharedTs = sharedTs // Defaults to current timestamp
     }
     
     /// Custom initializer for decoding from Appwrite.
