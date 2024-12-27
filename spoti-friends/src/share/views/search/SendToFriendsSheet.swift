@@ -201,7 +201,7 @@ struct SendTrackButton: View {
                 var sentResourcesToAdd: [SharedResource] = []
                 if (await shareViewModel.share(resource: resource, to: selectedFriends, optimisticUpdate: { resources in
                     sentResourcesToAdd = resources
-//                    self.sentResources.append(contentsOf: resources) // Update UI immediately
+                    self.sentResources.append(contentsOf: resources) // Update UI immediately
                 })) != nil {
                         // Handle success (resources already appended optimistically)
                         printInfo("Successfully shared \(sentResourcesToAdd.count) resources to \(selectedFriends.map {$0.getDisplayName()})")
@@ -212,9 +212,9 @@ struct SendTrackButton: View {
                         // Handle error (rollback the changes)
                         guard let signedInUser = shareViewModel.user else { throw AuthorizationError.missingUser }
                         Cache.shared.removeFromSentResources(spotifyId: signedInUser.spotifyId, resourcesToRemove: sentResourcesToAdd)
-//                        self.sentResources.removeAll { resource in
-//                            sentResourcesToAdd.contains { $0.id == resource.id }
-//                        }
+                        self.sentResources.removeAll { resource in
+                            sentResourcesToAdd.contains { $0.id == resource.id }
+                        }
                     }
 
             }
