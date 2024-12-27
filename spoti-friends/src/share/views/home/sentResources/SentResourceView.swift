@@ -1,13 +1,14 @@
 import SwiftUI
 
-/// A view that displays a sent shared resource, including the resource details and the receiver's profile image.
+/// A view that displays a sent shared resource, including the resource details and the receiver(s) profile image(s).
 ///
 /// This view represents a horizontal layout where the shared resource is displayed on the left,
-/// and the receiver's profile image is shown on the right.
+/// and the receiver's profile image is shown on the right. If there are multuple receivers, stack and offset the images.
 ///
 /// - Parameters:
 ///   - resource: A `SharedResource` object representing the resource that was shared.
 ///               It determines the type of resource and displays the appropriate view based on it.
+///   - receivers: An array of `SpotifyProfiles` who were the recipient of this resource.
 struct SentResourceView: View {
     let resource: SharedResource
     let receivers: [SpotifyProfile]

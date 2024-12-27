@@ -17,8 +17,9 @@ class AppwriteShareService: ShareServiceProtocol {
     async throws -> [SharedResource] {
         // Create queries
         let senderQuery = Query.equal(SharedResource.CodingKeys.sender.rawValue, value: sender.getSpotifyId())
+        let recentFirstQuery = Query.orderDesc(SharedResource.CodingKeys.sharedTs.rawValue)
         let limitQuery = Query.limit(limit)
-        var queries = [senderQuery, limitQuery]
+        var queries = [senderQuery, recentFirstQuery, limitQuery]
         
         if let lastResourceId = lastResourceId {
             let paginationQuery = Query.cursorAfter(lastResourceId.uuidString)
