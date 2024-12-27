@@ -87,7 +87,7 @@ class AppwriteShareService: ShareServiceProtocol {
         }
         let accessToken = try await UserServiceManager.shared.getSpotifyWebAccessToken(forUser: signedInUser)
         
-        var sentResources: [SharedResource] = []
+        var receivedResources: [SharedResource] = []
         for document in documents.documents {
             let data = try JSONEncoder().encode(document.data)
             let sharedResource = try JSONDecoder().decode(SharedResource.self, from: data)
@@ -99,9 +99,9 @@ class AppwriteShareService: ShareServiceProtocol {
                                                              accessToken: accessToken.getAccessToken(),
                                                              pathParams: pathParams)
             sharedResource.setResource(resource: resource)
-            sentResources.append(sharedResource)
+            receivedResources.append(sharedResource)
         }
         
-        return sentResources
+        return receivedResources
     }
 }

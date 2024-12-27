@@ -47,9 +47,10 @@ class SharedResource: Codable, Identifiable, Equatable {
         self.type = try container.decode(ResourceType.self, forKey: .type)
 
         // Decode sender and receiver using the Appwrite keys for `SpotifyProfile`
-        let spotifyProfileDecoder = try container.superDecoder(forKey: .receiver)
-        self.sender = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
-        self.receiver = try SpotifyProfile(fromAppwrite: spotifyProfileDecoder)
+        let senderDecoder = try container.superDecoder(forKey: .sender)
+        self.sender = try SpotifyProfile(fromAppwrite: senderDecoder)
+        let receiverDecoder = try container.superDecoder(forKey: .receiver)
+        self.receiver = try SpotifyProfile(fromAppwrite: receiverDecoder)
         
         /// Converting from `Integer` to `TimeInterval` since Appwrite only supports the former.
         let sharedTsInt = try container.decode(Int.self, forKey: .sharedTs)
