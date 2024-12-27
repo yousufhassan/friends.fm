@@ -70,7 +70,9 @@ class ShareViewModel: ObservableObject {
     /// - Returns: The list of `SharedResource` created and shared, or `nil` on error.
     ///
     /// The signed in user is the sender.
-    public func share(resource: SpotifyResource, to receivers: Set<SpotifyProfile>)
+    public func share(resource: SpotifyResource,
+                      to receivers: Set<SpotifyProfile>,
+                      optimisticUpdate: (([SharedResource]) -> Void)? = nil)
     async -> [SharedResource]? {
         do {
             guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
@@ -79,11 +81,16 @@ class ShareViewModel: ObservableObject {
             
             for receiver in receivers {
                 let sharedResource = SharedResource(resource: resource, sender: sender, receiver: receiver)
-                try await ShareServiceManager.shared.share(resource: sharedResource)
                 sharedResources.append(sharedResource)
             }
             
             Cache.shared.appendToSentResources(spotifyId: signedInUser.spotifyId, newResources: sharedResources)
+            optimisticUpdate?(sharedResources)
+            
+            for resource in sharedResources {
+                try await ShareServiceManager.shared.share(resource: resource)
+            }
+            
             return sharedResources
         } catch {
             printError("When sharing resources: \(error)")

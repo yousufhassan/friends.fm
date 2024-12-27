@@ -198,12 +198,22 @@ struct SendTrackButton: View {
             let friendNames = selectedFriends.map { $0.getDisplayName() }.joined(separator: ", ")
             printInfo("Sending \(resource.name) to \(friendNames)")
             Task {
-                if let sent = await shareViewModel.share(resource: resource, to: selectedFriends) {
-                    sentResources.append(contentsOf: sent)
-                }
-                else {
-                    // TODO: Render the error to the user
-                }
+                var sentResourcesToAdd: [SharedResource] = []
+                    if let sentResources = await shareViewModel.share(resource: resource, to: selectedFriends, optimisticUpdate: { resources in
+                        sentResourcesToAdd = resources
+                        self.sentResources.append(contentsOf: resources) // Update UI immediately
+                    }) {
+                        // Handle success (resources already appended optimistically)
+                    } else {
+                        // TODO: render error
+                        // Handle error (rollback the changes)
+                        self.sentResources.removeAll { resource in
+                            sentResourcesToAdd.contains { $0.id == resource.id }
+                        }
+                        
+                        // TODO: remove from cache as well
+                    }
+
             }
             
             
