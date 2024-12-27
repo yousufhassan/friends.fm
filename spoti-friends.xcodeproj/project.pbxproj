@@ -88,6 +88,7 @@
 		CBA995C52D1B79DB0076E9B8 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995C42D1B79DB0076E9B8 /* Cache.swift */; };
 		CBA995C72D1DE12C0076E9B8 /* UserServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995C62D1DE12C0076E9B8 /* UserServiceError.swift */; };
 		CBA995CC2D1E5B420076E9B8 /* SentSongsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995CB2D1E5B420076E9B8 /* SentSongsTab.swift */; };
+		CBA995D02D1E65FB0076E9B8 /* ReceiversSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995CF2D1E65FB0076E9B8 /* ReceiversSheetView.swift */; };
 		CBB1A3C82C8E59BE00D3D658 /* ViewMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */; };
 		CBB1A3CA2C8E5A8200D3D658 /* ViewMoreRecentTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3C92C8E5A8200D3D658 /* ViewMoreRecentTracks.swift */; };
 		CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */; };
@@ -203,6 +204,7 @@
 		CBA995C42D1B79DB0076E9B8 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		CBA995C62D1DE12C0076E9B8 /* UserServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceError.swift; sourceTree = "<group>"; };
 		CBA995CB2D1E5B420076E9B8 /* SentSongsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentSongsTab.swift; sourceTree = "<group>"; };
+		CBA995CF2D1E65FB0076E9B8 /* ReceiversSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiversSheetView.swift; sourceTree = "<group>"; };
 		CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreButton.swift; sourceTree = "<group>"; };
 		CBB1A3C92C8E5A8200D3D658 /* ViewMoreRecentTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRecentTracks.swift; sourceTree = "<group>"; };
 		CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTopSongs.swift; sourceTree = "<group>"; };
@@ -481,12 +483,9 @@
 		CB4AF9A42CFD32E1005AE716 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				CBA995CD2D1E65AD0076E9B8 /* home */,
 				CBB7D0CA2D02D6BF002572C6 /* search */,
-				CB2FCB9F2D0047B60012FF0F /* SongShareHomeView.swift */,
 				CB4AF9A52CFD330B005AE716 /* SongShareView.swift */,
-				CBC930842D19F462002C93FF /* SentResourceView.swift */,
-				CBA995BB2D1B25F70076E9B8 /* ReceivedResourceView.swift */,
-				CBA995CB2D1E5B420076E9B8 /* SentSongsTab.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -703,6 +702,26 @@
 			path = cache;
 			sourceTree = "<group>";
 		};
+		CBA995CD2D1E65AD0076E9B8 /* home */ = {
+			isa = PBXGroup;
+			children = (
+				CBA995CE2D1E65BF0076E9B8 /* sentResources */,
+				CB2FCB9F2D0047B60012FF0F /* SongShareHomeView.swift */,
+				CBA995BB2D1B25F70076E9B8 /* ReceivedResourceView.swift */,
+			);
+			path = home;
+			sourceTree = "<group>";
+		};
+		CBA995CE2D1E65BF0076E9B8 /* sentResources */ = {
+			isa = PBXGroup;
+			children = (
+				CBC930842D19F462002C93FF /* SentResourceView.swift */,
+				CBA995CB2D1E5B420076E9B8 /* SentSongsTab.swift */,
+				CBA995CF2D1E65FB0076E9B8 /* ReceiversSheetView.swift */,
+			);
+			path = sentResources;
+			sourceTree = "<group>";
+		};
 		CBB7D0C52D029B6B002572C6 /* viewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -876,6 +895,7 @@
 				CBB7D0CC2D02D6EE002572C6 /* SearchResults.swift in Sources */,
 				CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */,
 				CBC75F562C36770500442795 /* ListeningActivityDetails.swift in Sources */,
+				CBA995D02D1E65FB0076E9B8 /* ReceiversSheetView.swift in Sources */,
 				CB2FCBA32D0166EE0012FF0F /* SendToFriendsSheet.swift in Sources */,
 				CB454D2D2CC8C73E00AE41D5 /* NonUserProfileView.swift in Sources */,
 				CBB7D0D12D041E8C002572C6 /* SharedResource.swift in Sources */,

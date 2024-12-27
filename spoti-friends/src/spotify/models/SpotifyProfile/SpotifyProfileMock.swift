@@ -3,6 +3,8 @@ import Foundation
 
 /// Struct containing mock Spotify Profile objects.
 struct SpotifyProfileMock {
+    static let allProfiles = [jimHalpert, michaelScott, dwightSchrute, stanleyHudson]
+    
     static let jimHalpert = createMockSpotifyProfile(spotifyId: "Jim Halpert", image: "https://ih1.redbubble.net/image.169639383.9915/st,small,845x845-pad,1000x1000,f8f8f8.u7.jpg",
                                                      track: CurrentOrMostRecentTrackMock.iRememberEverything)
     static let michaelScott = createMockSpotifyProfile(spotifyId: "michael", image: "https://ih1.redbubble.net/image.1569839435.9227/st,small,845x845-pad,1000x1000,f8f8f8.jpg",

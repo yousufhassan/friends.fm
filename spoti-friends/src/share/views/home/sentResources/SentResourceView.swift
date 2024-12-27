@@ -11,6 +11,7 @@ import SwiftUI
 struct SentResourceView: View {
     let resource: SharedResource
     let receivers: [SpotifyProfile]
+    @State var displayReceiversSheet = false
     
     var body: some View {
         HStack {
@@ -28,6 +29,12 @@ struct SentResourceView: View {
                 }
             }
             .padding(.trailing)
+            .onTapGesture {
+                displayReceiversSheet = true
+            }
+        }
+        .sheet(isPresented: $displayReceiversSheet) {
+            ReceiversSheetView(receivers: receivers, resource: resource)
         }
     }
 }
