@@ -43,8 +43,21 @@ class Cache {
         if var resources = self.getSentResources(spotifyId: key) {
             resources.append(contentsOf: newResources)
             self.cacheSentResources(resources, spotifyId: key)
+            printInfo("Added \(newResources.count) resources to cached sent resources")
         } else {
             printError("Could not append to cached sent resources.")
+        }
+    }
+
+    func removeFromSentResources(spotifyId key: String, resourcesToRemove: [SharedResource]) {
+        if var resources = self.getSentResources(spotifyId: key) {
+            resources.removeAll { resource in
+                resourcesToRemove.contains { $0.id == resource.id }
+            }
+            self.cacheSentResources(resources, spotifyId: key)
+            printInfo("Removed \(resourcesToRemove.count) resources to cached sent resources")
+        } else {
+            printError("Could not remove from cached sent resources.")
         }
     }
 //

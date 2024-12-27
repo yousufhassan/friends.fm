@@ -1,7 +1,7 @@
 import Foundation
 
 // TODO: Add docs. Include brief explanation on why resource is stored as a String.
-class SharedResource: Codable, Identifiable {
+class SharedResource: Codable, Identifiable, Equatable {
     let id: UUID
     private var resource: SpotifyResource?
     private let resourceId: String
@@ -9,6 +9,11 @@ class SharedResource: Codable, Identifiable {
     private let sender: SpotifyProfile
     private let receiver: SpotifyProfile
     private let sharedTs: TimeInterval
+    
+    /// Implement Equatable protocol
+    static func == (lhs: SharedResource, rhs: SharedResource) -> Bool {
+            return lhs.id == rhs.id
+        }
     
     /// Mapping of the Swift object properties to the Appwrite `SharedResource` Collection model.
     enum CodingKeys: String, CodingKey {

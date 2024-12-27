@@ -16,6 +16,7 @@ struct SongShareHomeView: View {
     @Binding var selectedTab: SongShareTab
     @Binding var receivedResources: [SharedResource]
     @Binding var sentResources: [SharedResource]
+    @State private var hasFetchedData = false
     
     init(searchBarPlaceholderText: String, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>,
          receivedResources: Binding<[SharedResource]>, sentResources: Binding<[SharedResource]>) {
@@ -97,17 +98,37 @@ struct SongShareHomeView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
         .onAppear {
+            if !hasFetchedData {
+                fetchData()
+                hasFetchedData = true
+            }
+        }
+        .onChange(of: receivedResources) {
             Task {
                 if let receivedResources = await shareViewModel.getCurrentUsersReceivedResources() {
                     self.receivedResources = receivedResources
                 }
-                
+            }
+        }
+        .onChange(of: sentResources) {
+            Task {
                 if let sentResources = await shareViewModel.getCurrentUsersSentResources() {
                     self.sentResources = sentResources
                 }
             }
         }
     }
+    
+    private func fetchData() {
+            Task {
+                if let fetchedReceivedResources = await shareViewModel.getCurrentUsersReceivedResources() {
+                    self.receivedResources = fetchedReceivedResources
+                }
+                if let fetchedSentResources = await shareViewModel.getCurrentUsersSentResources() {
+                    self.sentResources = fetchedSentResources
+                }
+            }
+        }
 }
 
 #Preview {

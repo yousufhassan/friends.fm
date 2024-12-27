@@ -199,19 +199,22 @@ struct SendTrackButton: View {
             printInfo("Sending \(resource.name) to \(friendNames)")
             Task {
                 var sentResourcesToAdd: [SharedResource] = []
-                    if let sentResources = await shareViewModel.share(resource: resource, to: selectedFriends, optimisticUpdate: { resources in
-                        sentResourcesToAdd = resources
-                        self.sentResources.append(contentsOf: resources) // Update UI immediately
-                    }) {
+                if (await shareViewModel.share(resource: resource, to: selectedFriends, optimisticUpdate: { resources in
+                    sentResourcesToAdd = resources
+//                    self.sentResources.append(contentsOf: resources) // Update UI immediately
+                })) != nil {
                         // Handle success (resources already appended optimistically)
+                        printInfo("Successfully shared \(sentResourcesToAdd.count) resources to \(selectedFriends.map {$0.getDisplayName()})")
                     } else {
+                        printError("Failed to share \(sentResourcesToAdd.count) resources to \(selectedFriends.map {$0.getDisplayName()})")
                         // TODO: render error
-                        // Handle error (rollback the changes)
-                        self.sentResources.removeAll { resource in
-                            sentResourcesToAdd.contains { $0.id == resource.id }
-                        }
                         
-                        // TODO: remove from cache as well
+                        // Handle error (rollback the changes)
+                        guard let signedInUser = shareViewModel.user else { throw AuthorizationError.missingUser }
+                        Cache.shared.removeFromSentResources(spotifyId: signedInUser.spotifyId, resourcesToRemove: sentResourcesToAdd)
+//                        self.sentResources.removeAll { resource in
+//                            sentResourcesToAdd.contains { $0.id == resource.id }
+//                        }
                     }
 
             }
