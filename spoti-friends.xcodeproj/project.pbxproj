@@ -87,6 +87,7 @@
 		CBA995BC2D1B25FD0076E9B8 /* ReceivedResourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995BB2D1B25F70076E9B8 /* ReceivedResourceView.swift */; };
 		CBA995C52D1B79DB0076E9B8 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995C42D1B79DB0076E9B8 /* Cache.swift */; };
 		CBA995C72D1DE12C0076E9B8 /* UserServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995C62D1DE12C0076E9B8 /* UserServiceError.swift */; };
+		CBA995CC2D1E5B420076E9B8 /* SentSongsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA995CB2D1E5B420076E9B8 /* SentSongsTab.swift */; };
 		CBB1A3C82C8E59BE00D3D658 /* ViewMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */; };
 		CBB1A3CA2C8E5A8200D3D658 /* ViewMoreRecentTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3C92C8E5A8200D3D658 /* ViewMoreRecentTracks.swift */; };
 		CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */; };
@@ -201,6 +202,7 @@
 		CBA995BB2D1B25F70076E9B8 /* ReceivedResourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedResourceView.swift; sourceTree = "<group>"; };
 		CBA995C42D1B79DB0076E9B8 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		CBA995C62D1DE12C0076E9B8 /* UserServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceError.swift; sourceTree = "<group>"; };
+		CBA995CB2D1E5B420076E9B8 /* SentSongsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentSongsTab.swift; sourceTree = "<group>"; };
 		CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreButton.swift; sourceTree = "<group>"; };
 		CBB1A3C92C8E5A8200D3D658 /* ViewMoreRecentTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRecentTracks.swift; sourceTree = "<group>"; };
 		CBB1A3CB2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTopSongs.swift; sourceTree = "<group>"; };
@@ -484,6 +486,7 @@
 				CB4AF9A52CFD330B005AE716 /* SongShareView.swift */,
 				CBC930842D19F462002C93FF /* SentResourceView.swift */,
 				CBA995BB2D1B25F70076E9B8 /* ReceivedResourceView.swift */,
+				CBA995CB2D1E5B420076E9B8 /* SentSongsTab.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -860,6 +863,7 @@
 				CB8D3C2E2C0D28C000C493E8 /* CodeChallenge.swift in Sources */,
 				CB7C05B52C1191EC001A0062 /* UnauthenticatedView.swift in Sources */,
 				CB2FCB9C2D0001940012FF0F /* SongSearchView.swift in Sources */,
+				CBA995CC2D1E5B420076E9B8 /* SentSongsTab.swift in Sources */,
 				CB4AF9A82CFEB875005AE716 /* DecorativeSearchBar.swift in Sources */,
 				CB875CB92C3524B4001B364D /* TrackMock.swift in Sources */,
 				CB7C05B32C1191BA001A0062 /* AuthorizationDeniedView.swift in Sources */,

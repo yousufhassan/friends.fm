@@ -85,14 +85,7 @@ struct SongShareHomeView: View {
                 .tag(SongShareTab.received)
                 
                 // Sent songs tab
-                ScrollView {
-                    LazyVStack {
-                        ForEach(sentResources) { resource in
-                            SentResourceView(resource: resource)
-                        }
-                    }
-                    .padding(.horizontal)
-                }
+                SentSongsTab(sentResources: $sentResources)
                 .tag(SongShareTab.sent)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -120,15 +113,15 @@ struct SongShareHomeView: View {
     }
     
     private func fetchData() {
-            Task {
-                if let fetchedReceivedResources = await shareViewModel.getCurrentUsersReceivedResources() {
-                    self.receivedResources = fetchedReceivedResources
-                }
-                if let fetchedSentResources = await shareViewModel.getCurrentUsersSentResources() {
-                    self.sentResources = fetchedSentResources
-                }
+        Task {
+            if let fetchedReceivedResources = await shareViewModel.getCurrentUsersReceivedResources() {
+                self.receivedResources = fetchedReceivedResources
+            }
+            if let fetchedSentResources = await shareViewModel.getCurrentUsersSentResources() {
+                self.sentResources = fetchedSentResources
             }
         }
+    }
 }
 
 #Preview {

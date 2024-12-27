@@ -6,11 +6,13 @@ struct SharedResourceMock {
     
     static let resource1 = SharedResource(resource: TrackMock.iRememberEverything,
                                           sender: SpotifyProfileMock.jimHalpert,
-                                          receiver: SpotifyProfileMock.dwightSchrute)
+                                          receiver: SpotifyProfileMock.dwightSchrute,
+                                          sharedTs: 999)
     
     static let resource2 = SharedResource(resource: TrackMock.iRememberEverything,
                                           sender: SpotifyProfileMock.jimHalpert,
-                                          receiver: SpotifyProfileMock.michaelScott)
+                                          receiver: SpotifyProfileMock.michaelScott,
+                                          sharedTs: 999)
     
     static let resource3 = SharedResource(resource: TrackMock.luxury,
                                           sender: SpotifyProfileMock.jimHalpert,

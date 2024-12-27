@@ -10,6 +10,8 @@ import SwiftUI
 ///               It determines the type of resource and displays the appropriate view based on it.
 struct SentResourceView: View {
     let resource: SharedResource
+    let receivers: [SpotifyProfile]
+    
     var body: some View {
         HStack {
             if (resource.getType() == .track) {
@@ -17,14 +19,22 @@ struct SentResourceView: View {
             }
             
             Spacer()
-            ProfileImage(profile: resource.getReceiver(), width: 24, height: 24)
+            ZStack {
+                ForEach(Array(receivers.prefix(3).enumerated()), id: \.1.id) { index, profile in
+                    ProfileImage(profile: profile, width: 24, height: 24)
+                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                        .offset(x: CGFloat(index * 4), y: CGFloat(-index * 4)) // Top-right overlap
+                        .zIndex(-Double(index)) // Ensure earlier items are behind
+                }
+            }
+            .padding(.trailing)
         }
     }
 }
 
 #Preview {
     let sender = SpotifyProfileMock.jimHalpert
-    let receiver = SpotifyProfileMock.michaelScott
-    let resource = SharedResource(resource: TrackMock.iRememberEverything, sender: sender, receiver: receiver)
-    SentResourceView(resource: resource)
+    let receivers = [SpotifyProfileMock.michaelScott, SpotifyProfileMock.dwightSchrute]
+    let resource = SharedResource(resource: TrackMock.iRememberEverything, sender: sender, receiver: receivers[0])
+    SentResourceView(resource: resource, receivers: receivers)
 }
