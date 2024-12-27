@@ -1,8 +1,17 @@
 import SwiftUI
 
+/// Sheet view that displays the receivers of a shared resource.
+///
+/// This view consists of:
+/// - A preview of the shared resource if it is a track, rendered using the `TrackView`.
+/// - A scrollable list of receivers, each displayed with their profile image and display name.
+///
+/// - Parameters:
+///   - `resource`: The `SharedResource` being shared, used to determine the resource type and display a preview if it's a track.
+///   - `receivers`: An array of `SpotifyProfile` objects representing the receivers of the shared resource.
 struct ReceiversSheetView: View {
-    let receivers: [SpotifyProfile]
     let resource: SharedResource
+    let receivers: [SpotifyProfile]
     
     var body: some View {
         VStack {
@@ -54,6 +63,6 @@ struct ReceiversSheetView: View {
         showSheet = true
     }
     .sheet(isPresented: $showSheet) {
-        ReceiversSheetView(receivers: receivers, resource: resource)
+        ReceiversSheetView(resource: resource, receivers: receivers)
     }
 }

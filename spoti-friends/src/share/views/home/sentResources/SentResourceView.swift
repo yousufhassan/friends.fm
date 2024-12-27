@@ -35,7 +35,7 @@ struct SentResourceView: View {
             }
         }
         .sheet(isPresented: $displayReceiversSheet) {
-            ReceiversSheetView(receivers: receivers, resource: resource)
+            ReceiversSheetView(resource: resource, receivers: receivers)
         }
     }
 }
