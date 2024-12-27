@@ -66,35 +66,6 @@ class UserServiceManager {
         }
     }
     
-    /// Retrieves the Spotify Web Access Token for the user with the given `spotifyId`.
-    ///
-    /// If the user already has an existing access token, it will be reused if still valid.
-    /// Otherwise, a new token is fetched using the `SpotifyAuth` service.
-    ///
-    /// - Parameter spotifyId: The Spotify Id of the user to fetch the token for.
-    /// - Returns: A `SpotifyWebAccessToken` for making authenticated requests to Spotify's Web API.
-    /// - Throws: An error if token retrieval fails.
-    func getSpotifyWebAccessToken(forUserWithSpotifyId spotifyId: String) async throws -> SpotifyWebAccessToken {
-        do {
-            let existingToken = try await userService.getSpotifyWebAccessToken(forUserWithSpotifyId: spotifyId)
-            if (!SpotifyAuth.shared.accessTokenIsExpired(existingToken.getExpiryTimestamp())) {
-                return existingToken
-            }
-            
-            let newToken = try await SpotifyAuth.shared
-                .refreshAccessToken(refreshToken: existingToken.getRefreshToken())
-            
-            // Update token
-//            user.setSpotifyWebAccessToken(newToken)
-//            try await userService.updateUserInDB(user)
-            
-            return newToken
-        } catch {
-            printError("Error when trying to get Spotify Web Access Token for user (id=\(spotifyId)) from database: \(error).")
-            throw error
-        }
-    }
-    
     /// Retrieves the Spotify Web Access Token for the given user.
     ///
     /// If the user already has an existing access token, it will be reused if still valid.

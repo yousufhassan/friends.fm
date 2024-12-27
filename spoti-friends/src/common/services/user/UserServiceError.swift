@@ -1,6 +1,6 @@
 import Foundation
 
-/// Errors related to authorization.
+/// Errors related to the User Service.
 enum UserServiceError: Error {
     /// There was an error fetching the user
     case userNotFound
