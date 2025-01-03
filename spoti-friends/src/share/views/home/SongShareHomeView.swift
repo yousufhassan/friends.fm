@@ -117,6 +117,8 @@ struct SongShareHomeView: View {
         }
     }
     
+    /// Presents the system's share sheet to allow users to share the specified content.
+    /// - Parameter message: The content to be shared. This could be text, a URL, or any other string-based content.
     private func shareContent(message: String) {
         let activityViewController = UIActivityViewController(activityItems: [message], applicationActivities: nil)
         
@@ -127,6 +129,7 @@ struct SongShareHomeView: View {
         }
     }
     
+    /// Fetches the user's received and sent resources asynchronously and updates the respective bindings.
     private func fetchData() {
         Task {
             if let fetchedReceivedResources = await shareViewModel.getCurrentUsersReceivedResources() {
