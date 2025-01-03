@@ -37,7 +37,7 @@ class AuthorizationViewModel: ObservableObject {
             
             let existingUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: signedInUserId)
             self.user = existingUser
-            self.authorizationStatus = existingUser?.getAuthorizationStatus() ?? .unauthenticated
+            self.authorizationStatus = existingUser.getAuthorizationStatus()
             self.isFetchingUser = false
         } catch {
             self.user = nil

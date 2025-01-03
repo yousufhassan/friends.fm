@@ -92,7 +92,7 @@ class SpotifyAuth {
         let friends = try await SpotifyAPI.shared
             .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.getAccessToken())
 
-        return User(spotifyId: spotifyProfile.spotifyId,
+        return User(spotifyId: spotifyProfile.getSpotifyId(),
                             spotifyProfile: spotifyProfile,
                             friends: friends,
                             authorizationCode: authorizationCode,
@@ -189,7 +189,7 @@ class SpotifyAuth {
         do {
             let request = try constructRefreshAccessTokenRequest(refreshToken: refreshToken)
             let (data, _) = try await URLSession.shared.data(for: request)
-            let responseString = String(data: data, encoding: .utf8)
+//            let responseString = String(data: data, encoding: .utf8)
             let accessToken = try JSONDecoder().decode(SpotifyWebAccessToken.self, from: data)
             return accessToken
         } catch {

@@ -31,10 +31,9 @@ class UserServiceManager {
     /// - Returns: The `User` object representing the user.
     ///
     /// This method asynchronously fetches a user from the database by their Spotify ID.
-    func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User? {
+    func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User {
         do {
-            let user = try await userService.getUserFromDB(withSpotifyId: spotifyId)
-            return user
+            return try await userService.getUserFromDB(withSpotifyId: spotifyId)
         } catch {
             printError("Error when trying to get user (id=\(spotifyId)) from database: \(error).")
             throw error // Bubble up the error to be handled specifically depending on the context
@@ -73,7 +72,7 @@ class UserServiceManager {
     /// Otherwise, a new token is fetched using the `SpotifyAuth` service.
     ///
     /// - Parameter user: The `User` to fetch the token for.
-    /// - Returns: An `SpotifyWebAccessToken` for making authenticated requests to Spotify's Web API.
+    /// - Returns: A `SpotifyWebAccessToken` for making authenticated requests to Spotify's Web API.
     /// - Throws: An error if token retrieval fails.
     func getSpotifyWebAccessToken(forUser user: User) async throws -> SpotifyWebAccessToken {
         let existingToken = user.getSpotifyWebAccessToken()

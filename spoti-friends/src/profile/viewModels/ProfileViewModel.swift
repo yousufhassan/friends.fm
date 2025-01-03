@@ -25,7 +25,7 @@ class ProfileViewModel: ObservableObject {
     /// Initializes the `ProfileViewModel` with the specified `User` and starts the cache timer.
     ///
     /// - Parameter user: The currently logged-in `User` object.
-    init(user: User?){
+    init(user: User?) {
         self.user = user
         startCacheTimer()
     }
@@ -80,7 +80,7 @@ class ProfileViewModel: ObservableObject {
                 .getSpotifyWebAccessToken(forUser: signedInUser)
                 .getAccessToken()
             
-            let pathParams: [String:String] = ["user_id": profile.spotifyId]
+            let pathParams: [String:String] = ["user_id": profile.getSpotifyId()]
             let response = try await SpotifyAPI.shared.fetch(method: .GET,
                                                              endpoint: .getUsersProfile,
                                                              responseType: GetUsersProfileResponse.self,
@@ -90,7 +90,7 @@ class ProfileViewModel: ObservableObject {
             return response.followers.total
         }
         catch {
-            printError("When getting the follower count for the profile (id=\(profile.spotifyId)): \(error)")
+            printError("When getting the follower count for the profile (id=\(profile.getSpotifyId())): \(error)")
             return -1
         }
         
@@ -108,7 +108,7 @@ class ProfileViewModel: ObservableObject {
                 .getSpotifyWebAccessToken(forUser: signedInUser)
                 .getAccessToken()
             
-            let pathParams: [String:String] = ["user_id": profile.spotifyId]
+            let pathParams: [String:String] = ["user_id": profile.getSpotifyId()]
             let response = try await SpotifyAPI.shared.fetch(method: .GET,
                                                              endpoint: .getUsersPlaylists,
                                                              responseType: GetCurrentUserPlayistsResponse.self,
@@ -160,13 +160,11 @@ class ProfileViewModel: ObservableObject {
         do {
             var associatedUser: User
             
-            if let cachedUser = getUserFromCacheIfExists(spotifyId: profile.spotifyId) {
+            if let cachedUser = getUserFromCacheIfExists(spotifyId: profile.getSpotifyId()) {
                 associatedUser = cachedUser
-            } else if let fetchedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId) {
-                associatedUser = fetchedUser
-                cache(user: fetchedUser, withSpotifyId: profile.spotifyId)
             } else {
-                throw AuthorizationError.missingUser
+                associatedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.getSpotifyId())
+                cache(user: associatedUser, withSpotifyId: profile.getSpotifyId())
             }
             
             let accessToken = try await UserServiceManager.shared
@@ -210,13 +208,11 @@ class ProfileViewModel: ObservableObject {
         do {
             var associatedUser: User
             
-            if let cachedUser = getUserFromCacheIfExists(spotifyId: profile.spotifyId) {
+            if let cachedUser = getUserFromCacheIfExists(spotifyId: profile.getSpotifyId()) {
                 associatedUser = cachedUser
-            } else if let fetchedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId) {
-                associatedUser = fetchedUser
-                cache(user: fetchedUser, withSpotifyId: profile.spotifyId)
             } else {
-                throw AuthorizationError.missingUser
+                associatedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.getSpotifyId())
+                cache(user: associatedUser, withSpotifyId: profile.getSpotifyId())
             }
             
             let accessToken = try await UserServiceManager.shared
@@ -285,13 +281,11 @@ class ProfileViewModel: ObservableObject {
         do {
             var associatedUser: User
             
-            if let cachedUser = getUserFromCacheIfExists(spotifyId: profile.spotifyId) {
+            if let cachedUser = getUserFromCacheIfExists(spotifyId: profile.getSpotifyId()) {
                 associatedUser = cachedUser
-            } else if let fetchedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.spotifyId) {
-                associatedUser = fetchedUser
-                cache(user: fetchedUser, withSpotifyId: profile.spotifyId)
             } else {
-                throw AuthorizationError.missingUser
+                associatedUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: profile.getSpotifyId())
+                cache(user: associatedUser, withSpotifyId: profile.getSpotifyId())
             }
             
             let accessToken = try await UserServiceManager.shared

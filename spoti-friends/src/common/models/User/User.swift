@@ -14,13 +14,14 @@ import Foundation
 class User: Codable {
     let spotifyId: String
     var spotifyProfile: SpotifyProfile
-    var friends: [SpotifyProfile]
+    private var friends: [SpotifyProfile]
     private var authorizationCode: String
     private var spotifyWebAccessToken: SpotifyWebAccessToken
     private var internalAPIAccessToken: InternalAPIAccessToken
     private var authorizationStatus: AuthorizationStatus
     private var spDcCookie: SpDcCookie
     
+    /// Mapping of the Swift object properties to the Appwrite `User` Collection model.
     enum CodingKeys: String, CodingKey {
         case spotifyId = "$id"
         case spotifyProfile
@@ -49,7 +50,7 @@ class User: Codable {
     }
     
     /// Custom initializer for decoding from Appwrite.
-    /// This makes sure to decode the `SpotifyProfile` using the Appwrite CodingKeys.
+    /// This makes sure to decode the `User` using the Appwrite CodingKeys.
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

@@ -5,14 +5,12 @@ import SwiftUI
 /// - Returns: The friend activity page view.
 struct FriendActivityView: View {
     @EnvironmentObject var friendActivityViewModel: FriendActivityViewModel
-    @State private var contentHeight: CGFloat = 0
     
     var body: some View {
         NavigationStack {
             VStack {
                 // Friend Activity Header
                 PageTitle(pageTitle: "Friend Activity")
-                    .padding()
                 
                 // List of friend's listening activities
                 if friendActivityViewModel.friendActivites.isEmpty {
@@ -35,21 +33,7 @@ struct FriendActivityView: View {
                                     .environmentObject(friendActivityViewModel)
                             }
                         }
-                        .padding()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                        
-                        // Spotify Attribution
-                        VStack {
-                            Text("Data provided by")
-                                .font(.callout)
-                                .foregroundStyle(Color.PresetColour.spotifyDarkGrey)
-                            Image("spotify-logo-black")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 120)
-                        }
-                        .padding(.vertical, 12)
-                        
                     }
                 }
             }
@@ -61,6 +45,7 @@ struct FriendActivityView: View {
                     try? await friendActivityViewModel.setFriendActivity()
                 }
             }
+            .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.PresetColour.darkgrey)
         }

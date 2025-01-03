@@ -30,22 +30,9 @@ struct UserProfileView: View {
         NavigationStack {
             ScrollView {
                 VStack (alignment: .leading, spacing: 34) {
-                    HStack (alignment: .top) {
-                        // Profile Details
-                        ProfileDetails(profile: profile)
-                            .environmentObject(profileViewModel)
-                        
-                        // Render settings button if user is on their own profile page
-                        if (self.profile == profileViewModel.user?.spotifyProfile) {
-                            NavigationLink(destination: SettingsView()) {
-                                Image(systemName: "gearshape.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 20, height: 20)
-                                    .foregroundStyle(Color.PresetColour.whitePrimary)
-                            }
-                        }
-                    }
+                    // Profile Details
+                    ProfileDetails(profile: profile)
+                        .environmentObject(profileViewModel)
                     
                     // Recent Tracks
                     VStack (alignment: .leading) {
@@ -120,9 +107,34 @@ struct UserProfileView: View {
                         topArtists = await profileViewModel.getTopArtists(forProfile: profile, timeRange: .oneMonth, limit: 5) ?? ProfileViewModel.ArtistsWithResponseMetadata(artists: [])
                     }
                 }
+                
+                // Render logout button if viewing own profile
+                if (profileViewModel.user?.spotifyId == profile.getSpotifyId()) {
+                    LogoutButton()
+                        .padding(.bottom, 10)
+                }
             }
             .padding(.top)
             .background(Color.PresetGradient.profileViewGradient(profile: profile))
+        }
+    }
+}
+
+// Logout button
+struct LogoutButton: View {
+    @EnvironmentObject private var authorizationViewModel: AuthorizationViewModel
+    
+    var body: some View {
+        let buttonLabel = "Log out"
+        Button(action: {
+            authorizationViewModel.signOutUser()
+        }) {
+            Text(buttonLabel)
+                .frame(width: 320, height: 50)
+                .background(Color.PresetColour.transparentMaroon)
+                .foregroundColor(Color.PresetColour.red)
+                .fontWeight(.semibold)
+                .cornerRadius(12)
         }
     }
 }
