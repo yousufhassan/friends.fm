@@ -111,7 +111,19 @@ struct SongShareHomeView: View {
             }
         }
         .alert(shareViewModel.sharedToNonUserAlertText , isPresented: $shareViewModel.showSharedToNonUserAlert) {
-            Button("Invite") {}
+            Button("Invite") {
+                    shareContent(message: "I sent you some songs on friends.fm! Join now to view them: https://friendsfm.super.site/")
+                }
+        }
+    }
+    
+    private func shareContent(message: String) {
+        let activityViewController = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+        
+        // Present the activity view controller
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(activityViewController, animated: true)
         }
     }
     

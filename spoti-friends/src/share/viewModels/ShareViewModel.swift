@@ -115,6 +115,10 @@ class ShareViewModel: ObservableObject {
         }
     }
     
+    /// Returns an alert message informing the user that some of the friends they shared a song to are not using the app.
+    ///
+    /// - Parameter users: An array of `SpotifyProfile` objects representing the friends who are not app users.
+    /// - Returns: A string containing an alert message tailored to the number of non-app users.
     private func getAlertText(for users: [SpotifyProfile]) -> String {
         let invitationCallToAction = "Invite them so they can receive your songs!"
         
