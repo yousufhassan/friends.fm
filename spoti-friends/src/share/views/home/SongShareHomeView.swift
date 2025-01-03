@@ -110,6 +110,9 @@ struct SongShareHomeView: View {
                 }
             }
         }
+        .alert(shareViewModel.sharedToNonUserAlertText , isPresented: $shareViewModel.showSharedToNonUserAlert) {
+            Button("Invite") {}
+        }
     }
     
     private func fetchData() {
