@@ -8,6 +8,8 @@ import Foundation
 ///
 class ShareViewModel: ObservableObject {
     @Published var user: User?
+    @Published var showSharedToNonUserAlert: Bool = false
+    @Published var sharedToNonUserAlertText: String = ""
     
     init(user: User?) {
         self.user = user
@@ -87,8 +89,23 @@ class ShareViewModel: ObservableObject {
             Cache.shared.appendToSentResources(spotifyId: signedInUser.spotifyId, newResources: sharedResources)
             optimisticUpdate?(sharedResources)
             
+            var nonUsers: [SpotifyProfile] = []
             for resource in sharedResources {
                 try await ShareServiceManager.shared.share(resource: resource)
+                
+                // If the resource was sent to a non-user, mark them as such
+                let receiver = resource.getReceiver()
+                if !(await UserServiceManager.shared.userExists(withSpotifyId: receiver.getSpotifyId())) {
+                    nonUsers.append(receiver)
+                }
+            }
+            
+            // Alert user if they are sharing to friends who are not app users
+            if (!nonUsers.isEmpty) {
+                DispatchQueue.main.async {
+                    self.sharedToNonUserAlertText = self.getAlertText(for: nonUsers)
+                    self.showSharedToNonUserAlert = true
+                }
             }
             
             return sharedResources
@@ -96,6 +113,28 @@ class ShareViewModel: ObservableObject {
             printError("When sharing resources: \(error)")
             return nil
         }
+    }
+    
+    /// Returns an alert message informing the user that some of the friends they shared a song to are not using the app.
+    ///
+    /// - Parameter users: An array of `SpotifyProfile` objects representing the friends who are not app users.
+    /// - Returns: A string containing an alert message tailored to the number of non-app users.
+    private func getAlertText(for users: [SpotifyProfile]) -> String {
+        let invitationCallToAction = "Invite them so they can receive your songs!"
+        
+        if (users.count == 1) {
+            return "\(users[0].getDisplayName()) has not joined the app yet. \(invitationCallToAction)"
+        }
+        
+        if (users.count == 2) {
+            return "\(users[0].getDisplayName()) and \(users[1].getDisplayName()) have not joined the app yet. \(invitationCallToAction)"
+        }
+        
+        // 3 or more users
+        let names = users.map { $0.getDisplayName() }
+        let message = "\(names.dropLast().joined(separator: ", ")), and \(names.last ?? "") have not joined the app yet. \(invitationCallToAction)"
+        
+        return message
     }
     
     /// Retrieves the resources received by the currently signed-in user.

@@ -110,8 +110,26 @@ struct SongShareHomeView: View {
                 }
             }
         }
+        .alert(shareViewModel.sharedToNonUserAlertText, isPresented: $shareViewModel.showSharedToNonUserAlert) {
+            Button("Invite") {
+                    shareContent(message: "I sent you some songs on friends.fm! Join now to view them: https://friendsfm.super.site/")
+                }
+        }
     }
     
+    /// Presents the system's share sheet to allow users to share the specified content.
+    /// - Parameter message: The content to be shared. This could be text, a URL, or any other string-based content.
+    private func shareContent(message: String) {
+        let activityViewController = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+        
+        // Present the activity view controller
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(activityViewController, animated: true)
+        }
+    }
+    
+    /// Fetches the user's received and sent resources asynchronously and updates the respective bindings.
     private func fetchData() {
         Task {
             if let fetchedReceivedResources = await shareViewModel.getCurrentUsersReceivedResources() {
