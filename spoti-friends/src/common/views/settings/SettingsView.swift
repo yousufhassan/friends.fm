@@ -91,11 +91,13 @@ struct ExternalLinkListItem: View {
 // Logout button
 struct LogoutButton: View {
     @EnvironmentObject private var authorizationViewModel: AuthorizationViewModel
+    @Environment(\.dismiss) private var dismiss // Used to close the current view stack
     
     var body: some View {
         let buttonLabel = "Log out"
         Button(action: {
             authorizationViewModel.signOutUser()
+            dismiss()
         }) {
             Text(buttonLabel)
                 .frame(width: 320, height: 50)
