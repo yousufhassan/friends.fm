@@ -52,6 +52,7 @@
 		CB5525212D29B345006C4FF0 /* ChangelogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55251A2D29B345006C4FF0 /* ChangelogView.swift */; };
 		CB5525222D29B345006C4FF0 /* v1.3.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525172D29B345006C4FF0 /* v1.3.0.swift */; };
 		CB5525242D29B373006C4FF0 /* v1.4.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525232D29B36E006C4FF0 /* v1.4.0.swift */; };
+		CB5525272D29DFC1006C4FF0 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = CB5525262D29DFC1006C4FF0 /* Mixpanel */; };
 		CB59BCB52C2FA08D0061C99B /* ListeningActivityCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCB42C2FA08D0061C99B /* ListeningActivityCard.swift */; };
 		CB59BCB72C2FAB890061C99B /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCB62C2FAB890061C99B /* ProfileImage.swift */; };
 		CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCBE2C2FAFB30061C99B /* ImageWithSpecs.swift */; };
@@ -244,6 +245,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB5525272D29DFC1006C4FF0 /* Mixpanel in Frameworks */,
 				CB59BCC92C30A5370061C99B /* UIImageColors in Frameworks */,
 				CB3797EE2CA6860A009F5D56 /* Appwrite in Frameworks */,
 			);
@@ -817,6 +819,7 @@
 			packageProductDependencies = (
 				CB59BCC82C30A5370061C99B /* UIImageColors */,
 				CB3797ED2CA6860A009F5D56 /* Appwrite */,
+				CB5525262D29DFC1006C4FF0 /* Mixpanel */,
 			);
 			productName = "spoti-friends";
 			productReference = CB9A9AA72C0BB13E0073817C /* friends.fm.app */;
@@ -849,6 +852,7 @@
 			packageReferences = (
 				CB59BCC72C30A5370061C99B /* XCRemoteSwiftPackageReference "UIImageColors" */,
 				CB3797EC2CA6860A009F5D56 /* XCRemoteSwiftPackageReference "sdk-for-apple" */,
+				CB5525252D29DFC1006C4FF0 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
 			);
 			productRefGroup = CB9A9AA82C0BB13E0073817C /* Products */;
 			projectDirPath = "";
@@ -1203,6 +1207,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		CB5525252D29DFC1006C4FF0 /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		CB59BCC72C30A5370061C99B /* XCRemoteSwiftPackageReference "UIImageColors" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jathu/UIImageColors";
@@ -1218,6 +1230,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB3797EC2CA6860A009F5D56 /* XCRemoteSwiftPackageReference "sdk-for-apple" */;
 			productName = Appwrite;
+		};
+		CB5525262D29DFC1006C4FF0 /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB5525252D29DFC1006C4FF0 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
 		};
 		CB59BCC82C30A5370061C99B /* UIImageColors */ = {
 			isa = XCSwiftPackageProductDependency;
