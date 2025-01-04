@@ -14,8 +14,7 @@ struct spoti_friendsApp: App {
                         if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
                             print("App Version: \(appVersion)")
                             storeInUserDefaults(key: "appVersion", value: appVersion)
-                        }
-
+                        }                        
                     }
                 }
         }

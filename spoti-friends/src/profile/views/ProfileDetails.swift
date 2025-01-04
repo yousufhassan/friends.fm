@@ -66,7 +66,7 @@ struct ProfileDetails: View {
                 Spacer().frame(height: 8)
                 
                 // Open in Spotify button
-                OpenInSpotifyButton(redirectLink: profile.getSpotifyUri())
+                OpenSpotifyButton(buttonText: "Open in Spotify", redirectLink: profile.getSpotifyUri(), size: .small)
             }
             Spacer()
         }
