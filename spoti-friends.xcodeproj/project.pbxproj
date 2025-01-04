@@ -53,6 +53,10 @@
 		CB5525222D29B345006C4FF0 /* v1.3.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525172D29B345006C4FF0 /* v1.3.0.swift */; };
 		CB5525242D29B373006C4FF0 /* v1.4.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525232D29B36E006C4FF0 /* v1.4.0.swift */; };
 		CB5525272D29DFC1006C4FF0 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = CB5525262D29DFC1006C4FF0 /* Mixpanel */; };
+		CB55252A2D29E778006C4FF0 /* MetricsServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525292D29E778006C4FF0 /* MetricsServiceProtocol.swift */; };
+		CB55252E2D29E8FE006C4FF0 /* MixpanelMetricsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55252D2D29E8E7006C4FF0 /* MixpanelMetricsService.swift */; };
+		CB5525302D29E934006C4FF0 /* MetricsServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB55252F2D29E92C006C4FF0 /* MetricsServiceManager.swift */; };
+		CB5525322D29EC01006C4FF0 /* MetricsEventEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525312D29EBF6006C4FF0 /* MetricsEventEnum.swift */; };
 		CB59BCB52C2FA08D0061C99B /* ListeningActivityCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCB42C2FA08D0061C99B /* ListeningActivityCard.swift */; };
 		CB59BCB72C2FAB890061C99B /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCB62C2FAB890061C99B /* ProfileImage.swift */; };
 		CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCBE2C2FAFB30061C99B /* ImageWithSpecs.swift */; };
@@ -175,6 +179,10 @@
 		CB55251A2D29B345006C4FF0 /* ChangelogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangelogView.swift; sourceTree = "<group>"; };
 		CB55251B2D29B345006C4FF0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		CB5525232D29B36E006C4FF0 /* v1.4.0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.4.0.swift; sourceTree = "<group>"; };
+		CB5525292D29E778006C4FF0 /* MetricsServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsServiceProtocol.swift; sourceTree = "<group>"; };
+		CB55252D2D29E8E7006C4FF0 /* MixpanelMetricsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixpanelMetricsService.swift; sourceTree = "<group>"; };
+		CB55252F2D29E92C006C4FF0 /* MetricsServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsServiceManager.swift; sourceTree = "<group>"; };
+		CB5525312D29EBF6006C4FF0 /* MetricsEventEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsEventEnum.swift; sourceTree = "<group>"; };
 		CB59BCB42C2FA08D0061C99B /* ListeningActivityCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityCard.swift; sourceTree = "<group>"; };
 		CB59BCB62C2FAB890061C99B /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		CB59BCBE2C2FAFB30061C99B /* ImageWithSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWithSpecs.swift; sourceTree = "<group>"; };
@@ -529,6 +537,25 @@
 			path = settings;
 			sourceTree = "<group>";
 		};
+		CB5525282D29E75C006C4FF0 /* metrics */ = {
+			isa = PBXGroup;
+			children = (
+				CB5525312D29EBF6006C4FF0 /* MetricsEventEnum.swift */,
+				CB55252F2D29E92C006C4FF0 /* MetricsServiceManager.swift */,
+				CB5525292D29E778006C4FF0 /* MetricsServiceProtocol.swift */,
+				CB55252C2D29E8DD006C4FF0 /* mixpanel */,
+			);
+			path = metrics;
+			sourceTree = "<group>";
+		};
+		CB55252C2D29E8DD006C4FF0 /* mixpanel */ = {
+			isa = PBXGroup;
+			children = (
+				CB55252D2D29E8E7006C4FF0 /* MixpanelMetricsService.swift */,
+			);
+			path = mixpanel;
+			sourceTree = "<group>";
+		};
 		CB59BCB22C2F9EF20061C99B /* views */ = {
 			isa = PBXGroup;
 			children = (
@@ -714,6 +741,7 @@
 				CB0854C02C14F5250088E87D /* common */,
 				CB6A5D892CA684BD0063A757 /* database */,
 				CB7C05A62C0EB8F0001A0062 /* friendActivity */,
+				CB5525282D29E75C006C4FF0 /* metrics */,
 				CB3417FC2C1BDB9A00BE70A8 /* profile */,
 				CB4AF9A32CFD3291005AE716 /* share */,
 				CB59BCBC2C2FAED50061C99B /* spotify */,
@@ -945,12 +973,14 @@
 				CBA995D02D1E65FB0076E9B8 /* ReceiversSheetView.swift in Sources */,
 				CB2FCBA32D0166EE0012FF0F /* SendToFriendsSheet.swift in Sources */,
 				CB454D2D2CC8C73E00AE41D5 /* NonUserProfileView.swift in Sources */,
+				CB55252A2D29E778006C4FF0 /* MetricsServiceProtocol.swift in Sources */,
 				CBB7D0D12D041E8C002572C6 /* SharedResource.swift in Sources */,
 				CBC930852D19F462002C93FF /* SentResourceView.swift in Sources */,
 				CBB1A3CC2C8FBD8E00D3D658 /* ViewMoreTopSongs.swift in Sources */,
 				CBB1A3CE2C8FCAA300D3D658 /* ViewMoreTopArtists.swift in Sources */,
 				CB7087522CAB675800FE97C7 /* ProfileServiceProtocol.swift in Sources */,
 				CB0854C72C15723C0088E87D /* SpotifyAPI.swift in Sources */,
+				CB5525322D29EC01006C4FF0 /* MetricsEventEnum.swift in Sources */,
 				CB3797FE2CA7F96B009F5D56 /* UserServiceManager.swift in Sources */,
 				CBB7D0D42D052B4B002572C6 /* ShareServiceProtocol.swift in Sources */,
 				CB0B93782C771C23003A9720 /* Artist.swift in Sources */,
@@ -967,12 +997,14 @@
 				CB0B93662C770C90003A9720 /* TextPlaceholder.swift in Sources */,
 				CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */,
 				CB70E8A22C816AAA00F9A197 /* OpenSpotifyButton.swift in Sources */,
+				CB5525302D29E934006C4FF0 /* MetricsServiceManager.swift in Sources */,
 				CB0E59262CEA5B0B003B30D7 /* ProfileView.swift in Sources */,
 				CB3797F02CA68846009F5D56 /* User.swift in Sources */,
 				CB9A9ADA2C0BE2EE0073817C /* ColourExtension.swift in Sources */,
 				CB875CBB2C3525C3001B364D /* ArtistMock.swift in Sources */,
 				CB7C05B02C0EEF7F001A0062 /* Types.swift in Sources */,
 				CB7C05A42C0EB4DB001A0062 /* Utils.swift in Sources */,
+				CB55252E2D29E8FE006C4FF0 /* MixpanelMetricsService.swift in Sources */,
 				CB3724972C3B27CA004883D1 /* ProfileDetails.swift in Sources */,
 				CB6A5D8C2CA684F10063A757 /* Appwrite.swift in Sources */,
 				CB0854BC2C14D58E0088E87D /* AuthorizationWebView.swift in Sources */,
