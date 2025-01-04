@@ -21,7 +21,7 @@ protocol UserServiceProtocol {
     ///
     /// This method asynchronously fetches a user from the database by their Spotify ID.
     /// If no user with the given Spotify ID is found, it returns `nil`.
-    func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User?
+    func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User
     
     /// Saves a user to the database.
     ///

@@ -26,14 +26,26 @@ struct NonUserProfileView: View {
                 .frame(height: 70)
             
             VStack {
-                Text("\(profile.displayName) has not joined the app yet.")
+                Text("\(profile.getDisplayName()) has not joined the app yet.")
                 Text("Invite them to be part of the fun!")
+                
+                ShareLink(item: "I'm using friends.fm, join the fun here: https://friendsfm.super.site/") {
+                    Text("Invite \(profile.getDisplayName())")
+                        .font(.headline)
+                        .foregroundColor(Color.PresetColour.whitePrimary)
+                        .padding()
+                        .frame(width: 280, height: 48)
+                        .background(Color.PresetColour.spotifyGreen)
+                        .cornerRadius(100)
+                }
+                .padding(.vertical)
             }
             .foregroundStyle(Color.PresetColour.whitePrimary)
             
             Spacer()
         }
         .padding(.top)
+        .padding(.horizontal, 20)
     }
 }
 
@@ -42,4 +54,5 @@ struct NonUserProfileView: View {
     
     NonUserProfileView(profile: user.spotifyProfile)
         .environmentObject(ProfileViewModel(user: user))
+        .background(Color.PresetGradient.profileViewGradient(profile: user.spotifyProfile))
 }

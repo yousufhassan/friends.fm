@@ -17,4 +17,7 @@ internal enum APIEndpoint: String {
     
     case getUsersProfile = "/users/{user_id}"
     case getUsersPlaylists = "/users/{user_id}/playlists"
+    
+    case search = "/search"
+    case getTrack = "/tracks/{id}"
 }

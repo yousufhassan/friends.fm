@@ -28,7 +28,6 @@ struct ProfileView: View {
                 } else {
                     NonUserProfileView(profile: profile)
                         .environmentObject(profileViewModel)
-                        .padding(.horizontal, 20)
                 }
             }
             .frame(minHeight: reader.size.height)
@@ -36,7 +35,7 @@ struct ProfileView: View {
         .background(Color.PresetGradient.profileViewGradient(profile: profile))
         .onAppear {
             Task {
-                self.isAppUser = await UserServiceManager.shared.userExists(withSpotifyId: profile.spotifyId)
+                self.isAppUser = await UserServiceManager.shared.userExists(withSpotifyId: profile.getSpotifyId())
             }
         }
     }

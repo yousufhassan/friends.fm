@@ -1,15 +1,17 @@
 import SwiftUI
 
-/// The View that renders a profile image.
+/// The View that renders a profile image for the passed in profile
+///
+/// If the user does not have a profile image, then a generic image will be used with the first letter of their display name.
 ///
 /// - Parameters:
-///   - imageName: The name which the image is stored as (will be the user's Spotify ID).
+///   - profile: The profile to return the image for.
 ///   - width: The profile image width.
 ///   - height: The profile image height.
 ///
 /// - Returns: A View for the profile image.
 struct ProfileImage: View {
-    let imageName: String
+    let profile: SpotifyProfile
     let width, height: CGFloat
     @State private var profileImage: UIImage? = nil
     
@@ -18,24 +20,27 @@ struct ProfileImage: View {
             if let profileImage = profileImage {
                 Image(uiImage: profileImage)
                     .resizable()
-         
+                
             } else {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
+                Text(profile.getDisplayName().prefix(1).capitalized)
+                    .font(.system(size: width / 2))
+                    .frame(width: width, height: height)
+                    .foregroundColor(Color.PresetColour.whitePrimary)
+                    .background(Color.PresetColour.generateDarkColour(from: profile.getSpotifyId()))
             }
         }
         .aspectRatio(contentMode: .fill)
         .frame(width: width, height: height)
         .clipShape(Circle())
         .onAppear {
-            profileImage = getProfilePictureFromDisk(imageName: imageName)
+            profileImage = getProfilePictureFromDisk(imageName: profile.getSpotifyId())
         }
     }
 }
 
 #Preview {
     ZStack {
-        let user = UserMock.userJimHalpert
-        ProfileImage(imageName: "", width: 80, height: 80)
+        let profile = SpotifyProfileMock.jimHalpert
+        ProfileImage(profile: profile, width: 80, height: 80)
     }
 }

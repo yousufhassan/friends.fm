@@ -9,17 +9,22 @@ import JSONCodable
 ///   - displayName: The display name associated with this Spotify profile.
 ///   - image: The profile image for this Spotify profile.
 ///   - currentOrMostRecentTrack: The track last played (or currently playing)  by this Spotify profile.
-class SpotifyProfile: Codable, Equatable {
-    let spotifyId: String
-    let spotifyUri: String
-    var displayName: String
-    var image: String
-    var currentOrMostRecentTrack: CurrentOrMostRecentTrack?
+class SpotifyProfile: Codable, Equatable, Identifiable, Hashable {
+    var id: String { spotifyId }
+    private let spotifyId: String
+    private let spotifyUri: String
+    private var displayName: String
+    private var image: String
+    private var currentOrMostRecentTrack: CurrentOrMostRecentTrack?
     
     /// Defining what makes two `SpotifyProfile` objects equal for conformance to the `Equatable` protocol.
     /// Two `SpotifyProfile` objects are considered equal if they have the same `spotifyId` value.
     static func == (lhs: SpotifyProfile, rhs: SpotifyProfile) -> Bool {
         return lhs.spotifyId == rhs.spotifyId
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(spotifyId)
     }
     
     /// Mapping of the Swift object properties to the Spotify Web API response JSON keys.
@@ -87,6 +92,39 @@ class SpotifyProfile: Codable, Equatable {
         try container.encode(spotifyUri, forKey: .spotifyUri)
         try container.encode(displayName, forKey: .displayName)
         try container.encode(image, forKey: .image)
+    }
+    
+    // Getters and Setters
+    public func getSpotifyId() -> String {
+        return self.spotifyId
+    }
+    
+    public func getSpotifyUri() -> String {
+        return self.spotifyUri
+    }
+    
+    public func getDisplayName() -> String {
+        return self.displayName
+    }
+    
+    public func setDisplayName(newName: String) {
+        self.displayName = newName
+    }
+    
+    public func getImage() -> String {
+        return self.image
+    }
+    
+    public func setImage(newImage: String) {
+        self.image = newImage
+    }
+    
+    public func getCurrentOrMostRecentTrack() -> CurrentOrMostRecentTrack? {
+        return self.currentOrMostRecentTrack
+    }
+    
+    public func setCurrentOrMostRecentTrack(track: CurrentOrMostRecentTrack) {
+        self.currentOrMostRecentTrack = track
     }
 
     static public func getSpotifyId(fromUri uri: String) -> String {

@@ -28,6 +28,6 @@ class AppwriteProfileService: ProfileServiceProtocol {
     public func saveProfileToDB(_ profile: SpotifyProfile) async throws -> Void {
         let data = try JSONEncoder().encode(profile)
         try await Appwrite.shared.createDocument(collectionId: profilesCollectionId,
-                                                 documentId: profile.spotifyId, data: data)
+                                                 documentId: profile.getSpotifyId(), data: data)
     }
 }

@@ -19,11 +19,11 @@ struct ProfileDetails: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            ProfileImage(imageName: profile.spotifyId, width: 80, height: 80)
+            ProfileImage(profile: profile, width: 80, height: 80)
             
             VStack(alignment: .leading) {
                 // Display name
-                Text(profile.displayName)
+                Text(profile.getDisplayName())
                     .foregroundStyle(Color.PresetColour.whitePrimary)
                 
                 Spacer().frame(height: 4)
@@ -66,7 +66,7 @@ struct ProfileDetails: View {
                 Spacer().frame(height: 8)
                 
                 // Open in Spotify button
-                OpenSpotifyButton(buttonText: "Open in Spotify", redirectLink: profile.spotifyUri, size: .small)
+                OpenInSpotifyButton(redirectLink: profile.getSpotifyUri())
             }
             Spacer()
         }

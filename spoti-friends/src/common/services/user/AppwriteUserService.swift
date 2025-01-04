@@ -17,12 +17,12 @@ class AppwriteUserService: UserServiceProtocol {
         return documents?.total == 1
     }
     
-    public func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User? {
+    public func getUserFromDB(withSpotifyId spotifyId: String) async throws -> User {
         guard let document = await Appwrite.shared.getDocument(collectionId: usersCollectionId,
                                                                documentId: spotifyId)
         else {
             printInfo("User (id=\(spotifyId)) could not be found.")
-            return nil
+            throw UserServiceError.userNotFound
         }
         let data = try JSONEncoder().encode(document.data)
         let user = try JSONDecoder().decode(User.self, from: data)

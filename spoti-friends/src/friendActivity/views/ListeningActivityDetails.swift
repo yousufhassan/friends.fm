@@ -42,8 +42,8 @@ struct ListeningActivityDetails: View {
         VStack(alignment: .leading, spacing: 2) {
             // Username row
             HStack {
-                Link(destination: URL(string: profile.spotifyUri)!) {
-                    Text(profile.displayName)
+                Link(destination: URL(string: profile.getSpotifyUri())!) {
+                    Text(profile.getDisplayName())
                         .fontWeight(.medium)
                 }
                 Spacer()
