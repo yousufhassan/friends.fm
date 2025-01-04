@@ -21,7 +21,7 @@ struct ViewMoreTopArtists: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading) {
+            VStack(alignment: .center) {
                 Text("Top Artists")
                     .foregroundStyle(Color.PresetColour.whitePrimary)
                     .font(.title2)
@@ -34,6 +34,8 @@ struct ViewMoreTopArtists: View {
                 .padding(.vertical, 8)
                 
                 ArtistList(artists: topArtists.artists, showItemNumbers: true)
+                OpenSpotifyButton()
+                    .padding(.vertical, 12)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20)
