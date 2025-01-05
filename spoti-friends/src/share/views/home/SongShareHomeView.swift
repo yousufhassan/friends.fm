@@ -86,7 +86,7 @@ struct SongShareHomeView: View {
                 
                 // Sent songs tab
                 SentSongsTab(sentResources: $sentResources)
-                .tag(SongShareTab.sent)
+                    .tag(SongShareTab.sent)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
@@ -112,8 +112,9 @@ struct SongShareHomeView: View {
         }
         .alert(shareViewModel.sharedToNonUserAlertText, isPresented: $shareViewModel.showSharedToNonUserAlert) {
             Button("Invite") {
-                    shareContent(message: "I sent you some songs on friends.fm! Join now to view them: https://friendsfm.super.site/")
-                }
+                shareContent(message: "I sent you some songs on friends.fm! Join now to view them: https://friendsfm.super.site/")
+                MetricsServiceManager.shared.trackInivtedUser(viewContext: .songShareHomeView)
+            }
         }
     }
     

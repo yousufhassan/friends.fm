@@ -100,6 +100,8 @@ class ShareViewModel: ObservableObject {
                 }
             }
             
+            MetricsServiceManager.shared.trackSharedSong(receiversCount: receivers.count, nonUsersCount: nonUsers.count)
+            
             // Alert user if they are sharing to friends who are not app users
             if (!nonUsers.isEmpty) {
                 DispatchQueue.main.async {
