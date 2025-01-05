@@ -45,6 +45,7 @@ class MixpanelMetricsService: MetricsServiceProtocol {
         Mixpanel.mainInstance().track(event: event.rawValue, properties: properties)
     }
     
+    // -- Protocol methods --
     public func trackUserSignedUp() {
         self.track(event: .userSignedUp)
     }
@@ -59,5 +60,13 @@ class MixpanelMetricsService: MetricsServiceProtocol {
             MetricsEvent.Properties.possibleUsers.rawValue: users?.map { $0.getSpotifyId() }
         ]
         self.track(event: .invitedUser, properties: properties)
+    }
+    
+    public func trackSharedSong(receiversCount: Int, nonUsersCount: Int) {
+        let properties: Properties = [
+            MetricsEvent.Properties.receiversCount.rawValue : receiversCount,
+            MetricsEvent.Properties.nonUsersCount.rawValue : nonUsersCount
+        ]
+        self.track(event: .sharedSong, properties: properties)
     }
 }

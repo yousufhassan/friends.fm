@@ -22,4 +22,9 @@ class MetricsServiceManager {
     public func trackInivtedUser(viewContext: ViewContext, users: [SpotifyProfile]? = nil) {
         self.metricsService.trackInvitedUser(viewContext: viewContext, users: users)
     }
+    
+    /// Tracks when a user shares a song with friends.
+    public func trackSharedSong(receiversCount: Int, nonUsersCount: Int) {
+        self.metricsService.trackSharedSong(receiversCount: receiversCount, nonUsersCount: nonUsersCount)
+    }
 }

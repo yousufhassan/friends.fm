@@ -12,6 +12,8 @@ enum MetricsEvent: String {
     enum Properties: String {
         case viewContext
         case possibleUsers
+        case receiversCount
+        case nonUsersCount
     }
 }
 

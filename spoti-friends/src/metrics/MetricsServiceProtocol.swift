@@ -10,4 +10,7 @@ protocol MetricsServiceProtocol {
     
     /// Tracks when the "invite user" button is clicked and from which view.
     func trackInvitedUser(viewContext: ViewContext, users: [SpotifyProfile]?)
+    
+    /// Tracks when a user shares a song with friends.
+    func trackSharedSong(receiversCount: Int, nonUsersCount: Int)
 }
