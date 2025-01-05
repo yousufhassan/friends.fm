@@ -1,6 +1,12 @@
 import Foundation
 import Mixpanel
 
+/// A service class for managing metrics and events tracking using Mixpanel.
+///
+/// This service supports distinct behavior for DEV and PROD environments:
+/// - In DEV, it logs events to the console instead of recording them in Mixpanel.
+/// - In PROD, it initializes Mixpanel and tracks metrics and events as configured.
+///
 class MixpanelMetricsService: MetricsServiceProtocol {
     private let MIXPANEL_TOKEN = "0c3a07f114762c672a4cebd9ee3f1fa3"
     
