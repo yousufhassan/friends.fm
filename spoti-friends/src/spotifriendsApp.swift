@@ -1,5 +1,4 @@
 import SwiftUI
-import Mixpanel
 
 @main
 struct spoti_friendsApp: App {
