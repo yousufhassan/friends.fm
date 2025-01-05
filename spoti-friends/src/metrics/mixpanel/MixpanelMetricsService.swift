@@ -45,13 +45,19 @@ class MixpanelMetricsService: MetricsServiceProtocol {
         Mixpanel.mainInstance().track(event: event.rawValue, properties: properties)
     }
     
-    /// Tracks when a new user signs up for the app.
-    public func trackUserSignedUp(user: User) {
+    public func trackUserSignedUp() {
         self.track(event: .userSignedUp)
     }
     
-    /// Tracks when the app is opened.
-    public func trackAppOpened(by user: User) {
+    public func trackAppOpened() {
         self.track(event: .appOpened)
+    }
+    
+    public func trackInvitedUser(viewContext: ViewContext, users: [SpotifyProfile]? = nil) {
+        let properties: Properties = [
+            MetricsEvent.Properties.viewContext.rawValue : viewContext.rawValue,
+            MetricsEvent.Properties.possibleUsers.rawValue: users?.map { $0.getSpotifyId() }
+        ]
+        self.track(event: .invitedUser, properties: properties)
     }
 }

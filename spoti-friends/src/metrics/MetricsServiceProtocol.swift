@@ -2,9 +2,12 @@ import Foundation
 
 /// A protocol that defines the methods for tracking relevant metrics.
 protocol MetricsServiceProtocol {
-    // Track when a new user signs up.
-    func trackUserSignedUp(user: User)
+    /// Tracks when a new user signs up for the app.
+    func trackUserSignedUp()
     
-    // Track when a user opens the app.
-    func trackAppOpened(by user: User)
+    /// Tracks when the app is opened.
+    func trackAppOpened()
+    
+    /// Tracks when the "invite user" button is clicked and from which view.
+    func trackInvitedUser(viewContext: ViewContext, users: [SpotifyProfile]?)
 }
