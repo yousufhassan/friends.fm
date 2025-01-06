@@ -11,6 +11,7 @@ import Foundation
 ///   - internalAPIAccessToken: The Spotify Internal API access token used to interact with the internal `/buddylist` endpoint.
 ///   - authorizationStatus: The status of if the user authorized the app to have access to the Spotify scopes.
 ///   - spDcCookie: The `sp_dc` cookie used for getting the internal API token.
+///   - email: The email address of the user.
 class User: Codable {
     let spotifyId: String
     var spotifyProfile: SpotifyProfile
@@ -20,6 +21,7 @@ class User: Codable {
     private var internalAPIAccessToken: InternalAPIAccessToken
     private var authorizationStatus: AuthorizationStatus
     private var spDcCookie: SpDcCookie
+    private var email: String?
     
     /// Mapping of the Swift object properties to the Appwrite `User` Collection model.
     enum CodingKeys: String, CodingKey {
@@ -31,6 +33,7 @@ class User: Codable {
         case internalAPIAccessToken
         case authorizationStatus
         case spDcCookie
+        case email
     }
     
     /// Regular initializer for creating the object directly.
@@ -38,7 +41,7 @@ class User: Codable {
          authorizationCode: String, spotifyWebAcessToken: SpotifyWebAccessToken,
          internalAPIAccessToken: InternalAPIAccessToken,
          authorizationStatus: AuthorizationStatus = .unauthenticated,
-         spDcCookie: SpDcCookie) {
+         spDcCookie: SpDcCookie, email: String) {
         self.spotifyId = spotifyId
         self.spotifyProfile = spotifyProfile
         self.friends = friends
@@ -47,6 +50,7 @@ class User: Codable {
         self.internalAPIAccessToken = internalAPIAccessToken
         self.authorizationStatus = authorizationStatus
         self.spDcCookie = spDcCookie
+        self.email = email
     }
     
     /// Custom initializer for decoding from Appwrite.
@@ -64,6 +68,7 @@ class User: Codable {
         self.authorizationStatus = try container
             .decode(AuthorizationStatus.self, forKey: .authorizationStatus)
         self.spDcCookie = try container.decode(SpDcCookie.self, forKey: .spDcCookie)
+        self.email = try container.decode(String.self, forKey: .email)
         
         // Decode spotifyProfile using the Appwrite keys
         let spotifyProfileDecoder = try container.superDecoder(forKey: .spotifyProfile)

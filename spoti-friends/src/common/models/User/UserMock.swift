@@ -11,28 +11,30 @@ struct UserMock {
                        SpotifyProfileMock.stanleyHudson]
         
         return User(spotifyId: spotifyId,
-                                spotifyProfile: SpotifyProfileMock.jimHalpert,
-                                friends: friends,
-                                authorizationCode: "",
-                                spotifyWebAcessToken: self.createMockSpotifyWebAccessToken(),
-                                internalAPIAccessToken: self.createMockInternalAPIAccessToken(),
-                                spDcCookie: self.createMockSpDcCookie())
+                    spotifyProfile: SpotifyProfileMock.jimHalpert,
+                    friends: friends,
+                    authorizationCode: "",
+                    spotifyWebAcessToken: self.createMockSpotifyWebAccessToken(),
+                    internalAPIAccessToken: self.createMockInternalAPIAccessToken(),
+                    spDcCookie: self.createMockSpDcCookie(),
+                    email: "jim@dundermifflin.com"
+        )
     }
     
     static private func createMockSpotifyWebAccessToken() -> SpotifyWebAccessToken {
         return SpotifyWebAccessToken(access_token: "",
-                                             token_type: "",
-                                             scope: "",
-                                             expires_in: 3600,
-                                             refresh_token: "",
-                                             accessTokenExpirationTimestampMs: 1000000000)
+                                     token_type: "",
+                                     scope: "",
+                                     expires_in: 3600,
+                                     refresh_token: "",
+                                     accessTokenExpirationTimestampMs: 1000000000)
     }
     
     static private func createMockInternalAPIAccessToken() -> InternalAPIAccessToken {
         return InternalAPIAccessToken(clientId: "",
-                                              accessToken: "",
-                                              accessTokenExpirationTimestampMs: 1000000000,
-                                              isAnonymous: false)
+                                      accessToken: "",
+                                      accessTokenExpirationTimestampMs: 1000000000,
+                                      isAnonymous: false)
     }
     
     static private func createMockSpDcCookie() -> SpDcCookie {
