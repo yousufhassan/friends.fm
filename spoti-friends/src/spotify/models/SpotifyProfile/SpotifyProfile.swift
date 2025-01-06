@@ -8,6 +8,7 @@ import JSONCodable
 ///   - spotifyUri: The Spotify unique resource identifier for this Spotify profile.
 ///   - displayName: The display name associated with this Spotify profile.
 ///   - image: The profile image for this Spotify profile.
+///   - email: This is only for decoding purposes when storing a new user's email. This is not stored in the database with a SpotifyProfile object.
 ///   - currentOrMostRecentTrack: The track last played (or currently playing)  by this Spotify profile.
 class SpotifyProfile: Codable, Equatable, Identifiable, Hashable {
     var id: String { spotifyId }
