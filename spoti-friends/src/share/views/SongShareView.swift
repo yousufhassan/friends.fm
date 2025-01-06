@@ -48,9 +48,9 @@ struct SongShareView: View {
 
 #Preview {
     let user = UserMock.userJimHalpert
-    let receivedTracks: [SharedResource] = SharedResourceMock.receivedResources
+    let receivedResources: [SharedResource] = SharedResourceMock.receivedResources
     let sentResources: [SharedResource] = SharedResourceMock.sentResources
     
     SongShareView(sentResources: sentResources)
-        .environmentObject(ShareViewModel(user: user))
+        .environmentObject(ShareViewModel(user: user, receivedResources: receivedResources, sentResources: sentResources))
 }

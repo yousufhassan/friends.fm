@@ -70,7 +70,7 @@ extension View {
 #Preview {
     @Previewable @State var isSearching: Bool = true
     @Previewable @State var selectedTab = SongShareTab.received
-    @Previewable @State var sentResources = SharedResourceMock.sentResources
+    let sentResources = SharedResourceMock.sentResources
     let user = UserMock.userJimHalpert
     
     SongSearchView(searchBarPlaceholderText: "Search...", isSearching: $isSearching,

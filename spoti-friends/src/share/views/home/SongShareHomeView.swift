@@ -119,11 +119,15 @@ struct SongShareHomeView: View {
     @Previewable @State var isSearching = false
     @Previewable @State var selectedTab = SongShareTab.received
     let placeholderText = "What song do you want to share?"
+    let receivedResources: [SharedResource] = SharedResourceMock.receivedResources
+    let sentResources: [SharedResource] = SharedResourceMock.sentResources
     
     SongShareHomeView(searchBarPlaceholderText: placeholderText,
                       isSearching: $isSearching,
                       selectedTab: $selectedTab)
-    .environmentObject(ShareViewModel(user: UserMock.userJimHalpert))
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.PresetColour.darkgrey)
+    .environmentObject(ShareViewModel(user: UserMock.userJimHalpert,
+                                      receivedResources: receivedResources,
+                                      sentResources: sentResources))
 }

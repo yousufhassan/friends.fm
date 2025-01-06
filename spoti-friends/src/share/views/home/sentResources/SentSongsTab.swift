@@ -40,6 +40,6 @@ private func groupedResources(sentResources: [SharedResource]) -> [(Int, [Shared
 
 #Preview {
     SentSongsTab()
-        .environmentObject(ShareViewModel(user: UserMock.userJimHalpert))
+        .environmentObject(ShareViewModel(user: UserMock.userJimHalpert, sentResources: SharedResourceMock.sentResources))
         
 }
