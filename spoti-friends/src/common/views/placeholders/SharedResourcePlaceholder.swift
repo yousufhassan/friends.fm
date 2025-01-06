@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// A SwiftUI view that provides a placeholder View for a SharedResource item.
 struct SharedResourcePlaceholder: View {
     var body: some View {
         HStack {
@@ -14,6 +15,7 @@ struct SharedResourcePlaceholder: View {
     }
 }
 
+/// A SwiftUI view that provides a placeholder View for a list of SharedResource items
 struct SharedResourceListPlaceholder: View {
     var body: some View {
         VStack (alignment: .leading) {
