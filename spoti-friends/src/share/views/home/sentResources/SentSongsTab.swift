@@ -7,17 +7,35 @@ struct SentSongsTab: View {
     @EnvironmentObject var shareViewModel: ShareViewModel
     
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(groupedResources(sentResources: shareViewModel.sentResources), id: \.0) { key, resources in
-                    SentResourceView(
-                        resource: resources.first!,
-                        receivers: resources.map { $0.getReceiver() }
-                    )
+        if !(shareViewModel.hasFetchedData) {
+            VStack {
+                HStack {
+                    SharedResourceListPlaceholder()
+                    Spacer()
                 }
-                
+                Spacer()
             }
-            .padding(.leading)
+        } else if (shareViewModel.sentResources.isEmpty) {
+            VStack (spacing: 6) {
+                Text("No gatekeeping here!")
+                Text("Share your first song with a friend now!")
+                Spacer()
+            }
+            .foregroundStyle(Color.PresetColour.whiteSecondary)
+            .font(.callout)
+            .padding(.top, 24)
+        } else {
+            ScrollView {
+                LazyVStack {
+                    ForEach(groupedResources(sentResources: shareViewModel.sentResources), id: \.0) { key, resources in
+                        SentResourceView(
+                            resource: resources.first!,
+                            receivers: resources.map { $0.getReceiver() }
+                        )
+                    }
+                    
+                }
+            }
         }
     }
 }

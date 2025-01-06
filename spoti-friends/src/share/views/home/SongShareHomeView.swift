@@ -14,7 +14,6 @@ struct SongShareHomeView: View {
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @State private var hasFetchedData = false
     
     init(searchBarPlaceholderText: String, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>) {
         self.searchBarPlaceholderText = searchBarPlaceholderText
@@ -81,17 +80,17 @@ struct SongShareHomeView: View {
                 
                 // Sent songs tab
                 SentSongsTab()
-                    .environmentObject(shareViewModel)
                     .tag(SongShareTab.sent)
+                    .padding(.leading)
+                    .environmentObject(shareViewModel)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
         .onAppear {
-            if !hasFetchedData {
+            if !(shareViewModel.hasFetchedData) {
                 Task {
                     await shareViewModel.fetchReceivedAndSentResources()
                 }
-                hasFetchedData = true
             }
         }
         .alert(shareViewModel.sharedToNonUserAlertText, isPresented: $shareViewModel.showSharedToNonUserAlert) {
