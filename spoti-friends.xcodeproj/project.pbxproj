@@ -61,6 +61,7 @@
 		CB5525422D2B97C2006C4FF0 /* SharedResourcePlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525412D2B97C2006C4FF0 /* SharedResourcePlaceholder.swift */; };
 		CB5525442D2B99E6006C4FF0 /* TrackOrArtistViewPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525432D2B99DE006C4FF0 /* TrackOrArtistViewPlaceholder.swift */; };
 		CB5525472D2C31D9006C4FF0 /* ReceivedResourcesTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525462D2C31D9006C4FF0 /* ReceivedResourcesTab.swift */; };
+		CB5525492D2C5ABD006C4FF0 /* v1.4.1.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5525482D2C5AB9006C4FF0 /* v1.4.1.swift */; };
 		CB59BCB52C2FA08D0061C99B /* ListeningActivityCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCB42C2FA08D0061C99B /* ListeningActivityCard.swift */; };
 		CB59BCB72C2FAB890061C99B /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCB62C2FAB890061C99B /* ProfileImage.swift */; };
 		CB59BCBF2C2FAFB30061C99B /* ImageWithSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59BCBE2C2FAFB30061C99B /* ImageWithSpecs.swift */; };
@@ -190,6 +191,7 @@
 		CB5525412D2B97C2006C4FF0 /* SharedResourcePlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedResourcePlaceholder.swift; sourceTree = "<group>"; };
 		CB5525432D2B99DE006C4FF0 /* TrackOrArtistViewPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackOrArtistViewPlaceholder.swift; sourceTree = "<group>"; };
 		CB5525462D2C31D9006C4FF0 /* ReceivedResourcesTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedResourcesTab.swift; sourceTree = "<group>"; };
+		CB5525482D2C5AB9006C4FF0 /* v1.4.1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.4.1.swift; sourceTree = "<group>"; };
 		CB59BCB42C2FA08D0061C99B /* ListeningActivityCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningActivityCard.swift; sourceTree = "<group>"; };
 		CB59BCB62C2FAB890061C99B /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		CB59BCBE2C2FAFB30061C99B /* ImageWithSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWithSpecs.swift; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 				CB5525172D29B345006C4FF0 /* v1.3.0.swift */,
 				CB5525182D29B345006C4FF0 /* v1.3.1.swift */,
 				CB5525232D29B36E006C4FF0 /* v1.4.0.swift */,
+				CB5525482D2C5AB9006C4FF0 /* v1.4.1.swift */,
 			);
 			path = changelogs;
 			sourceTree = "<group>";
@@ -939,6 +942,7 @@
 				CBB1A3D22C93942B00D3D658 /* ProfileApiResponseObjects.swift in Sources */,
 				CBB7D0D62D053403002572C6 /* AppwriteShareService.swift in Sources */,
 				CB0B93682C7711F6003A9720 /* AlbumCoverPlaceholder.swift in Sources */,
+				CB5525492D2C5ABD006C4FF0 /* v1.4.1.swift in Sources */,
 				CB3B61812C1F83AE0088DFA1 /* AuthenticatedView.swift in Sources */,
 				CBA995C72D1DE12C0076E9B8 /* UserServiceError.swift in Sources */,
 				CB0B937F2C771D5D003A9720 /* CurrentOrMostRecentTrackMock.swift in Sources */,
@@ -1128,7 +1132,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yousufhassan.spoti-friends";
 				PRODUCT_NAME = friends.fm;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1224,7 +1228,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yousufhassan.spoti-friends";
 				PRODUCT_NAME = friends.fm;
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -8,6 +8,10 @@ struct ChangelogView: View {
             Divider()
                 .padding(.bottom)
             
+            v1_4_1()
+            Divider()
+                .padding(.bottom)
+            
             v1_4_0()
             Divider()
                 .padding(.bottom)
