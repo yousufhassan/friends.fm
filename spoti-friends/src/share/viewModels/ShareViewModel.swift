@@ -10,9 +10,28 @@ class ShareViewModel: ObservableObject {
     @Published var user: User?
     @Published var showSharedToNonUserAlert: Bool = false
     @Published var sharedToNonUserAlertText: String = ""
+    @Published var receivedResources: [SharedResource]
+    @Published var sentResources: [SharedResource]
     
-    init(user: User?) {
+    init(user: User?, receivedResources: [SharedResource] = [], sentResources: [SharedResource] = []) {
         self.user = user
+        self.receivedResources = receivedResources
+        self.sentResources = sentResources
+    }
+    
+    /// Fetches the user's received and sent resources asynchronously and updates the respective bindings.
+    public func fetchReceivedAndSentResources() async {
+        if let fetchedReceivedResources = await self.getCurrentUsersReceivedResources() {
+            DispatchQueue.main.async {
+                self.receivedResources = fetchedReceivedResources
+            }
+        }
+        
+        if let fetchedSentResources = await self.getCurrentUsersSentResources() {
+            DispatchQueue.main.async {
+                self.sentResources = fetchedSentResources
+            }
+        }
     }
     
     /// An enum representing the types of resources that can be searched on Spotify, such as `track`, `album`, and `artist`.
@@ -72,25 +91,19 @@ class ShareViewModel: ObservableObject {
     /// - Returns: The list of `SharedResource` created and shared, or `nil` on error.
     ///
     /// The signed in user is the sender.
-    public func share(resource: SpotifyResource,
-                      to receivers: Set<SpotifyProfile>,
-                      optimisticUpdate: (([SharedResource]) -> Void)? = nil)
-    async -> [SharedResource]? {
+    public func share(resource: SpotifyResource, to receivers: Set<SpotifyProfile>) async {
+        var sentResourcesToAdd: [SharedResource] = []
+        
         do {
             guard let signedInUser = self.user else { throw AuthorizationError.missingUser }
             let sender = signedInUser.spotifyProfile
-            var sharedResources: [SharedResource] = []
+            sentResourcesToAdd = createResourcesToSend(resource: resource, sender: sender, receivers: receivers)
             
-            for receiver in receivers {
-                let sharedResource = SharedResource(resource: resource, sender: sender, receiver: receiver)
-                sharedResources.append(sharedResource)
-            }
-            
-            Cache.shared.appendToSentResources(spotifyId: signedInUser.spotifyId, newResources: sharedResources)
-            optimisticUpdate?(sharedResources)
+            // Optimistically update the sent resources
+            performOptimisticUpdate(resources: sentResourcesToAdd, signedInUser: signedInUser)
             
             var nonUsers: [SpotifyProfile] = []
-            for resource in sharedResources {
+            for resource in sentResourcesToAdd {
                 try await ShareServiceManager.shared.share(resource: resource)
                 
                 // If the resource was sent to a non-user, mark them as such
@@ -100,20 +113,88 @@ class ShareViewModel: ObservableObject {
                 }
             }
             
+            // Increment metric
             MetricsServiceManager.shared.trackSharedSong(receiversCount: receivers.count, nonUsersCount: nonUsers.count)
             
             // Alert user if they are sharing to friends who are not app users
             if (!nonUsers.isEmpty) {
-                DispatchQueue.main.async {
-                    self.sharedToNonUserAlertText = self.getAlertText(for: nonUsers)
-                    self.showSharedToNonUserAlert = true
-                }
+                triggerSharingToNonUsersAlert(nonUsers: nonUsers)
             }
             
-            return sharedResources
+            printInfo("Successfully shared \(sentResourcesToAdd.count) resources to \(receivers.map {$0.getDisplayName()})")
         } catch {
             printError("When sharing resources: \(error)")
-            return nil
+            rollbackOptimisticUpdate(resources: sentResourcesToAdd, receivers: receivers)
+        }
+    }
+    
+    /// Creates and returns a list of `SharedResource` objects to send to specified receivers.
+    ///
+    /// - Parameters:
+    ///   - resource: The `SpotifyResource` to be shared.
+    ///   - sender: The `SpotifyProfile` representing the sender.
+    ///   - receivers: A set of `SpotifyProfile` objects representing the receivers.
+    /// - Returns: An array of `SharedResource` objects representing the resources to send.
+    private func createResourcesToSend(resource: SpotifyResource, sender: SpotifyProfile,
+                                       receivers: Set<SpotifyProfile>) -> [SharedResource] {
+        var resourcesToSend: [SharedResource] = []
+        
+        for receiver in receivers {
+            let sharedResource = SharedResource(resource: resource, sender: sender, receiver: receiver)
+            resourcesToSend.append(sharedResource)
+        }
+
+        return resourcesToSend
+    }
+    
+    /// Performs an optimistic update of sent resources.
+    /// Adds the specified resources to the `sentResources` list and updates the cache for the user.
+    ///
+    /// - Parameters:
+    ///   - resources: The `SharedResource` objects to add to the sent resources.
+    ///   - signedInUser: The `User` representing the currently signed-in user.
+    private func performOptimisticUpdate(resources: [SharedResource], signedInUser: User) {
+        DispatchQueue.main.async {
+            self.sentResources.append(contentsOf: resources)
+        }
+        
+        Cache.shared.appendToSentResources(spotifyId: signedInUser.spotifyId, newResources: resources)
+    }
+    
+    /// Rolls back the optimistic update made to the sent resources list and the cache.
+    ///
+    /// This method is used to undo changes to the `sentResources` list and the shared cache when sharing a resource fails.
+    /// It removes the specified resources from the `sentResources` property and from the cache for the currently signed-in user.
+    ///
+    /// - Parameters:
+    ///   - resources: An array of `SharedResource` objects that were added optimistically and need to be removed.
+    ///   - receivers: A set of `SpotifyProfile` objects representing the recipients of the resources. Used for logging purposes.
+    ///
+    /// - Note:Ensure that this method is called only when sharing resources fails to avoid inadvertently removing valid entries.
+    private func rollbackOptimisticUpdate(resources: [SharedResource], receivers: Set<SpotifyProfile>) {
+        printError("Failed to share \(resources.count) resources to \(receivers.map {$0.getDisplayName()})")
+        
+        DispatchQueue.main.async {
+            self.sentResources.removeAll { resource in
+                resources.contains { $0.id == resource.id }
+            }
+        }
+        
+        guard let signedInUser = self.user else {
+            printError("Missing user when rolling back optimistic song share update.")
+            return
+        }
+        
+        Cache.shared.removeFromSentResources(spotifyId: signedInUser.spotifyId, resourcesToRemove: resources)
+    }
+    
+    /// This function updates the alert text and triggers the alert to inform the sender about sharing resources with non-app users.
+    ///
+    /// - Parameter nonUsers: An array of `SpotifyProfile` objects representing users who are not using the app.
+    private func triggerSharingToNonUsersAlert(nonUsers: [SpotifyProfile]) {
+        DispatchQueue.main.async {
+            self.sharedToNonUserAlertText = self.getAlertText(for: nonUsers)
+            self.showSharedToNonUserAlert = true
         }
     }
     

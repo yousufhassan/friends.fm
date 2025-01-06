@@ -9,7 +9,7 @@ class Appwrite {
     private var database: Databases
     
     private let clientEndpoint = "https://cloud.appwrite.io/v1"
-    private let projectId = "friends-fm"
+    private let projectId = "friendsfm-DEV"
     private let databaseId = "friends-fm"
     
     public init() {
