@@ -7,14 +7,12 @@ import SwiftUI
 ///
 /// - Parameters:
 ///   - profile: The Spotify profile to display.
-///   
+///
 struct NonUserProfileView: View {
     let profile: SpotifyProfile
-    @EnvironmentObject var profileViewModel: ProfileViewModel
     
-    init(profile: SpotifyProfile) {
-        self.profile = profile
-    }
+    @EnvironmentObject var profileViewModel: ProfileViewModel
+    @State private var isShareSheetPresented = false
     
     var body: some View {
         VStack {
@@ -29,7 +27,11 @@ struct NonUserProfileView: View {
                 Text("\(profile.getDisplayName()) has not joined the app yet.")
                 Text("Invite them to be part of the fun!")
                 
-                ShareLink(item: "I'm using friends.fm, join the fun here: https://friendsfm.super.site/") {
+                // Invite button
+                Button(action: {
+                    MetricsServiceManager.shared.trackInivtedUser(viewContext: .nonUserProfileView, users: [profile])
+                    isShareSheetPresented = true
+                }) {
                     Text("Invite \(profile.getDisplayName())")
                         .font(.headline)
                         .foregroundColor(Color.PresetColour.whitePrimary)
@@ -38,8 +40,13 @@ struct NonUserProfileView: View {
                         .background(Color.PresetColour.spotifyGreen)
                         .cornerRadius(100)
                 }
-                .padding(.vertical)
+                .sheet(isPresented: $isShareSheetPresented) {
+                    ActivityViewController(activityItems: ["I'm using friends.fm, join the fun here: https://friendsfm.super.site/"])
+                        .presentationDetents([.medium, .large])
+                }
+                
             }
+            .padding(.vertical)
             .foregroundStyle(Color.PresetColour.whitePrimary)
             
             Spacer()

@@ -17,7 +17,6 @@ struct SendToFriendsSheet: View {
     @State var selectedFriends: Set<SpotifyProfile> = []
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @Binding var sentResources: [SharedResource]
     
     /// Toggles the selected status for `friend`.
     ///
@@ -81,7 +80,7 @@ struct SendToFriendsSheet: View {
             
             // Conditional Send Button, if friend(s) are selected
             if (!selectedFriends.isEmpty) {
-                SendTrackButton(resource: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab, sentResources: $sentResources)
+                SendTrackButton(resource: track, toFriends: $selectedFriends, isSearching: $isSearching, selectedTab: $selectedTab)
                     .environmentObject(shareViewModel)
             }
             
@@ -107,8 +106,7 @@ struct SendToFriendsSheet: View {
         showSheet = true
     }
     .sheet(isPresented: $showSheet) {
-        SendToFriendsSheet(track: track, friends: friends, isSearching: $showSheet,
-                           selectedTab: $selectedTab, sentResources: $sentResources)
+        SendToFriendsSheet(track: track, friends: friends, isSearching: $showSheet, selectedTab: $selectedTab)
     }
 }
 
@@ -182,15 +180,13 @@ struct SendTrackButton: View {
     @Binding var selectedFriends: Set<SpotifyProfile>
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @Binding var sentResources: [SharedResource]
     
-    init(resource: SpotifyResource, toFriends: Binding<Set<SpotifyProfile>>, isSearching: Binding<Bool>,
-         selectedTab: Binding<SongShareTab>, sentResources: Binding<[SharedResource]>) {
+    init(resource: SpotifyResource, toFriends: Binding<Set<SpotifyProfile>>,
+         isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>) {
         self.resource = resource
         self._selectedFriends = toFriends
         self._isSearching = isSearching
         self._selectedTab = selectedTab
-        self._sentResources = sentResources
     }
     
     var body: some View {
@@ -198,25 +194,7 @@ struct SendTrackButton: View {
             let friendNames = selectedFriends.map { $0.getDisplayName() }.joined(separator: ", ")
             printInfo("Sending \(resource.name) to \(friendNames)")
             Task {
-                var sentResourcesToAdd: [SharedResource] = []
-                if (await shareViewModel.share(resource: resource, to: selectedFriends, optimisticUpdate: { resources in
-                    sentResourcesToAdd = resources
-                    self.sentResources.append(contentsOf: resources) // Update UI immediately
-                })) != nil {
-                        // Handle success (resources already appended optimistically)
-                        printInfo("Successfully shared \(sentResourcesToAdd.count) resources to \(selectedFriends.map {$0.getDisplayName()})")
-                    } else {
-                        printError("Failed to share \(sentResourcesToAdd.count) resources to \(selectedFriends.map {$0.getDisplayName()})")
-                        // TODO: render error
-                        
-                        // Handle error (rollback the changes)
-                        guard let signedInUser = shareViewModel.user else { throw AuthorizationError.missingUser }
-                        Cache.shared.removeFromSentResources(spotifyId: signedInUser.spotifyId, resourcesToRemove: sentResourcesToAdd)
-                        self.sentResources.removeAll { resource in
-                            sentResourcesToAdd.contains { $0.id == resource.id }
-                        }
-                    }
-
+                await shareViewModel.share(resource: resource, to: selectedFriends)
             }
             
             

@@ -60,7 +60,6 @@ class Track: SpotifyResource, Codable, Identifiable, Equatable {
     convenience init(fromAppwrite decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: AppwriteCodingKeys.self)
         let spotifyUri = try container.decodeIfPresent(String.self, forKey: .spotifyUri) ?? ""
-        let spotifyId = extractSpotifyIdFrom(uri: spotifyUri)
         let name = try container.decode(String.self, forKey: .name)
         let artists = try container.decode([Artist].self, forKey: .artists)
         let album = try container.decode(Album.self, forKey: .album)

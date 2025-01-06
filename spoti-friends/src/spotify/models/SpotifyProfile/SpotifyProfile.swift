@@ -8,6 +8,7 @@ import JSONCodable
 ///   - spotifyUri: The Spotify unique resource identifier for this Spotify profile.
 ///   - displayName: The display name associated with this Spotify profile.
 ///   - image: The profile image for this Spotify profile.
+///   - email: This is only for decoding purposes when storing a new user's email. This is not stored in the database with a SpotifyProfile object.
 ///   - currentOrMostRecentTrack: The track last played (or currently playing)  by this Spotify profile.
 class SpotifyProfile: Codable, Equatable, Identifiable, Hashable {
     var id: String { spotifyId }
@@ -15,6 +16,7 @@ class SpotifyProfile: Codable, Equatable, Identifiable, Hashable {
     private let spotifyUri: String
     private var displayName: String
     private var image: String
+    private var email: String? = nil
     private var currentOrMostRecentTrack: CurrentOrMostRecentTrack?
     
     /// Defining what makes two `SpotifyProfile` objects equal for conformance to the `Equatable` protocol.
@@ -33,6 +35,7 @@ class SpotifyProfile: Codable, Equatable, Identifiable, Hashable {
         case spotifyUri = "uri"
         case displayName = "display_name"
         case image = "images"
+        case email
     }
     
     /// Mapping of the Swift object properties to the Appwrite Collection model.
@@ -59,6 +62,7 @@ class SpotifyProfile: Codable, Equatable, Identifiable, Hashable {
         self.spotifyUri = try container.decode(String.self, forKey: .spotifyUri)
         self.displayName = try container.decode(String.self, forKey: .displayName)
         self.image = decodeAndExtractFirstSpotifyImageURL(from: container, forKey: .image)
+        self.email = try container.decode(String.self, forKey: .email)
     }
     
     /// Custom initializer for decoding an Appwrite response from a Decoder
@@ -117,6 +121,10 @@ class SpotifyProfile: Codable, Equatable, Identifiable, Hashable {
     
     public func setImage(newImage: String) {
         self.image = newImage
+    }
+    
+    public func getEmail() -> String {
+        return self.email ?? ""
     }
     
     public func getCurrentOrMostRecentTrack() -> CurrentOrMostRecentTrack? {

@@ -4,20 +4,38 @@ import SwiftUI
 /// If the song was sent to a single recipient, then render it alone. If it was sent to multiple, render them as one item
 /// and stack the profile images together.
 struct SentSongsTab: View {
-    @Binding var sentResources: [SharedResource]
+    @EnvironmentObject var shareViewModel: ShareViewModel
     
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(groupedResources(sentResources: sentResources), id: \.0) { key, resources in
-                    SentResourceView(
-                        resource: resources.first!,
-                        receivers: resources.map { $0.getReceiver() }
-                    )
+        if !(shareViewModel.hasFetchedSentResources) {
+            VStack {
+                HStack {
+                    SharedResourceListPlaceholder()
+                    Spacer()
                 }
-                
+                Spacer()
             }
-            .padding(.leading)
+        } else if (shareViewModel.sentResources.isEmpty) {
+            VStack (spacing: 6) {
+                Text("No gatekeeping here!")
+                Text("Share your first song with a friend now!")
+                Spacer()
+            }
+            .foregroundStyle(Color.PresetColour.whiteSecondary)
+            .font(.callout)
+            .padding(.top, 24)
+        } else {
+            ScrollView {
+                LazyVStack {
+                    ForEach(groupedResources(sentResources: shareViewModel.sentResources), id: \.0) { key, resources in
+                        SentResourceView(
+                            resource: resources.first!,
+                            receivers: resources.map { $0.getReceiver() }
+                        )
+                    }
+                    
+                }
+            }
         }
     }
 }
@@ -39,7 +57,8 @@ private func groupedResources(sentResources: [SharedResource]) -> [(Int, [Shared
 }
 
 #Preview {
-    @Previewable @State var sentResources = SharedResourceMock.sentResources
-    
-    SentSongsTab(sentResources: $sentResources)
+    SentSongsTab()
+        .environmentObject(ShareViewModel(user: UserMock.userJimHalpert,
+                                          sentResources: SharedResourceMock.sentResources))
+        
 }

@@ -9,8 +9,8 @@ extension Color {
         static var spotifyGreen: Color { return Color(red: 0.11, green: 0.72, blue: 0.33) }
         static var spotifyBlack: Color { return Color(red: 0.10, green: 0.08, blue: 0.08) }
         static var spotifyDarkGrey: Color { return Color(red: 0.18, green: 0.16, blue: 0.15) }
-        static var whitePrimary: Color { return Color(red: 0.94, green: 0.94, blue: 0.94) }
-        static var whiteSecondary: Color { return Color(red: 0.77, green: 0.77, blue: 0.77) }
+        static var whitePrimary: Color { return Color(red: 0.94, green: 0.94, blue: 0.94) } // #F0F0F0
+        static var whiteSecondary: Color { return Color(red: 0.77, green: 0.77, blue: 0.77) } // #C6C6C6
         static var black: Color { return Color(red: 0.03, green: 0.03, blue: 0.03) }
         static var blackSecondary: Color { return Color(red: 0.17, green: 0.17, blue: 0.17) }
         static var darkgrey: Color { return Color(red: 0.11, green: 0.11, blue: 0.11) }
