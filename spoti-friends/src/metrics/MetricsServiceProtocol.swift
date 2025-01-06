@@ -13,4 +13,7 @@ protocol MetricsServiceProtocol {
     
     /// Tracks when a user shares a song with friends.
     func trackSharedSong(receiversCount: Int, nonUsersCount: Int)
+    
+    /// Tracks when a user views a profile and whether or not it was their own profile view.
+    func trackViewedProfile(profile: SpotifyProfile)
 }

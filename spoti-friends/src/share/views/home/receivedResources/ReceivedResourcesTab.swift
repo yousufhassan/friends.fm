@@ -22,7 +22,6 @@ struct ReceivedResourcesTab: View {
                         ReceivedResourceView(resource: resource)
                     }
                 }
-                .padding(.horizontal)
             }
         }
     }

@@ -6,7 +6,7 @@ enum MetricsEvent: String {
     case appOpened
     case invitedUser
     case sharedSong
-    case playedSong
+    case viewedProfile
     
     /// An enum to track the various event properties that may be tracked with an event.
     enum Properties: String {
@@ -14,6 +14,7 @@ enum MetricsEvent: String {
         case possibleUsers
         case receiversCount
         case nonUsersCount
+        case ownProfile
     }
 }
 

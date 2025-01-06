@@ -71,6 +71,7 @@ struct SongShareHomeView: View {
                 ReceivedResourcesTab()
                     .tag(SongShareTab.received)
                     .environmentObject(shareViewModel)
+                    .padding(.horizontal)
                 
                 
                 // Sent songs tab
