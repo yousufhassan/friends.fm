@@ -41,7 +41,7 @@ class SpotifyAuth {
     async -> AuthorizationStatus {
         do {
             guard let validatedSpDcCookie = spDcCookie else { throw AuthorizationError.missingSpDcCookie }
-
+            
             guard let responseUrlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
                   let queryItems = responseUrlComponents.queryItems
             else { throw URLError(.badURL) }
@@ -82,24 +82,25 @@ class SpotifyAuth {
         let authorizationCode = try getAuthorizationCodeFromQueryItems(queryItems)
         let spotifyWebAccessToken = try await requestAccessTokenObject(authorizationCode: authorizationCode)
         let internalAPIAccessToken = try await fetchInternalAPIAccessToken(spDcCookie: spDcCookie)
-
+        
         let spotifyProfile = try await SpotifyAPI.shared
             .fetch(method: .GET,
                    endpoint: .getCurrentUsersProfile,
                    responseType: SpotifyProfile.self,
                    accessToken: spotifyWebAccessToken.getAccessToken())
-
+        
         let friends = try await SpotifyAPI.shared
             .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.getAccessToken())
-
+        
         return User(spotifyId: spotifyProfile.getSpotifyId(),
-                            spotifyProfile: spotifyProfile,
-                            friends: friends,
-                            authorizationCode: authorizationCode,
-                            spotifyWebAcessToken: spotifyWebAccessToken,
-                            internalAPIAccessToken: internalAPIAccessToken,
-                            authorizationStatus: .granted,
-                            spDcCookie: spDcCookie)
+                    spotifyProfile: spotifyProfile,
+                    friends: friends,
+                    authorizationCode: authorizationCode,
+                    spotifyWebAcessToken: spotifyWebAccessToken,
+                    internalAPIAccessToken: internalAPIAccessToken,
+                    authorizationStatus: .granted,
+                    spDcCookie: spDcCookie,
+                    email: spotifyProfile.getEmail())
     }
     
     /// Stores the user as the signed in user in `UserDefaults`.
@@ -189,7 +190,6 @@ class SpotifyAuth {
         do {
             let request = try constructRefreshAccessTokenRequest(refreshToken: refreshToken)
             let (data, _) = try await URLSession.shared.data(for: request)
-//            let responseString = String(data: data, encoding: .utf8)
             let accessToken = try JSONDecoder().decode(SpotifyWebAccessToken.self, from: data)
             return accessToken
         } catch {
