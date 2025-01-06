@@ -14,17 +14,11 @@ struct SongShareHomeView: View {
     let searchBarPlaceholderText: String
     @Binding var isSearching: Bool
     @Binding var selectedTab: SongShareTab
-    @Binding var receivedResources: [SharedResource]
-    @Binding var sentResources: [SharedResource]
-    @State private var hasFetchedData = false
     
-    init(searchBarPlaceholderText: String, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>,
-         receivedResources: Binding<[SharedResource]>, sentResources: Binding<[SharedResource]>) {
+    init(searchBarPlaceholderText: String, isSearching: Binding<Bool>, selectedTab: Binding<SongShareTab>) {
         self.searchBarPlaceholderText = searchBarPlaceholderText
         self._isSearching = isSearching
         self._selectedTab = selectedTab
-        self._receivedResources = receivedResources
-        self._sentResources = sentResources
         
         
         // Picker background color
@@ -74,46 +68,31 @@ struct SongShareHomeView: View {
             // Horizontal scrollable TabView
             TabView(selection: $selectedTab) {
                 // Received songs tab
-                ScrollView {
-                    LazyVStack {
-                        ForEach(receivedResources) { resource in
-                            ReceivedResourceView(resource: resource)
-                        }
-                    }
+                ReceivedResourcesTab()
+                    .tag(SongShareTab.received)
+                    .environmentObject(shareViewModel)
                     .padding(.horizontal)
-                }
-                .tag(SongShareTab.received)
+                
                 
                 // Sent songs tab
-                SentSongsTab(sentResources: $sentResources)
+                SentSongsTab()
                     .tag(SongShareTab.sent)
+                    .padding(.leading)
+                    .environmentObject(shareViewModel)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
         .onAppear {
-            if !hasFetchedData {
-                fetchData()
-                hasFetchedData = true
-            }
-        }
-        .onChange(of: receivedResources) {
-            Task {
-                if let receivedResources = await shareViewModel.getCurrentUsersReceivedResources() {
-                    self.receivedResources = receivedResources
-                }
-            }
-        }
-        .onChange(of: sentResources) {
-            Task {
-                if let sentResources = await shareViewModel.getCurrentUsersSentResources() {
-                    self.sentResources = sentResources
+            if !(shareViewModel.hasFetchedReceivedResources) {
+                Task {
+                    await shareViewModel.fetchReceivedAndSentResources()
                 }
             }
         }
         .alert(shareViewModel.sharedToNonUserAlertText, isPresented: $shareViewModel.showSharedToNonUserAlert) {
             Button("Invite") {
                 shareContent(message: "I sent you some songs on friends.fm! Join now to view them: https://friendsfm.super.site/")
-                MetricsServiceManager.shared.trackInivtedUser(viewContext: .songShareHomeView)
+                MetricsServiceManager.shared.trackInivtedUser(viewContext: .songShareAlert)
             }
         }
     }
@@ -129,33 +108,21 @@ struct SongShareHomeView: View {
             rootViewController.present(activityViewController, animated: true)
         }
     }
-    
-    /// Fetches the user's received and sent resources asynchronously and updates the respective bindings.
-    private func fetchData() {
-        Task {
-            if let fetchedReceivedResources = await shareViewModel.getCurrentUsersReceivedResources() {
-                self.receivedResources = fetchedReceivedResources
-            }
-            if let fetchedSentResources = await shareViewModel.getCurrentUsersSentResources() {
-                self.sentResources = fetchedSentResources
-            }
-        }
-    }
 }
 
 #Preview {
     @Previewable @State var isSearching = false
     @Previewable @State var selectedTab = SongShareTab.received
-    @Previewable @State var receivedResources = SharedResourceMock.receivedResources
-    @Previewable @State var sentResources = SharedResourceMock.sentResources
     let placeholderText = "What song do you want to share?"
+    let receivedResources: [SharedResource] = SharedResourceMock.receivedResources
+    let sentResources: [SharedResource] = SharedResourceMock.sentResources
     
     SongShareHomeView(searchBarPlaceholderText: placeholderText,
                       isSearching: $isSearching,
-                      selectedTab: $selectedTab,
-                      receivedResources: $receivedResources,
-                      sentResources: $sentResources)
-    .environmentObject(ShareViewModel(user: UserMock.userJimHalpert))
+                      selectedTab: $selectedTab)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.PresetColour.darkgrey)
+    .environmentObject(ShareViewModel(user: UserMock.userJimHalpert,
+                                      receivedResources: receivedResources,
+                                      sentResources: sentResources))
 }

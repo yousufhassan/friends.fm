@@ -27,4 +27,9 @@ class MetricsServiceManager {
     public func trackSharedSong(receiversCount: Int, nonUsersCount: Int) {
         self.metricsService.trackSharedSong(receiversCount: receiversCount, nonUsersCount: nonUsersCount)
     }
+    
+    /// Tracks when a user views a profile and whether or not it was their own profile view.
+    public func trackViewedProfile(profile: SpotifyProfile) {
+        self.metricsService.trackViewedProfile(profile: profile)
+    }
 }

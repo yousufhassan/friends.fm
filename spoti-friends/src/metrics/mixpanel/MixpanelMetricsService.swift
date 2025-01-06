@@ -69,4 +69,12 @@ class MixpanelMetricsService: MetricsServiceProtocol {
         ]
         self.track(event: .sharedSong, properties: properties)
     }
+    
+    public func trackViewedProfile(profile: SpotifyProfile) {
+        let viewedOwnProfile = profile.getSpotifyId() == Mixpanel.mainInstance().userId
+        let properties: Properties = [
+            MetricsEvent.Properties.ownProfile.rawValue : viewedOwnProfile
+        ]
+        self.track(event: .viewedProfile, properties: properties)
+    }
 }

@@ -34,6 +34,7 @@ struct ProfileView: View {
         }
         .background(Color.PresetGradient.profileViewGradient(profile: profile))
         .onAppear {
+            MetricsServiceManager.shared.trackViewedProfile(profile: profile)
             Task {
                 self.isAppUser = await UserServiceManager.shared.userExists(withSpotifyId: profile.getSpotifyId())
             }

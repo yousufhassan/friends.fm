@@ -24,7 +24,6 @@ struct SongShareView: View {
     let searchBarPlaceholderText = "What song do you want to share?"
     @State private var isSearching: Bool = false
     @State var selectedTab: SongShareTab = .received
-    @State var receivedTracks: [SharedResource] = []
     @State var sentResources: [SharedResource] = []
     
     var body: some View {
@@ -32,16 +31,13 @@ struct SongShareView: View {
             if (self.isSearching) {
                 SongSearchView(searchBarPlaceholderText: searchBarPlaceholderText,
                                isSearching: $isSearching,
-                               selectedTab: $selectedTab,
-                               sentResources: $sentResources)
+                               selectedTab: $selectedTab)
                 .transition(.opacity)
                 .environmentObject(shareViewModel)
             } else {
                 SongShareHomeView(searchBarPlaceholderText: searchBarPlaceholderText,
                                   isSearching: $isSearching,
-                                  selectedTab: $selectedTab,
-                                  receivedResources: $receivedTracks,
-                                  sentResources: $sentResources)
+                                  selectedTab: $selectedTab)
                 .environmentObject(shareViewModel)
             }
         }
@@ -52,9 +48,9 @@ struct SongShareView: View {
 
 #Preview {
     let user = UserMock.userJimHalpert
-    let receivedTracks: [SharedResource] = SharedResourceMock.receivedResources
+    let receivedResources: [SharedResource] = SharedResourceMock.receivedResources
     let sentResources: [SharedResource] = SharedResourceMock.sentResources
     
-    SongShareView(receivedTracks: receivedTracks, sentResources: sentResources)
-        .environmentObject(ShareViewModel(user: user))
+    SongShareView(sentResources: sentResources)
+        .environmentObject(ShareViewModel(user: user, receivedResources: receivedResources, sentResources: sentResources))
 }
