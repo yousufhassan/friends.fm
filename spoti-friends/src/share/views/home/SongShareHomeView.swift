@@ -68,15 +68,10 @@ struct SongShareHomeView: View {
             // Horizontal scrollable TabView
             TabView(selection: $selectedTab) {
                 // Received songs tab
-                ScrollView {
-                    LazyVStack {
-                        ForEach(shareViewModel.receivedResources) { resource in
-                            ReceivedResourceView(resource: resource)
-                        }
-                    }
-                    .padding(.horizontal)
-                }
-                .tag(SongShareTab.received)
+                ReceivedResourcesTab()
+                    .tag(SongShareTab.received)
+                    .environmentObject(shareViewModel)
+                
                 
                 // Sent songs tab
                 SentSongsTab()
@@ -87,7 +82,7 @@ struct SongShareHomeView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         }
         .onAppear {
-            if !(shareViewModel.hasFetchedData) {
+            if !(shareViewModel.hasFetchedReceivedResources) {
                 Task {
                     await shareViewModel.fetchReceivedAndSentResources()
                 }
@@ -96,7 +91,7 @@ struct SongShareHomeView: View {
         .alert(shareViewModel.sharedToNonUserAlertText, isPresented: $shareViewModel.showSharedToNonUserAlert) {
             Button("Invite") {
                 shareContent(message: "I sent you some songs on friends.fm! Join now to view them: https://friendsfm.super.site/")
-                MetricsServiceManager.shared.trackInivtedUser(viewContext: .songShareHomeView)
+                MetricsServiceManager.shared.trackInivtedUser(viewContext: .songShareAlert)
             }
         }
     }

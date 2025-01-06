@@ -9,6 +9,7 @@ struct SharedResourcePlaceholder: View {
                 .redacted(reason: .placeholder)
                 .animatePlaceholder()
                 .padding(.bottom, 6)
+                .padding(.trailing)
         }
     }
 }

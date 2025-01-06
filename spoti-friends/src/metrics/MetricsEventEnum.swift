@@ -21,7 +21,8 @@ enum MetricsEvent: String {
 /// An enum to track the various views of the app that are relevant for metrics tracking purposes.
 enum ViewContext: String {
     case nonUserProfileView
-    case songShareHomeView
+    case songShareAlert
+    case receivedResourcesTab
 }
 
 

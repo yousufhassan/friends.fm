@@ -7,7 +7,7 @@ struct SentSongsTab: View {
     @EnvironmentObject var shareViewModel: ShareViewModel
     
     var body: some View {
-        if !(shareViewModel.hasFetchedData) {
+        if !(shareViewModel.hasFetchedSentResources) {
             VStack {
                 HStack {
                     SharedResourceListPlaceholder()
@@ -58,6 +58,7 @@ private func groupedResources(sentResources: [SharedResource]) -> [(Int, [Shared
 
 #Preview {
     SentSongsTab()
-        .environmentObject(ShareViewModel(user: UserMock.userJimHalpert, sentResources: SharedResourceMock.sentResources))
+        .environmentObject(ShareViewModel(user: UserMock.userJimHalpert,
+                                          sentResources: SharedResourceMock.sentResources))
         
 }

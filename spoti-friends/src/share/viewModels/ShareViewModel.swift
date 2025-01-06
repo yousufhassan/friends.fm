@@ -12,7 +12,8 @@ class ShareViewModel: ObservableObject {
     @Published var sharedToNonUserAlertText: String = ""
     @Published var receivedResources: [SharedResource]
     @Published var sentResources: [SharedResource]
-    @Published var hasFetchedData: Bool = false
+    @Published var hasFetchedReceivedResources: Bool = false
+    @Published var hasFetchedSentResources: Bool = false
     
     init(user: User?, receivedResources: [SharedResource] = [], sentResources: [SharedResource] = []) {
         self.user = user
@@ -23,15 +24,17 @@ class ShareViewModel: ObservableObject {
     /// Fetches the user's received and sent resources asynchronously and updates the respective bindings.
     @MainActor
     public func fetchReceivedAndSentResources() async {
+        // Fetch received resources
         if let fetchedReceivedResources = await self.getCurrentUsersReceivedResources() {
             self.receivedResources = fetchedReceivedResources
         }
+        self.hasFetchedReceivedResources = true
         
+        // Fetch sent resources
         if let fetchedSentResources = await self.getCurrentUsersSentResources() {
             self.sentResources = fetchedSentResources
         }
-        
-        self.hasFetchedData = true
+        self.hasFetchedSentResources = true
     }
     
     /// An enum representing the types of resources that can be searched on Spotify, such as `track`, `album`, and `artist`.
