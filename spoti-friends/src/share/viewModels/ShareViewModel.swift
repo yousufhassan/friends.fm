@@ -20,17 +20,14 @@ class ShareViewModel: ObservableObject {
     }
     
     /// Fetches the user's received and sent resources asynchronously and updates the respective bindings.
+    @MainActor
     public func fetchReceivedAndSentResources() async {
         if let fetchedReceivedResources = await self.getCurrentUsersReceivedResources() {
-            DispatchQueue.main.async {
-                self.receivedResources = fetchedReceivedResources
-            }
+            self.receivedResources = fetchedReceivedResources
         }
         
         if let fetchedSentResources = await self.getCurrentUsersSentResources() {
-            DispatchQueue.main.async {
-                self.sentResources = fetchedSentResources
-            }
+            self.sentResources = fetchedSentResources
         }
     }
     
@@ -100,7 +97,7 @@ class ShareViewModel: ObservableObject {
             sentResourcesToAdd = createResourcesToSend(resource: resource, sender: sender, receivers: receivers)
             
             // Optimistically update the sent resources
-            performOptimisticUpdate(resources: sentResourcesToAdd, signedInUser: signedInUser)
+            await performOptimisticUpdate(resources: sentResourcesToAdd, signedInUser: signedInUser)
             
             var nonUsers: [SpotifyProfile] = []
             for resource in sentResourcesToAdd {
@@ -118,13 +115,13 @@ class ShareViewModel: ObservableObject {
             
             // Alert user if they are sharing to friends who are not app users
             if (!nonUsers.isEmpty) {
-                triggerSharingToNonUsersAlert(nonUsers: nonUsers)
+                await triggerSharingToNonUsersAlert(nonUsers: nonUsers)
             }
             
             printInfo("Successfully shared \(sentResourcesToAdd.count) resources to \(receivers.map {$0.getDisplayName()})")
         } catch {
             printError("When sharing resources: \(error)")
-            rollbackOptimisticUpdate(resources: sentResourcesToAdd, receivers: receivers)
+            await rollbackOptimisticUpdate(resources: sentResourcesToAdd, receivers: receivers)
         }
     }
     
@@ -143,7 +140,7 @@ class ShareViewModel: ObservableObject {
             let sharedResource = SharedResource(resource: resource, sender: sender, receiver: receiver)
             resourcesToSend.append(sharedResource)
         }
-
+        
         return resourcesToSend
     }
     
@@ -153,11 +150,9 @@ class ShareViewModel: ObservableObject {
     /// - Parameters:
     ///   - resources: The `SharedResource` objects to add to the sent resources.
     ///   - signedInUser: The `User` representing the currently signed-in user.
+    @MainActor
     private func performOptimisticUpdate(resources: [SharedResource], signedInUser: User) {
-        DispatchQueue.main.async {
-            self.sentResources.append(contentsOf: resources)
-        }
-        
+        self.sentResources.append(contentsOf: resources)
         Cache.shared.appendToSentResources(spotifyId: signedInUser.spotifyId, newResources: resources)
     }
     
@@ -171,13 +166,12 @@ class ShareViewModel: ObservableObject {
     ///   - receivers: A set of `SpotifyProfile` objects representing the recipients of the resources. Used for logging purposes.
     ///
     /// - Note:Ensure that this method is called only when sharing resources fails to avoid inadvertently removing valid entries.
+    @MainActor
     private func rollbackOptimisticUpdate(resources: [SharedResource], receivers: Set<SpotifyProfile>) {
         printError("Failed to share \(resources.count) resources to \(receivers.map {$0.getDisplayName()})")
         
-        DispatchQueue.main.async {
-            self.sentResources.removeAll { resource in
-                resources.contains { $0.id == resource.id }
-            }
+        self.sentResources.removeAll { resource in
+            resources.contains { $0.id == resource.id }
         }
         
         guard let signedInUser = self.user else {
@@ -191,11 +185,10 @@ class ShareViewModel: ObservableObject {
     /// This function updates the alert text and triggers the alert to inform the sender about sharing resources with non-app users.
     ///
     /// - Parameter nonUsers: An array of `SpotifyProfile` objects representing users who are not using the app.
+    @MainActor
     private func triggerSharingToNonUsersAlert(nonUsers: [SpotifyProfile]) {
-        DispatchQueue.main.async {
-            self.sharedToNonUserAlertText = self.getAlertText(for: nonUsers)
-            self.showSharedToNonUserAlert = true
-        }
+        self.sharedToNonUserAlertText = self.getAlertText(for: nonUsers)
+        self.showSharedToNonUserAlert = true
     }
     
     /// Returns an alert message informing the user that some of the friends they shared a song to are not using the app.
