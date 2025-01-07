@@ -76,6 +76,8 @@
 		CB70E8A02C8017CD00F9A197 /* ArtistList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E89F2C8017CD00F9A197 /* ArtistList.swift */; };
 		CB70E8A22C816AAA00F9A197 /* OpenSpotifyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A12C816AAA00F9A197 /* OpenSpotifyButton.swift */; };
 		CB70E8A52C838FB400F9A197 /* SomethingWentWrongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */; };
+		CB75A2A52D2DB33B0020EED4 /* ResourceActionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75A2A42D2DB33B0020EED4 /* ResourceActionsSheet.swift */; };
+		CB75A2A82D2DB8FA0020EED4 /* ResourceAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75A2A72D2DB8FA0020EED4 /* ResourceAction.swift */; };
 		CB7C05A22C0EAB3B001A0062 /* AuthErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */; };
 		CB7C05A42C0EB4DB001A0062 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05A32C0EB4DB001A0062 /* Utils.swift */; };
 		CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7C05AC2C0EEEA2001A0062 /* AuthorizationConstants.swift */; };
@@ -205,6 +207,8 @@
 		CB70E89F2C8017CD00F9A197 /* ArtistList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistList.swift; sourceTree = "<group>"; };
 		CB70E8A12C816AAA00F9A197 /* OpenSpotifyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSpotifyButton.swift; sourceTree = "<group>"; };
 		CB70E8A42C838FB400F9A197 /* SomethingWentWrongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomethingWentWrongView.swift; sourceTree = "<group>"; };
+		CB75A2A42D2DB33B0020EED4 /* ResourceActionsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionsSheet.swift; sourceTree = "<group>"; };
+		CB75A2A72D2DB8FA0020EED4 /* ResourceAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceAction.swift; sourceTree = "<group>"; };
 		CB7C05A12C0EAB3B001A0062 /* AuthErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrors.swift; sourceTree = "<group>"; };
 		CB7C05A32C0EB4DB001A0062 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		CB7C05AC2C0EEEA2001A0062 /* AuthorizationConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationConstants.swift; sourceTree = "<group>"; };
@@ -299,10 +303,11 @@
 				CB9A9AAC2C0BB13E0073817C /* RootView.swift */,
 				CB59BCCF2C30FA360061C99B /* RotatingSyncIcon.swift */,
 				CBB1A3C72C8E59BE00D3D658 /* ViewMoreButton.swift */,
-				CB55251C2D29B345006C4FF0 /* settings */,
 				CB70E8A32C838F9E00F9A197 /* errors */,
 				CB0B93642C770C7A003A9720 /* placeholders */,
+				CB75A2A62D2DB8B10020EED4 /* resourceActions */,
 				CB2FCBA12D004B1E0012FF0F /* searchBars */,
+				CB55251C2D29B345006C4FF0 /* settings */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -656,6 +661,15 @@
 			path = errors;
 			sourceTree = "<group>";
 		};
+		CB75A2A62D2DB8B10020EED4 /* resourceActions */ = {
+			isa = PBXGroup;
+			children = (
+				CB75A2A42D2DB33B0020EED4 /* ResourceActionsSheet.swift */,
+				CB75A2A72D2DB8FA0020EED4 /* ResourceAction.swift */,
+			);
+			path = resourceActions;
+			sourceTree = "<group>";
+		};
 		CB7C05A52C0EB8A2001A0062 /* utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -966,6 +980,7 @@
 				CBC930882D1A1C6D002C93FF /* SharedResourceMock.swift in Sources */,
 				CB3417FB2C180D3D00BE70A8 /* SpotifyAPIError.swift in Sources */,
 				CB875CAE2C31507E001B364D /* FriendActivityViewModel.swift in Sources */,
+				CB75A2A52D2DB33B0020EED4 /* ResourceActionsSheet.swift in Sources */,
 				CB9A9AE02C0C22D70073817C /* SpotifyAuth.swift in Sources */,
 				CB59BCD02C30FA360061C99B /* RotatingSyncIcon.swift in Sources */,
 				CB2FCB9A2CFEEE360012FF0F /* TrackView.swift in Sources */,
@@ -1013,6 +1028,7 @@
 				CBA995BC2D1B25FD0076E9B8 /* ReceivedResourceView.swift in Sources */,
 				CB9A9AAB2C0BB13E0073817C /* spotifriendsApp.swift in Sources */,
 				CB875CB22C33C4D6001B364D /* UserMock.swift in Sources */,
+				CB75A2A82D2DB8FA0020EED4 /* ResourceAction.swift in Sources */,
 				CB0B936A2C771285003A9720 /* PlaceholderAnimation.swift in Sources */,
 				CB7087542CAB685100FE97C7 /* AppwriteProfileService.swift in Sources */,
 				CB59BCCE2C30BA470061C99B /* ImageUtils.swift in Sources */,

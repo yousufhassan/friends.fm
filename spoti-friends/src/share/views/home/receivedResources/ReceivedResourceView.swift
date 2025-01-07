@@ -11,24 +11,28 @@ import SwiftUI
 struct ReceivedResourceView: View {
     let resource: SharedResource
     @EnvironmentObject var shareViewModel: ShareViewModel
+    @State private var showActions: Bool = false
     
     var body: some View {
         HStack {
             if (resource.getType() == .track) {
                 let track = resource.getResource() as! Track
                 TrackView(track: track) {
-                    Task {
-                        await shareViewModel.markResourceAsListened(resource)
-                    }
-                    
-                    if let url = URL(string: track.getSpotifyUri()) {
-                        UIApplication.shared.open(url)
-                    }
+                    showActions = true
                 }
             }
             
             Spacer()
             ProfileImage(profile: resource.getSender(), width: 24, height: 24)
+        }
+        .presentationDetents([.medium])
+        .sheet(isPresented: $showActions) {
+            if let spotifyResource = resource.getResource() {
+                ResourceActionsSheet(resource: spotifyResource)
+            } else {
+                // TODO: Error view
+                Text("Oops! Something went wrong...")
+            }
         }
     }
 }
