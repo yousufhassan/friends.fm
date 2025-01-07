@@ -10,6 +10,7 @@ enum MetricsEvent: String {
     
     /// An enum to track the various event properties that may be tracked with an event.
     enum Properties: String {
+        case displayName
         case viewContext
         case possibleUsers
         case receiversCount

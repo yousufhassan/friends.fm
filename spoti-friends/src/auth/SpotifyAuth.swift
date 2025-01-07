@@ -58,6 +58,7 @@ class SpotifyAuth {
                 return .granted
             }
             
+            MetricsServiceManager.shared.trackUserSignedUp(user: currentUser)
             await ProfileServiceManager.shared.storeProfilePictureLocally(profile: currentUser.spotifyProfile)
             try await UserServiceManager.shared.saveUserToDB(currentUser)
             return .granted

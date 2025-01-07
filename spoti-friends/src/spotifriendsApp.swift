@@ -21,7 +21,7 @@ struct spoti_friendsApp: App {
                         }
                         
                         try await fetchAndCacheDataOnAppLoad(signedInUser: signedInUser)
-                        MetricsServiceManager.shared.trackAppOpened()
+                        MetricsServiceManager.shared.trackAppOpened(by: signedInUser)
                     }
                 }
         }
