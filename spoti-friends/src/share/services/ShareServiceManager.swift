@@ -62,4 +62,18 @@ class ShareServiceManager {
         return try await
         self.shareService.fetchReceivedResources(receiver: receiver, limit: limit, lastResourceId: lastResourceId)
     }
+    
+    /// Marks a shared resource as listened.
+    ///
+    /// - Parameter resource: The `SharedResource` object to be marked as listened.
+    func markResourceAsListened(_ resource: SharedResource) async throws -> Void {
+        try await self.shareService.markResourceAsListened(resource)
+    }
+    
+    /// Marks a shared resource as not listened.
+    ///
+    /// - Parameter resource: The `SharedResource` object to be marked as not listened.
+    func markResourceAsNotListened(_ resource: SharedResource) async throws -> Void {
+        try await self.shareService.markResourceAsNotListened(resource)
+    }
 }

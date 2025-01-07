@@ -19,7 +19,14 @@ struct ReceivedResourcesTab: View {
             ScrollView {
                 LazyVStack {
                     ForEach(shareViewModel.receivedResources) { resource in
-                        ReceivedResourceView(resource: resource)
+                        if (resource.isListened()) {
+                            ReceivedResourceView(resource: resource)
+                                .environmentObject(shareViewModel)
+                                .opacity(0.3)
+                        } else  {
+                            ReceivedResourceView(resource: resource)
+                                .environmentObject(shareViewModel)
+                        }
                     }
                 }
             }

@@ -10,10 +10,21 @@ import SwiftUI
 ///               It determines the type of resource and displays the appropriate view based on it.
 struct ReceivedResourceView: View {
     let resource: SharedResource
+    @EnvironmentObject var shareViewModel: ShareViewModel
+    
     var body: some View {
         HStack {
             if (resource.getType() == .track) {
-                TrackView(track: resource.getResource() as! Track)
+                let track = resource.getResource() as! Track
+                TrackView(track: track) {
+                    Task {
+                        await shareViewModel.markResourceAsListened(resource)
+                    }
+                    
+                    if let url = URL(string: track.getSpotifyUri()) {
+                        UIApplication.shared.open(url)
+                    }
+                }
             }
             
             Spacer()
@@ -27,4 +38,5 @@ struct ReceivedResourceView: View {
     let receiver = SpotifyProfileMock.michaelScott
     let resource = SharedResource(resource: TrackMock.iRememberEverything, sender: sender, receiver: receiver)
     ReceivedResourceView(resource: resource)
+        .environmentObject(ShareViewModel(user: UserMock.userJimHalpert))
 }
