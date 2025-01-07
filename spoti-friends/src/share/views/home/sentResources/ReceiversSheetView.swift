@@ -22,7 +22,7 @@ struct ReceiversSheetView: View {
             // Preview of track to send
             if (resource.getType() == .track) {
                 TrackView(track: resource.getResource() as! Track) {
-                    ()
+                    () // Overriding the onTapGesture to do nothing
                 }
                 .padding(.horizontal)
             }

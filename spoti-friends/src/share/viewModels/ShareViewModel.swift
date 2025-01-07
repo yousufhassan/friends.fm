@@ -299,6 +299,49 @@ class ShareViewModel: ObservableObject {
         }
     }
     
+    /// Marks a shared resource as listened.
+    /// This function updates both the published `receivedResources` variable and the database.
+    /// - Parameter resource: The `SharedResource` object to be marked as listened.
+    @MainActor
+    public func markResourceAsListened(_ resource: SharedResource) async {
+        do {
+            if (resource.isListened()) { return } // Return early if resource is already listened
+            
+            // Update the UI
+            resource.markAsListened()
+            if let index = receivedResources.firstIndex(where: { $0.id == resource.id }) {
+                receivedResources[index] = resource
+            }
+            
+            // Update the database
+            try await ShareServiceManager.shared.markResourceAsListened(resource)
+        } catch {
+            printError("When marking the resource (id=\(resource.getIdString())) as listened.")
+        }
+    }
+    
+    /// Marks a shared resource as not listened.
+    /// This function updates both the published `receivedResources` variable and the database.
+    ///
+    /// - Parameter resource: The `SharedResource` object to be marked as not listened.
+    @MainActor
+    public func markResourceAsNotListened(_ resource: SharedResource) async {
+        do {
+            if (!resource.isListened()) { return } // Return early if resource is already not listened
+            
+            // Update the UI
+            resource.markAsNotListened()
+            if let index = receivedResources.firstIndex(where: { $0.id == resource.id }) {
+                receivedResources[index] = resource
+            }
+            
+            // Update the database
+            try await ShareServiceManager.shared.markResourceAsNotListened(resource)
+        } catch {
+            printError("When marking the resource (id=\(resource.getIdString())) as listened.")
+        }
+    }
+    
     // TODO: Complete when implementing pagination
     public func fetchNextSearchResults () {}
 }

@@ -106,4 +106,19 @@ class AppwriteShareService: ShareServiceProtocol {
         
         return receivedResources
     }
+    
+    func markResourceAsListened(_ resource: SharedResource) async throws {
+        let data = try JSONEncoder().encode(resource)
+        try await Appwrite.shared.updateDocument(collectionId: sharedResourcesCollectionId,
+                                                 documentId: resource.getIdString(),
+                                                 data: data)
+    }
+    
+    func markResourceAsNotListened(_ resource: SharedResource) async throws {
+        resource.markAsNotListened()
+        let data = try JSONEncoder().encode(resource)
+        try await Appwrite.shared.updateDocument(collectionId: sharedResourcesCollectionId,
+                                                 documentId: resource.getIdString(),
+                                                 data: data)
+    }
 }

@@ -13,7 +13,6 @@ protocol ShareServiceProtocol {
     /// - Throws: An error if fetching the resources fails, such as network or database errors.
     func share(resource: SharedResource) async throws -> Void
     
-    
     /// Fetches a list of shared resources sent by the `sender`, with support for cursor-based pagination.
     /// This function retrieves shared resources starting after the provided `lastResourceId`,
     /// and limits the number of results based on the specified `limit`.
@@ -43,4 +42,14 @@ protocol ShareServiceProtocol {
     /// - Throws: This function throws an error if the data cannot be fetched, such as a network error or invalid data response.
     func fetchReceivedResources(receiver: SpotifyProfile, limit: Int, lastResourceId: UUID?)
     async throws -> [SharedResource]
+    
+    /// Marks a shared resource as listened.
+    ///
+    /// - Parameter resource: The `SharedResource` object to be marked as listened.
+    func markResourceAsListened(_ resource: SharedResource) async throws -> Void
+    
+    /// Marks a shared resource as not listened.
+    /// 
+    /// - Parameter resource: The `SharedResource` object to be marked as not listened.
+    func markResourceAsNotListened(_ resource: SharedResource) async throws  -> Void
 }

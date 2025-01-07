@@ -46,12 +46,20 @@ class MixpanelMetricsService: MetricsServiceProtocol {
     }
     
     // -- Protocol methods --
-    public func trackUserSignedUp() {
-        self.track(event: .userSignedUp)
+    public func trackUserSignedUp(user: User) {
+        let displayName = user.spotifyProfile.getDisplayName()
+        let properties: Properties = [
+            MetricsEvent.Properties.displayName.rawValue : displayName
+        ]
+        self.track(event: .userSignedUp, properties: properties)
     }
     
-    public func trackAppOpened() {
-        self.track(event: .appOpened)
+    public func trackAppOpened(by user: User) {
+        let displayName = user.spotifyProfile.getDisplayName()
+        let properties: Properties = [
+            MetricsEvent.Properties.displayName.rawValue : displayName
+        ]
+        self.track(event: .appOpened, properties: properties)
     }
     
     public func trackInvitedUser(viewContext: ViewContext, users: [SpotifyProfile]? = nil) {

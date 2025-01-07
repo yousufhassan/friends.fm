@@ -1,6 +1,21 @@
 import Foundation
 
-// TODO: Add docs. Include brief explanation on why resource is stored as a String.
+/// A representation of a resource shared between Spotify users.
+///
+/// The `SharedResource` class encapsulates information about a Spotify resource (track, artist, or album)
+/// shared between a sender and a receiver. It includes details such as the resource's type, IDs,
+/// sender and receiver profiles, timestamp of sharing, and whether the resource has been marked as listened.
+///
+/// ### Properties:
+/// - `id`: A unique identifier for the shared resource.
+/// - `resource`: The shared `SpotifyResource` object (optional, initialized later when fetched from Spotify).
+/// - `resourceId`: The Spotify ID of the resource.
+/// - `type`: The type of resource (e.g., track, artist, album).
+/// - `sender`: The Spotify profile of the sender.
+/// - `receiver`: The Spotify profile of the receiver.
+/// - `sharedTs`: The timestamp when the resource was shared.
+/// - `listened`: A flag indicating whether the resource has been listened to.
+/// 
 class SharedResource: Codable, Identifiable, Equatable {
     let id: UUID
     private var resource: SpotifyResource?
@@ -9,6 +24,7 @@ class SharedResource: Codable, Identifiable, Equatable {
     private let sender: SpotifyProfile
     private let receiver: SpotifyProfile
     private let sharedTs: TimeInterval
+    private var listened: Bool
     
     /// Implement Equatable protocol
     static func == (lhs: SharedResource, rhs: SharedResource) -> Bool {
@@ -23,6 +39,7 @@ class SharedResource: Codable, Identifiable, Equatable {
         case sender
         case receiver
         case sharedTs
+        case listened
     }
     
     /// Regular initializer for creating the object directly.
@@ -34,6 +51,7 @@ class SharedResource: Codable, Identifiable, Equatable {
         self.sender = sender
         self.receiver = receiver
         self.sharedTs = sharedTs // Defaults to current timestamp
+        self.listened = false
     }
     
     /// Custom initializer for decoding from Appwrite.
@@ -55,6 +73,7 @@ class SharedResource: Codable, Identifiable, Equatable {
         /// Converting from `Integer` to `TimeInterval` since Appwrite only supports the former.
         let sharedTsInt = try container.decode(Int.self, forKey: .sharedTs)
         self.sharedTs = TimeInterval(sharedTsInt)
+        self.listened = try container.decode(Bool.self, forKey: .listened)
     }
     
     /// Custom encode method for Appwrite
@@ -66,6 +85,7 @@ class SharedResource: Codable, Identifiable, Equatable {
         try container.encode(sender, forKey: .sender)
         try container.encode(receiver, forKey: .receiver)
         try container.encode(Int(sharedTs), forKey: .sharedTs)
+        try container.encode(listened, forKey: .listened)
     }
     
     /// Returns the type of the given resource.
@@ -80,7 +100,7 @@ class SharedResource: Codable, Identifiable, Equatable {
         }
     }
     
-    // Getters (no setters since those attributes should be immutable once initialized)
+    // Getters and setters
     public func getId() -> UUID {
         return self.id
     }
@@ -118,6 +138,18 @@ class SharedResource: Codable, Identifiable, Equatable {
     
     public func getSharedTs() -> TimeInterval {
         return self.sharedTs
+    }
+    
+    public func isListened() -> Bool {
+        return self.listened
+    }
+    
+    public func markAsListened() {
+        self.listened = true
+    }
+    
+    public func markAsNotListened() {
+        self.listened = false
     }
     
 }
