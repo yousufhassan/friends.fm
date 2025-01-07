@@ -1,26 +1,17 @@
-//
-//  ResourceAction.swift
-//  spoti-friends
-//
-//  Created by Yousuf Hassan on 2025-01-07.
-//
-
 import SwiftUI
 
 struct ResourceAction: View {
-    let icon: Image
-    let label: String
-    let action: () -> Void
+    let action: ResourceActionType
     
     var body: some View {
-        Button(action: { action() }) {
+        Button(action: action.action) {
             HStack {
-                icon
+                action.icon
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 18, height: 18)
                 
-                Text(label)
+                Text(action.label)
                     .foregroundStyle(Color.PresetColour.whitePrimary)
                 
                 Spacer()
@@ -34,12 +25,9 @@ struct ResourceAction: View {
 }
 
 #Preview {
-    let icon = Image(.spotifyIconGreen)
-    let label = "Open in Spotify"
+    let resource = TrackMock.traitor
     
-    ResourceAction(icon: icon, label: label, action: {
-        printInfo("Opening in Spotify")
-    })
+    ResourceAction(action: .openInSpotify(resource: resource))
 }
 
 struct ResourceActionButtonStyle: ButtonStyle {

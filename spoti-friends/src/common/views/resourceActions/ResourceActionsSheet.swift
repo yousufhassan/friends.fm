@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ResourceActionsSheet: View {
     let resource: SpotifyResource
+    let actions: [ResourceActionType]
     
     var body: some View {
         VStack {
@@ -18,13 +19,9 @@ struct ResourceActionsSheet: View {
             
             // Actions
             VStack {
-                ResourceAction(icon: Image(.spotifyIconGreen),
-                               label: "Open in Spotify",
-                               action: {
-                    if let url = URL(string: resource.getSpotifyUri()) {
-                        UIApplication.shared.open(url)
-                    }
-                })
+                ForEach(actions, id: \.label) { action in
+                    ResourceAction(action: action)
+                }
             }
             
             Spacer()
@@ -38,11 +35,12 @@ struct ResourceActionsSheet: View {
 #Preview {
     @Previewable @State var showSheet = true
     let resource = TrackMock.iRememberEverything
+    let actions: [ResourceActionType] = [.openInSpotify(resource: resource)]
     
     Button("Open sheet") {
         showSheet = true
     }
     .sheet(isPresented: $showSheet) {
-        ResourceActionsSheet(resource: resource)
+        ResourceActionsSheet(resource: resource, actions: actions)
     }
 }

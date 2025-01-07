@@ -28,7 +28,8 @@ struct ReceivedResourceView: View {
         .presentationDetents([.medium])
         .sheet(isPresented: $showActions) {
             if let spotifyResource = resource.getResource() {
-                ResourceActionsSheet(resource: spotifyResource)
+                ResourceActionsSheet(resource: spotifyResource,
+                                     actions: ResourceActionType.receivedResourceActions)
             } else {
                 // TODO: Error view
                 Text("Oops! Something went wrong...")
