@@ -11,7 +11,7 @@ import SwiftUI
 ///
 enum ResourceActionType {
     case openInSpotify(resource: SpotifyResource)
-    case addToQueue(resource: SpotifyResource, user: User)
+    case addToQueue(resource: SpotifyResource, user: User, onError: (AddToQueueError) -> Void)
     
     var icon: Image {
         switch self {
@@ -39,29 +39,41 @@ enum ResourceActionType {
                     UIApplication.shared.open(url)
                 }
             }
-        case .addToQueue(let resource, let user):
+        case .addToQueue(let resource, let user, let onError):
             return {
                 let queryParams = [
                     URLQueryItem(name: "uri", value: resource.getSpotifyUri())
                 ]
                 let accessToken = user.getSpotifyWebAccessToken()
                 Task {
-                    try await SpotifyAPI.shared.fetch(method: .POST,
-                                                      endpoint: .addItemToQueue,
-                                                      responseType: String.self,
-                                                      accessToken: accessToken.getAccessToken(),
-                                                      queryParams: queryParams
-                    )
+                    do {
+                        let response = try await SpotifyAPI.shared.fetch(method: .POST,
+                                                                         endpoint: .addItemToQueue,
+                                                                         responseType: String.self,
+                                                                         accessToken: accessToken.getAccessToken(),
+                                                                         queryParams: queryParams)
+                    } catch let error as SpotifyAPIError {
+                        switch error {
+                        case .forbidden:
+                            onError(.premiumRequired)
+                        case .notFound:
+                            onError(.noActiveDevice)
+                        default:
+                            onError(.unknown)
+                        }
+                    }
                 }
             }
         }
     }
     
     // Preset action arrays for different contexts
-    static func receivedResourceActions(resource: SpotifyResource, user: User) -> [ResourceActionType] {
+    static func receivedResourceActions(resource: SpotifyResource,
+                                        user: User,
+                                        onError: @escaping (AddToQueueError) -> Void) -> [ResourceActionType] {
         return [
             .openInSpotify(resource: resource),
-            .addToQueue(resource: resource, user: user)
+            .addToQueue(resource: resource, user: user, onError: onError)
         ]
     }
 }

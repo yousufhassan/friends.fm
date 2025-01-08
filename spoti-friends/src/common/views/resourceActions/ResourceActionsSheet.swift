@@ -7,13 +7,11 @@ struct ResourceActionsSheet: View {
     var body: some View {
         VStack {
             // Preview of resource
-            if (resource is Track) {
-                TrackView(track: resource as! Track) {
-                    () // Overriding the onTapGesture to do nothing
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 8)
+            SpotifyResourceView(resource: resource) {
+                () // Overriding the onTapGesture to do nothing
             }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
             
             Divider()
             
@@ -35,7 +33,9 @@ struct ResourceActionsSheet: View {
 #Preview {
     @Previewable @State var showSheet = true
     let resource = TrackMock.iRememberEverything
-    let actions: [ResourceActionType] = ResourceActionType.receivedResourceActions(resource: resource, user: UserMock.userJimHalpert)
+    let actions: [ResourceActionType] = ResourceActionType.receivedResourceActions(resource: resource, user: UserMock.userJimHalpert) { _ in
+        showSheet = false
+    }
     
     Button("Open sheet") {
         showSheet = true

@@ -16,9 +16,7 @@ struct SentResourceView: View {
     
     var body: some View {
         HStack {
-            if (resource.getType() == .track) {
-                TrackView(track: resource.getResource() as! Track)
-            }
+            SpotifyResourceView(resource: resource.getResource())
             
             Spacer()
             ZStack {

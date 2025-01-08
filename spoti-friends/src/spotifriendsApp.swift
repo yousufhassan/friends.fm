@@ -26,9 +26,7 @@ struct spoti_friendsApp: App {
                         }
                     }
                 
-                // Render a modal that says the user needs to reauthenticate, and then provide a log out button.
-                // Don't worry about the log out logic, just provide me the button UI.
-                // Also, this modal should not be dismissable, and the background view should not be tappable.
+                // Conditionally render a modal that says the user needs to reauthenticate
                 if (authorizationViewModel.isReauthenticationRequired) {
                     Color.black.opacity(0.6)
                         .ignoresSafeArea()
