@@ -9,7 +9,8 @@ struct ResourceAction: View {
                 action.icon
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 18, height: 18)
+                    .frame(width: 24, height: 24)
+                    .padding(.trailing, 4)
                 
                 Text(action.label)
                     .foregroundStyle(Color.PresetColour.whitePrimary)
@@ -18,7 +19,8 @@ struct ResourceAction: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
-            .padding()
+            .padding(.horizontal)
+            .padding(.vertical, 12)
         }
         .buttonStyle(ResourceActionButtonStyle())
     }

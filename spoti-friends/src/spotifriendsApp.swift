@@ -6,24 +6,36 @@ struct spoti_friendsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environmentObject(authorizationViewModel)
-                .onAppear {
-                    Task {
-                        await authorizationViewModel.fetchAndUpdateUser()
-                        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                            print("App Version: \(appVersion)")
-                            storeInUserDefaults(key: "appVersion", value: appVersion)
+            ZStack {
+                RootView()
+                    .environmentObject(authorizationViewModel)
+                    .onAppear {
+                        Task {
+                            await authorizationViewModel.fetchAndUpdateUser()
+                            guard let signedInUser = authorizationViewModel.user else {
+                                throw AuthorizationError.missingUser
+                            }
+                            MetricsServiceManager.shared.trackAppOpened(by: signedInUser)
+                            
+                            if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                                print("App Version: \(appVersion)")
+                                storeInUserDefaults(key: "appVersion", value: appVersion)
+                            }
+                            
+                            try await fetchAndCacheDataOnAppLoad(signedInUser: signedInUser)
                         }
-                        
-                        guard let signedInUser = authorizationViewModel.user else {
-                            throw AuthorizationError.missingUser
-                        }
-                        
-                        try await fetchAndCacheDataOnAppLoad(signedInUser: signedInUser)
-                        MetricsServiceManager.shared.trackAppOpened(by: signedInUser)
                     }
+                
+                // Render a modal that says the user needs to reauthenticate, and then provide a log out button.
+                // Don't worry about the log out logic, just provide me the button UI.
+                // Also, this modal should not be dismissable, and the background view should not be tappable.
+                if (authorizationViewModel.isReauthenticationRequired) {
+                    Color.black.opacity(0.6)
+                        .ignoresSafeArea()
+                    ReauthenticationRequiredModal()
+                        .environmentObject(authorizationViewModel)
                 }
+            }
         }
     }
 }

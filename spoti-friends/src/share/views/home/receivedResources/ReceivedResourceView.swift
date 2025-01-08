@@ -27,9 +27,10 @@ struct ReceivedResourceView: View {
         }
         .presentationDetents([.medium])
         .sheet(isPresented: $showActions) {
-            if let spotifyResource = resource.getResource() {
+            if let spotifyResource = resource.getResource(),
+               let signedInUser = shareViewModel.user {
                 ResourceActionsSheet(resource: spotifyResource,
-                                     actions: ResourceActionType.receivedResourceActions)
+                                     actions: ResourceActionType.receivedResourceActions(resource: spotifyResource, user: signedInUser))
             } else {
                 // TODO: Error view
                 Text("Oops! Something went wrong...")

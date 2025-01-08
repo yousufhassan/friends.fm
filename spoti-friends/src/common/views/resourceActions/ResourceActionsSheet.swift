@@ -35,7 +35,7 @@ struct ResourceActionsSheet: View {
 #Preview {
     @Previewable @State var showSheet = true
     let resource = TrackMock.iRememberEverything
-    let actions: [ResourceActionType] = [.openInSpotify(resource: resource)]
+    let actions: [ResourceActionType] = ResourceActionType.receivedResourceActions(resource: resource, user: UserMock.userJimHalpert)
     
     Button("Open sheet") {
         showSheet = true

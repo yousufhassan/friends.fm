@@ -11,11 +11,14 @@ import SwiftUI
 ///
 enum ResourceActionType {
     case openInSpotify(resource: SpotifyResource)
+    case addToQueue(resource: SpotifyResource, user: User)
     
     var icon: Image {
         switch self {
         case .openInSpotify:
             return Image(.spotifyIconGreen)
+        case .addToQueue:
+            return Image(systemName: "plus.circle")
         }
     }
     
@@ -23,6 +26,8 @@ enum ResourceActionType {
         switch self {
         case .openInSpotify:
             return "Open in Spotify"
+        case .addToQueue:
+            return "Add to queue"
         }
     }
     
@@ -34,13 +39,29 @@ enum ResourceActionType {
                     UIApplication.shared.open(url)
                 }
             }
+        case .addToQueue(let resource, let user):
+            return {
+                let queryParams = [
+                    URLQueryItem(name: "uri", value: resource.getSpotifyUri())
+                ]
+                let accessToken = user.getSpotifyWebAccessToken()
+                Task {
+                    try await SpotifyAPI.shared.fetch(method: .POST,
+                                                      endpoint: .addItemToQueue,
+                                                      responseType: String.self,
+                                                      accessToken: accessToken.getAccessToken(),
+                                                      queryParams: queryParams
+                    )
+                }
+            }
         }
     }
     
     // Preset action arrays for different contexts
-    static var receivedResourceActions: [ResourceActionType] {
+    static func receivedResourceActions(resource: SpotifyResource, user: User) -> [ResourceActionType] {
         return [
-            .openInSpotify(resource: TrackMock.traitor)
+            .openInSpotify(resource: resource),
+            .addToQueue(resource: resource, user: user)
         ]
     }
 }

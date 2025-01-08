@@ -55,6 +55,7 @@ class SpotifyAuth {
             guard let currentUser = user else { throw AuthorizationError.missingUser }
             storeSignedInUser(currentUser)
             if (await UserServiceManager.shared.userExists(withSpotifyId: currentUser.spotifyId)) {
+                try await UserServiceManager.shared.updateUserInDB(currentUser)
                 return .granted
             }
             
