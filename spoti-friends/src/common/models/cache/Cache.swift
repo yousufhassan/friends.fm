@@ -16,19 +16,8 @@ class Cache {
     private init() {}
     
     // Cached items
-    private let signedInUser = NSCache<NSString, User>()
-    private let signedInUserKey: NSString = "signedInUser"
-    
     private let receivedResources = NSCache<NSString, NSArray>()
     private let sentResources = NSCache<NSString, NSArray>()
-    
-    func cacheUser(_ user: User) {
-        signedInUser.setObject(user, forKey: signedInUserKey)
-    }
-    
-    func getSignedInUser() -> User? {
-        return self.signedInUser.object(forKey: signedInUserKey)
-    }
     
     /// Caches an array of received `SharedResource` objects.
     func cacheReceivedResources(_ resources: [SharedResource], spotifyId key: String) {

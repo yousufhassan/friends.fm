@@ -49,8 +49,8 @@ struct spoti_friendsApp: App {
 /// - Throws: An error if fetching the received or sent resources from `ShareServiceManager` fails.
 ///
 func fetchAndCacheDataOnAppLoad(signedInUser: User) async throws {
-    Cache.shared.cacheUser(signedInUser)
-    printInfo("Cached signed in user")
+    PersistedStorage.shared.persistUser(signedInUser)
+    printInfo("Persisted signed in user")
     
     let userProfile = signedInUser.spotifyProfile
     let receivedResources = try await ShareServiceManager.shared.fetchReceivedResources(receiver: userProfile)

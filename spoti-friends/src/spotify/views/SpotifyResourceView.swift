@@ -1,26 +1,16 @@
-//
-//  SpotifyResourceView.swift
-//  spoti-friends
-//
-//  Created by Yousuf Hassan on 2025-01-08.
-//
-
 import SwiftUI
 
+// TODO: Add docs
 struct SpotifyResourceView: View {
     let resource: SpotifyResource?
     var onTap: (() -> Void)?
+    @State private var showSheet: Bool = false
+    @State private var activeSheet: ActiveSheet = .actions
     
     init(resource: SpotifyResource?, onTap: (() -> Void)? = nil) {
         if let resource = resource {
             self.resource = resource
-            
-            // Default behavior: open the track's Spotify URI
-            self.onTap = onTap ?? {
-                if let url = URL(string: resource.getSpotifyUri()) {
-                    UIApplication.shared.open(url)
-                }
-            }
+            self.onTap = onTap
         }
         else {
             self.resource = nil
@@ -33,7 +23,13 @@ struct SpotifyResourceView: View {
             TrackOrArtistViewPlaceholder()
         } else {
             Button(action: {
-                onTap?()
+                if (onTap == nil) {
+                    // Defaults to opening the action sheet
+                    self.showSheet = true
+                    self.activeSheet = .actions
+                } else {
+                    onTap?()
+                }
             }) {
                 if (resource is Track) {
                     let track = resource as! Track
@@ -41,6 +37,9 @@ struct SpotifyResourceView: View {
                 }
             }
             .buttonStyle(.plain)
+            .sheet(isPresented: $showSheet) {
+                ResourceActionsOrErrorSheet(resource: resource, sheet: activeSheet)
+            }
         }
     }
 }
