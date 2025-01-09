@@ -11,6 +11,7 @@ struct ResourceAction: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24, height: 24)
                     .padding(.trailing, 4)
+                    .foregroundStyle(Color.PresetColour.gray)
                 
                 Text(action.label)
                     .foregroundStyle(Color.PresetColour.whitePrimary)
@@ -30,7 +31,7 @@ struct ResourceAction: View {
     @Previewable @State var showSheet = true
     let resource = TrackMock.traitor
     
-    ResourceAction(action: .openInSpotify(showSheet: $showSheet, resource: resource))
+    ResourceAction(action: .goToAlbum(showSheet: $showSheet, track: resource))
 }
 
 struct ResourceActionButtonStyle: ButtonStyle {

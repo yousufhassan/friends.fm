@@ -12,7 +12,8 @@ import SwiftUI
 enum ResourceActionType {
     case openInSpotify(showSheet: Binding<Bool>, resource: SpotifyResource)
     case addToQueue(showSheet: Binding<Bool>, resource: SpotifyResource, user: User, onError: (AddToQueueError) -> Void)
-    case goToAlbum(showSheet: Binding<Bool>, resource: Track)
+    case goToAlbum(showSheet: Binding<Bool>, track: Track)
+    case goToArtist(showSheet: Binding<Bool>, track: Track)
     
     var icon: Image {
         switch self {
@@ -22,7 +23,10 @@ enum ResourceActionType {
             return Image(systemName: "plus.circle")
         case .goToAlbum:
             return Image(systemName: "smallcircle.circle")
+        case .goToArtist:
+            return Image(.artistMusicNote)
         }
+        
     }
     
     var label: String {
@@ -33,6 +37,8 @@ enum ResourceActionType {
             return "Add to queue"
         case .goToAlbum:
             return "Go to album"
+        case .goToArtist:
+            return "Go to artist"
         }
     }
     
@@ -79,6 +85,14 @@ enum ResourceActionType {
                     UIApplication.shared.open(url)
                 }
             }
+        case .goToArtist(let showSheet, let track):
+            return {
+                self.closeActionsSheet(showSheet: showSheet)
+                // Note: Only linked to the main artist for now
+                if let url = URL(string: track.artists[0].getSpotifyUri()) {
+                    UIApplication.shared.open(url)
+                }
+            }
         }
     }
     
@@ -102,7 +116,8 @@ enum ResourceActionType {
         
         if (resource is Track) {
             let track = resource as! Track
-            actions.append(.goToAlbum(showSheet: showSheet, resource: track))
+            actions.append(.goToAlbum(showSheet: showSheet, track: track))
+            actions.append(.goToArtist(showSheet: showSheet, track: track))
         }
         
         return actions
