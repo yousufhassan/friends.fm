@@ -38,22 +38,32 @@ enum ResourceActionType {
         }
     }
     
+    enum Label : String {
+        case openInSpotify = "Open in Spotify"
+        case addToQueue = "Add to queue"
+        case goToAlbum = "Go to album"
+        case goToArtist = "Go to artist"
+        case markAsListened = "Mark as listened"
+        case markAsNotListened = "Mark as not listened"
+        case unsend = "Unsend"
+    }
+    
     var label: String {
         switch self {
         case .openInSpotify:
-            return "Open in Spotify"
+            return Label.openInSpotify.rawValue
         case .addToQueue:
-            return "Add to queue"
+            return Label.addToQueue.rawValue
         case .goToAlbum:
-            return "Go to album"
+            return Label.goToAlbum.rawValue
         case .goToArtist:
-            return "Go to artist"
+            return Label.goToArtist.rawValue
         case .markAsListened:
-            return "Mark as listened"
+            return Label.markAsListened.rawValue
         case .markAsNotListened:
-            return "Mark as not listened"
+            return Label.markAsNotListened.rawValue
         case .unsend:
-            return "Unsend"
+            return Label.unsend.rawValue
         }
     }
     

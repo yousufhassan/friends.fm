@@ -2,8 +2,17 @@ import SwiftUI
 
 struct ResourceAction: View {
     let action: ResourceActionType
+    var actionColor: Color?
+    
+    init(action: ResourceActionType) {
+        self.action = action
+        if (action.label == ResourceActionType.Label.unsend.rawValue) {
+            self.actionColor = Color.PresetColour.red
+        }
+    }
     
     var body: some View {
+        
         Button(action: action.action) {
             HStack {
                 action.icon
@@ -11,10 +20,10 @@ struct ResourceAction: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24, height: 24)
                     .padding(.trailing, 4)
-                    .foregroundStyle(Color.PresetColour.gray)
+                    .foregroundStyle(actionColor ?? Color.PresetColour.gray)
                 
                 Text(action.label)
-                    .foregroundStyle(Color.PresetColour.whitePrimary)
+                    .foregroundStyle(actionColor ?? Color.PresetColour.whitePrimary)
                 
                 Spacer()
             }
