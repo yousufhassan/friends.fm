@@ -15,6 +15,7 @@ enum ResourceActionType {
     case goToAlbum(showSheet: Binding<Bool>, track: Track)
     case goToArtist(showSheet: Binding<Bool>, track: Track)
     case markAsListened(showSheet: Binding<Bool>, sharedResource: SharedResource, shareViewModel: ShareViewModel)
+    case markAsNotListened(showSheet: Binding<Bool>, sharedResource: SharedResource, shareViewModel: ShareViewModel)
     
     var icon: Image {
         switch self {
@@ -28,8 +29,9 @@ enum ResourceActionType {
             return Image(.artistMusicNote)
         case .markAsListened:
             return Image(systemName: "checkmark.circle")
+        case .markAsNotListened:
+            return Image(systemName: "gobackward.minus")
         }
-        
     }
     
     var label: String {
@@ -44,6 +46,8 @@ enum ResourceActionType {
             return "Go to artist"
         case .markAsListened:
             return "Mark as listened"
+        case .markAsNotListened:
+            return "Mark as not listened"
         }
     }
     
@@ -105,6 +109,13 @@ enum ResourceActionType {
                     self.closeActionsSheet(showSheet: showSheet)
                 }
             }
+        case .markAsNotListened(let showSheet, let sharedResource, let shareViewModel):
+            return {
+                Task {
+                    await shareViewModel.markResourceAsNotListened(sharedResource)
+                    self.closeActionsSheet(showSheet: showSheet)
+                }
+            }
         }
     }
     
@@ -147,7 +158,9 @@ enum ResourceActionType {
         }
         
         // Append to the end of the list
-        actions.append(.markAsListened(showSheet: showSheet, sharedResource: sharedResource, shareViewModel: shareViewModel))
+        sharedResource.isListened()
+        ? actions.append(.markAsNotListened(showSheet: showSheet, sharedResource: sharedResource, shareViewModel: shareViewModel))
+        : actions.append(.markAsListened(showSheet: showSheet, sharedResource: sharedResource, shareViewModel: shareViewModel))
         
         return actions
     }
