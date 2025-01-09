@@ -12,6 +12,7 @@ import SwiftUI
 enum ResourceActionType {
     case openInSpotify(showSheet: Binding<Bool>, resource: SpotifyResource)
     case addToQueue(showSheet: Binding<Bool>, resource: SpotifyResource, user: User, onError: (AddToQueueError) -> Void)
+    case goToAlbum(showSheet: Binding<Bool>, resource: Track)
     
     var icon: Image {
         switch self {
@@ -19,6 +20,8 @@ enum ResourceActionType {
             return Image(.spotifyIconGreen)
         case .addToQueue:
             return Image(systemName: "plus.circle")
+        case .goToAlbum:
+            return Image(systemName: "smallcircle.circle")
         }
     }
     
@@ -28,6 +31,8 @@ enum ResourceActionType {
             return "Open in Spotify"
         case .addToQueue:
             return "Add to queue"
+        case .goToAlbum:
+            return "Go to album"
         }
     }
     
@@ -67,6 +72,13 @@ enum ResourceActionType {
                     }
                 }
             }
+        case .goToAlbum(let showSheet, let track):
+            return {
+                self.closeActionsSheet(showSheet: showSheet)
+                if let url = URL(string: track.album.getSpotifyUri()) {
+                    UIApplication.shared.open(url)
+                }
+            }
         }
     }
     
@@ -78,15 +90,21 @@ enum ResourceActionType {
     }
     
     // Preset action arrays for different contexts
-    
     /// The set of actions available for a received resource.
     static func receivedResourceActions(showSheet: Binding<Bool>,
                                         resource: SpotifyResource,
                                         user: User,
                                         onError: @escaping (AddToQueueError) -> Void) -> [ResourceActionType] {
-        return [
+        var actions: [ResourceActionType] = [
             .openInSpotify(showSheet: showSheet, resource: resource),
             .addToQueue(showSheet: showSheet, resource: resource, user: user, onError: onError)
         ]
+        
+        if (resource is Track) {
+            let track = resource as! Track
+            actions.append(.goToAlbum(showSheet: showSheet, resource: track))
+        }
+        
+        return actions
     }
 }
