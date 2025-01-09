@@ -76,4 +76,11 @@ class ShareServiceManager {
     func markResourceAsNotListened(_ resource: SharedResource) async throws -> Void {
         try await self.shareService.markResourceAsNotListened(resource)
     }
+    
+    /// Deletes a shared resource, effectively unsending it.
+    ///
+    /// - Parameter resource: The `SharedResource` object to unsend.
+    func unsendResource(_ resource: SharedResource) async throws -> Void {
+        try await self.shareService.unsendResource(resource)
+    }
 }

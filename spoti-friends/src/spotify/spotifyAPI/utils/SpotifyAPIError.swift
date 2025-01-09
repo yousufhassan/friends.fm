@@ -4,6 +4,7 @@ import Foundation
 enum SpotifyAPIError: Error {
     case unauthorized
     case forbidden
+    case notFound
     case unknown
 }
 
@@ -22,6 +23,10 @@ internal func throwSpotifyAPIError(_ response: HTTPURLResponse) throws -> Spotif
     else if (response.statusCode == 403) {
         printError("Forbidden - The server understood the request, but is refusing to fulfill it.")
         throw SpotifyAPIError.forbidden
+    }
+    else if (response.statusCode == 404) {
+        printError("Not Found - The requested resource could not be found. This error can be due to a temporary or permanent condition.")
+        throw SpotifyAPIError.notFound
     }
     else {
         printError("Unknown Spotify API Error.")

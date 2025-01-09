@@ -8,6 +8,7 @@ class AuthorizationViewModel: ObservableObject {
     @Published var spDcCookie: SpDcCookie?
     @Published var authorizationStatus: AuthorizationStatus = .unauthenticated
     @Published var isFetchingUser = true
+    @Published var isReauthenticationRequired = false
     
     init() {}
     
@@ -39,6 +40,7 @@ class AuthorizationViewModel: ObservableObject {
             self.user = existingUser
             self.authorizationStatus = existingUser.getAuthorizationStatus()
             self.isFetchingUser = false
+            self.isReauthenticationRequired = self.isReauthenticationRequired(for: existingUser)
         } catch {
             self.user = nil
             self.authorizationStatus = .error
@@ -48,6 +50,7 @@ class AuthorizationViewModel: ObservableObject {
     
     
     /// Signs out the currently signed in user.
+    @MainActor
     public func signOutUser() -> Void {
         // Clear cookies of Spotify sign in WebKit View (so it forgets previous user's)
         let dataStore = WKWebsiteDataStore.default()
@@ -60,7 +63,22 @@ class AuthorizationViewModel: ObservableObject {
         storeInUserDefaults(key: "signedInUserId", value: "")
         storeInUserDefaults(key: "code_verifier", value: "")
         self.user = nil
+        self.isReauthenticationRequired = false
         self.authorizationStatus = .unauthenticated
+    }
+    
+    /// Returns a boolean denoting whether or not the user needs to reauthenticate.
+    ///
+    /// - Parameter user: The user that may need to reauthenticate.
+    ///
+    /// This is required when the user needs to accept new Spotify app scopes.
+    private func isReauthenticationRequired(for user: User?) -> Bool {
+        guard let signedInUser = user else { return false }
+        
+        let appScopesString = AuthorizationConstants.AuthorizationRequest.scopes
+        let appScopes: [String] = appScopesString.split(separator: " ").map { String($0) }
+        let userScopes: [String] = signedInUser.getSpotifyWebAccessToken().getScopesArray()
+        return !Set(appScopes).isSubset(of: Set(userScopes))
     }
     
     /// Returns the Spotify user authorization URL.
@@ -69,6 +87,7 @@ class AuthorizationViewModel: ObservableObject {
     }
     
     /// Handler for when the user has completed the Spotify authorization process and is redirected back to the app.
+    @MainActor
     public func handleRedirectBackToApp(_ responseUrl: URL) async -> Void {
         Task {
             self.authorizationStatus = await SpotifyAuth.shared
@@ -82,6 +101,7 @@ class AuthorizationViewModel: ObservableObject {
     ///
     /// - Parameter cookie: An optional `HTTPCookie` that contains the `sp_dc` value.
     /// - Throws: `AuthorizationError.cannotConvertSpDcCookie` if the conversion fails.
+    @MainActor
     public func handleFetchedSpDcCookie(_ cookie: HTTPCookie?) -> Void {
         do {
             let spDcCookie = try convertToSpDcCookie(cookie)

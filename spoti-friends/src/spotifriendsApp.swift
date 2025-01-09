@@ -6,24 +6,34 @@ struct spoti_friendsApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environmentObject(authorizationViewModel)
-                .onAppear {
-                    Task {
-                        await authorizationViewModel.fetchAndUpdateUser()
-                        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                            print("App Version: \(appVersion)")
-                            storeInUserDefaults(key: "appVersion", value: appVersion)
+            ZStack {
+                RootView()
+                    .environmentObject(authorizationViewModel)
+                    .onAppear {
+                        Task {
+                            await authorizationViewModel.fetchAndUpdateUser()
+                            guard let signedInUser = authorizationViewModel.user else {
+                                throw AuthorizationError.missingUser
+                            }
+                            MetricsServiceManager.shared.trackAppOpened(by: signedInUser)
+                            
+                            if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                                print("App Version: \(appVersion)")
+                                storeInUserDefaults(key: "appVersion", value: appVersion)
+                            }
+                            
+                            try await fetchAndCacheDataOnAppLoad(signedInUser: signedInUser)
                         }
-                        
-                        guard let signedInUser = authorizationViewModel.user else {
-                            throw AuthorizationError.missingUser
-                        }
-                        
-                        try await fetchAndCacheDataOnAppLoad(signedInUser: signedInUser)
-                        MetricsServiceManager.shared.trackAppOpened(by: signedInUser)
                     }
+                
+                // Conditionally render a modal that says the user needs to reauthenticate
+                if (authorizationViewModel.isReauthenticationRequired) {
+                    Color.black.opacity(0.6)
+                        .ignoresSafeArea()
+                    ReauthenticationRequiredModal()
+                        .environmentObject(authorizationViewModel)
                 }
+            }
         }
     }
 }
@@ -39,8 +49,8 @@ struct spoti_friendsApp: App {
 /// - Throws: An error if fetching the received or sent resources from `ShareServiceManager` fails.
 ///
 func fetchAndCacheDataOnAppLoad(signedInUser: User) async throws {
-    Cache.shared.cacheUser(signedInUser)
-    printInfo("Cached signed in user")
+    PersistedStorage.shared.persistUser(signedInUser)
+    printInfo("Persisted signed in user")
     
     let userProfile = signedInUser.spotifyProfile
     let receivedResources = try await ShareServiceManager.shared.fetchReceivedResources(receiver: userProfile)

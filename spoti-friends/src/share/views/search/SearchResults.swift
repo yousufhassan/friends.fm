@@ -23,7 +23,7 @@ struct SearchResults: View {
             if let searchResults {
                 LazyVStack {
                     ForEach(searchResults, id: \.id) { track in
-                        TrackView(track: track) {
+                        SpotifyResourceView(resource: track) {
                             selectedTrack = track
                         }
                     }

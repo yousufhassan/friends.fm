@@ -47,8 +47,8 @@ struct SendToFriendsSheet: View {
                 .bold()
             
             // Preview of track to send
-            TrackView(track: track) {
-                () // Overriding the on-tap gesture to do nothing.
+            SpotifyResourceView(resource: track) {
+                ()
             }
             .padding(.horizontal)
             Divider()

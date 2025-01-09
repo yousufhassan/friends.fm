@@ -14,18 +14,7 @@ struct ReceivedResourceView: View {
     
     var body: some View {
         HStack {
-            if (resource.getType() == .track) {
-                let track = resource.getResource() as! Track
-                TrackView(track: track) {
-                    Task {
-                        await shareViewModel.markResourceAsListened(resource)
-                    }
-                    
-                    if let url = URL(string: track.getSpotifyUri()) {
-                        UIApplication.shared.open(url)
-                    }
-                }
-            }
+            SpotifyResourceView(resource: resource.getResource(), sharedResource: resource, shareViewModel: shareViewModel)
             
             Spacer()
             ProfileImage(profile: resource.getSender(), width: 24, height: 24)
@@ -34,6 +23,8 @@ struct ReceivedResourceView: View {
 }
 
 #Preview {
+    let _ = PersistedStorage.shared.persistUser(UserMock.userJimHalpert)
+    
     let sender = SpotifyProfileMock.jimHalpert
     let receiver = SpotifyProfileMock.michaelScott
     let resource = SharedResource(resource: TrackMock.iRememberEverything, sender: sender, receiver: receiver)

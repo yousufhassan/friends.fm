@@ -35,7 +35,7 @@ class AppwriteShareService: ShareServiceProtocol {
         
         // Convert each document to a SharedResource and return as an array
         let signedInUser: User
-        if let cachedUser = Cache.shared.getSignedInUser() {
+        if let cachedUser = PersistedStorage.shared.getSignedInUser() {
             signedInUser = cachedUser
         } else {
             signedInUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: sender.getSpotifyId())
@@ -53,7 +53,7 @@ class AppwriteShareService: ShareServiceProtocol {
                                                              responseType: Track.self,
                                                              accessToken: accessToken.getAccessToken(),
                                                              pathParams: pathParams)
-            sharedResource.setResource(resource: resource)
+            sharedResource.setResource(resource: resource.data)
             sentResources.append(sharedResource)
         }
         
@@ -82,7 +82,7 @@ class AppwriteShareService: ShareServiceProtocol {
         
         // Convert each document to a SharedResource and return as an array
         let signedInUser: User
-        if let cachedUser = Cache.shared.getSignedInUser() {
+        if let cachedUser = PersistedStorage.shared.getSignedInUser() {
             signedInUser = cachedUser
         } else {
             signedInUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: receiver.getSpotifyId())
@@ -100,7 +100,7 @@ class AppwriteShareService: ShareServiceProtocol {
                                                              responseType: Track.self,
                                                              accessToken: accessToken.getAccessToken(),
                                                              pathParams: pathParams)
-            sharedResource.setResource(resource: resource)
+            sharedResource.setResource(resource: resource.data)
             receivedResources.append(sharedResource)
         }
         
@@ -108,6 +108,7 @@ class AppwriteShareService: ShareServiceProtocol {
     }
     
     func markResourceAsListened(_ resource: SharedResource) async throws {
+        resource.markAsListened()
         let data = try JSONEncoder().encode(resource)
         try await Appwrite.shared.updateDocument(collectionId: sharedResourcesCollectionId,
                                                  documentId: resource.getIdString(),
@@ -121,4 +122,11 @@ class AppwriteShareService: ShareServiceProtocol {
                                                  documentId: resource.getIdString(),
                                                  data: data)
     }
+    
+    func unsendResource(_ resource: SharedResource) async throws -> Void {
+        try await Appwrite.shared.deleteDocument(collectionId: sharedResourcesCollectionId,
+                                                 documentId: resource.getIdString())
+    }
+    
+    
 }

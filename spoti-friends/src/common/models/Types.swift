@@ -57,6 +57,14 @@ class SpotifyWebAccessToken: Codable {
         return self.access_token
     }
     
+    public func getScopes() -> String {
+        return self.scope
+    }
+    
+    public func getScopesArray() -> [String] {
+        return self.scope.split(separator: " ").map { String($0) }
+    }
+    
     public func getRefreshToken() -> String {
         return self.refresh_token
     }

@@ -39,15 +39,7 @@ struct TrackList: View {
                                 .padding(.trailing, 2)
                         }
                         
-                        if (onTrackTap == nil) {
-                            TrackView(track: track)
-                        } else {
-                            // Provided an override for the default on track tap action, so
-                            // pass it into the TrackView
-                            TrackView(track: track) {
-                                onTrackTap?(track)
-                            }
-                        }
+                        SpotifyResourceView(resource: track)
                         
                         Spacer() // To left align the content
                     }

@@ -150,6 +150,29 @@ class Appwrite {
         }
     }
     
+    /// Deletes a document in the specified Appwrite collection.
+    ///
+    /// - Parameters:
+    ///   - databaseId: Optional. The database ID. If nil, the default database ID is used.
+    ///   - collectionId: The ID of the collection where the document will be created.
+    ///   - documentId: The ID of the document to create. If not passed in, a random ID will be assigned.
+    ///
+    /// - Throws: Throws an error if the document creation fails.
+    public func deleteDocument(databaseId: String? = nil, collectionId: String, documentId: String)
+    async throws {
+        do {
+            let databaseId = databaseId ?? self.getDatabaseId()
+            let _ = try await self.database.deleteDocument(databaseId: databaseId,
+                                                           collectionId: collectionId,
+                                                           documentId: documentId)
+            
+            printInfo("Deleted document (id=\(documentId)) from '\(collectionId)' collection.")
+        } catch {
+            printError("Error when trying to delete Appwrite document: \(error)")
+            throw error
+        }
+    }
+    
     /// Removes the `$id` field from the provided document data.
     ///
     /// - Parameter data: The `Data` object representing the document.

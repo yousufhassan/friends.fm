@@ -77,7 +77,7 @@ class ShareViewModel: ObservableObject {
                                                              responseType: SearchResponse.self,
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
-            return response.tracks.items
+            return response.data.tracks.items
             
         } catch {
             printError("When performing Spotify search: \(error)")
@@ -309,8 +309,8 @@ class ShareViewModel: ObservableObject {
             
             // Update the UI
             resource.markAsListened()
-            if let index = receivedResources.firstIndex(where: { $0.id == resource.id }) {
-                receivedResources[index] = resource
+            if let index = self.receivedResources.firstIndex(of: resource) {
+                self.receivedResources[index] = resource
             }
             
             // Update the database
@@ -331,14 +331,34 @@ class ShareViewModel: ObservableObject {
             
             // Update the UI
             resource.markAsNotListened()
-            if let index = receivedResources.firstIndex(where: { $0.id == resource.id }) {
-                receivedResources[index] = resource
+            if let index = self.receivedResources.firstIndex(of: resource) {
+                self.receivedResources[index] = resource
             }
             
             // Update the database
             try await ShareServiceManager.shared.markResourceAsNotListened(resource)
         } catch {
             printError("When marking the resource (id=\(resource.getIdString())) as listened.")
+        }
+    }
+    
+    /// Unsends a shared resource that has been sent.
+    /// This function both deletes from the published `sentResources` variable and the database.
+    ///
+    /// - Parameter resource: The `SharedResource` object to be unsent.
+    @MainActor
+    public func unsendResource(_ resource: SharedResource) async {
+        do {
+            // Update the UI
+            if let index = self.sentResources.firstIndex(of: resource) {
+                self.sentResources.remove(at: index)
+            }
+            
+            // Delete from the database
+            try await ShareServiceManager.shared.unsendResource(resource)
+            
+        } catch {
+            printError("When unsending the resource (id=\(resource.getIdString())).")
         }
     }
     
