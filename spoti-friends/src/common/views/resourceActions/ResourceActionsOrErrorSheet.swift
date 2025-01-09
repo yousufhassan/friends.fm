@@ -14,6 +14,7 @@ struct ResourceActionsOrErrorSheet: View {
                 ResourceActionsSheet(
                     resource: spotifyResource,
                     actions: ResourceActionType.receivedResourceActions(
+                        showSheet: $showSheet,
                         resource: spotifyResource,
                         user: user
                     ) { error in

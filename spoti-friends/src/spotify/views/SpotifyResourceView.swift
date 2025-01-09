@@ -4,8 +4,8 @@ import SwiftUI
 struct SpotifyResourceView: View {
     let resource: SpotifyResource?
     var onTap: (() -> Void)?
-    @State private var showSheet: Bool = false
-    @State private var activeSheet: ActiveSheet = .actions
+    @State var showSheet: Bool = false
+    @State var activeSheet: ActiveSheet = .actions
     
     init(resource: SpotifyResource?, onTap: (() -> Void)? = nil) {
         if let resource = resource {

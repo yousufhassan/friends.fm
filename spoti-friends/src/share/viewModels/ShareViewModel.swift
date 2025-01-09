@@ -77,7 +77,7 @@ class ShareViewModel: ObservableObject {
                                                              responseType: SearchResponse.self,
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
-            return response.tracks.items
+            return response.data.tracks.items
             
         } catch {
             printError("When performing Spotify search: \(error)")

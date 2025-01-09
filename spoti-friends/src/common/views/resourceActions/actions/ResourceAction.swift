@@ -27,9 +27,10 @@ struct ResourceAction: View {
 }
 
 #Preview {
+    @Previewable @State var showSheet = true
     let resource = TrackMock.traitor
     
-    ResourceAction(action: .openInSpotify(resource: resource))
+    ResourceAction(action: .openInSpotify(showSheet: $showSheet, resource: resource))
 }
 
 struct ResourceActionButtonStyle: ButtonStyle {

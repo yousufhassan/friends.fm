@@ -33,7 +33,7 @@ struct ResourceActionsSheet: View {
 #Preview {
     @Previewable @State var showSheet = true
     let resource = TrackMock.iRememberEverything
-    let actions: [ResourceActionType] = ResourceActionType.receivedResourceActions(resource: resource, user: UserMock.userJimHalpert) { _ in
+    let actions: [ResourceActionType] = ResourceActionType.receivedResourceActions(showSheet: $showSheet, resource: resource, user: UserMock.userJimHalpert) { _ in
         showSheet = false
     }
     

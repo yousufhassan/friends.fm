@@ -10,8 +10,8 @@ import SwiftUI
 /// - `openInSpotify`: Opens the resource in the Spotify app using the Spotify URI.
 ///
 enum ResourceActionType {
-    case openInSpotify(resource: SpotifyResource)
-    case addToQueue(resource: SpotifyResource, user: User, onError: (AddToQueueError) -> Void)
+    case openInSpotify(showSheet: Binding<Bool>, resource: SpotifyResource)
+    case addToQueue(showSheet: Binding<Bool>, resource: SpotifyResource, user: User, onError: (AddToQueueError) -> Void)
     
     var icon: Image {
         switch self {
@@ -33,13 +33,14 @@ enum ResourceActionType {
     
     var action: () -> Void {
         switch self {
-        case .openInSpotify(let resource):
+        case .openInSpotify(let showSheet, let resource):
             return {
+                self.closeActionsSheet(showSheet: showSheet)
                 if let url = URL(string: resource.getSpotifyUri()) {
                     UIApplication.shared.open(url)
                 }
             }
-        case .addToQueue(let resource, let user, let onError):
+        case .addToQueue(let showSheet, let resource, let user, let onError):
             return {
                 let queryParams = [
                     URLQueryItem(name: "uri", value: resource.getSpotifyUri())
@@ -48,10 +49,12 @@ enum ResourceActionType {
                 Task {
                     do {
                         let _ = try await SpotifyAPI.shared.fetch(method: .POST,
-                                                                         endpoint: .addItemToQueue,
-                                                                         responseType: String.self,
-                                                                         accessToken: accessToken.getAccessToken(),
-                                                                         queryParams: queryParams)
+                                                                  endpoint: .addItemToQueue,
+                                                                  responseType: SpotifyAPI.VoidResponse.self,
+                                                                  accessToken: accessToken.getAccessToken(),
+                                                                  queryParams: queryParams)
+                        
+                        self.closeActionsSheet(showSheet: showSheet)
                     } catch let error as SpotifyAPIError {
                         switch error {
                         case .forbidden:
@@ -67,13 +70,23 @@ enum ResourceActionType {
         }
     }
     
+    /// Closes the resource actions sheet.
+    func closeActionsSheet(showSheet: Binding<Bool>) {
+        DispatchQueue.main.async {
+            showSheet.wrappedValue = false
+        }
+    }
+    
     // Preset action arrays for different contexts
-    static func receivedResourceActions(resource: SpotifyResource,
+    
+    /// The set of actions available for a received resource.
+    static func receivedResourceActions(showSheet: Binding<Bool>,
+                                        resource: SpotifyResource,
                                         user: User,
                                         onError: @escaping (AddToQueueError) -> Void) -> [ResourceActionType] {
         return [
-            .openInSpotify(resource: resource),
-            .addToQueue(resource: resource, user: user, onError: onError)
+            .openInSpotify(showSheet: showSheet, resource: resource),
+            .addToQueue(showSheet: showSheet, resource: resource, user: user, onError: onError)
         ]
     }
 }

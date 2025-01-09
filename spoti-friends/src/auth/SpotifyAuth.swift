@@ -85,11 +85,13 @@ class SpotifyAuth {
         let spotifyWebAccessToken = try await requestAccessTokenObject(authorizationCode: authorizationCode)
         let internalAPIAccessToken = try await fetchInternalAPIAccessToken(spDcCookie: spDcCookie)
         
-        let spotifyProfile = try await SpotifyAPI.shared
+        let response = try await SpotifyAPI.shared
             .fetch(method: .GET,
                    endpoint: .getCurrentUsersProfile,
                    responseType: SpotifyProfile.self,
                    accessToken: spotifyWebAccessToken.getAccessToken())
+        
+        let spotifyProfile = response.data
         
         let friends = try await SpotifyAPI.shared
             .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.getAccessToken())

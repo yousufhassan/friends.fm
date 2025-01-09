@@ -53,7 +53,7 @@ class AppwriteShareService: ShareServiceProtocol {
                                                              responseType: Track.self,
                                                              accessToken: accessToken.getAccessToken(),
                                                              pathParams: pathParams)
-            sharedResource.setResource(resource: resource)
+            sharedResource.setResource(resource: resource.data)
             sentResources.append(sharedResource)
         }
         
@@ -100,7 +100,7 @@ class AppwriteShareService: ShareServiceProtocol {
                                                              responseType: Track.self,
                                                              accessToken: accessToken.getAccessToken(),
                                                              pathParams: pathParams)
-            sharedResource.setResource(resource: resource)
+            sharedResource.setResource(resource: resource.data)
             receivedResources.append(sharedResource)
         }
         
