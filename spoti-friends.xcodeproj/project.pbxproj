@@ -74,6 +74,7 @@
 		CB689F6D2D2F233700631E3A /* SpotifyResourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB689F6C2D2F233700631E3A /* SpotifyResourceView.swift */; };
 		CB689F6F2D2F423C00631E3A /* ResourceActionsOrErrorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB689F6E2D2F423C00631E3A /* ResourceActionsOrErrorSheet.swift */; };
 		CB689F722D2F4A8900631E3A /* PersistedStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB689F712D2F4A8500631E3A /* PersistedStorage.swift */; };
+		CB689F742D30873C00631E3A /* v1.4.2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB689F732D30873800631E3A /* v1.4.2.swift */; };
 		CB6A5D8C2CA684F10063A757 /* Appwrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6A5D8B2CA684EC0063A757 /* Appwrite.swift */; };
 		CB70874F2CAB493400FE97C7 /* AppLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70874E2CAB493400FE97C7 /* AppLoadingView.swift */; };
 		CB7087522CAB675800FE97C7 /* ProfileServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7087512CAB674100FE97C7 /* ProfileServiceProtocol.swift */; };
@@ -211,6 +212,7 @@
 		CB689F6C2D2F233700631E3A /* SpotifyResourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyResourceView.swift; sourceTree = "<group>"; };
 		CB689F6E2D2F423C00631E3A /* ResourceActionsOrErrorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceActionsOrErrorSheet.swift; sourceTree = "<group>"; };
 		CB689F712D2F4A8500631E3A /* PersistedStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedStorage.swift; sourceTree = "<group>"; };
+		CB689F732D30873800631E3A /* v1.4.2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v1.4.2.swift; sourceTree = "<group>"; };
 		CB6A5D8B2CA684EC0063A757 /* Appwrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appwrite.swift; sourceTree = "<group>"; };
 		CB70874E2CAB493400FE97C7 /* AppLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLoadingView.swift; sourceTree = "<group>"; };
 		CB7087512CAB674100FE97C7 /* ProfileServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileServiceProtocol.swift; sourceTree = "<group>"; };
@@ -551,6 +553,7 @@
 				CB5525182D29B345006C4FF0 /* v1.3.1.swift */,
 				CB5525232D29B36E006C4FF0 /* v1.4.0.swift */,
 				CB5525482D2C5AB9006C4FF0 /* v1.4.1.swift */,
+				CB689F732D30873800631E3A /* v1.4.2.swift */,
 			);
 			path = changelogs;
 			sourceTree = "<group>";
@@ -1041,6 +1044,7 @@
 				CBB1A3C82C8E59BE00D3D658 /* ViewMoreButton.swift in Sources */,
 				CBA995C52D1B79DB0076E9B8 /* Cache.swift in Sources */,
 				CB0B93702C771B47003A9720 /* SpotifyResource.swift in Sources */,
+				CB689F742D30873C00631E3A /* v1.4.2.swift in Sources */,
 				CB0854B82C1404710088E87D /* AuthorizationViewModel.swift in Sources */,
 				CBB7D0CC2D02D6EE002572C6 /* SearchResults.swift in Sources */,
 				CB7C05AD2C0EEEA2001A0062 /* AuthorizationConstants.swift in Sources */,
@@ -1188,7 +1192,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yousufhassan.spoti-friends";
 				PRODUCT_NAME = friends.fm;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1284,7 +1288,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yousufhassan.spoti-friends";
 				PRODUCT_NAME = friends.fm;
 				SWIFT_EMIT_LOC_STRINGS = YES;
