@@ -8,7 +8,7 @@ import SwiftUI
 ///
 /// Available actions:
 /// - `openInSpotify`: Opens the resource in the Spotify app using the Spotify URI.
-///
+/// - `addToQueue`: Adds the resource to the user's queue. Returns the relevant error on failure (e.g. not a Premium subscriber, no active device found).
 enum ResourceActionType {
     case openInSpotify(showSheet: Binding<Bool>, resource: SpotifyResource)
     case addToQueue(showSheet: Binding<Bool>, resource: SpotifyResource, user: User, onError: (AddToQueueError) -> Void)

@@ -67,9 +67,39 @@ struct PremiumRequiredErrorSheet: View {
     }
 }
 
+/// A view that returns a generic sheet for when the user cannot perform an action.
+struct GenericErrorSheet: View {
+    var body: some View {
+        VStack {
+            Text("Something went wrong")
+                .font(.title2)
+                .padding(.vertical, 8)
+                .foregroundStyle(Color.PresetColour.spotifyGreen)
+            
+            Divider()
+            
+            VStack (spacing: 24) {
+                Text("Please retry or come back later.")
+                Text("If the issue persists, consider reaching out at friends.fm.app@gmail.com")
+            }
+            .multilineTextAlignment(.center)
+            .foregroundStyle(Color.PresetColour.whiteSecondary)
+            .font(.callout)
+            .padding(.horizontal)
+            .padding(.top)
+            
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.vertical)
+        .presentationDetents([.fraction(0.3)])
+    }
+}
+
 #Preview {
     @Previewable @State var showNoActiveDeviceSheet = false
-    @Previewable @State var showPremiumRequiredSheet = true
+    @Previewable @State var showPremiumRequiredSheet = false
+    @Previewable @State var showGenericErrorSheet = true
     
     Button("Open \"No active device\" sheet") {
         showNoActiveDeviceSheet = true
@@ -83,5 +113,12 @@ struct PremiumRequiredErrorSheet: View {
     }
     .sheet(isPresented: $showPremiumRequiredSheet) {
         PremiumRequiredErrorSheet()
+    }
+    
+    Button("Open \"Generic error\" sheet") {
+        showGenericErrorSheet = true
+    }
+    .sheet(isPresented: $showGenericErrorSheet) {
+        GenericErrorSheet()
     }
 }

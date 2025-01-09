@@ -29,7 +29,7 @@ struct ResourceActionsOrErrorSheet: View {
                     }
                 )
             } else {
-                Text("Oops! Something went wrong...")
+                GenericErrorSheet()
             }
             
         case .error(let error):
@@ -40,10 +40,9 @@ struct ResourceActionsOrErrorSheet: View {
                 case .premiumRequired:
                     PremiumRequiredErrorSheet()
                 case .unknown:
-                    Text("Something went wrong")
+                    GenericErrorSheet()
                 }
             }
-            .presentationDetents([.fraction(0.3)])
         }
     }
 }
@@ -51,6 +50,7 @@ struct ResourceActionsOrErrorSheet: View {
 #Preview {
     @Previewable @State var showSheet = true
     @Previewable @State var sheet: ActiveSheet = .actions
+    let _ = PersistedStorage.shared.persistUser(UserMock.userJimHalpert)
     let track = TrackMock.iRememberEverything
     
     ResourceActionsOrErrorSheet(resource: track, showSheet: $showSheet, sheet: $sheet)
