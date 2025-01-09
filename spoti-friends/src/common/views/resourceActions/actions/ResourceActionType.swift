@@ -151,11 +151,35 @@ enum ResourceActionType {
                                  shareViewModel: ShareViewModel? = nil,
                                  user: User,
                                  onError: @escaping (AddToQueueError) -> Void) -> [ResourceActionType] {
-        if (sharedResource != nil && sharedResource?.getReceiver().getSpotifyId() == user.spotifyId) {
-            return receivedResourceActions(showSheet: showSheet, sharedResource: sharedResource!, shareViewModel: shareViewModel!, user: user, onError: onError)
+        
+        // Common actions that should always be present
+        var actions: [ResourceActionType] = [
+            .openInSpotify(showSheet: showSheet, resource: resource),
+            .addToQueue(showSheet: showSheet, resource: resource, user: user, onError: onError),
+        ]
+        
+        // If resource is a track, add those specific actions
+        if (resource is Track) {
+            let track = resource as! Track
+            actions.append(.goToAlbum(showSheet: showSheet, track: track))
+            actions.append(.goToArtist(showSheet: showSheet, track: track))
         }
         
-        return sentResourceActions(showSheet: showSheet, sharedResource: sharedResource!, shareViewModel: shareViewModel!, user: user, onError: onError)
+        // If resource is a received resource, add those specific actions
+        if (sharedResource != nil && sharedResource?.getReceiver().getSpotifyId() == user.spotifyId) {
+            actions += receivedResourceActions(showSheet: showSheet,
+                                               sharedResource: sharedResource!,
+                                               shareViewModel: shareViewModel!,
+                                               user: user,
+                                               onError: onError)
+        }
+        
+        // If resource is a sent resource, add those specific actions
+        if (sharedResource != nil && sharedResource?.getSender().getSpotifyId() == user.spotifyId) {
+            actions += sentResourceActions(showSheet: showSheet, sharedResource: sharedResource!, shareViewModel: shareViewModel!, user: user, onError: onError)
+        }
+        
+        return actions
     }
     
     /// The set of actions available for a received resource.
@@ -165,18 +189,8 @@ enum ResourceActionType {
                                         user: User,
                                         onError: @escaping (AddToQueueError) -> Void) -> [ResourceActionType] {
         let resource = sharedResource.getResource()!
-        var actions: [ResourceActionType] = [
-            .openInSpotify(showSheet: showSheet, resource: resource),
-            .addToQueue(showSheet: showSheet, resource: resource, user: user, onError: onError),
-        ]
+        var actions: [ResourceActionType] = []
         
-        if (resource is Track) {
-            let track = resource as! Track
-            actions.append(.goToAlbum(showSheet: showSheet, track: track))
-            actions.append(.goToArtist(showSheet: showSheet, track: track))
-        }
-        
-        // Append to the end of the list
         sharedResource.isListened()
         ? actions.append(.markAsNotListened(showSheet: showSheet, sharedResource: sharedResource, shareViewModel: shareViewModel))
         : actions.append(.markAsListened(showSheet: showSheet, sharedResource: sharedResource, shareViewModel: shareViewModel))
@@ -191,20 +205,9 @@ enum ResourceActionType {
                                     user: User,
                                     onError: @escaping (AddToQueueError) -> Void) -> [ResourceActionType] {
         let resource = sharedResource.getResource()!
-        var actions: [ResourceActionType] = [
-            .openInSpotify(showSheet: showSheet, resource: resource),
-            .addToQueue(showSheet: showSheet, resource: resource, user: user, onError: onError),
-        ]
+        var actions: [ResourceActionType] = []
         
-        if (resource is Track) {
-            let track = resource as! Track
-            actions.append(.goToAlbum(showSheet: showSheet, track: track))
-            actions.append(.goToArtist(showSheet: showSheet, track: track))
-        }
-        
-        // Append to the end of the list
         actions.append(.unsend(showSheet: showSheet, sharedResource: sharedResource, shareViewModel: shareViewModel))
-        
         return actions
     }
 }
