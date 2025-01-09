@@ -2,9 +2,20 @@ import SwiftUI
 
 // TODO: Add docs
 struct ResourceActionsOrErrorSheet: View {
-    let resource: SpotifyResource?
+    var resource: SpotifyResource?
+    var sharedResource: SharedResource?
+    var shareViewModel: ShareViewModel?
     @Binding var showSheet: Bool
     @Binding var sheet: ActiveSheet
+    
+    init(resource: SpotifyResource?, sharedResource: SharedResource? = nil, shareViewModel: ShareViewModel? = nil,
+         showSheet: Binding<Bool>, sheet: Binding<ActiveSheet>) {
+        self.resource = resource
+        self.sharedResource = sharedResource
+        self.shareViewModel = shareViewModel
+        self._showSheet = showSheet
+        self._sheet = sheet
+    }
     
     var body: some View {
         switch sheet {
@@ -13,21 +24,38 @@ struct ResourceActionsOrErrorSheet: View {
                let user = PersistedStorage.shared.getSignedInUser() {
                 ResourceActionsSheet(
                     resource: spotifyResource,
-                    actions: ResourceActionType.receivedResourceActions(
-                        showSheet: $showSheet,
-                        resource: spotifyResource,
-                        user: user
-                    ) { error in
-                        DispatchQueue.main.async {
-                            self.showSheet = false
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            self.sheet = .error(error)
-                            self.showSheet = true
-                        }
-                    }
+                    actions: ResourceActionType.determineActions(showSheet: $showSheet,
+                                                                 resource: spotifyResource,
+                                                                 sharedResource: sharedResource,
+                                                                 shareViewModel: shareViewModel,
+                                                                 user: user) { error in
+                                                                     DispatchQueue.main.async {
+                                                                         self.showSheet = false
+                                                                     }
+                                                                     
+                                                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                                                         self.sheet = .error(error)
+                                                                         self.showSheet = true
+                                                                     }
+                                                                 }
                 )
+                //                ResourceActionsSheet(
+                //                    resource: spotifyResource,
+                //                    actions: ResourceActionType.receivedResourceActions(
+                //                        showSheet: $showSheet,
+                //                        sharedResource: sharedResource,
+                //                        user: user
+                //                    ) { error in
+                //                        DispatchQueue.main.async {
+                //                            self.showSheet = false
+                //                        }
+                //
+                //                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                //                            self.sheet = .error(error)
+                //                            self.showSheet = true
+                //                        }
+                //                    }
+                //                )
             } else {
                 GenericErrorSheet()
             }

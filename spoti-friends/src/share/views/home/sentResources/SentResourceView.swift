@@ -13,10 +13,11 @@ struct SentResourceView: View {
     let resource: SharedResource
     let receivers: [SpotifyProfile]
     @State var displayReceiversSheet = false
+    @EnvironmentObject var shareViewModel: ShareViewModel
     
     var body: some View {
         HStack {
-            SpotifyResourceView(resource: resource.getResource())
+            SpotifyResourceView(resource: resource.getResource(), sharedResource: resource, shareViewModel: shareViewModel)
             
             Spacer()
             ZStack {

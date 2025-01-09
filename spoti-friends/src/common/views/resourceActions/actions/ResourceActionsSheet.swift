@@ -32,8 +32,13 @@ struct ResourceActionsSheet: View {
 
 #Preview {
     @Previewable @State var showSheet = true
-    let resource = TrackMock.iRememberEverything
-    let actions: [ResourceActionType] = ResourceActionType.receivedResourceActions(showSheet: $showSheet, resource: resource, user: UserMock.userJimHalpert) { _ in
+    let sharedResource = SharedResourceMock.resource1
+    let actions: [ResourceActionType] = ResourceActionType
+        .determineActions(showSheet: $showSheet,
+                          resource: sharedResource.getResource()!,
+                          sharedResource: sharedResource,
+                          shareViewModel: ShareViewModel(user: UserMock.userJimHalpert),
+                          user: UserMock.userJimHalpert) { _ in
         showSheet = false
     }
     
@@ -41,6 +46,6 @@ struct ResourceActionsSheet: View {
         showSheet = true
     }
     .sheet(isPresented: $showSheet) {
-        ResourceActionsSheet(resource: resource, actions: actions)
+        ResourceActionsSheet(resource: sharedResource.getResource()!, actions: actions)
     }
 }

@@ -14,6 +14,7 @@ enum ResourceActionType {
     case addToQueue(showSheet: Binding<Bool>, resource: SpotifyResource, user: User, onError: (AddToQueueError) -> Void)
     case goToAlbum(showSheet: Binding<Bool>, track: Track)
     case goToArtist(showSheet: Binding<Bool>, track: Track)
+    case markAsListened(showSheet: Binding<Bool>, sharedResource: SharedResource, shareViewModel: ShareViewModel)
     
     var icon: Image {
         switch self {
@@ -25,6 +26,8 @@ enum ResourceActionType {
             return Image(systemName: "smallcircle.circle")
         case .goToArtist:
             return Image(.artistMusicNote)
+        case .markAsListened:
+            return Image(systemName: "checkmark.circle")
         }
         
     }
@@ -39,6 +42,8 @@ enum ResourceActionType {
             return "Go to album"
         case .goToArtist:
             return "Go to artist"
+        case .markAsListened:
+            return "Mark as listened"
         }
     }
     
@@ -93,6 +98,13 @@ enum ResourceActionType {
                     UIApplication.shared.open(url)
                 }
             }
+        case .markAsListened(let showSheet, let sharedResource, let shareViewModel):
+            return {
+                Task {
+                    await shareViewModel.markResourceAsListened(sharedResource)
+                    self.closeActionsSheet(showSheet: showSheet)
+                }
+            }
         }
     }
     
@@ -104,14 +116,28 @@ enum ResourceActionType {
     }
     
     // Preset action arrays for different contexts
+    static func determineActions(showSheet: Binding<Bool>, resource: SpotifyResource,
+                                 sharedResource: SharedResource? = nil,
+                                 shareViewModel: ShareViewModel? = nil,
+                                 user: User,
+                                 onError: @escaping (AddToQueueError) -> Void) -> [ResourceActionType] {
+        if (sharedResource != nil && sharedResource?.getReceiver().getSpotifyId() == user.spotifyId) {
+            return receivedResourceActions(showSheet: showSheet, sharedResource: sharedResource!, shareViewModel: shareViewModel!, user: user, onError: onError)
+        }
+        
+        return sentResourceActions(showSheet: showSheet, sharedResource: sharedResource!, shareViewModel: shareViewModel!, user: user, onError: onError)
+    }
+    
     /// The set of actions available for a received resource.
     static func receivedResourceActions(showSheet: Binding<Bool>,
-                                        resource: SpotifyResource,
+                                        sharedResource: SharedResource,
+                                        shareViewModel: ShareViewModel,
                                         user: User,
                                         onError: @escaping (AddToQueueError) -> Void) -> [ResourceActionType] {
+        let resource = sharedResource.getResource()!
         var actions: [ResourceActionType] = [
             .openInSpotify(showSheet: showSheet, resource: resource),
-            .addToQueue(showSheet: showSheet, resource: resource, user: user, onError: onError)
+            .addToQueue(showSheet: showSheet, resource: resource, user: user, onError: onError),
         ]
         
         if (resource is Track) {
@@ -119,6 +145,31 @@ enum ResourceActionType {
             actions.append(.goToAlbum(showSheet: showSheet, track: track))
             actions.append(.goToArtist(showSheet: showSheet, track: track))
         }
+        
+        // Append to the end of the list
+        actions.append(.markAsListened(showSheet: showSheet, sharedResource: sharedResource, shareViewModel: shareViewModel))
+        
+        return actions
+    }
+    
+    static func sentResourceActions(showSheet: Binding<Bool>,
+                                    sharedResource: SharedResource,
+                                    shareViewModel: ShareViewModel,
+                                    user: User,
+                                    onError: @escaping (AddToQueueError) -> Void) -> [ResourceActionType] {
+        let resource = sharedResource.getResource()!
+        var actions: [ResourceActionType] = [
+            .openInSpotify(showSheet: showSheet, resource: resource),
+            .addToQueue(showSheet: showSheet, resource: resource, user: user, onError: onError),
+        ]
+        
+        if (resource is Track) {
+            let track = resource as! Track
+            actions.append(.goToAlbum(showSheet: showSheet, track: track))
+            actions.append(.goToArtist(showSheet: showSheet, track: track))
+        }
+        
+        // Append to the end of the list
         
         return actions
     }

@@ -32,6 +32,7 @@ struct SentSongsTab: View {
                             resource: resources.first!,
                             receivers: resources.map { $0.getReceiver() }
                         )
+                        .environmentObject(shareViewModel)
                     }
                     
                 }

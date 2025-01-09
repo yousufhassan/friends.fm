@@ -14,7 +14,7 @@ struct ReceivedResourceView: View {
     
     var body: some View {
         HStack {
-            SpotifyResourceView(resource: resource.getResource())
+            SpotifyResourceView(resource: resource.getResource(), sharedResource: resource, shareViewModel: shareViewModel)
             
             Spacer()
             ProfileImage(profile: resource.getSender(), width: 24, height: 24)

@@ -3,11 +3,18 @@ import SwiftUI
 // TODO: Add docs
 struct SpotifyResourceView: View {
     let resource: SpotifyResource?
+    let sharedResource: SharedResource?
+    var shareViewModel: ShareViewModel?
+    
     var onTap: (() -> Void)?
     @State var showSheet: Bool = false
     @State var activeSheet: ActiveSheet = .actions
     
-    init(resource: SpotifyResource?, onTap: (() -> Void)? = nil) {
+    init(resource: SpotifyResource?, sharedResource: SharedResource? = nil, shareViewModel: ShareViewModel? = nil,
+         onTap: (() -> Void)? = nil) {
+        self.sharedResource = sharedResource
+        self.shareViewModel = shareViewModel
+        
         if let resource = resource {
             self.resource = resource
             self.onTap = onTap
@@ -39,6 +46,8 @@ struct SpotifyResourceView: View {
             .buttonStyle(.plain)
             .sheet(isPresented: $showSheet) {
                 ResourceActionsOrErrorSheet(resource: resource,
+                                            sharedResource: sharedResource,
+                                            shareViewModel: shareViewModel,
                                             showSheet: $showSheet,
                                             sheet: $activeSheet)
             }
