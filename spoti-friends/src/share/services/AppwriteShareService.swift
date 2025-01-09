@@ -122,4 +122,12 @@ class AppwriteShareService: ShareServiceProtocol {
                                                  documentId: resource.getIdString(),
                                                  data: data)
     }
+    
+    func unsendResource(_ resource: SharedResource) async throws -> Void {
+        let data = try JSONEncoder().encode(resource)
+        try await Appwrite.shared.deleteDocument(collectionId: sharedResourcesCollectionId,
+                                                 documentId: resource.getIdString())
+    }
+    
+    
 }

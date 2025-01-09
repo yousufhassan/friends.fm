@@ -16,6 +16,8 @@ enum ResourceActionType {
     case goToArtist(showSheet: Binding<Bool>, track: Track)
     case markAsListened(showSheet: Binding<Bool>, sharedResource: SharedResource, shareViewModel: ShareViewModel)
     case markAsNotListened(showSheet: Binding<Bool>, sharedResource: SharedResource, shareViewModel: ShareViewModel)
+    case unsend(showSheet: Binding<Bool>, sharedResource: SharedResource, shareViewModel: ShareViewModel)
+    
     
     var icon: Image {
         switch self {
@@ -31,6 +33,8 @@ enum ResourceActionType {
             return Image(systemName: "checkmark.circle")
         case .markAsNotListened:
             return Image(systemName: "gobackward.minus")
+        case .unsend:
+            return Image(systemName: "trash")
         }
     }
     
@@ -48,6 +52,8 @@ enum ResourceActionType {
             return "Mark as listened"
         case .markAsNotListened:
             return "Mark as not listened"
+        case .unsend:
+            return "Unsend"
         }
     }
     
@@ -113,6 +119,13 @@ enum ResourceActionType {
             return {
                 Task {
                     await shareViewModel.markResourceAsNotListened(sharedResource)
+                    self.closeActionsSheet(showSheet: showSheet)
+                }
+            }
+        case .unsend(let showSheet, let sharedResource, let shareViewModel):
+            return {
+                Task {
+                    await shareViewModel.unsendResource(sharedResource)
                     self.closeActionsSheet(showSheet: showSheet)
                 }
             }
@@ -183,6 +196,7 @@ enum ResourceActionType {
         }
         
         // Append to the end of the list
+        actions.append(.unsend(showSheet: showSheet, sharedResource: sharedResource, shareViewModel: shareViewModel))
         
         return actions
     }
