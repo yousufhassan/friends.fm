@@ -47,7 +47,7 @@ enum ResourceActionType {
                 let accessToken = user.getSpotifyWebAccessToken()
                 Task {
                     do {
-                        let response = try await SpotifyAPI.shared.fetch(method: .POST,
+                        let _ = try await SpotifyAPI.shared.fetch(method: .POST,
                                                                          endpoint: .addItemToQueue,
                                                                          responseType: String.self,
                                                                          accessToken: accessToken.getAccessToken(),

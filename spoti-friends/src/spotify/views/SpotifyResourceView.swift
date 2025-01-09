@@ -38,7 +38,9 @@ struct SpotifyResourceView: View {
             }
             .buttonStyle(.plain)
             .sheet(isPresented: $showSheet) {
-                ResourceActionsOrErrorSheet(resource: resource, sheet: activeSheet)
+                ResourceActionsOrErrorSheet(resource: resource,
+                                            showSheet: $showSheet,
+                                            sheet: $activeSheet)
             }
         }
     }

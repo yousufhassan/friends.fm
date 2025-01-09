@@ -3,7 +3,8 @@ import SwiftUI
 // TODO: Add docs
 struct ResourceActionsOrErrorSheet: View {
     let resource: SpotifyResource?
-    @State var sheet: ActiveSheet?
+    @Binding var showSheet: Bool
+    @Binding var sheet: ActiveSheet
     
     var body: some View {
         switch sheet {
@@ -17,7 +18,12 @@ struct ResourceActionsOrErrorSheet: View {
                         user: user
                     ) { error in
                         DispatchQueue.main.async {
+                            self.showSheet = false
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             self.sheet = .error(error)
+                            self.showSheet = true
                         }
                     }
                 )
@@ -37,17 +43,16 @@ struct ResourceActionsOrErrorSheet: View {
                 }
             }
             .presentationDetents([.fraction(0.3)])
-            
-        case .none:
-            Text("Hmm, nothing.")
         }
     }
 }
 
 #Preview {
+    @Previewable @State var showSheet = true
+    @Previewable @State var sheet: ActiveSheet = .actions
     let track = TrackMock.iRememberEverything
     
-    ResourceActionsOrErrorSheet(resource: track, sheet: ActiveSheet.actions)
+    ResourceActionsOrErrorSheet(resource: track, showSheet: $showSheet, sheet: $sheet)
         .environmentObject(ShareViewModel(user: UserMock.userJimHalpert))
 }
 
