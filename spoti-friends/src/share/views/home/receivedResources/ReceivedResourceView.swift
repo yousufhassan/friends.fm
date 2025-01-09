@@ -23,6 +23,8 @@ struct ReceivedResourceView: View {
 }
 
 #Preview {
+    let _ = PersistedStorage.shared.persistUser(UserMock.userJimHalpert)
+    
     let sender = SpotifyProfileMock.jimHalpert
     let receiver = SpotifyProfileMock.michaelScott
     let resource = SharedResource(resource: TrackMock.iRememberEverything, sender: sender, receiver: receiver)
