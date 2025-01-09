@@ -1,6 +1,19 @@
 import SwiftUI
 
-// TODO: Add docs
+/// View that displays an sheet with resource actions or an error based on the provided state.
+///
+/// `ResourceActionsOrErrorSheet` dynamically renders a sheet depending on the `ActiveSheet` state.
+/// It supports actions for Spotify resources or displays error-specific sheets.
+///
+/// - Parameters:
+///   - resource: An optional `SpotifyResource` object representing the Spotify resource for actions.
+///   - sharedResource: An optional `SharedResource` object if the resource is shared.
+///   - shareViewModel: An optional `ShareViewModel` instance for managing shared resource actions.
+///   - showSheet: A binding to control the visibility of the sheet.
+///   - sheet: A binding to determine the currently active sheet type (`actions` or `error`).
+///
+/// - Note: `sharedResource` and `shareViewModel` are optionally passed in so that we can handle actions on those
+///          types of resources. The caller will not pass it if it is not a `SharedResource`.
 struct ResourceActionsOrErrorSheet: View {
     var resource: SpotifyResource?
     var sharedResource: SharedResource?
@@ -24,38 +37,22 @@ struct ResourceActionsOrErrorSheet: View {
                let user = PersistedStorage.shared.getSignedInUser() {
                 ResourceActionsSheet(
                     resource: spotifyResource,
-                    actions: ResourceActionType.determineActions(showSheet: $showSheet,
-                                                                 resource: spotifyResource,
-                                                                 sharedResource: sharedResource,
-                                                                 shareViewModel: shareViewModel,
-                                                                 user: user) { error in
-                                                                     DispatchQueue.main.async {
-                                                                         self.showSheet = false
-                                                                     }
-                                                                     
-                                                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                                                         self.sheet = .error(error)
-                                                                         self.showSheet = true
-                                                                     }
-                                                                 }
+                    actions: ResourceActionType
+                        .determineActions(showSheet: $showSheet,
+                                          resource: spotifyResource,
+                                          sharedResource: sharedResource,
+                                          shareViewModel: shareViewModel,
+                                          user: user) { error in
+                                              DispatchQueue.main.async {
+                                                  self.showSheet = false
+                                              }
+                                              
+                                              DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                                  self.sheet = .error(error)
+                                                  self.showSheet = true
+                                              }
+                                          }
                 )
-                //                ResourceActionsSheet(
-                //                    resource: spotifyResource,
-                //                    actions: ResourceActionType.receivedResourceActions(
-                //                        showSheet: $showSheet,
-                //                        sharedResource: sharedResource,
-                //                        user: user
-                //                    ) { error in
-                //                        DispatchQueue.main.async {
-                //                            self.showSheet = false
-                //                        }
-                //
-                //                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                //                            self.sheet = .error(error)
-                //                            self.showSheet = true
-                //                        }
-                //                    }
-                //                )
             } else {
                 GenericErrorSheet()
             }

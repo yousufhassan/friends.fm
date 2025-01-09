@@ -4,7 +4,6 @@ import Foundation
 /// This class uses `NSCache` to store objects temporarily for efficient retrieval.
 ///
 /// The following data is being cached:
-///   - `signedInUser`
 ///   - `receivedResources`
 ///   - `sentResources`
 ///

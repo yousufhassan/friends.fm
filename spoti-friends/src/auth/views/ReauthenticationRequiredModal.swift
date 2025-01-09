@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// A modal view that informs the user that reauthentication is required, typically when new scopes are required.
 struct ReauthenticationRequiredModal: View {
     @EnvironmentObject var authorizationViewModel: AuthorizationViewModel
     

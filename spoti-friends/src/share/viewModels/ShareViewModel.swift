@@ -342,6 +342,10 @@ class ShareViewModel: ObservableObject {
         }
     }
     
+    /// Unsends a shared resource that has been sent.
+    /// This function both deletes from the published `sentResources` variable and the database.
+    ///
+    /// - Parameter resource: The `SharedResource` object to be unsent.
     @MainActor
     public func unsendResource(_ resource: SharedResource) async {
         do {

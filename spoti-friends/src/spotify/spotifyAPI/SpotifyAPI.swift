@@ -4,7 +4,7 @@ import Foundation
 class SpotifyAPI {
     static let shared: SpotifyAPI = SpotifyAPI()
     
-    // TODO: Add docs
+    /// The response object from Spotify containing response data and a URL response (status codes and such).
     public struct Response<T: Decodable> {
         let data: T
         let response: HTTPURLResponse

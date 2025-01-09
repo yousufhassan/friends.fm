@@ -1,5 +1,16 @@
 import SwiftUI
 
+/// A View representing an action that can be taken on a Spotify resource.
+///
+/// `ResourceAction` provides a customizable button that displays an icon and a label,
+/// and executes the associated action when tapped.
+///
+/// - Parameters:
+///   - action: The `ResourceActionType` defining the label, icon, and behavior of the action.
+///   - actionColor: An optional `Color` to customize the foreground color of the action.
+///
+/// - Note:
+///   This view is intended to be used in a list or group of resource actions, such as within an action sheet.
 struct ResourceAction: View {
     let action: ResourceActionType
     var actionColor: Color?

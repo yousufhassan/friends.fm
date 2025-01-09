@@ -5,10 +5,6 @@ import SwiftUI
 ///
 /// Each case corresponds to a specific action, with associated properties such as icon, label, and a closure for the action itself.
 /// This enum allows flexible selection of which actions to render in a given view.
-///
-/// Available actions:
-/// - `openInSpotify`: Opens the resource in the Spotify app using the Spotify URI.
-/// - `addToQueue`: Adds the resource to the user's queue. Returns the relevant error on failure (e.g. not a Premium subscriber, no active device found).
 enum ResourceActionType {
     case openInSpotify(showSheet: Binding<Bool>, resource: SpotifyResource)
     case addToQueue(showSheet: Binding<Bool>, resource: SpotifyResource, user: User, onError: (AddToQueueError) -> Void)
@@ -188,6 +184,7 @@ enum ResourceActionType {
         return actions
     }
     
+    /// The set of actions available for a sent resource.
     static func sentResourceActions(showSheet: Binding<Bool>,
                                     sharedResource: SharedResource,
                                     shareViewModel: ShareViewModel,
