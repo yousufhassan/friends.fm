@@ -87,7 +87,7 @@ class ProfileViewModel: ObservableObject {
                                                              accessToken: accessToken,
                                                              pathParams: pathParams)
             
-            return response.followers.total
+            return response.data.followers.total
         }
         catch {
             printError("When getting the follower count for the profile (id=\(profile.getSpotifyId())): \(error)")
@@ -114,7 +114,7 @@ class ProfileViewModel: ObservableObject {
                                                              responseType: GetCurrentUserPlayistsResponse.self,
                                                              accessToken: accessToken,
                                                              pathParams: pathParams)
-            return response.total
+            return response.data.total
         } catch {
             printError("When getting the current user's playlist count: \(error)")
             return -1
@@ -179,7 +179,7 @@ class ProfileViewModel: ObservableObject {
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
             
-            return TracksWithResponseMetadata(tracks: response.extractTracksFromItems(), isEmpty: response.items.isEmpty)
+            return TracksWithResponseMetadata(tracks: response.data.extractTracksFromItems(), isEmpty: response.data.items.isEmpty)
         }
         catch {
             printError("When getting the current user's recent tracks: \(error)")
@@ -231,9 +231,9 @@ class ProfileViewModel: ObservableObject {
             // Only cache data when opening in "View more" for the logged in user
             if (limit == 20 && user?.spotifyProfile == profile) {
                 printInfo("Fetched top tracks from Spotify for time range: \(timeRange). Saved to cache.")
-                cache(topTracks: response.items, forTimeRange: timeRange)
+                cache(topTracks: response.data.items, forTimeRange: timeRange)
             }
-            return TracksWithResponseMetadata(tracks: response.items, isEmpty: response.items.isEmpty)
+            return TracksWithResponseMetadata(tracks: response.data.items, isEmpty: response.data.items.isEmpty)
         }
         catch {
             printError("When getting the current user's top tracks: \(error)")
@@ -304,9 +304,9 @@ class ProfileViewModel: ObservableObject {
             // Only cache data when opening in "View more" for the logged in user.
             if (limit == 20 && user?.spotifyProfile == profile) {
                 printInfo("Fetched top artists from Spotify for time range: \(timeRange). Saved to cache.")
-                cache(topArtists: response.items, forTimeRange: timeRange)
+                cache(topArtists: response.data.items, forTimeRange: timeRange)
             }
-            return ArtistsWithResponseMetadata(artists: response.items, isEmpty: response.items.isEmpty)
+            return ArtistsWithResponseMetadata(artists: response.data.items, isEmpty: response.data.items.isEmpty)
         }
         catch {
             printError("When getting the current user's top artists: \(error)")

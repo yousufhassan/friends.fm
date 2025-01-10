@@ -20,13 +20,11 @@ struct ReceiversSheetView: View {
                 .bold()
             
             // Preview of track to send
-            if (resource.getType() == .track) {
-                TrackView(track: resource.getResource() as! Track) {
-                    ()
-                }
-                .padding(.horizontal)
+            SpotifyResourceView(resource: resource.getResource()) {
+                () // Overriding the onTapGesture to do nothing
             }
-
+            .padding(.horizontal)
+            
             Divider()
             
             ScrollView {

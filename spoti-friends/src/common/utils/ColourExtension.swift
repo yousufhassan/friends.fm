@@ -13,6 +13,7 @@ extension Color {
         static var whiteSecondary: Color { return Color(red: 0.77, green: 0.77, blue: 0.77) } // #C6C6C6
         static var black: Color { return Color(red: 0.03, green: 0.03, blue: 0.03) }
         static var blackSecondary: Color { return Color(red: 0.17, green: 0.17, blue: 0.17) }
+        static var gray: Color { return Color(red: 0.65, green: 0.65, blue: 0.65) } // #A5A5A5
         static var darkgrey: Color { return Color(red: 0.11, green: 0.11, blue: 0.11) }
         static var navbar: Color { return Color(red: 0.10, green: 0.10, blue: 0.10) }
         static var red: Color { return Color(red: 0.74, green: 0.11, blue: 0.11) }

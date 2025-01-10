@@ -77,7 +77,7 @@ class ShareViewModel: ObservableObject {
                                                              responseType: SearchResponse.self,
                                                              accessToken: accessToken,
                                                              queryParams: queryParams)
-            return response.tracks.items
+            return response.data.tracks.items
             
         } catch {
             printError("When performing Spotify search: \(error)")
@@ -296,6 +296,69 @@ class ShareViewModel: ObservableObject {
         } catch {
             printError("When getting resources sent: \(error).")
             return nil
+        }
+    }
+    
+    /// Marks a shared resource as listened.
+    /// This function updates both the published `receivedResources` variable and the database.
+    /// - Parameter resource: The `SharedResource` object to be marked as listened.
+    @MainActor
+    public func markResourceAsListened(_ resource: SharedResource) async {
+        do {
+            if (resource.isListened()) { return } // Return early if resource is already listened
+            
+            // Update the UI
+            resource.markAsListened()
+            if let index = self.receivedResources.firstIndex(of: resource) {
+                self.receivedResources[index] = resource
+            }
+            
+            // Update the database
+            try await ShareServiceManager.shared.markResourceAsListened(resource)
+        } catch {
+            printError("When marking the resource (id=\(resource.getIdString())) as listened.")
+        }
+    }
+    
+    /// Marks a shared resource as not listened.
+    /// This function updates both the published `receivedResources` variable and the database.
+    ///
+    /// - Parameter resource: The `SharedResource` object to be marked as not listened.
+    @MainActor
+    public func markResourceAsNotListened(_ resource: SharedResource) async {
+        do {
+            if (!resource.isListened()) { return } // Return early if resource is already not listened
+            
+            // Update the UI
+            resource.markAsNotListened()
+            if let index = self.receivedResources.firstIndex(of: resource) {
+                self.receivedResources[index] = resource
+            }
+            
+            // Update the database
+            try await ShareServiceManager.shared.markResourceAsNotListened(resource)
+        } catch {
+            printError("When marking the resource (id=\(resource.getIdString())) as listened.")
+        }
+    }
+    
+    /// Unsends a shared resource that has been sent.
+    /// This function both deletes from the published `sentResources` variable and the database.
+    ///
+    /// - Parameter resource: The `SharedResource` object to be unsent.
+    @MainActor
+    public func unsendResource(_ resource: SharedResource) async {
+        do {
+            // Update the UI
+            if let index = self.sentResources.firstIndex(of: resource) {
+                self.sentResources.remove(at: index)
+            }
+            
+            // Delete from the database
+            try await ShareServiceManager.shared.unsendResource(resource)
+            
+        } catch {
+            printError("When unsending the resource (id=\(resource.getIdString())).")
         }
     }
     

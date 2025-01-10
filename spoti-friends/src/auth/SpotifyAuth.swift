@@ -55,9 +55,11 @@ class SpotifyAuth {
             guard let currentUser = user else { throw AuthorizationError.missingUser }
             storeSignedInUser(currentUser)
             if (await UserServiceManager.shared.userExists(withSpotifyId: currentUser.spotifyId)) {
+                try await UserServiceManager.shared.updateUserInDB(currentUser)
                 return .granted
             }
             
+            MetricsServiceManager.shared.trackUserSignedUp(user: currentUser)
             await ProfileServiceManager.shared.storeProfilePictureLocally(profile: currentUser.spotifyProfile)
             try await UserServiceManager.shared.saveUserToDB(currentUser)
             return .granted
@@ -83,11 +85,13 @@ class SpotifyAuth {
         let spotifyWebAccessToken = try await requestAccessTokenObject(authorizationCode: authorizationCode)
         let internalAPIAccessToken = try await fetchInternalAPIAccessToken(spDcCookie: spDcCookie)
         
-        let spotifyProfile = try await SpotifyAPI.shared
+        let response = try await SpotifyAPI.shared
             .fetch(method: .GET,
                    endpoint: .getCurrentUsersProfile,
                    responseType: SpotifyProfile.self,
                    accessToken: spotifyWebAccessToken.getAccessToken())
+        
+        let spotifyProfile = response.data
         
         let friends = try await SpotifyAPI.shared
             .getListOfUsersFriends(internalAPIAccessToken: internalAPIAccessToken.getAccessToken())

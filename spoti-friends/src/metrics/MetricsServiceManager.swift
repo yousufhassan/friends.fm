@@ -9,13 +9,13 @@ class MetricsServiceManager {
     }
     
     /// Tracks when a new user signs up for the app.
-    public func trackUserSignedUp() {
-        self.metricsService.trackUserSignedUp()
+    public func trackUserSignedUp(user: User) {
+        self.metricsService.trackUserSignedUp(user: user)
     }
     
     /// Tracks when the app is opened.
-    public func trackAppOpened() {
-        self.metricsService.trackAppOpened()
+    public func trackAppOpened(by user: User) {
+        self.metricsService.trackAppOpened(by: user)
     }
     
     /// Tracks when the "invite user" button is clicked and from which view.

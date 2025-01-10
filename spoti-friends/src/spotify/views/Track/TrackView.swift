@@ -8,34 +8,17 @@ import SwiftUI
 ///
 struct TrackView: View {
     let track: Track
-    var onTap: (() -> Void)?
-    
-    init(track: Track, onTap: (() -> Void)? = nil) {
-        self.track = track
-        
-        // Default behavior: open the track's Spotify URI
-        self.onTap = onTap ?? {
-            if let url = URL(string: track.spotifyUri) {
-                UIApplication.shared.open(url)
-            }
-        }
-    }
     
     var body: some View {
-        Button(action: {
-            onTap?()
-        }) {
-            HStack {
-                // Album cover
-                ImageWithSpecs(imageUrl: track.album.image, width: 36, height: 36, cornerRadius: 2)
-                
-                TrackDetailsView(track: track)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, 4)
-            .contentShape(Rectangle())
+        HStack {
+            // Album cover
+            ImageWithSpecs(imageUrl: track.album.image, width: 36, height: 36, cornerRadius: 2)
+            
+            TrackDetailsView(track: track)
         }
-        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 4)
+        .contentShape(Rectangle())
     }
 }
 

@@ -10,11 +10,11 @@ import SwiftUI
 ///               It determines the type of resource and displays the appropriate view based on it.
 struct ReceivedResourceView: View {
     let resource: SharedResource
+    @EnvironmentObject var shareViewModel: ShareViewModel
+    
     var body: some View {
         HStack {
-            if (resource.getType() == .track) {
-                TrackView(track: resource.getResource() as! Track)
-            }
+            SpotifyResourceView(resource: resource.getResource(), sharedResource: resource, shareViewModel: shareViewModel)
             
             Spacer()
             ProfileImage(profile: resource.getSender(), width: 24, height: 24)
@@ -23,8 +23,11 @@ struct ReceivedResourceView: View {
 }
 
 #Preview {
+    let _ = PersistedStorage.shared.persistUser(UserMock.userJimHalpert)
+    
     let sender = SpotifyProfileMock.jimHalpert
     let receiver = SpotifyProfileMock.michaelScott
     let resource = SharedResource(resource: TrackMock.iRememberEverything, sender: sender, receiver: receiver)
     ReceivedResourceView(resource: resource)
+        .environmentObject(ShareViewModel(user: UserMock.userJimHalpert))
 }
