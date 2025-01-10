@@ -21,4 +21,9 @@ class PersistedStorage {
     public func getSignedInUser() -> User? {
         return self.signedInUser
     }
+    
+    /// Clears the persisted signed in user.
+    public func clearPersistedUser() {
+        self.signedInUser = nil
+    }
 }
