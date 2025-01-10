@@ -35,8 +35,8 @@ class AppwriteShareService: ShareServiceProtocol {
         
         // Convert each document to a SharedResource and return as an array
         let signedInUser: User
-        if let cachedUser = PersistedStorage.shared.getSignedInUser() {
-            signedInUser = cachedUser
+        if let persistedUser = PersistedStorage.shared.getSignedInUser() {
+            signedInUser = persistedUser
         } else {
             signedInUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: sender.getSpotifyId())
         }
@@ -82,8 +82,8 @@ class AppwriteShareService: ShareServiceProtocol {
         
         // Convert each document to a SharedResource and return as an array
         let signedInUser: User
-        if let cachedUser = PersistedStorage.shared.getSignedInUser() {
-            signedInUser = cachedUser
+        if let persistedUser = PersistedStorage.shared.getSignedInUser() {
+            signedInUser = persistedUser
         } else {
             signedInUser = try await UserServiceManager.shared.getUserFromDB(withSpotifyId: receiver.getSpotifyId())
         }

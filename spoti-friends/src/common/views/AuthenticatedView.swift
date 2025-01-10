@@ -48,6 +48,12 @@ struct AuthenticatedView: View {
                 printError("Expected user but found none (AuthenticatedView)")
                 return
             }
+            Task {
+                try await authorizationViewModel.fetchAndCacheDataOnAppLoad(signedInUser: signedInUser)
+            }
+            
+            print("woop")
+            
             friendActivityViewModel.user = signedInUser
             shareViewModel.user = signedInUser
             profileViewModel.user = signedInUser
